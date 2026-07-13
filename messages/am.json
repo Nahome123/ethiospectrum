@@ -1,0 +1,252 @@
+{
+  "metadata": {
+    "homeTitle": "ግልጽ የቤተሰብ መመሪያ",
+    "featuresTitle": "ባህሪያት",
+    "howItWorksTitle": "እንዴት እንደሚሰራ",
+    "resourcesTitle": "መርጃዎች",
+    "pricingTitle": "ዋጋ",
+    "privacyTitle": "ግላዊነት",
+    "termsTitle": "ውሎች"
+  },
+  "navigation": {
+    "home": "መነሻ",
+    "features": "ባህሪያት",
+    "howItWorks": "እንዴት እንደሚሰራ",
+    "resources": "መርጃዎች",
+    "pricing": "ዋጋ",
+    "privacy": "ግላዊነት",
+    "terms": "ውሎች",
+    "login": "ግባ",
+    "signup": "ጀምር",
+    "dashboard": "ዳሽቦርድ",
+    "onboarding": "መጀመሪያ",
+    "dependents": "የቤተሰብ አባላት",
+    "documents": "ሰነዶች",
+    "assistant": "የሰነድ ረዳት",
+    "roadmap": "የእርምጃ እቅድ",
+    "support": "ድጋፍ",
+    "settings": "ቅንብሮች",
+    "admin": "አስተዳደር",
+    "users": "ተጠቃሚዎች",
+    "translations": "ትርጉሞች",
+    "specialists": "ባለሙያዎች",
+    "prompts": "መመሪያዎች",
+    "auditLogs": "የኦዲት መዝገብ"
+  },
+  "common": {
+    "learnMore": "ተጨማሪ ይወቁ",
+    "comingSoon": "በቅርብ ጊዜ",
+    "preview": "ቅድመ እይታ",
+    "plannedFeature": "የታቀደ ባህሪ",
+    "sample": "የምሳሌ ይዘት",
+    "developmentOnly": "የልማት ምልክት",
+    "backToHome": "ወደ መነሻ ተመለስ",
+    "notConnected": "አልተገናኘም",
+    "save": "አስቀምጥ",
+    "cancel": "ሰርዝ",
+    "close": "ዝጋ",
+    "menu": "ምናሌ",
+    "openMenu": "የአሰሳ ምናሌ ክፈት",
+    "language": "ቋንቋ",
+    "selectLanguage": "ቋንቋ ይምረጡ",
+    "status": "ሁኔታ"
+  },
+  "hero": {
+    "eyebrow": "የተረጋጋ የወደፊት መንገድ",
+    "title": "ለእያንዳንዱ ቤተሰብ በእያንዳንዱ ቋንቋ ግልጽ መመሪያ።",
+    "description": "Ethiospectrum ቤተሰቦች አስፈላጊ ሰነዶችን እንዲያደራጁ፣ ውስብስብ መረጃን እንዲረዱ እና ቀጣይ እርምጃዎቻቸውን በእንግሊዝኛ፣ በአማርኛ ወይም በስፓኒሽ እንዲከታተሉ ያግዛል።",
+    "primaryAction": "መመልከት ይጀምሩ",
+    "secondaryAction": "እንዴት እንደሚሰራ ይመልከቱ",
+    "trust": "ለመረጃ፣ ለማደራጀት እና ለተግባራዊ እርምጃዎች የተገነባ።",
+    "galleryLabel": "የቤተሰብ አፍታዎች",
+    "galleryTitle": "እያንዳንዱ የቤተሰብ ታሪክ የሚያድግበት ቦታ ይገባዋል።",
+    "galleryDescription": "የቤተሰብን መንገድ ለሚቀርጹ የዕለት ተዕለት አፍታዎች፣ ጥያቄዎች እና ምልክት የሆኑ ክስተቶች ሞቅ ያለ ቦታ።",
+    "classroomAlt": "በክፍል ውስጥ በጋራ የሚማሩ ልጆች",
+    "outdoorsAlt": "ከቤት ውጭ የሚጫወቱ ልጆች",
+    "learningAlt": "አዲስ ክህሎት የምትለማመድ ልጅ",
+    "journeyLabel": "የደስታ ጉዞ",
+    "journeyTitle": "ትናንሽ እርምጃዎች ቤተሰብን ወደ ፊት ሊያጓጉዙ ይችላሉ።",
+    "journeyDescription": "Ethiospectrum ለእያንዳንዱ ቤተሰብ ፍጥነት፣ ጥያቄዎች እና እድገት ቦታ ይሰጣል።",
+    "journeyAlt": "በፀሐያማ ቀን ከቤት ውጭ የምትሮጥ ልጅ"
+  },
+  "howItWorks": {
+    "eyebrow": "እንዴት እንደሚሰራ",
+    "title": "የቤተሰብ እንክብካቤ ክፍሎችን በአንድ ግልጽ ቦታ ያሰባስቡ።",
+    "stepOneTitle": "አደራጅ",
+    "stepOneDescription": "አስፈላጊ መዝገቦችን እና የቤተሰብ ዝርዝሮችን በወደፊት የግል ማህደር ውስጥ ያስቀምጡ።",
+    "stepTwoTitle": "ተረዳ",
+    "stepTwoDescription": "ለውሳኔዎች ለመዘጋጀት ቀላል ቋንቋ ማብራሪያዎችን እና በግልጽ የተለዩ መረጃዎችን ይጠቀሙ።",
+    "stepThreeTitle": "ወደ ፊት ተራመድ",
+    "stepThreeDescription": "ቀጣይ እርምጃዎችን፣ ቀኖችን፣ ጥያቄዎችን እና ጠቃሚ መርጃዎችን በራስዎ ፍጥነት ይከታተሉ።"
+  },
+  "features": {
+    "eyebrow": "ለእውነተኛ የቤተሰብ ሥራዎች የተነደፈ",
+    "title": "ያለ መጨናነቅ መዋቅር።",
+    "documentsTitle": "ዲጂታል ማህደር",
+    "documentsDescription": "ለመዝገቦች፣ ለወረቀቶች እና ለአስፈላጊ ዝርዝሮች የታቀደ ደህንነቱ የተጠበቀ ቦታ።",
+    "assistantTitle": "የሰነድ ረዳት",
+    "assistantDescription": "ለጥቅሶች እና ለቀላል ቋንቋ መመሪያ የታቀደ መሳሪያ፤ የባለሙያ ምትክ አይደለም።",
+    "roadmapTitle": "የጋራ እቅድ",
+    "roadmapDescription": "ለቀነ-ገደቦች፣ ለጥያቄዎች እና ለሚቻሉ ቀጣይ እርምጃዎች የታቀደ ቦታ።",
+    "resourcesTitle": "ጠቃሚ ትምህርት",
+    "resourcesDescription": "ለቤተሰብዎ ተስማሚ በሆነ ቋንቋ የተመረጡ የትምህርት መርጃዎች።"
+  },
+  "multilingual": {
+    "eyebrow": "ቋንቋ እንቅፋት መሆን የለበትም",
+    "title": "ተፈጥሯዊ የሚሰማዎትን ቋንቋ ይምረጡ።",
+    "description": "መሰረቱ እንግሊዝኛን፣ አማርኛን እና ስፓኒሽን ይደግፋል። የተተረጎመ ይዘት ለስሱ ውሳኔዎች ከመጠቀሙ በፊት በጥንቃቄ ይገመገማል።",
+    "english": "English",
+    "amharic": "አማርኛ",
+    "spanish": "Español"
+  },
+  "documentAssistant": {
+    "eyebrow": "የሰነድ ረዳት",
+    "title": "ጥያቄዎች በማስረጃ የተደገፉ መልሶችን ይገባቸዋል።",
+    "description": "ይህ የታቀደ ረዳት የሰነድ እውነታዎችን፣ አጠቃላይ መረጃን፣ የተጠቆሙ ቀጣይ እርምጃዎችን እና ማረጋገጥ ያልቻለውን ይለያል።",
+    "citation": "የታቀደ የገጽ ጥቅስ",
+    "notice": "የሰነድ ትንተና በዚህ መሰረት ውስጥ ንቁ አይደለም።"
+  },
+  "digitalBinder": {
+    "eyebrow": "ዲጂታል ማህደር",
+    "title": "አስፈላጊ ለሆኑ ወረቀቶች ቦታ።",
+    "description": "የወደፊት የግል ማህደር ፋይሎችን ወደ ግራ መጋባት ሳይቀይር መዝገቦችን እንዲያደራጁ ይረዳል።",
+    "itemOne": "የትምህርት ቤት መዝገቦች",
+    "itemTwo": "የእንክብካቤ ማስታወሻዎች",
+    "itemThree": "የድጋፍ ደብዳቤዎች"
+  },
+  "roadmap": {
+    "eyebrow": "የእርምጃ እቅድ",
+    "title": "ቀጣዩን እርምጃ የሚታይ ያድርጉ።",
+    "description": "የወደፊት እቅድ አስፈላጊ ቀኖችን እና ጥያቄዎችን ወደ ግልጽ እና ተለዋዋጭ እቅድ ይቀይራል።",
+    "itemOne": "ጥያቄዎችን አዘጋጅ",
+    "itemTwo": "ደብዳቤን ይመልከቱ",
+    "itemThree": "ማሳሰቢያ ጨምር"
+  },
+  "resources": {
+    "eyebrow": "የመማሪያ ቤተ-መጽሐፍት",
+    "title": "ቤተሰቦች ባሉበት የሚያገኛቸው መረጃ።",
+    "description": "የተገመገመው ቤተ-መጽሐፍት እያደገ ሳለ የመጀመሪያ የትምህርት መርጃዎችን ያስሱ።",
+    "resourceOne": "ለትምህርት ቤት ስብሰባ መዘጋጀት",
+    "resourceTwo": "የቤተሰብ መዝገብ ማስቀመጫ ዝርዝር",
+    "resourceThree": "ወደ ቀጠሮ የሚወሰዱ ጥያቄዎች",
+    "pageIntro": "ቤተሰቦች ለመዘጋጀት፣ ለማደራጀት እና በመረጃ የተደገፉ ጥያቄዎችን ለመጠየቅ የተነደፉ የትምህርት ዕቃዎችን ያስሱ።"
+  },
+  "privacy": {
+    "eyebrow": "ግላዊነት እና እምነት",
+    "title": "ስሱ መረጃ ጥንቃቄ የተሞላባቸው ወሰኖችን ይፈልጋል።",
+    "description": "Ethiospectrum በግል ማከማቻ፣ በአገልጋይ-በኩል ፈቃድ፣ በኦዲት ችሎታ እና በአነስተኛ የውሂብ አጠቃቀም ዙሪያ እየተነደፈ ነው። ይህ የአርክቴክቸር ቃል ኪዳን እንጂ የህጋዊ ተገዢነት ጥያቄ አይደለም።",
+    "pageIntro": "ይህ ረቂቅ የምርት አላማዎችን ይገልጻል እና ከሕዝብ መጀመሪያ በፊት የሕግ፣ የግላዊነት እና የደህንነት ግምገማ ይፈልጋል።"
+  },
+  "pricing": {
+    "eyebrow": "ዋጋ",
+    "title": "አሳቢ ድጋፍ፣ ዝርዝሮቹ በቅርብ ጊዜ።",
+    "description": "በዚህ መሰረት ውስጥ ዋጋ እና የሚከፈልበት ድጋፍ አይገኙም። ማንኛውም የምዝገባ አገልግሎት ከመጀመሩ በፊት ግልጽ አማራጮችን እናካፍላለን።",
+    "planTitle": "የወደፊት የድጋፍ ዕቅዶች",
+    "planDescription": "ዛሬ ምንም ክፍያ ወይም ግዢ የለም።"
+  },
+  "callToAction": {
+    "title": "የተደራጀ መንገድ በግልጽ እይታ ይጀምራል።",
+    "description": "የEthiospectrum መሰረትን ያስሱ እና የቤተሰብ መመሪያ እንዴት ቀላል ሊሆን እንደሚችል ይመልከቱ።",
+    "action": "Ethiospectrum ያስሱ"
+  },
+  "footer": {
+    "description": "ለማደራጀት፣ ለትምህርት እና ለቀጣይ እርምጃዎች የብዙ ቋንቋ የቤተሰብ ድጋፍ መሰረት።",
+    "draft": "የመሰረት ቅድመ እይታ — የባለሙያ ምክር አይደለም።",
+    "copyright": "© {year} Ethiospectrum። መብቶች በሙሉ የተጠበቁ ናቸው።"
+  },
+  "authentication": {
+    "loginTitle": "እንኳን ደህና መጡ",
+    "loginDescription": "መግቢያ ለወደፊት የSupabase ግንኙነት ተዘጋጅቷል።",
+    "signupTitle": "መለያዎን ይፍጠሩ",
+    "signupDescription": "በዚህ መሰረት ውስጥ መለያ መፍጠር አልተገናኘም።",
+    "email": "የኢሜይል አድራሻ",
+    "password": "የይለፍ ቃል",
+    "firstName": "የመጀመሪያ ስም",
+    "lastName": "የአያት ስም",
+    "submitLogin": "ግባ",
+    "submitSignup": "መለያ ፍጠር",
+    "notReady": "የማረጋገጫ ውህደት እስካሁን አልተገናኘም። ምንም መለያ አይፈጠርም ወይም አይገባም።",
+    "emailError": "ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
+    "passwordError": "ቢያንስ 8 ቁምፊዎችን ይጠቀሙ።",
+    "nameError": "ቢያንስ 2 ቁምፊዎችን ያስገቡ።",
+    "haveAccount": "መለያ አለዎት?",
+    "needAccount": "መለያ ይፈልጋሉ?"
+  },
+  "dashboard": {
+    "welcome": "ወደ የቤተሰብ የሥራ ቦታዎ እንኳን ደህና መጡ",
+    "intro": "ይህ የወደፊት የቤተሰብ ዳሽቦርድ እንዴት ሊደራጅ እንደሚችል የሚያሳይ የምሳሌ ይዘት ነው።",
+    "upcoming": "የሚመጣ ቀነ-ገደብ",
+    "recommended": "የተጠቆሙ እርምጃዎች",
+    "recentDocuments": "የቅርብ ጊዜ ሰነዶች",
+    "ask": "Ethiospectrumን ይጠይቁ",
+    "resource": "የተጠቆመ መርጃ",
+    "sampleDeadline": "የትምህርት ቤት ስብሰባ ማስታወሻዎችን ይገምግሙ",
+    "sampleAction": "የቤተሰብ አባል ጨምር",
+    "sampleResource": "ለትምህርት ቤት ስብሰባ መዘጋጀት"
+  },
+  "emptyStates": {
+    "documentsTitle": "ሲዘጋጁ ማህደርዎ ዝግጁ ነው",
+    "documentsDescription": "የሰነድ መጫን እና ማስኬድ ለኋለኛ ደረጃ ታቅዷል።",
+    "assistantTitle": "ትንተና ሲገኝ ስለ ሰነድ ይጠይቁ",
+    "assistantDescription": "የወደፊት ረዳት ለሚደገፉ መልሶች ምንጮችን እና የገጽ ጥቅሶችን ያሳያል።",
+    "roadmapTitle": "እስካሁን ምንም የእቅድ ንጥሎች የሉም",
+    "roadmapDescription": "የወደፊት ማሳሰቢያዎች እና ቀነ-ገደቦች እዚህ ይታያሉ።",
+    "dependentsTitle": "ምንም የቤተሰብ አባላት አልተጨመሩም",
+    "dependentsDescription": "የቤተሰብ መገለጫዎች ለኋለኛ ደረጃ ታቅደዋል።",
+    "supportTitle": "የድጋፍ ጥያቄዎች እዚህ ይታያሉ",
+    "supportDescription": "የሰው ድጋፍ እና ቀጠሮዎች እስካሁን አልተገናኙም።"
+  },
+  "errors": {
+    "notFoundTitle": "ያንን ገጽ ማግኘት አልቻልንም",
+    "notFoundDescription": "ገጹ ተንቀሳቅሶ ሊሆን ይችላል ወይም አድራሻው ያልተሟላ ሊሆን ይችላል።",
+    "protectedTitle": "መግባት ያስፈልጋል",
+    "protectedDescription": "ይህ ቦታ ለተረጋገጡ ተጠቃሚዎች ብቻ ነው። በዚህ መሰረት ውስጥ ማረጋገጫ አልተገናኘም።"
+  },
+  "accessibility": {
+    "skipToContent": "ወደ ዋና ይዘት ዝለል",
+    "languageSelectorLabel": "የማሳያ ቋንቋ ይምረጡ",
+    "mobileNavLabel": "የሞባይል አሰሳ",
+    "closeMenu": "የአሰሳ ምናሌን ዝጋ"
+  },
+  "marketingPages": {
+    "featuresIntro": "የታቀዱ መሳሪያዎችን እና ንድፋቸውን የሚመሩ የደህንነት ወሰኖችን ይመልከቱ።",
+    "howItWorksIntro": "Ethiospectrum ቤተሰቦች ከተበታተነ መረጃ ወደ ግልጽ ቀጣይ እርምጃዎች እንዲሸጋገሩ የተነደፈ ነው።",
+    "termsIntro": "እነዚህ ረቂቅ ውሎች የዚህን ቀደምት የምርት መሰረት ወሰኖች ያብራራሉ እና የባለሙያ ግምገማ ይፈልጋሉ።",
+    "termsTitle": "ረቂቅ ውሎች እና የምርት ወሰኖች"
+  },
+  "legal": {
+    "draftNotice": "ለባለሙያ ግምገማ የተዘጋጀ ረቂቅ ይዘት — ህጋዊ ተገዢነትን አይገልጽም።",
+    "privacyBody": "Ethiospectrum ለአገልግሎቶቹ የሚያስፈልገውን ብቻ ለመሰብሰብ፣ የግል የቤተሰብ መረጃን ለመጠበቅ እና ትርጉም ያላቸው ቁጥጥሮችን ለመስጠት የታሰበ ነው። የመጨረሻ ፖሊሲዎች፣ የማቆየት ጊዜዎች እና የህግ ግዴታዎች ከመጀመሪያ በፊት ይገመገማሉ።",
+    "termsBody": "Ethiospectrum የትምህርት፣ የመረጃ እና የማደራጀት ድጋፍ ይሰጣል። የሕግ፣ የሕክምና፣ የኢሚግሬሽን ወይም የባለሙያ ምክር፣ ውክልና፣ የብቃት ውሳኔ ወይም የተረጋገጠ ውጤት አይሰጥም።"
+  },
+  "member": {
+    "workspace": "የቤተሰብ የሥራ ቦታ",
+    "dependentSelector": "የቤተሰብ አባል ይምረጡ",
+    "allDependents": "ሁሉም የቤተሰብ አባላት",
+    "profile": "የመገለጫ ምናሌ",
+    "logout": "ውጣ",
+    "logoutNotice": "ማረጋገጫ ሲገናኝ መውጣት ይገኛል።",
+    "onboardingTitle": "ቤተሰብዎን ያዘጋጁ",
+    "onboardingDescription": "በመመሪያ የሚደረግ የቤተሰብ ማዋቀር ታቅዷል። በዚህ መሰረት ውስጥ ምንም አይቀመጥም።",
+    "settingsTitle": "የሥራ ቦታ ቅንብሮች",
+    "settingsDescription": "ማረጋገጫ ከተገናኘ በኋላ የቋንቋ፣ የመገለጫ እና የቤተሰብ ቅንብሮች ይገኛሉ።"
+  },
+  "admin": {
+    "title": "የአስተዳደር የሥራ ቦታ",
+    "description": "ይህ የተለየ ሼል የወደፊት በአገልጋይ-በኩል የሚሆን የሚና ወሰን ያቋቁማል። የአስተዳደር እርምጃዎች በመሰረቱ ውስጥ አይገኙም።",
+    "roleBoundary": "ለአስተዳዳሪ ብቻ የተዘጋጀ መንገድ — በአገልጋይ ፈቃድ ያስፈልጋል",
+    "overview": "አጠቃላይ እይታ",
+    "users": "የተጠቃሚ አስተዳደር",
+    "resources": "የመርጃ ፍሰት",
+    "translations": "የትርጉም ግምገማ",
+    "documents": "የሰነድ ሥራዎች",
+    "specialists": "የባለሙያ ምደባ",
+    "prompts": "የመመሪያ ስሪቶች",
+    "auditLogs": "የኦዲት ታሪክ"
+  },
+  "protected": {
+    "returnTo": "ወደ መግቢያ ተመለስ",
+    "developmentNotice": "እውነተኛ በአገልጋይ-በኩል ማረጋገጫ እስኪገናኝ ድረስ የተጠበቁ መንገዶች ሆን ተብለው አይገኙም።"
+  },
+  "review": { "translation": "ለስሱ ይዘት ከመጠቀሙ በፊት ትርጉም በአፍ መፍቻ ቋንቋ ተናጋሪዎች ግምገማ ይፈልጋል።" }
+}

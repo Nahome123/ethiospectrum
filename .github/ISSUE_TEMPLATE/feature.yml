@@ -1,0 +1,14 @@
+name: Feature
+description: Propose an Ethiospectrum feature
+title: "[ETH-###] "
+labels: [feature]
+body:
+  - type: textarea
+    attributes: { label: Problem and user story }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Requirements and acceptance criteria }
+    validations: { required: true }
+  - type: textarea
+    attributes: { label: Security, accessibility, translation, testing, and exclusions }
+    validations: { required: true }

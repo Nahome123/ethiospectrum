@@ -1,0 +1,254 @@
+{
+  "metadata": {
+    "homeTitle": "Orientación familiar más clara",
+    "featuresTitle": "Funciones",
+    "howItWorksTitle": "Cómo funciona",
+    "resourcesTitle": "Recursos",
+    "pricingTitle": "Precios",
+    "privacyTitle": "Privacidad",
+    "termsTitle": "Términos"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "features": "Funciones",
+    "howItWorks": "Cómo funciona",
+    "resources": "Recursos",
+    "pricing": "Precios",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "login": "Iniciar sesión",
+    "signup": "Comenzar",
+    "dashboard": "Panel",
+    "onboarding": "Primeros pasos",
+    "dependents": "Miembros de la familia",
+    "documents": "Documentos",
+    "assistant": "Asistente de documentos",
+    "roadmap": "Plan de pasos",
+    "support": "Apoyo",
+    "settings": "Configuración",
+    "admin": "Administración",
+    "users": "Usuarios",
+    "translations": "Traducciones",
+    "specialists": "Especialistas",
+    "prompts": "Indicaciones",
+    "auditLogs": "Registro de auditoría"
+  },
+  "common": {
+    "learnMore": "Más información",
+    "comingSoon": "Próximamente",
+    "preview": "Vista previa",
+    "plannedFeature": "Función planificada",
+    "sample": "Contenido de ejemplo",
+    "developmentOnly": "Marcador de desarrollo",
+    "backToHome": "Volver al inicio",
+    "notConnected": "No conectado",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "menu": "Menú",
+    "openMenu": "Abrir menú de navegación",
+    "language": "Idioma",
+    "selectLanguage": "Seleccionar idioma",
+    "status": "Estado"
+  },
+  "hero": {
+    "eyebrow": "Un camino más tranquilo",
+    "title": "Orientación clara para cada familia, en cada idioma.",
+    "description": "Ethiospectrum ayuda a las familias a organizar documentos importantes, comprender información compleja y seguir sus próximos pasos en inglés, amhárico o español.",
+    "primaryAction": "Empezar a explorar",
+    "secondaryAction": "Ver cómo funciona",
+    "trust": "Creado para información, organización y pasos prácticos.",
+    "galleryLabel": "Momentos en familia",
+    "galleryTitle": "Cada historia familiar merece espacio para crecer.",
+    "galleryDescription": "Un espacio acogedor para los momentos cotidianos, preguntas e hitos que dan forma al camino de una familia.",
+    "classroomAlt": "Niños aprendiendo juntos en un aula",
+    "outdoorsAlt": "Niños jugando al aire libre",
+    "learningAlt": "Una niña practicando una habilidad nueva",
+    "journeyLabel": "Un viaje alegre",
+    "journeyTitle": "Los pequeños pasos pueden llevar a una familia hacia adelante.",
+    "journeyDescription": "Ethiospectrum da espacio al ritmo, las preguntas y el progreso de cada familia.",
+    "journeyAlt": "Una niña corriendo afuera en un día soleado"
+  },
+  "howItWorks": {
+    "eyebrow": "Cómo funciona",
+    "title": "Reúne las partes del cuidado familiar en un lugar claro.",
+    "stepOneTitle": "Organiza",
+    "stepOneDescription": "Mantén los registros importantes y los datos familiares juntos en un futuro archivador privado.",
+    "stepTwoTitle": "Comprende",
+    "stepTwoDescription": "Usa explicaciones sencillas e información claramente identificada para prepararte para decisiones.",
+    "stepThreeTitle": "Avanza",
+    "stepThreeDescription": "Sigue pasos, fechas, preguntas y recursos útiles a tu propio ritmo."
+  },
+  "features": {
+    "eyebrow": "Diseñado para tareas familiares reales",
+    "title": "Estructura sin agobio.",
+    "documentsTitle": "Un archivador digital",
+    "documentsDescription": "Un hogar seguro planeado para registros, papeles y detalles importantes.",
+    "assistantTitle": "Un asistente de documentos",
+    "assistantDescription": "Una herramienta planeada para orientación de documentos con citas y lenguaje sencillo; nunca un reemplazo de un profesional.",
+    "roadmapTitle": "Un plan compartido",
+    "roadmapDescription": "Un espacio planeado para fechas límite, preguntas y próximos pasos manejables.",
+    "resourcesTitle": "Aprendizaje útil",
+    "resourcesDescription": "Recursos educativos seleccionados en el idioma que funciona para tu familia."
+  },
+  "multilingual": {
+    "eyebrow": "El idioma no debe ser una barrera",
+    "title": "Elige el idioma que te resulte más natural.",
+    "description": "La base admite inglés, amhárico y español. El contenido traducido se revisa cuidadosamente antes de utilizarse para decisiones sensibles.",
+    "english": "English",
+    "amharic": "አማርኛ",
+    "spanish": "Español"
+  },
+  "documentAssistant": {
+    "eyebrow": "Asistente de documentos",
+    "title": "Las preguntas merecen respuestas fundamentadas.",
+    "description": "Este asistente planeado diferenciará hechos del documento, información general, próximos pasos sugeridos y lo que no pudo verificar.",
+    "citation": "Cita de página planificada",
+    "notice": "El análisis de documentos no está activo en esta base."
+  },
+  "digitalBinder": {
+    "eyebrow": "Archivador digital",
+    "title": "Un lugar para los papeles importantes.",
+    "description": "Un futuro archivador privado ayudará a tu hogar a mantener los registros organizados sin convertir los archivos en un laberinto.",
+    "itemOne": "Registros escolares",
+    "itemTwo": "Notas de atención",
+    "itemThree": "Cartas de beneficios"
+  },
+  "roadmap": {
+    "eyebrow": "Plan de pasos",
+    "title": "Haz visible el próximo paso.",
+    "description": "Un futuro plan convertirá fechas y preguntas importantes en un plan claro y flexible.",
+    "itemOne": "Preparar preguntas",
+    "itemTwo": "Revisar una carta",
+    "itemThree": "Agregar un recordatorio"
+  },
+  "resources": {
+    "eyebrow": "Biblioteca de aprendizaje",
+    "title": "Información que encuentra a las familias donde están.",
+    "description": "Explora recursos educativos iniciales mientras crece nuestra biblioteca revisada.",
+    "resourceOne": "Prepararse para una reunión escolar",
+    "resourceTwo": "Lista para guardar registros familiares",
+    "resourceThree": "Preguntas para llevar a una cita",
+    "pageIntro": "Explora material educativo diseñado para ayudar a las familias a prepararse, organizarse y hacer preguntas informadas."
+  },
+  "privacy": {
+    "eyebrow": "Privacidad y confianza",
+    "title": "La información sensible merece límites cuidadosos.",
+    "description": "Ethiospectrum se diseña con almacenamiento privado, autorización del servidor, auditabilidad y uso mínimo de datos. Es un compromiso de arquitectura, no una afirmación de cumplimiento.",
+    "pageIntro": "Este borrador describe intenciones de producto y requiere revisión legal, de privacidad y seguridad antes de un lanzamiento público."
+  },
+  "pricing": {
+    "eyebrow": "Precios",
+    "title": "Apoyo atento, con detalles por venir.",
+    "description": "Los precios y el apoyo pagado no están disponibles en esta base. Compartiremos opciones claras antes de lanzar un servicio de suscripción.",
+    "planTitle": "Planes futuros de apoyo",
+    "planDescription": "Hoy no hay ningún cargo ni compra disponible."
+  },
+  "callToAction": {
+    "title": "Un camino más organizado comienza con una vista más clara.",
+    "description": "Explora la base de Ethiospectrum y descubre cómo la orientación familiar puede ser más fácil de navegar.",
+    "action": "Explorar Ethiospectrum"
+  },
+  "footer": {
+    "description": "Base de apoyo familiar multilingüe para organización, educación y próximos pasos.",
+    "draft": "Vista previa de base — no es asesoramiento profesional.",
+    "copyright": "© {year} Ethiospectrum. Todos los derechos reservados."
+  },
+  "authentication": {
+    "loginTitle": "Bienvenido de nuevo",
+    "loginDescription": "El inicio de sesión está preparado para una futura conexión con Supabase.",
+    "signupTitle": "Crea tu cuenta",
+    "signupDescription": "La creación de cuentas no está conectada en esta base.",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "submitLogin": "Iniciar sesión",
+    "submitSignup": "Crear cuenta",
+    "notReady": "La integración de autenticación aún no está conectada. No se crea ni inicia ninguna cuenta.",
+    "emailError": "Ingresa un correo electrónico válido.",
+    "passwordError": "Usa al menos 8 caracteres.",
+    "nameError": "Ingresa al menos 2 caracteres.",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "needAccount": "¿Necesitas una cuenta?"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido a tu espacio familiar",
+    "intro": "Este es contenido de ejemplo que muestra cómo podría organizarse un futuro panel del hogar.",
+    "upcoming": "Próxima fecha límite",
+    "recommended": "Acciones recomendadas",
+    "recentDocuments": "Documentos recientes",
+    "ask": "Preguntar a Ethiospectrum",
+    "resource": "Recurso recomendado",
+    "sampleDeadline": "Revisar notas de reunión escolar",
+    "sampleAction": "Agregar un miembro de la familia",
+    "sampleResource": "Prepararse para una reunión escolar"
+  },
+  "emptyStates": {
+    "documentsTitle": "Tu archivador está listo cuando tú lo estés",
+    "documentsDescription": "La carga y el procesamiento de documentos están planeados para una fase posterior.",
+    "assistantTitle": "Pregunta sobre un documento cuando el análisis esté disponible",
+    "assistantDescription": "El futuro asistente mostrará fuentes y citas de página para respuestas compatibles.",
+    "roadmapTitle": "Aún no hay elementos en el plan",
+    "roadmapDescription": "Los futuros recordatorios y fechas límite aparecerán aquí.",
+    "dependentsTitle": "No se agregaron miembros de la familia",
+    "dependentsDescription": "Los perfiles del hogar están planeados para una fase posterior.",
+    "supportTitle": "Las solicitudes de apoyo aparecerán aquí",
+    "supportDescription": "El apoyo humano y las citas aún no están conectados."
+  },
+  "errors": {
+    "notFoundTitle": "No pudimos encontrar esa página",
+    "notFoundDescription": "La página puede haberse movido o la dirección puede estar incompleta.",
+    "protectedTitle": "Se requiere iniciar sesión",
+    "protectedDescription": "Esta área está reservada para usuarios autenticados. La autenticación no está conectada en esta base."
+  },
+  "accessibility": {
+    "skipToContent": "Saltar al contenido principal",
+    "languageSelectorLabel": "Elegir idioma de visualización",
+    "mobileNavLabel": "Navegación móvil",
+    "closeMenu": "Cerrar menú de navegación"
+  },
+  "marketingPages": {
+    "featuresIntro": "Conoce las herramientas planeadas y los límites de seguridad que guían su diseño.",
+    "howItWorksIntro": "Ethiospectrum está diseñado para ayudar a las familias a pasar de información dispersa a próximos pasos comprensibles.",
+    "termsIntro": "Estos términos preliminares explican los límites de esta primera base de producto y necesitan revisión profesional.",
+    "termsTitle": "Términos preliminares y límites del producto"
+  },
+  "legal": {
+    "draftNotice": "Contenido preliminar para revisión profesional; no declara cumplimiento legal.",
+    "privacyBody": "Ethiospectrum busca recopilar solo lo necesario para sus servicios, proteger la información familiar privada y brindar controles significativos. Las políticas finales, periodos de retención y obligaciones legales se revisarán antes del lanzamiento.",
+    "termsBody": "Ethiospectrum brinda apoyo educativo, informativo y organizativo. No brinda asesoramiento legal, médico, migratorio o profesional, representación, decisiones de elegibilidad ni resultados garantizados."
+  },
+  "member": {
+    "workspace": "Espacio familiar",
+    "dependentSelector": "Seleccionar miembro de la familia",
+    "allDependents": "Todos los miembros de la familia",
+    "profile": "Menú de perfil",
+    "logout": "Cerrar sesión",
+    "logoutNotice": "Cerrar sesión estará disponible cuando se conecte la autenticación.",
+    "onboardingTitle": "Configura tu hogar",
+    "onboardingDescription": "La configuración guiada del hogar está planeada. Nada se guarda en esta base.",
+    "settingsTitle": "Configuración del espacio",
+    "settingsDescription": "Los ajustes de idioma, perfil y hogar estarán disponibles después de conectar la autenticación."
+  },
+  "admin": {
+    "title": "Espacio de administración",
+    "description": "Este shell separado establece un futuro límite de roles en el servidor. Las acciones administrativas no están disponibles en la base.",
+    "roleBoundary": "Ruta solo para administradores: se requiere autorización del servidor",
+    "overview": "Resumen",
+    "users": "Gestión de usuarios",
+    "resources": "Flujo de recursos",
+    "translations": "Revisión de traducciones",
+    "documents": "Operaciones de documentos",
+    "specialists": "Asignaciones de especialistas",
+    "prompts": "Versiones de indicaciones",
+    "auditLogs": "Registro de auditoría"
+  },
+  "protected": {
+    "returnTo": "Volver a iniciar sesión",
+    "developmentNotice": "Las rutas protegidas no están disponibles intencionalmente hasta conectar autenticación real del servidor."
+  },
+  "review": {
+    "translation": "La traducción requiere revisión de hablantes nativos antes de usarse para contenido sensible."
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "metadata": {
+    "homeTitle": "Family guidance made clearer",
+    "featuresTitle": "Features",
+    "howItWorksTitle": "How it works",
+    "resourcesTitle": "Resources",
+    "pricingTitle": "Pricing",
+    "privacyTitle": "Privacy",
+    "termsTitle": "Terms"
+  },
+  "navigation": {
+    "home": "Home",
+    "features": "Features",
+    "howItWorks": "How it works",
+    "resources": "Resources",
+    "pricing": "Pricing",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "login": "Log in",
+    "signup": "Get started",
+    "dashboard": "Dashboard",
+    "onboarding": "Getting started",
+    "dependents": "Family members",
+    "documents": "Documents",
+    "assistant": "Document assistant",
+    "roadmap": "Roadmap",
+    "support": "Support",
+    "settings": "Settings",
+    "admin": "Administration",
+    "users": "Users",
+    "translations": "Translations",
+    "specialists": "Specialists",
+    "prompts": "Prompts",
+    "auditLogs": "Audit logs"
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "comingSoon": "Coming soon",
+    "preview": "Preview",
+    "plannedFeature": "Planned feature",
+    "sample": "Sample content",
+    "developmentOnly": "Development placeholder",
+    "backToHome": "Back to home",
+    "notConnected": "Not connected",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "menu": "Menu",
+    "openMenu": "Open navigation menu",
+    "language": "Language",
+    "selectLanguage": "Select language",
+    "status": "Status"
+  },
+  "hero": {
+    "eyebrow": "A calmer way forward",
+    "title": "Clear guidance for every family, in every language.",
+    "description": "Ethiospectrum helps families organize important documents, understand complicated information, and track their next steps in English, Amharic, or Spanish.",
+    "primaryAction": "Start exploring",
+    "secondaryAction": "See how it works",
+    "trust": "Built for information, organization, and practical next steps.",
+    "galleryLabel": "Family moments",
+    "galleryTitle": "Every family story deserves room to grow.",
+    "galleryDescription": "A welcoming space for the everyday moments, questions, and milestones that shape a family’s path.",
+    "classroomAlt": "Children learning together in a classroom",
+    "outdoorsAlt": "Children playing outdoors",
+    "learningAlt": "A child practicing a new skill",
+    "journeyLabel": "A joyful journey",
+    "journeyTitle": "Small steps can carry a family forward.",
+    "journeyDescription": "Ethiospectrum makes room for each family’s pace, questions, and progress.",
+    "journeyAlt": "A child running outside on a sunny day"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Bring the pieces of family care into one clear place.",
+    "stepOneTitle": "Organize",
+    "stepOneDescription": "Keep important records and family details together in a future private binder.",
+    "stepTwoTitle": "Understand",
+    "stepTwoDescription": "Use plain-language explanations and clearly labeled information to prepare for decisions.",
+    "stepThreeTitle": "Move forward",
+    "stepThreeDescription": "Track next steps, dates, questions, and useful resources at your own pace."
+  },
+  "features": {
+    "eyebrow": "Designed around real family tasks",
+    "title": "Structure without the overwhelm.",
+    "documentsTitle": "A digital binder",
+    "documentsDescription": "A planned secure home for records, paperwork, and important details.",
+    "assistantTitle": "A document assistant",
+    "assistantDescription": "A planned tool for cited, plain-language document guidance—never a substitute for a professional.",
+    "roadmapTitle": "A shared roadmap",
+    "roadmapDescription": "A planned space for deadlines, questions, and manageable next steps.",
+    "resourcesTitle": "Helpful learning",
+    "resourcesDescription": "Curated educational resources in the language that works for your family."
+  },
+  "multilingual": {
+    "eyebrow": "Language should not be a barrier",
+    "title": "Choose the language that feels most natural.",
+    "description": "The foundation supports English, Amharic, and Spanish. Translation content is reviewed carefully before it is relied on for sensitive decisions.",
+    "english": "English",
+    "amharic": "አማርኛ",
+    "spanish": "Español"
+  },
+  "documentAssistant": {
+    "eyebrow": "Document assistant",
+    "title": "Questions deserve grounded answers.",
+    "description": "This planned assistant will distinguish document facts, general information, suggested next steps, and what it could not verify.",
+    "citation": "Planned page citation",
+    "notice": "Document analysis is not active in this foundation."
+  },
+  "digitalBinder": {
+    "eyebrow": "Digital binder",
+    "title": "A place for the papers that matter.",
+    "description": "A future private binder will help your household keep records organized without turning files into a maze.",
+    "itemOne": "School records",
+    "itemTwo": "Care notes",
+    "itemThree": "Benefit letters"
+  },
+  "roadmap": {
+    "eyebrow": "Roadmap",
+    "title": "Make the next step visible.",
+    "description": "A future roadmap will turn important dates and questions into a clear, flexible plan.",
+    "itemOne": "Prepare questions",
+    "itemTwo": "Review a letter",
+    "itemThree": "Add a reminder"
+  },
+  "resources": {
+    "eyebrow": "Learning library",
+    "title": "Information that meets families where they are.",
+    "description": "Explore early educational resources while our reviewed library grows.",
+    "resourceOne": "Preparing for a school meeting",
+    "resourceTwo": "Keeping a family records checklist",
+    "resourceThree": "Questions to bring to an appointment",
+    "pageIntro": "Browse educational material designed to help families prepare, organize, and ask informed questions."
+  },
+  "privacy": {
+    "eyebrow": "Privacy and trust",
+    "title": "Sensitive information deserves careful boundaries.",
+    "description": "Ethiospectrum is being designed around private storage, server-side authorization, auditability, and minimal data use. This is an architecture commitment, not a compliance claim.",
+    "pageIntro": "This draft describes product intentions and requires legal, privacy, and security review before any public launch."
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Thoughtful support, with details to come.",
+    "description": "Pricing and paid support are not available in this foundation. We will share clear options before any subscription service launches.",
+    "planTitle": "Future support plans",
+    "planDescription": "No charge or purchase is available today."
+  },
+  "callToAction": {
+    "title": "A more organized path starts with a clearer view.",
+    "description": "Explore the Ethiospectrum foundation and see how family guidance can become easier to navigate.",
+    "action": "Explore Ethiospectrum"
+  },
+  "footer": {
+    "description": "Multilingual family-support foundation for organization, education, and next steps.",
+    "draft": "Foundation preview — not professional advice.",
+    "copyright": "© {year} Ethiospectrum. All rights reserved."
+  },
+  "authentication": {
+    "loginTitle": "Welcome back",
+    "loginDescription": "Sign-in is prepared for a future Supabase connection.",
+    "signupTitle": "Create your account",
+    "signupDescription": "Account creation is not connected in this foundation.",
+    "email": "Email address",
+    "password": "Password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "submitLogin": "Log in",
+    "submitSignup": "Create account",
+    "notReady": "Authentication integration is not connected yet. No account is created or signed in.",
+    "emailError": "Enter a valid email address.",
+    "passwordError": "Use at least 8 characters.",
+    "nameError": "Enter at least 2 characters.",
+    "haveAccount": "Already have an account?",
+    "needAccount": "Need an account?"
+  },
+  "dashboard": {
+    "welcome": "Welcome to your family workspace",
+    "intro": "This is sample content showing how a future household dashboard may be organized.",
+    "upcoming": "Upcoming deadline",
+    "recommended": "Recommended actions",
+    "recentDocuments": "Recent documents",
+    "ask": "Ask Ethiospectrum",
+    "resource": "Resource recommendation",
+    "sampleDeadline": "Review school meeting notes",
+    "sampleAction": "Add a family member",
+    "sampleResource": "Preparing for a school meeting"
+  },
+  "emptyStates": {
+    "documentsTitle": "Your binder is ready when you are",
+    "documentsDescription": "Document upload and processing are planned for a later phase.",
+    "assistantTitle": "Ask about a document when analysis is available",
+    "assistantDescription": "The future assistant will show sources and page citations for supported answers.",
+    "roadmapTitle": "No roadmap items yet",
+    "roadmapDescription": "Future reminders and deadlines will appear here.",
+    "dependentsTitle": "No family members added",
+    "dependentsDescription": "Household profiles are planned for a later phase.",
+    "supportTitle": "Support requests will appear here",
+    "supportDescription": "Human support and appointments are not connected yet."
+  },
+  "errors": {
+    "notFoundTitle": "We could not find that page",
+    "notFoundDescription": "The page may have moved, or the address may be incomplete.",
+    "protectedTitle": "Sign-in required",
+    "protectedDescription": "This area is reserved for authenticated users. Authentication is not connected in this foundation."
+  },
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "languageSelectorLabel": "Choose display language",
+    "mobileNavLabel": "Mobile navigation",
+    "closeMenu": "Close navigation menu"
+  },
+  "marketingPages": {
+    "featuresIntro": "See the planned tools and the safety boundaries guiding their design.",
+    "howItWorksIntro": "Ethiospectrum is designed to help families move from scattered information to understandable next steps.",
+    "termsIntro": "These draft terms explain the boundaries of this early product foundation and need professional review.",
+    "termsTitle": "Draft terms and product boundaries"
+  },
+  "legal": {
+    "draftNotice": "Draft content for professional review — it does not state legal compliance.",
+    "privacyBody": "Ethiospectrum is intended to collect only what is needed for its services, protect private family information, and provide meaningful controls. Final policies, retention periods, and legal obligations will be reviewed before launch.",
+    "termsBody": "Ethiospectrum provides educational, informational, and organizational support. It does not provide legal, medical, immigration, or professional advice, representation, eligibility decisions, or guaranteed outcomes."
+  },
+  "member": {
+    "workspace": "Family workspace",
+    "dependentSelector": "Select family member",
+    "allDependents": "All family members",
+    "profile": "Profile menu",
+    "logout": "Log out",
+    "logoutNotice": "Logout will be available when authentication is connected.",
+    "onboardingTitle": "Set up your household",
+    "onboardingDescription": "Guided household setup is planned. Nothing is saved in this foundation.",
+    "settingsTitle": "Workspace settings",
+    "settingsDescription": "Language, profile, and household settings will be available after authentication is connected."
+  },
+  "admin": {
+    "title": "Administration workspace",
+    "description": "This separate shell establishes a future server-side role boundary. Administrative actions are unavailable in the foundation.",
+    "roleBoundary": "Administrator-only route — server authorization required",
+    "overview": "Overview",
+    "users": "User management",
+    "resources": "Resource workflow",
+    "translations": "Translation review",
+    "documents": "Document operations",
+    "specialists": "Specialist assignments",
+    "prompts": "Prompt versions",
+    "auditLogs": "Audit trail"
+  },
+  "protected": {
+    "returnTo": "Return to sign in",
+    "developmentNotice": "Protected routes are intentionally unavailable until real server-side authentication is connected."
+  },
+  "review": { "translation": "Translation requires native-speaker review before use for sensitive content." }
+}

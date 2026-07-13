@@ -1,0 +1,4 @@
+# Replace placeholders with real GitHub handles before enabling.
+* @your-org/your-team
+/supabase/ @your-org/security-team
+/docs/ @your-org/docs-team

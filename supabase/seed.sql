@@ -1,0 +1,1 @@
+-- Intentionally empty: Ethiospectrum never stores private or production family data in source control.
