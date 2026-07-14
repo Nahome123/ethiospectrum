@@ -4,7 +4,7 @@ Ethiospectrum is a multilingual family-support platform foundation for organizin
 
 ## Current status
 
-Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, placeholder sign-in/up forms, safe server-side protected-route abstractions, member/admin shells, future AI schemas/prompts, Supabase-ready schema/RLS migrations, CI templates, and testing configuration.
+Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, placeholder sign-in/up forms, safe server-side protected-route abstractions, member/admin shells, future AI schemas/prompts, Supabase client foundations with schema/RLS migrations, CI templates, and testing configuration.
 
 Planned: real Supabase authentication and storage, document upload/OCR/processing, AI answers, messaging, scheduling, billing, email, analytics, and monitoring. These integrations are not functional in this repository.
 
@@ -58,4 +58,4 @@ Treat family data as sensitive. Never commit real keys or private documents; do 
 
 ## Next recommended issue
 
-`ETH-007 Configure Supabase utilities`, followed by `ETH-008 Implement authentication` and the executable RLS test suite in `ETH-009`.
+`ETH-008 Implement authentication`, followed by the executable RLS test suite in `ETH-009`.
