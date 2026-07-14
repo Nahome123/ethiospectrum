@@ -8,7 +8,7 @@ import { parseServerSupabaseEnv, requireSupabaseAdminEnv } from "@/lib/env/serve
 
 const configuredPublicEnv = {
   NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: "local-anon-key",
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "local-publishable-key",
 };
 
 describe("Supabase environment validation", () => {
@@ -16,43 +16,34 @@ describe("Supabase environment validation", () => {
     expect(parsePublicSupabaseEnv({})).toBeUndefined();
   });
 
-  it("rejects partial public Supabase configuration", () => {
+  it("rejects partial or invalid public Supabase configuration", () => {
     expect(() =>
       parsePublicSupabaseEnv({ NEXT_PUBLIC_SUPABASE_URL: configuredPublicEnv.NEXT_PUBLIC_SUPABASE_URL }),
     ).toThrow(SupabaseConfigurationError);
-  });
-
-  it("rejects invalid public Supabase URLs", () => {
     expect(() =>
       parsePublicSupabaseEnv({ ...configuredPublicEnv, NEXT_PUBLIC_SUPABASE_URL: "not-a-url" }),
     ).toThrow(SupabaseConfigurationError);
   });
 
-  it("does not expose service-role values through the public configuration", () => {
-    const publicEnv = parsePublicSupabaseEnv({
-      ...configuredPublicEnv,
-      SUPABASE_SERVICE_ROLE_KEY: "private-key",
-    });
-
+  it("does not expose secret values through public configuration", () => {
+    const publicEnv = parsePublicSupabaseEnv({ ...configuredPublicEnv, SUPABASE_SECRET_KEY: "private-key" });
     expect(publicEnv).toEqual({
       url: configuredPublicEnv.NEXT_PUBLIC_SUPABASE_URL,
-      anonKey: "local-anon-key",
+      publishableKey: "local-publishable-key",
     });
-    expect(publicEnv).not.toHaveProperty("serviceRoleKey");
-    expect(publicEnv).not.toHaveProperty("SUPABASE_SERVICE_ROLE_KEY");
+    expect(publicEnv).not.toHaveProperty("secretKey");
+    expect(publicEnv).not.toHaveProperty("SUPABASE_SECRET_KEY");
   });
 
-  it("accepts a service role key only in the server configuration", () => {
-    expect(
-      parseServerSupabaseEnv({ ...configuredPublicEnv, SUPABASE_SERVICE_ROLE_KEY: "private-key" }),
-    ).toEqual({
+  it("accepts a secret key only in server configuration", () => {
+    expect(parseServerSupabaseEnv({ ...configuredPublicEnv, SUPABASE_SECRET_KEY: "private-key" })).toEqual({
       url: configuredPublicEnv.NEXT_PUBLIC_SUPABASE_URL,
-      anonKey: "local-anon-key",
-      serviceRoleKey: "private-key",
+      publishableKey: "local-publishable-key",
+      secretKey: "private-key",
     });
   });
 
-  it("fails clearly when a Supabase operation is requested without configuration", () => {
+  it("fails clearly when a configured operation is requested without credentials", () => {
     expect(() => requirePublicSupabaseEnv({})).toThrow(SupabaseConfigurationError);
     expect(() => requireSupabaseAdminEnv({})).toThrow(SupabaseConfigurationError);
   });

@@ -44,3 +44,13 @@ test("protected member and administrator paths redirect to localized login", asy
   await page.goto("/es/admin");
   await expect(page).toHaveURL(/\/es\/login/);
 });
+
+test("localized authentication entry pages render accessible forms", async ({ page }) => {
+  for (const locale of ["en", "am", "es"]) {
+    await page.goto(`/${locale}/login`);
+    await expect(page.locator("form")).toBeVisible();
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await page.goto(`/${locale}/signup`);
+    await expect(page.locator('input[type="checkbox"]')).toBeVisible();
+  }
+});

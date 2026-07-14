@@ -3,13 +3,8 @@
 import { createBrowserClient } from "@supabase/ssr";
 import { requirePublicSupabaseEnv } from "@/lib/env/client";
 
-let browserClient: ReturnType<typeof createBrowserClient> | undefined;
-
-/** Use only from Client Components. This utility has no access to service-role configuration. */
+/** Use only from Client Components. This utility has no access to elevated server configuration. */
 export function createBrowserSupabaseClient() {
-  if (!browserClient) {
-    const env = requirePublicSupabaseEnv();
-    browserClient = createBrowserClient(env.url, env.anonKey);
-  }
-  return browserClient;
+  const env = requirePublicSupabaseEnv();
+  return createBrowserClient(env.url, env.publishableKey);
 }

@@ -8,7 +8,7 @@ import { requireSupabaseAdminEnv } from "@/lib/env/server";
  */
 export function createSupabaseAdminClient() {
   const env = requireSupabaseAdminEnv();
-  return createClient(env.url, env.serviceRoleKey, {
+  return createClient(env.url, env.secretKey, {
     auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
   });
 }

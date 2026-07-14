@@ -2,7 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { requireServerSupabaseEnv } from "@/lib/env/server";
-import type { Session, User } from "./types";
+import type { User } from "./types";
 
 /**
  * Creates a request-scoped client for Server Components.
@@ -12,7 +12,7 @@ export async function createServerComponentSupabaseClient() {
   const env = requireServerSupabaseEnv();
   const cookieStore = await cookies();
 
-  return createServerClient(env.url, env.anonKey, {
+  return createServerClient(env.url, env.publishableKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: () => undefined,
@@ -20,17 +20,17 @@ export async function createServerComponentSupabaseClient() {
   });
 }
 
-/** A session is informational only. Future authorization must verify the user server-side and rely on RLS. */
-export async function getCurrentSupabaseSession(): Promise<Session | null> {
+/** Verifies the current identity from JWT claims; use this for all authorization decisions. */
+export async function getCurrentSupabaseClaims() {
   const supabase = await createServerComponentSupabaseClient();
-  const { data, error } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.getClaims();
   if (error) {
-    throw new Error("Unable to read the current Supabase session.");
+    return null;
   }
-  return data.session;
+  return data?.claims ?? null;
 }
 
-/** Uses Supabase Auth server-side verification. Returns null when no real authenticated user exists. */
+/** Fetches the current user only when current display data is actually required. */
 export async function getCurrentSupabaseUser(): Promise<User | null> {
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase.auth.getUser();

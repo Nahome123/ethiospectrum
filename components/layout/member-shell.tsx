@@ -1,8 +1,12 @@
 import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import { brandConfig } from "@/config/brand";
 import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
+import { signOutAction } from "@/lib/auth/actions";
+import { getCurrentSupabaseUser } from "@/lib/supabase/server";
+import type { AppLocale } from "@/i18n/routing";
 
 const links = [
   "dashboard",
@@ -17,6 +21,11 @@ const links = [
 ] as const;
 export async function MemberShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations();
+  const locale = (await getLocale()) as AppLocale;
+  const user = await getCurrentSupabaseUser();
+  const firstName =
+    typeof user?.user_metadata.first_name === "string" ? user.user_metadata.first_name.trim() : "";
+  const displayName = firstName || user?.email || t("member.profile");
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b border-border bg-white p-5 lg:border-b-0 lg:border-r">
@@ -46,12 +55,17 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
           </label>
           <div className="flex items-center gap-3">
             <LanguageSelector />
-            <button
-              type="button"
-              className="min-h-10 rounded-md border border-border px-3 text-sm font-semibold"
-            >
-              {t("member.profile")}
-            </button>
+            <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
+              {displayName}
+            </span>
+            <form action={signOutAction.bind(null, locale)}>
+              <button
+                type="submit"
+                className="min-h-10 rounded-md border border-border px-3 text-sm font-semibold"
+              >
+                {t("member.logout")}
+              </button>
+            </form>
           </div>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>

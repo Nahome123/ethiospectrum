@@ -15,57 +15,57 @@ const optionalServiceRoleKey = z.preprocess(
 );
 
 export interface ServerSupabaseEnv extends PublicSupabaseEnv {
-  serviceRoleKey?: string;
+  secretKey?: string;
 }
 
 export interface SupabaseAdminEnv extends PublicSupabaseEnv {
-  serviceRoleKey: string;
+  secretKey: string;
 }
 
 export function parseServerSupabaseEnv(input: EnvInput): ServerSupabaseEnv | undefined {
   const publicEnv = parsePublicSupabaseEnv(input);
-  const serviceRoleKey = optionalServiceRoleKey.parse(input.SUPABASE_SERVICE_ROLE_KEY);
+  const secretKey = optionalServiceRoleKey.parse(input.SUPABASE_SECRET_KEY);
 
   if (!publicEnv) {
-    if (serviceRoleKey) {
+    if (secretKey) {
       throw new SupabaseConfigurationError(
-        "SUPABASE_SERVICE_ROLE_KEY requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+        "SUPABASE_SECRET_KEY requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.",
       );
     }
     return undefined;
   }
 
-  return { ...publicEnv, serviceRoleKey };
+  return { ...publicEnv, secretKey };
 }
 
 export function getServerSupabaseEnv(input?: EnvInput): ServerSupabaseEnv | undefined {
   const publicEnv = getPublicSupabaseEnv(
     input ?? {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     },
   );
-  const serviceRoleKey = optionalServiceRoleKey.parse(
-    input?.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY,
+  const secretKey = optionalServiceRoleKey.parse(
+    input?.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SECRET_KEY,
   );
 
   if (!publicEnv) {
-    if (serviceRoleKey) {
+    if (secretKey) {
       throw new SupabaseConfigurationError(
-        "SUPABASE_SERVICE_ROLE_KEY requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+        "SUPABASE_SECRET_KEY requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.",
       );
     }
     return undefined;
   }
 
-  return { ...publicEnv, serviceRoleKey };
+  return { ...publicEnv, secretKey };
 }
 
 export function requireServerSupabaseEnv(input?: EnvInput): ServerSupabaseEnv {
   const env = getServerSupabaseEnv(input);
   if (!env) {
     throw new SupabaseConfigurationError(
-      "Supabase is not configured for this development environment. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY before using Supabase features.",
+      "Supabase is not configured for this development environment. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY before using Supabase features.",
     );
   }
   return env;
@@ -73,10 +73,10 @@ export function requireServerSupabaseEnv(input?: EnvInput): ServerSupabaseEnv {
 
 export function requireSupabaseAdminEnv(input?: EnvInput): SupabaseAdminEnv {
   const env = requireServerSupabaseEnv(input);
-  if (!env.serviceRoleKey) {
+  if (!env.secretKey) {
     throw new SupabaseConfigurationError(
-      "SUPABASE_SERVICE_ROLE_KEY is required for controlled server-side administrative Supabase operations.",
+      "SUPABASE_SECRET_KEY is required for controlled server-side administrative Supabase operations.",
     );
   }
-  return { ...env, serviceRoleKey: env.serviceRoleKey };
+  return { ...env, secretKey: env.secretKey };
 }
