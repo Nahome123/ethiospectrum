@@ -5,7 +5,7 @@ import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
 import { signOutAction } from "@/lib/auth/actions";
-import { getCurrentSupabaseUser } from "@/lib/supabase/server";
+import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
 
 const links = [
@@ -23,9 +23,8 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
   const t = await getTranslations();
   const locale = (await getLocale()) as AppLocale;
   const user = await getCurrentSupabaseUser();
-  const firstName =
-    typeof user?.user_metadata.first_name === "string" ? user.user_metadata.first_name.trim() : "";
-  const displayName = firstName || user?.email || t("member.profile");
+  const profile = user ? await getCurrentMemberProfile(user.id) : null;
+  const displayName = profile?.first_name || user?.email || t("member.profile");
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b border-border bg-white p-5 lg:border-b-0 lg:border-r">

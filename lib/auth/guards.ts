@@ -1,29 +1,21 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { getCurrentSupabaseClaims } from "@/lib/supabase/server";
+import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/server";
+import type { SupabaseRole } from "@/lib/supabase/types";
 import { getLocaleDashboardPath, getSafeLocaleRedirect } from "./redirects";
 
-export type AppRole = "member" | "specialist" | "content_editor" | "administrator";
+export type AppRole = SupabaseRole;
 
 export interface AuthenticatedUser {
   id: string;
   role: AppRole | null;
 }
 
-function trustedRoleFromClaims(claims: Record<string, unknown>): AppRole | null {
-  const appMetadata = claims.app_metadata;
-  if (!appMetadata || typeof appMetadata !== "object") return null;
-  const role = (appMetadata as Record<string, unknown>).role;
-  return role === "member" || role === "specialist" || role === "content_editor" || role === "administrator"
-    ? role
-    : null;
-}
-
 export async function getAuthenticatedUser(): Promise<AuthenticatedUser | null> {
   const claims = await getCurrentSupabaseClaims();
   if (!claims || typeof claims.sub !== "string") return null;
-  return { id: claims.sub, role: trustedRoleFromClaims(claims as Record<string, unknown>) };
+  return { id: claims.sub, role: await getCurrentUserRole(claims.sub) };
 }
 
 export async function requireUser(locale: AppLocale, returnTo: string): Promise<AuthenticatedUser> {

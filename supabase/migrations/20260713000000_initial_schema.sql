@@ -39,4 +39,25 @@ create index household_members_user_idx on public.household_members(user_id) whe
 create index document_chunks_embedding_idx on public.document_chunks using ivfflat (embedding vector_cosine_ops) with (lists = 100);
 
 do $$ declare r record; begin for r in select tablename from pg_tables where schemaname='public' and tablename in ('profiles','households','household_members','dependents','documents','document_pages','document_chunks','document_analyses','conversations','messages','ai_feedback','roadmaps','roadmap_items','reminders','resources','resource_translations','specialists','household_specialists','support_threads','support_messages','appointments','consents','audit_logs') loop execute format('alter table public.%I enable row level security', r.tablename); end loop; end $$;
-do $$ declare r record; begin for r in select tablename from pg_tables where schemaname='public' and tablename in ('profiles','households','household_members','dependents','documents','conversations','roadmaps','resources','resource_translations','specialists','support_threads','appointments') loop execute format('create trigger %I before update on public.%I for each row execute function public.set_updated_at()', r.tablename || '_set_updated_at', r.tablename); exception when duplicate_object then null; end loop; end $$;
+do $$
+declare
+  r record;
+begin
+  for r in
+    select tablename
+    from pg_tables
+    where schemaname = 'public'
+      and tablename in ('profiles', 'households', 'household_members', 'dependents', 'documents', 'conversations', 'roadmaps', 'resources', 'resource_translations', 'specialists', 'support_threads', 'appointments')
+  loop
+    begin
+      execute format(
+        'create trigger %I before update on public.%I for each row execute function public.set_updated_at()',
+        r.tablename || '_set_updated_at',
+        r.tablename
+      );
+    exception
+      when duplicate_object then null;
+    end;
+  end loop;
+end;
+$$;

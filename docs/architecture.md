@@ -2,7 +2,7 @@
 
 Next.js 16 App Router provides locale-prefixed public, auth, member, and admin route groups. `next-intl` routing is handled by `proxy.ts`; `/` redirects to `/en`. Reusable shells separate public marketing, member, and administrator experiences. `config/brand.ts` is the canonical branding source. Next.js route groups do not prevent path collisions, so the protected member resources placeholder is `/[locale]/member/resources`, while public resources remains `/[locale]/resources`.
 
-Protected layouts use server-only guards that deny by default and redirect to localized login routes. Future Supabase session lookup replaces the intentionally-null foundation session without changing pages. PostgreSQL and RLS own data authorization; client state is never authorization.
+Protected layouts use server-only guards that deny by default and redirect to localized login routes. PostgreSQL and RLS own data authorization; client state is never authorization.
 
 ## Supabase integration boundary
 
@@ -12,9 +12,11 @@ ETH-007 introduces a credential-safe utility layer. `lib/env/client.ts` validate
 
 The database migration enables `pgcrypto` and `vector`. Apply it only in a reviewed Supabase environment; local development may use a credential-free marketing mode.
 
-## ETH-008 authentication boundary
+## Authentication and household authorization boundary
 
-Email/password authentication uses Supabase SSR cookie sessions. Root `proxy.ts` runs locale routing and preserves Supabase cookie refreshes while excluding the unlocalized `/auth/confirm` callback. Protected layouts verify identity with `auth.getClaims()` on the server; `auth.getUser()` is used only when fresh display metadata is needed. Member routes require a verified identity. Administrator routes require a trusted `app_metadata` administrator claim and default to denial when it is absent; user metadata is never authorization data.
+Email/password authentication uses Supabase SSR cookie sessions. Root `proxy.ts` runs locale routing and preserves Supabase cookie refreshes while excluding the unlocalized `/auth/confirm` callback. Protected layouts verify identity with `auth.getClaims()` on the server. Member display data comes from `public.profiles`; Auth email is only a fallback. Administrator routes read the current user's RLS-protected `public.user_roles` row server-side and default to denial when it is absent or non-administrator. JWT and user metadata never authorize a role.
+
+ETH-009 establishes the first application-data boundary. The `private` schema holds security-definer helpers with an empty fixed search path. `profiles`, `user_roles`, `households`, and `household_members` force RLS. The only normal-user household creation path is `public.create_household(name)`, which creates both the household and its active owner membership atomically. Other membership management, invitations, ownership transfer, and onboarding remain outside this boundary.
 
 The confirmation callback exchanges a PKCE code or verifies an approved token-hash type, then redirects only to a validated locale route. Successful password-recovery callbacks also set a short-lived, HTTP-only, locale-scoped recovery-intent cookie. The reset page and password-update action require both that intent and a verified Supabase session; the intent is cleared after a successful password update.
 

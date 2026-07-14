@@ -2,6 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, type NextResponse } from "next/server";
 import { getServerSupabaseEnv } from "@/lib/env/server";
+import type { Database } from "./database.types";
 
 /**
  * Future middleware hook for refreshing Supabase Auth cookies.
@@ -13,7 +14,7 @@ export async function updateSupabaseSession(
 ): Promise<NextResponse> {
   const env = getServerSupabaseEnv();
   if (!env) return response;
-  const supabase = createServerClient(env.url, env.publishableKey, {
+  const supabase = createServerClient<Database>(env.url, env.publishableKey, {
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (cookiesToSet) => {

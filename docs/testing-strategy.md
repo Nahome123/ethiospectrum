@@ -2,4 +2,6 @@
 
 Unit tests cover branding, translation alignment, validation, and rendering contracts. Playwright covers locale routing, root redirect, responsive navigation, accessibility scanning, and protected redirects using only synthetic data. Run `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm test:a11y`, and `pnpm build` before review.
 
-RLS requires a local Supabase execution plan in `supabase/policies/README.md`. Never weaken type checks, policies, or tests merely to make CI pass.
+Database authorization is tested locally with pgTAP under `supabase/tests/database/`. The suite creates only synthetic Auth users inside a transaction and rolls back its data. It verifies Auth-trigger synchronization, default roles, grants, RLS isolation, atomic household creation, permission escalation denial, and immediate revocation. Run `pnpm db:start`, `pnpm db:reset`, `pnpm db:test`, `pnpm db:lint`, and `pnpm db:types` before the application checks. Never point these commands at a hosted project.
+
+Application unit tests do not require a live database. They verify that member display data uses profiles with an email fallback, administrator authorization reads `user_roles`, Supabase clients use the generated contract, and no server key reaches browser-safe modules. Never weaken type checks, policies, or tests merely to make CI pass.

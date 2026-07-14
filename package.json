@@ -13,7 +13,15 @@
     "test:e2e": "playwright test",
     "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
+    "db:lint": "supabase db lint --level error",
+    "db:types": "node scripts/generate-supabase-types.mjs",
+    "db:push": "supabase db push",
+    "db:push:dry-run": "supabase db push --dry-run"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -49,6 +57,7 @@
     "jsdom": "^29.1.1",
     "playwright": "^1.61.1",
     "prettier": "^3.9.5",
+    "supabase": "^2.109.1",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.10"

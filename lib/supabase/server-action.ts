@@ -2,13 +2,14 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { requireServerSupabaseEnv } from "@/lib/env/server";
+import type { Database } from "./database.types";
 
 /** Use from Server Actions, where Next.js allows response cookie mutation. */
 export async function createServerActionSupabaseClient() {
   const env = requireServerSupabaseEnv();
   const cookieStore = await cookies();
 
-  return createServerClient(env.url, env.publishableKey, {
+  return createServerClient<Database>(env.url, env.publishableKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
