@@ -13,6 +13,7 @@ import {
   createSignupSchema,
 } from "@/lib/validation/auth";
 import { getLocaleDashboardPath, getSafeLocaleRedirect } from "./redirects";
+import { clearPasswordRecoveryIntent, hasPasswordRecoveryIntent } from "./recovery";
 import { getSiteUrl } from "./site-url";
 import type { AuthActionState } from "./action-state";
 
@@ -24,9 +25,10 @@ async function authTranslations(locale: AppLocale) {
   return getTranslations({ locale, namespace: "authentication" });
 }
 
-function confirmationUrl(next: string): string {
+function confirmationUrl(next: string, flow?: "recovery"): string {
   const url = new URL("/auth/confirm", getSiteUrl());
   url.searchParams.set("next", next);
+  if (flow) url.searchParams.set("flow", flow);
   return url.toString();
 }
 
@@ -36,6 +38,10 @@ function isEmailRateLimitError(error: { status?: number; code?: string }): boole
     error.code === "over_email_send_rate_limit" ||
     error.code === "over_request_rate_limit"
   );
+}
+
+function isEmailConfirmationRequiredError(error: { code?: string }): boolean {
+  return error.code === "email_not_confirmed";
 }
 
 export async function signUpAction(
@@ -100,7 +106,17 @@ export async function signInAction(
 
   const supabase = await createServerActionSupabaseClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
-  if (error) return { status: "error", message: t("invalidCredentials"), email: parsed.data.email };
+  if (error) {
+    if (isEmailConfirmationRequiredError(error)) {
+      return {
+        status: "error",
+        message: t("emailConfirmationRequired"),
+        email: parsed.data.email,
+        reason: "email_confirmation_required",
+      };
+    }
+    return { status: "error", message: t("invalidCredentials"), email: parsed.data.email };
+  }
   const next = getSafeLocaleRedirect(
     String(formData.get("next") ?? ""),
     getLocaleDashboardPath(localeValue),
@@ -123,7 +139,7 @@ export async function forgotPasswordAction(
   if (!parsed.success) return { status: "error", message: t("validationError") };
   const supabase = await createServerActionSupabaseClient();
   await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: confirmationUrl(`/${localeValue}/reset-password`),
+    redirectTo: confirmationUrl(`/${localeValue}/reset-password`, "recovery"),
   });
   return { status: "success", message: t("recoveryNeutralSuccess") };
 }
@@ -167,9 +183,13 @@ export async function resetPasswordAction(
     confirmPassword: formData.get("confirmPassword"),
   });
   if (!parsed.success) return { status: "error", message: t("validationError") };
+  if (!(await hasPasswordRecoveryIntent(localeValue))) {
+    return { status: "error", message: t("sessionExpired") };
+  }
   const supabase = await createServerActionSupabaseClient();
   const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
   if (error) return { status: "error", message: t("sessionExpired") };
+  await clearPasswordRecoveryIntent(localeValue);
   revalidatePath("/", "layout");
   return { status: "success", message: t("passwordUpdated") };
 }

@@ -121,13 +121,18 @@ export function AuthForm({
         </>
       )}
       {state.status === "error" && (
-        <p
+        <div
           role="alert"
           aria-live="polite"
           className="rounded-md border border-destructive/40 bg-red-50 px-3 py-2 text-sm text-destructive"
         >
-          {state.message}
-        </p>
+          <p>{state.message}</p>
+          {state.reason === "email_confirmation_required" && (
+            <Link className="mt-2 inline-block font-semibold underline" href="/resend-confirmation">
+              {t("resendConfirmation")}
+            </Link>
+          )}
+        </div>
       )}
       <Button className="min-h-11 w-full" size="lg" type="submit" disabled={pending} aria-disabled={pending}>
         {pending ? t("pending") : t(signup ? "submitSignup" : "submitLogin")}

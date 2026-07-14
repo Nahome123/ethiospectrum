@@ -191,6 +191,7 @@
     "genericError": "No pudimos completar esa solicitud. Inténtalo de nuevo.",
     "emailRateLimit": "Se solicitaron demasiados correos de confirmación. Inténtalo de nuevo más tarde.",
     "invalidCredentials": "El correo electrónico o la contraseña son incorrectos.",
+    "emailConfirmationRequired": "Confirma tu correo electrónico antes de iniciar sesión.",
     "recoveryNeutralSuccess": "Si hay una cuenta disponible para ese correo, se enviaron instrucciones para restablecer la contraseña.",
     "validationError": "Revisa los campos resaltados.",
     "emailError": "Ingresa un correo electrónico válido.",
@@ -232,7 +233,7 @@
     "notFoundTitle": "No pudimos encontrar esa página",
     "notFoundDescription": "La página puede haberse movido o la dirección puede estar incompleta.",
     "protectedTitle": "Se requiere iniciar sesión",
-    "protectedDescription": "Esta área está reservada para usuarios autenticados. La autenticación no está conectada en esta base."
+    "protectedDescription": "Inicia sesión para continuar a esta área privada."
   },
   "accessibility": {
     "skipToContent": "Saltar al contenido principal",
@@ -257,11 +258,11 @@
     "allDependents": "Todos los miembros de la familia",
     "profile": "Menú de perfil",
     "logout": "Cerrar sesión",
-    "logoutNotice": "Cerrar sesión estará disponible cuando se conecte la autenticación.",
+    "logoutNotice": "Cierra sesión de forma segura desde tu espacio de trabajo.",
     "onboardingTitle": "Configura tu hogar",
     "onboardingDescription": "La configuración guiada del hogar está planeada. Nada se guarda en esta base.",
     "settingsTitle": "Configuración del espacio",
-    "settingsDescription": "Los ajustes de idioma, perfil y hogar estarán disponibles después de conectar la autenticación."
+    "settingsDescription": "Los ajustes de idioma, perfil y hogar están previstos para una versión futura."
   },
   "admin": {
     "title": "Espacio de administración",
@@ -278,7 +279,7 @@
   },
   "protected": {
     "returnTo": "Volver a iniciar sesión",
-    "developmentNotice": "Las rutas protegidas no están disponibles intencionalmente hasta conectar autenticación real del servidor."
+    "developmentNotice": "Las rutas protegidas requieren una sesión verificada en el servidor."
   },
   "review": {
     "translation": "La traducción requiere revisión de hablantes nativos antes de usarse para contenido sensible."

@@ -191,6 +191,7 @@
     "genericError": "ጥያቄውን ማጠናቀቅ አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
     "emailRateLimit": "በጣም ብዙ የማረጋገጫ ኢሜይሎች ተጠይቀዋል። እባክዎ በኋላ እንደገና ይሞክሩ።",
     "invalidCredentials": "የኢሜይል አድራሻው ወይም የይለፍ ቃሉ ትክክል አይደለም።",
+    "emailConfirmationRequired": "ከመግባትዎ በፊት ኢሜይልዎን ያረጋግጡ።",
     "recoveryNeutralSuccess": "ለዚያ ኢሜይል መለያ ካለ የይለፍ ቃል መልሶ ማስጀመሪያ መመሪያ ተልኳል።",
     "validationError": "እባክዎ የተመለከቱትን መስኮች ይመልከቱ።",
     "emailError": "ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
@@ -232,7 +233,7 @@
     "notFoundTitle": "ያንን ገጽ ማግኘት አልቻልንም",
     "notFoundDescription": "ገጹ ተንቀሳቅሶ ሊሆን ይችላል ወይም አድራሻው ያልተሟላ ሊሆን ይችላል።",
     "protectedTitle": "መግባት ያስፈልጋል",
-    "protectedDescription": "ይህ ቦታ ለተረጋገጡ ተጠቃሚዎች ብቻ ነው። በዚህ መሰረት ውስጥ ማረጋገጫ አልተገናኘም።"
+    "protectedDescription": "ወደዚህ የግል ቦታ ለመቀጠል ይግቡ።"
   },
   "accessibility": {
     "skipToContent": "ወደ ዋና ይዘት ዝለል",
@@ -257,11 +258,11 @@
     "allDependents": "ሁሉም የቤተሰብ አባላት",
     "profile": "የመገለጫ ምናሌ",
     "logout": "ውጣ",
-    "logoutNotice": "ማረጋገጫ ሲገናኝ መውጣት ይገኛል።",
+    "logoutNotice": "ከስራ ቦታዎ በደህና ይውጡ።",
     "onboardingTitle": "ቤተሰብዎን ያዘጋጁ",
     "onboardingDescription": "በመመሪያ የሚደረግ የቤተሰብ ማዋቀር ታቅዷል። በዚህ መሰረት ውስጥ ምንም አይቀመጥም።",
     "settingsTitle": "የሥራ ቦታ ቅንብሮች",
-    "settingsDescription": "ማረጋገጫ ከተገናኘ በኋላ የቋንቋ፣ የመገለጫ እና የቤተሰብ ቅንብሮች ይገኛሉ።"
+    "settingsDescription": "የቋንቋ፣ የመገለጫ እና የቤተሰብ ቅንብሮች ለወደፊት ልቀት ታቅደዋል።"
   },
   "admin": {
     "title": "የአስተዳደር የሥራ ቦታ",
@@ -278,7 +279,7 @@
   },
   "protected": {
     "returnTo": "ወደ መግቢያ ተመለስ",
-    "developmentNotice": "እውነተኛ በአገልጋይ-በኩል ማረጋገጫ እስኪገናኝ ድረስ የተጠበቁ መንገዶች ሆን ተብለው አይገኙም።"
+    "developmentNotice": "የተጠበቁ መንገዶች የተረጋገጠ በአገልጋይ-በኩል ክፍለ-ጊዜ ይፈልጋሉ።"
   },
   "review": { "translation": "ለስሱ ይዘት ከመጠቀሙ በፊት ትርጉም በአፍ መፍቻ ቋንቋ ተናጋሪዎች ግምገማ ይፈልጋል።" }
 }

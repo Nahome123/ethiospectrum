@@ -191,6 +191,7 @@
     "genericError": "We could not complete that request. Please try again.",
     "emailRateLimit": "Too many confirmation emails were requested. Please try again later.",
     "invalidCredentials": "The email or password is incorrect.",
+    "emailConfirmationRequired": "Confirm your email before signing in.",
     "recoveryNeutralSuccess": "If an account is available for that email address, password reset instructions have been sent.",
     "validationError": "Please review the highlighted fields.",
     "emailError": "Enter a valid email address.",
@@ -232,7 +233,7 @@
     "notFoundTitle": "We could not find that page",
     "notFoundDescription": "The page may have moved, or the address may be incomplete.",
     "protectedTitle": "Sign-in required",
-    "protectedDescription": "This area is reserved for authenticated users. Authentication is not connected in this foundation."
+    "protectedDescription": "Sign in to continue to this private area."
   },
   "accessibility": {
     "skipToContent": "Skip to main content",
@@ -257,11 +258,11 @@
     "allDependents": "All family members",
     "profile": "Profile menu",
     "logout": "Log out",
-    "logoutNotice": "Logout will be available when authentication is connected.",
+    "logoutNotice": "Sign out securely from your workspace.",
     "onboardingTitle": "Set up your household",
     "onboardingDescription": "Guided household setup is planned. Nothing is saved in this foundation.",
     "settingsTitle": "Workspace settings",
-    "settingsDescription": "Language, profile, and household settings will be available after authentication is connected."
+    "settingsDescription": "Language, profile, and household settings are planned for a future release."
   },
   "admin": {
     "title": "Administration workspace",
@@ -278,7 +279,7 @@
   },
   "protected": {
     "returnTo": "Return to sign in",
-    "developmentNotice": "Protected routes are intentionally unavailable until real server-side authentication is connected."
+    "developmentNotice": "Protected routes require a verified server-side session."
   },
   "review": { "translation": "Translation requires native-speaker review before use for sensitive content." }
 }
