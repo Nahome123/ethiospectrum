@@ -259,10 +259,25 @@
     "profile": "Menú de perfil",
     "logout": "Cerrar sesión",
     "logoutNotice": "Cierra sesión de forma segura desde tu espacio de trabajo.",
-    "onboardingTitle": "Configura tu hogar",
-    "onboardingDescription": "La configuración guiada del hogar está planeada. Nada se guarda en esta base.",
     "settingsTitle": "Configuración del espacio",
     "settingsDescription": "Los ajustes de idioma, perfil y hogar están previstos para una versión futura."
+  },
+  "onboarding": {
+    "title": "Configura tu hogar",
+    "description": "Asigna un nombre al espacio de trabajo de tu familia y confirma cómo Ethiospectrum maneja la información que decidas guardar.",
+    "householdNameLabel": "Nombre del hogar",
+    "householdNameHelp": "Este nombre identifica el espacio de trabajo de tu familia para los miembros invitados. Usa hasta 160 caracteres.",
+    "householdNameError": "Ingresa un nombre de hogar de hasta 160 caracteres.",
+    "consentNotice": "Ethiospectrum guarda los datos del hogar que proporcionas para organizar la información de tu familia. El acceso se limita a los miembros de tu hogar y puedes solicitar su eliminación en cualquier momento.",
+    "consentLabel": "Acepto que se guarden estos datos del hogar.",
+    "consentError": "Confirma la declaración de consentimiento para continuar.",
+    "submit": "Crear hogar",
+    "pending": "Guardando…",
+    "validationError": "Revisa los campos señalados.",
+    "genericError": "No pudimos guardar tu hogar en este momento. Inténtalo de nuevo.",
+    "completeTitle": "Tu hogar está listo",
+    "completeDescription": "\"{householdName}\" está configurado. Puedes gestionar la información de tu familia desde tu panel.",
+    "goToDashboard": "Ir al panel"
   },
   "admin": {
     "title": "Espacio de administración",
