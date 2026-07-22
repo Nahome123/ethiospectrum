@@ -1,4 +1,4 @@
-﻿export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   graphql_public: {
@@ -1106,6 +1106,10 @@ export type Database = {
       can_access_household: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      complete_household_onboarding: {
+        Args: { raw_name: string; raw_policy_version: string };
+        Returns: string;
       };
       create_household: { Args: { raw_name: string }; Returns: string };
       is_active_household_member: {

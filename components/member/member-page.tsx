@@ -4,19 +4,10 @@ import { getTranslations } from "next-intl/server";
 export async function MemberPage({
   page,
 }: {
-  page:
-    | "onboarding"
-    | "dependents"
-    | "documents"
-    | "assistant"
-    | "roadmap"
-    | "resources"
-    | "support"
-    | "settings";
+  page: "dependents" | "documents" | "assistant" | "roadmap" | "resources" | "support" | "settings";
 }) {
   const t = await getTranslations();
   const content = {
-    onboarding: ["member.onboardingTitle", "member.onboardingDescription", UsersRound],
     dependents: ["emptyStates.dependentsTitle", "emptyStates.dependentsDescription", UsersRound],
     documents: ["emptyStates.documentsTitle", "emptyStates.documentsDescription", FileText],
     assistant: ["emptyStates.assistantTitle", "emptyStates.assistantDescription", MessageCircleQuestion],

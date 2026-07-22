@@ -264,6 +264,23 @@
     "settingsTitle": "Workspace settings",
     "settingsDescription": "Language, profile, and household settings are planned for a future release."
   },
+  "onboarding": {
+    "title": "Set up your household",
+    "description": "Name your family workspace and confirm how Ethiospectrum handles the information you choose to store.",
+    "householdNameLabel": "Household name",
+    "householdNameHelp": "This name identifies your family workspace to invited members. Use up to 160 characters.",
+    "householdNameError": "Enter a household name of up to 160 characters.",
+    "consentNotice": "Ethiospectrum stores the household details you provide to organize your family's information. Access is limited to your household members, and you can request deletion at any time.",
+    "consentLabel": "I agree to the storage of these household details.",
+    "consentError": "Please confirm the consent statement to continue.",
+    "submit": "Create household",
+    "pending": "Saving…",
+    "validationError": "Please review the highlighted fields.",
+    "genericError": "We could not save your household right now. Please try again.",
+    "completeTitle": "Your household is ready",
+    "completeDescription": "\"{householdName}\" is set up. You can manage your family's information from your dashboard.",
+    "goToDashboard": "Go to dashboard"
+  },
   "admin": {
     "title": "Administration workspace",
     "description": "This separate shell establishes a future server-side role boundary. Administrative actions are unavailable in the foundation.",

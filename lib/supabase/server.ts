@@ -2,7 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { requireServerSupabaseEnv } from "@/lib/env/server";
-import type { Database, MemberProfile, SupabaseRole, User } from "./types";
+import type { Database, HouseholdSummary, MemberProfile, SupabaseRole, User } from "./types";
 
 /**
  * Creates a request-scoped client for Server Components.
@@ -53,6 +53,22 @@ export async function getCurrentMemberProfile(userId: string): Promise<MemberPro
     return null;
   }
 
+  return data;
+}
+
+/** Reads the caller's active household through RLS; returns null while onboarding is incomplete. */
+export async function getCurrentHousehold(): Promise<HouseholdSummary | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase
+    .from("households")
+    .select("id, name")
+    .is("deleted_at", null)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    return null;
+  }
   return data;
 }
 
