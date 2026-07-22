@@ -15,21 +15,21 @@ const optionalUrl = z.preprocess(
 const publicSupabaseSchema = z
   .object({
     NEXT_PUBLIC_SUPABASE_URL: optionalUrl,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: optionalNonEmptyString,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: optionalNonEmptyString,
   })
   .strict()
   .superRefine((value, context) => {
-    if (Boolean(value.NEXT_PUBLIC_SUPABASE_URL) !== Boolean(value.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+    if (Boolean(value.NEXT_PUBLIC_SUPABASE_URL) !== Boolean(value.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)) {
       context.addIssue({
         code: "custom",
-        message: "NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be set together.",
+        message: "NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY must be set together.",
       });
     }
   });
 
 export interface PublicSupabaseEnv {
   url: string;
-  anonKey: string;
+  publishableKey: string;
 }
 
 export class SupabaseConfigurationError extends Error {
@@ -42,12 +42,12 @@ export class SupabaseConfigurationError extends Error {
 export function parsePublicSupabaseEnv(input: EnvInput): PublicSupabaseEnv | undefined {
   const result = publicSupabaseSchema.safeParse({
     NEXT_PUBLIC_SUPABASE_URL: input.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: input.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: input.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   });
 
   if (!result.success) {
     throw new SupabaseConfigurationError(
-      "Supabase public configuration is invalid. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY together.",
+      "Supabase public configuration is invalid. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY together.",
     );
   }
 
@@ -57,7 +57,7 @@ export function parsePublicSupabaseEnv(input: EnvInput): PublicSupabaseEnv | und
 
   return {
     url: result.data.NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: result.data.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    publishableKey: result.data.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
   };
 }
 
@@ -65,7 +65,7 @@ export function getPublicSupabaseEnv(input?: EnvInput): PublicSupabaseEnv | unde
   return parsePublicSupabaseEnv(
     input ?? {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     },
   );
 }
@@ -74,7 +74,7 @@ export function requirePublicSupabaseEnv(input?: EnvInput): PublicSupabaseEnv {
   const env = getPublicSupabaseEnv(input);
   if (!env) {
     throw new SupabaseConfigurationError(
-      "Supabase is not configured for this development environment. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY before using Supabase features.",
+      "Supabase is not configured for this development environment. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY before using Supabase features.",
     );
   }
   return env;

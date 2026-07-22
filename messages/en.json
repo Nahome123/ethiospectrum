@@ -156,21 +156,54 @@
   },
   "authentication": {
     "loginTitle": "Welcome back",
-    "loginDescription": "Sign-in is prepared for a future Supabase connection.",
+    "loginDescription": "Sign in to return to your family workspace.",
     "signupTitle": "Create your account",
-    "signupDescription": "Account creation is not connected in this foundation.",
+    "signupDescription": "Create an account to begin using your private workspace.",
     "email": "Email address",
     "password": "Password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
     "firstName": "First name",
     "lastName": "Last name",
     "submitLogin": "Log in",
     "submitSignup": "Create account",
-    "notReady": "Authentication integration is not connected yet. No account is created or signed in.",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Reset your password",
+    "forgotPasswordDescription": "Enter your email address and we will send password reset instructions if an account is available.",
+    "submitForgotPassword": "Send reset instructions",
+    "resetPasswordTitle": "Choose a new password",
+    "resetPasswordDescription": "Choose a new password for your account.",
+    "submitResetPassword": "Update password",
+    "checkEmailTitle": "Check your email",
+    "checkEmailDescription": "Open the confirmation message we sent to continue.",
+    "resendConfirmation": "Resend confirmation email",
+    "resendConfirmationTitle": "Resend confirmation email",
+    "resendConfirmationDescription": "Enter your email address and we will send a new confirmation link if one is available.",
+    "submitResendConfirmation": "Send new confirmation link",
+    "confirmationResendNeutralSuccess": "If a confirmation link can be sent to that email address, it is on its way.",
+    "confirmationTitle": "Email confirmation",
+    "authErrorTitle": "We could not complete that request",
+    "invalidConfirmationLink": "This confirmation link is invalid.",
+    "expiredConfirmationLink": "This confirmation link has expired. Request a new email to continue.",
+    "passwordUpdated": "Your password has been updated. You can now sign in.",
+    "sessionExpired": "Your recovery session has expired. Request a new password reset email.",
+    "accessDenied": "You do not have access to that area.",
+    "genericError": "We could not complete that request. Please try again.",
+    "emailRateLimit": "Too many confirmation emails were requested. Please try again later.",
+    "invalidCredentials": "The email or password is incorrect.",
+    "emailConfirmationRequired": "Confirm your email before signing in.",
+    "recoveryNeutralSuccess": "If an account is available for that email address, password reset instructions have been sent.",
+    "validationError": "Please review the highlighted fields.",
     "emailError": "Enter a valid email address.",
     "passwordError": "Use at least 8 characters.",
     "nameError": "Enter at least 2 characters.",
+    "passwordMismatch": "Passwords do not match.",
+    "termsRequired": "You must acknowledge the terms and privacy notice.",
+    "termsAcknowledgement": "I agree to the Terms and Privacy Notice.",
+    "pending": "Please wait…",
     "haveAccount": "Already have an account?",
-    "needAccount": "Need an account?"
+    "needAccount": "Need an account?",
+    "backToLogin": "Back to sign in"
   },
   "dashboard": {
     "welcome": "Welcome to your family workspace",
@@ -200,7 +233,7 @@
     "notFoundTitle": "We could not find that page",
     "notFoundDescription": "The page may have moved, or the address may be incomplete.",
     "protectedTitle": "Sign-in required",
-    "protectedDescription": "This area is reserved for authenticated users. Authentication is not connected in this foundation."
+    "protectedDescription": "Sign in to continue to this private area."
   },
   "accessibility": {
     "skipToContent": "Skip to main content",
@@ -225,11 +258,11 @@
     "allDependents": "All family members",
     "profile": "Profile menu",
     "logout": "Log out",
-    "logoutNotice": "Logout will be available when authentication is connected.",
+    "logoutNotice": "Sign out securely from your workspace.",
     "onboardingTitle": "Set up your household",
     "onboardingDescription": "Guided household setup is planned. Nothing is saved in this foundation.",
     "settingsTitle": "Workspace settings",
-    "settingsDescription": "Language, profile, and household settings will be available after authentication is connected."
+    "settingsDescription": "Language, profile, and household settings are planned for a future release."
   },
   "admin": {
     "title": "Administration workspace",
@@ -246,7 +279,7 @@
   },
   "protected": {
     "returnTo": "Return to sign in",
-    "developmentNotice": "Protected routes are intentionally unavailable until real server-side authentication is connected."
+    "developmentNotice": "Protected routes require a verified server-side session."
   },
   "review": { "translation": "Translation requires native-speaker review before use for sensitive content." }
 }

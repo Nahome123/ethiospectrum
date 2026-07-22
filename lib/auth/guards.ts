@@ -1,27 +1,28 @@
 import "server-only";
-import { redirect } from "@/i18n/navigation";
+import { redirect } from "next/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/server";
+import type { SupabaseRole } from "@/lib/supabase/types";
+import { getLocaleDashboardPath, getSafeLocaleRedirect } from "./redirects";
 
-export type AppRole = "member" | "specialist" | "content_editor" | "administrator";
+export type AppRole = SupabaseRole;
 
 export interface AuthenticatedUser {
   id: string;
-  role: AppRole;
+  role: AppRole | null;
 }
 
-/**
- * Foundation-mode boundary. Replace this with a server-side Supabase session lookup.
- * It deliberately returns no session: route access is never granted by a client flag.
- */
-async function getServerSession(): Promise<AuthenticatedUser | null> {
-  return null;
+export async function getAuthenticatedUser(): Promise<AuthenticatedUser | null> {
+  const claims = await getCurrentSupabaseClaims();
+  if (!claims || typeof claims.sub !== "string") return null;
+  return { id: claims.sub, role: await getCurrentUserRole(claims.sub) };
 }
 
 export async function requireUser(locale: AppLocale, returnTo: string): Promise<AuthenticatedUser> {
-  const user = await getServerSession();
+  const user = await getAuthenticatedUser();
   if (!user) {
-    redirect({ href: { pathname: "/login", query: { next: returnTo } }, locale });
-    throw new Error("Authentication redirect did not complete");
+    const next = getSafeLocaleRedirect(returnTo, getLocaleDashboardPath(locale), locale);
+    redirect(`/${locale}/login?next=${encodeURIComponent(next)}`);
   }
   return user;
 }
@@ -33,8 +34,7 @@ export async function requireRole(
 ): Promise<AuthenticatedUser> {
   const user = await requireUser(locale, returnTo);
   if (user.role !== role) {
-    redirect({ href: "/login", locale });
-    throw new Error("Authorization redirect did not complete");
+    redirect(`/${locale}/auth-error?reason=access-denied`);
   }
   return user;
 }

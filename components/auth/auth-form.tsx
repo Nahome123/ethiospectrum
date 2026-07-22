@@ -1,8 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useActionState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { signInAction, signUpAction } from "@/lib/auth/actions";
+import { initialAuthActionState } from "@/lib/auth/action-state";
 import {
   createLoginSchema,
   createSignupSchema,
@@ -10,75 +13,137 @@ import {
   type SignupInput,
 } from "@/lib/validation/auth";
 import { Link } from "@/i18n/navigation";
+import type { AppLocale } from "@/i18n/routing";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-export function AuthForm({ mode }: { mode: "login" | "signup" }) {
+export function AuthForm({
+  mode,
+  locale,
+  next,
+}: {
+  mode: "login" | "signup";
+  locale: AppLocale;
+  next?: string;
+}) {
   const t = useTranslations("authentication");
-  const schema =
-    mode === "login"
-      ? createLoginSchema({ email: t("emailError"), password: t("passwordError") })
-      : createSignupSchema({ email: t("emailError"), password: t("passwordError"), name: t("nameError") });
+  const signup = mode === "signup";
+  const schema = signup
+    ? createSignupSchema({
+        email: t("emailError"),
+        password: t("passwordError"),
+        name: t("nameError"),
+        passwordMatch: t("passwordMismatch"),
+        terms: t("termsRequired"),
+      })
+    : createLoginSchema({ email: t("emailError"), password: t("passwordError") });
   const form = useForm<LoginInput | SignupInput>({
     resolver: zodResolver(schema),
-    defaultValues:
-      mode === "login"
-        ? { email: "", password: "" }
-        : { firstName: "", lastName: "", email: "", password: "" },
+    defaultValues: signup
+      ? { firstName: "", lastName: "", email: "", password: "", confirmPassword: "", termsAccepted: false }
+      : { email: "", password: "" },
   });
-  const onSubmit = () => form.setError("root", { message: t("notReady") });
-  const signup = mode === "signup";
-  const signupErrors = form.formState.errors as FieldErrors<SignupInput>;
+  const [state, action] = useActionState(
+    signup ? signUpAction.bind(null, locale) : signInAction.bind(null, locale),
+    initialAuthActionState,
+  );
+  const [isTransitioning, startTransition] = useTransition();
+
+  function submit(values: LoginInput | SignupInput) {
+    const data = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      if (value === true) data.set(key, "on");
+      if (typeof value === "string") data.set(key, value);
+    });
+    if (next) data.set("next", next);
+    startTransition(() => action(data));
+  }
+
+  const pending = isTransitioning;
+  const errors = form.formState.errors;
+  const signupErrors = errors as {
+    firstName?: { message?: string };
+    lastName?: { message?: string };
+    confirmPassword?: { message?: string };
+    termsAccepted?: { message?: string };
+  };
 
   return (
-    <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <form noValidate onSubmit={form.handleSubmit(submit)} className="space-y-4">
       {signup && (
         <div className="grid gap-4 sm:grid-cols-2">
-          {(["firstName", "lastName"] as const).map((field) => (
-            <Field
-              key={field}
-              label={t(field)}
-              error={signupErrors[field]?.message}
-              input={
-                <input
-                  id={field}
-                  autoComplete={field === "firstName" ? "given-name" : "family-name"}
-                  {...form.register(field)}
-                />
-              }
-            />
-          ))}
+          <Field label={t("firstName")} error={signupErrors.firstName?.message}>
+            <Input id="firstName" autoComplete="given-name" {...form.register("firstName")} />
+          </Field>
+          <Field label={t("lastName")} error={signupErrors.lastName?.message}>
+            <Input id="lastName" autoComplete="family-name" {...form.register("lastName")} />
+          </Field>
         </div>
       )}
-      <Field
-        label={t("email")}
-        error={form.formState.errors.email?.message}
-        input={<input id="email" type="email" autoComplete="email" {...form.register("email")} />}
-      />
-      <Field
-        label={t("password")}
-        error={form.formState.errors.password?.message}
-        input={
-          <input
-            id="password"
-            type="password"
-            autoComplete={signup ? "new-password" : "current-password"}
-            {...form.register("password")}
-          />
-        }
-      />
-      {form.formState.errors.root?.message && (
-        <p
+      <Field label={t("email")} error={errors.email?.message}>
+        <Input id="email" type="email" autoComplete="email" {...form.register("email")} />
+      </Field>
+      <Field label={t("password")} error={errors.password?.message}>
+        <Input
+          id="password"
+          type="password"
+          autoComplete={signup ? "new-password" : "current-password"}
+          {...form.register("password")}
+        />
+      </Field>
+      {signup && (
+        <>
+          <Field label={t("confirmPassword")} error={signupErrors.confirmPassword?.message}>
+            <Input
+              id="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              {...form.register("confirmPassword")}
+            />
+          </Field>
+          <div className="space-y-1.5">
+            <Label htmlFor="termsAccepted">
+              <input
+                id="termsAccepted"
+                type="checkbox"
+                className="size-4 accent-primary"
+                {...form.register("termsAccepted")}
+              />
+              {t("termsAcknowledgement")}
+            </Label>
+            {signupErrors.termsAccepted?.message && (
+              <p role="alert" className="text-sm text-destructive">
+                {signupErrors.termsAccepted?.message}
+              </p>
+            )}
+          </div>
+        </>
+      )}
+      {state.status === "error" && (
+        <div
           role="alert"
+          aria-live="polite"
           className="rounded-md border border-destructive/40 bg-red-50 px-3 py-2 text-sm text-destructive"
         >
-          {form.formState.errors.root.message}
+          <p>{state.message}</p>
+          {state.reason === "email_confirmation_required" && (
+            <Link className="mt-2 inline-block font-semibold underline" href="/resend-confirmation">
+              {t("resendConfirmation")}
+            </Link>
+          )}
+        </div>
+      )}
+      <Button className="min-h-11 w-full" size="lg" type="submit" disabled={pending} aria-disabled={pending}>
+        {pending ? t("pending") : t(signup ? "submitSignup" : "submitLogin")}
+      </Button>
+      {!signup && (
+        <p className="text-center text-sm">
+          <Link className="font-semibold text-primary underline" href="/forgot-password">
+            {t("forgotPassword")}
+          </Link>
         </p>
       )}
-      <button
-        className="min-h-11 w-full rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-        type="submit"
-      >
-        {t(signup ? "submitSignup" : "submitLogin")}
-      </button>
       <p className="text-center text-sm text-muted-foreground">
         {t(signup ? "haveAccount" : "needAccount")}{" "}
         <Link className="font-semibold text-primary underline" href={signup ? "/login" : "/signup"}>
@@ -89,18 +154,12 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   );
 }
 
-function Field({ label, error, input }: { label: string; error?: string; input: React.ReactNode }) {
-  const id = (input as React.ReactElement<{ id: string }>).props.id;
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+  const id = (children as React.ReactElement<{ id: string }>).props.id;
   return (
     <div className="space-y-1.5">
-      <label className="text-sm font-semibold text-slate-800" htmlFor={id}>
-        {label}
-      </label>
-      {input && (
-        <div className="[&_input]:min-h-11 [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-input [&_input]:bg-white [&_input]:px-3 [&_input]:text-slate-900 [&_input]:focus-visible:outline-2 [&_input]:focus-visible:outline-offset-2 [&_input]:focus-visible:outline-ring">
-          {input}
-        </div>
-      )}
+      <Label htmlFor={id}>{label}</Label>
+      {children}
       {error && (
         <p role="alert" className="text-sm text-destructive">
           {error}

@@ -1,23 +1,26 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
-import { requireServerSupabaseEnv } from "@/lib/env/server";
+import { type NextRequest, type NextResponse } from "next/server";
+import { getServerSupabaseEnv } from "@/lib/env/server";
+import type { Database } from "./database.types";
 
 /**
  * Future middleware hook for refreshing Supabase Auth cookies.
  * Do not add it to proxy.ts until ETH-008 wires authentication behavior deliberately.
  */
-export async function updateSupabaseSession(request: NextRequest): Promise<NextResponse> {
-  const env = requireServerSupabaseEnv();
-  let response = NextResponse.next({ request });
-  const supabase = createServerClient(env.url, env.anonKey, {
+export async function updateSupabaseSession(
+  request: NextRequest,
+  response: NextResponse,
+): Promise<NextResponse> {
+  const env = getServerSupabaseEnv();
+  if (!env) return response;
+  const supabase = createServerClient<Database>(env.url, env.publishableKey, {
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (cookiesToSet) => {
         for (const { name, value } of cookiesToSet) {
           request.cookies.set(name, value);
         }
-        response = NextResponse.next({ request });
         for (const { name, value, options } of cookiesToSet) {
           response.cookies.set(name, value, options);
         }
@@ -25,6 +28,6 @@ export async function updateSupabaseSession(request: NextRequest): Promise<NextR
     },
   });
 
-  await supabase.auth.getUser();
+  await supabase.auth.getClaims();
   return response;
 }

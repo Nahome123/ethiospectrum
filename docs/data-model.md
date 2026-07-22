@@ -1,5 +1,7 @@
 # Data model
 
-The initial migration models profiles, households and members, dependents, documents and page/chunk/analysis derivatives, conversations and messages, roadmaps and reminders, published resources and translations, specialists and support, appointments, consents, and audit logs. UUIDs, foreign keys, timestamps, checks, and scoped indexes are used throughout.
+`auth.users` is the identity source. `public.profiles` stores only editable display fields, locale, timezone, and timestamps; it does not duplicate passwords, sessions, tokens, or email. The Auth trigger creates missing profiles and `public.user_roles` rows with the default `member` role, and the migration backfills existing Auth users without changing existing roles.
+
+`public.user_roles` isolates privileged application roles from user-editable profiles. `public.households` uses a soft-delete timestamp, a primary owner, and a creator. `public.household_members` joins an Auth user to a household with `owner`, `administrator`, `member`, or `viewer` permission and an `active`, `invited`, or `removed` lifecycle. An owner membership must be active. Household creation inserts the household and owner membership together through the database function; invitations, dependent profiles, and ownership transfer are deliberately deferred.
 
 Documents are soft-deleted. Document pages, chunks, embeddings, and analyses derive access from their parent document, so a user denied the document is denied every derivative. `vector(1536)` is a planned embedding storage shape; dimension must be reviewed alongside the chosen model.

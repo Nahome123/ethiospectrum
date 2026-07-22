@@ -40,7 +40,35 @@ test("mobile navigation is keyboard accessible", async ({ page }) => {
 });
 test("protected member and administrator paths redirect to localized login", async ({ page }) => {
   await page.goto("/am/dashboard");
-  await expect(page).toHaveURL(/\/am\/login/);
+  await expect(page).toHaveURL(/\/am\/login\?next=%2Fam%2Fdashboard$/);
+  await page.goto("/am/documents");
+  await expect(page).toHaveURL(/\/am\/login\?next=%2Fam%2Fdocuments$/);
   await page.goto("/es/admin");
-  await expect(page).toHaveURL(/\/es\/login/);
+  await expect(page).toHaveURL(/\/es\/login\?next=%2Fes%2Fadmin$/);
+});
+
+test("localized authentication entry pages render accessible forms", async ({ page }) => {
+  for (const locale of ["en", "am", "es"]) {
+    await page.goto(`/${locale}/login`);
+    await expect(page.locator("form")).toBeVisible();
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await page.goto(`/${locale}/signup`);
+    await expect(page.locator('input[type="checkbox"]')).toBeVisible();
+    await page.goto(`/${locale}/forgot-password`);
+    await expect(page.locator("form")).toBeVisible();
+    await page.goto(`/${locale}/resend-confirmation`);
+    await expect(page.locator("form")).toBeVisible();
+    await page.goto(`/${locale}/check-email`);
+    await expect(page.locator(`a[href="/${locale}/resend-confirmation"]`)).toBeVisible();
+  }
+});
+
+test("invalid confirmation links redirect to the localized authentication error page", async ({ page }) => {
+  await page.goto("/auth/confirm?next=/am/dashboard");
+  await expect(page).toHaveURL(/\/am\/auth-error\?reason=invalid$/);
+});
+
+test("reset-password routes require a valid recovery session", async ({ page }) => {
+  await page.goto("/es/reset-password");
+  await expect(page).toHaveURL(/\/es\/forgot-password$/);
 });

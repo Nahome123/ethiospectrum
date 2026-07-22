@@ -156,21 +156,54 @@
   },
   "authentication": {
     "loginTitle": "Bienvenido de nuevo",
-    "loginDescription": "El inicio de sesión está preparado para una futura conexión con Supabase.",
+    "loginDescription": "Inicia sesión para volver a tu espacio familiar.",
     "signupTitle": "Crea tu cuenta",
-    "signupDescription": "La creación de cuentas no está conectada en esta base.",
+    "signupDescription": "Crea una cuenta para comenzar a usar tu espacio privado.",
     "email": "Correo electrónico",
     "password": "Contraseña",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
     "firstName": "Nombre",
     "lastName": "Apellido",
     "submitLogin": "Iniciar sesión",
     "submitSignup": "Crear cuenta",
-    "notReady": "La integración de autenticación aún no está conectada. No se crea ni inicia ninguna cuenta.",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "forgotPasswordTitle": "Restablece tu contraseña",
+    "forgotPasswordDescription": "Ingresa tu correo electrónico y enviaremos instrucciones si hay una cuenta disponible.",
+    "submitForgotPassword": "Enviar instrucciones",
+    "resetPasswordTitle": "Elige una nueva contraseña",
+    "resetPasswordDescription": "Elige una nueva contraseña para tu cuenta.",
+    "submitResetPassword": "Actualizar contraseña",
+    "checkEmailTitle": "Revisa tu correo electrónico",
+    "checkEmailDescription": "Abre el mensaje de confirmación que enviamos para continuar.",
+    "resendConfirmation": "Reenviar correo de confirmación",
+    "resendConfirmationTitle": "Reenviar correo de confirmación",
+    "resendConfirmationDescription": "Ingresa tu correo electrónico y enviaremos un nuevo enlace de confirmación si está disponible.",
+    "submitResendConfirmation": "Enviar nuevo enlace de confirmación",
+    "confirmationResendNeutralSuccess": "Si se puede enviar un enlace de confirmación a ese correo electrónico, está en camino.",
+    "confirmationTitle": "Confirmación de correo electrónico",
+    "authErrorTitle": "No pudimos completar esa solicitud",
+    "invalidConfirmationLink": "Este enlace de confirmación no es válido.",
+    "expiredConfirmationLink": "Este enlace de confirmación ha vencido. Solicita un nuevo correo para continuar.",
+    "passwordUpdated": "Tu contraseña se actualizó. Ahora puedes iniciar sesión.",
+    "sessionExpired": "Tu sesión de recuperación venció. Solicita un nuevo correo de restablecimiento.",
+    "accessDenied": "No tienes acceso a esa área.",
+    "genericError": "No pudimos completar esa solicitud. Inténtalo de nuevo.",
+    "emailRateLimit": "Se solicitaron demasiados correos de confirmación. Inténtalo de nuevo más tarde.",
+    "invalidCredentials": "El correo electrónico o la contraseña son incorrectos.",
+    "emailConfirmationRequired": "Confirma tu correo electrónico antes de iniciar sesión.",
+    "recoveryNeutralSuccess": "Si hay una cuenta disponible para ese correo, se enviaron instrucciones para restablecer la contraseña.",
+    "validationError": "Revisa los campos resaltados.",
     "emailError": "Ingresa un correo electrónico válido.",
     "passwordError": "Usa al menos 8 caracteres.",
     "nameError": "Ingresa al menos 2 caracteres.",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "termsRequired": "Debes aceptar los Términos y el Aviso de privacidad.",
+    "termsAcknowledgement": "Acepto los Términos y el Aviso de privacidad.",
+    "pending": "Espera, por favor…",
     "haveAccount": "¿Ya tienes una cuenta?",
-    "needAccount": "¿Necesitas una cuenta?"
+    "needAccount": "¿Necesitas una cuenta?",
+    "backToLogin": "Volver a iniciar sesión"
   },
   "dashboard": {
     "welcome": "Bienvenido a tu espacio familiar",
@@ -200,7 +233,7 @@
     "notFoundTitle": "No pudimos encontrar esa página",
     "notFoundDescription": "La página puede haberse movido o la dirección puede estar incompleta.",
     "protectedTitle": "Se requiere iniciar sesión",
-    "protectedDescription": "Esta área está reservada para usuarios autenticados. La autenticación no está conectada en esta base."
+    "protectedDescription": "Inicia sesión para continuar a esta área privada."
   },
   "accessibility": {
     "skipToContent": "Saltar al contenido principal",
@@ -225,11 +258,11 @@
     "allDependents": "Todos los miembros de la familia",
     "profile": "Menú de perfil",
     "logout": "Cerrar sesión",
-    "logoutNotice": "Cerrar sesión estará disponible cuando se conecte la autenticación.",
+    "logoutNotice": "Cierra sesión de forma segura desde tu espacio de trabajo.",
     "onboardingTitle": "Configura tu hogar",
     "onboardingDescription": "La configuración guiada del hogar está planeada. Nada se guarda en esta base.",
     "settingsTitle": "Configuración del espacio",
-    "settingsDescription": "Los ajustes de idioma, perfil y hogar estarán disponibles después de conectar la autenticación."
+    "settingsDescription": "Los ajustes de idioma, perfil y hogar están previstos para una versión futura."
   },
   "admin": {
     "title": "Espacio de administración",
@@ -246,7 +279,7 @@
   },
   "protected": {
     "returnTo": "Volver a iniciar sesión",
-    "developmentNotice": "Las rutas protegidas no están disponibles intencionalmente hasta conectar autenticación real del servidor."
+    "developmentNotice": "Las rutas protegidas requieren una sesión verificada en el servidor."
   },
   "review": {
     "translation": "La traducción requiere revisión de hablantes nativos antes de usarse para contenido sensible."
