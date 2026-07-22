@@ -259,6 +259,8 @@
     "profile": "Profile menu",
     "logout": "Log out",
     "logoutNotice": "Sign out securely from your workspace.",
+    "onboardingTitle": "Set up your household",
+    "onboardingDescription": "Guided household setup is planned. Nothing is saved in this foundation.",
     "settingsTitle": "Workspace settings",
     "settingsDescription": "Language, profile, and household settings are planned for a future release."
   },

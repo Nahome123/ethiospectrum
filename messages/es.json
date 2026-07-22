@@ -259,6 +259,8 @@
     "profile": "Menú de perfil",
     "logout": "Cerrar sesión",
     "logoutNotice": "Cierra sesión de forma segura desde tu espacio de trabajo.",
+    "onboardingTitle": "Configura tu hogar",
+    "onboardingDescription": "La configuración guiada del hogar está planeada. Nada se guarda en esta base.",
     "settingsTitle": "Configuración del espacio",
     "settingsDescription": "Los ajustes de idioma, perfil y hogar están previstos para una versión futura."
   },

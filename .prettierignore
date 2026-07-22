@@ -1,5 +1,7 @@
-node_modules
-.next
-playwright-report
-test-results
+node_modules/
+.next/
+playwright-report/
+test-results/
+coverage/
+supabase/.temp/
 pnpm-lock.yaml

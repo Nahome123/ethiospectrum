@@ -52,3 +52,4 @@ $$;
 
 revoke all on function public.complete_household_onboarding(text, text) from public, anon;
 grant execute on function public.complete_household_onboarding(text, text) to authenticated;
+grant select on table public.consents to authenticated;

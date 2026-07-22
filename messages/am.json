@@ -259,6 +259,8 @@
     "profile": "የመገለጫ ምናሌ",
     "logout": "ውጣ",
     "logoutNotice": "ከስራ ቦታዎ በደህና ይውጡ።",
+    "onboardingTitle": "ቤተሰብዎን ያዘጋጁ",
+    "onboardingDescription": "በመመሪያ የሚደረግ የቤተሰብ ማዋቀር ታቅዷል። በዚህ መሰረት ውስጥ ምንም አይቀመጥም።",
     "settingsTitle": "የሥራ ቦታ ቅንብሮች",
     "settingsDescription": "የቋንቋ፣ የመገለጫ እና የቤተሰብ ቅንብሮች ለወደፊት ልቀት ታቅደዋል።"
   },
