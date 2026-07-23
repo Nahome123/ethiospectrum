@@ -18,14 +18,18 @@ function uploadStatusPresentation(status: string, t: Awaited<ReturnType<typeof g
 
 function processingStatusPresentation(status: string, t: Awaited<ReturnType<typeof getTranslations>>) {
   switch (status) {
+    case "queued":
+      return { label: t("processingQueued"), variant: "secondary" as const };
     case "processing":
       return { label: t("processing"), variant: "secondary" as const };
-    case "ready":
-      return { label: t("processingReady"), variant: "default" as const };
+    case "completed":
+      return { label: t("processingCompleted"), variant: "default" as const };
     case "failed":
       return { label: t("processingFailed"), variant: "destructive" as const };
-    case "deleted":
-      return { label: t("processingDeleted"), variant: "outline" as const };
+    case "unsupported":
+      return { label: t("processingUnsupported"), variant: "outline" as const };
+    case "needs_ocr":
+      return { label: t("processingNeedsOcr"), variant: "outline" as const };
     default:
       return { label: t("notProcessed"), variant: "secondary" as const };
   }

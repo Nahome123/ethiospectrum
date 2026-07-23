@@ -67,10 +67,12 @@ export default async function DocumentsPage({
   if (filters.uploadStatus === "failed") activeFilterLabels.push(t("statusFailed"));
   if (filters.uploadStatus === "archived") activeFilterLabels.push(t("statusArchived"));
   if (filters.processingStatus === "not_started") activeFilterLabels.push(t("notProcessed"));
+  if (filters.processingStatus === "queued") activeFilterLabels.push(t("processingQueued"));
   if (filters.processingStatus === "processing") activeFilterLabels.push(t("processing"));
-  if (filters.processingStatus === "ready") activeFilterLabels.push(t("processingReady"));
+  if (filters.processingStatus === "completed") activeFilterLabels.push(t("processingCompleted"));
   if (filters.processingStatus === "failed") activeFilterLabels.push(t("processingFailed"));
-  if (filters.processingStatus === "deleted") activeFilterLabels.push(t("processingDeleted"));
+  if (filters.processingStatus === "unsupported") activeFilterLabels.push(t("processingUnsupported"));
+  if (filters.processingStatus === "needs_ocr") activeFilterLabels.push(t("processingNeedsOcr"));
   if (filters.from) activeFilterLabels.push(`${t("dateFrom")}: ${filters.from}`);
   if (filters.to) activeFilterLabels.push(`${t("dateTo")}: ${filters.to}`);
   if (filters.sort === "oldest") activeFilterLabels.push(t("sortOldest"));

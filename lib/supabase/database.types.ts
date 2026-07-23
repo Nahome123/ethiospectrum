@@ -371,33 +371,42 @@ export type Database = {
       document_chunks: {
         Row: {
           chunk_index: number;
+          character_count: number;
           content: string;
           created_at: string;
           document_id: string;
           embedding: string | null;
           id: string;
           metadata: Json;
+          page_id: string | null;
           page_number: number;
+          token_estimate: number | null;
         };
         Insert: {
           chunk_index: number;
+          character_count: number;
           content: string;
           created_at?: string;
           document_id: string;
           embedding?: string | null;
           id?: string;
           metadata?: Json;
+          page_id?: string | null;
           page_number: number;
+          token_estimate?: number | null;
         };
         Update: {
           chunk_index?: number;
+          character_count?: number;
           content?: string;
           created_at?: string;
           document_id?: string;
           embedding?: string | null;
           id?: string;
           metadata?: Json;
+          page_id?: string | null;
           page_number?: number;
+          token_estimate?: number | null;
         };
         Relationships: [
           {
@@ -407,29 +416,39 @@ export type Database = {
             referencedRelation: "documents";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "document_chunks_page_document_fkey";
+            columns: ["page_id", "document_id"];
+            isOneToOne: false;
+            referencedRelation: "document_pages";
+            referencedColumns: ["id", "document_id"];
+          },
         ];
       };
       document_pages: {
         Row: {
+          character_count: number;
           created_at: string;
           document_id: string;
-          extracted_text: string | null;
+          extracted_text: string;
           extraction_confidence: number | null;
           id: string;
           page_number: number;
         };
         Insert: {
+          character_count: number;
           created_at?: string;
           document_id: string;
-          extracted_text?: string | null;
+          extracted_text: string;
           extraction_confidence?: number | null;
           id?: string;
           page_number: number;
         };
         Update: {
+          character_count?: number;
           created_at?: string;
           document_id?: string;
-          extracted_text?: string | null;
+          extracted_text?: string;
           extraction_confidence?: number | null;
           id?: string;
           page_number?: number;
@@ -439,6 +458,68 @@ export type Database = {
             foreignKeyName: "document_pages_document_id_fkey";
             columns: ["document_id"];
             isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      document_processing_jobs: {
+        Row: {
+          attempt_count: number;
+          available_at: string;
+          completed_at: string | null;
+          created_at: string;
+          document_id: string;
+          error_code: string | null;
+          error_message: string | null;
+          failed_at: string | null;
+          id: string;
+          locked_at: string | null;
+          locked_by: string | null;
+          max_attempts: number;
+          started_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id: string;
+          error_code?: string | null;
+          error_message?: string | null;
+          failed_at?: string | null;
+          id?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id?: string;
+          error_code?: string | null;
+          error_message?: string | null;
+          failed_at?: string | null;
+          id?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_processing_jobs_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: true;
             referencedRelation: "documents";
             referencedColumns: ["id"];
           },
@@ -1123,7 +1204,47 @@ export type Database = {
         Args: { raw_name: string; raw_policy_version: string };
         Returns: string;
       };
+      claim_next_document_processing_job: {
+        Args: { worker_identity: string };
+        Returns: {
+          attempt_count: number;
+          dependent_id: string | null;
+          document_id: string;
+          file_size: number;
+          household_id: string;
+          job_id: string;
+          max_attempts: number;
+          mime_type: string;
+          original_filename: string;
+          storage_bucket: string;
+          storage_path: string;
+        }[];
+      };
+      complete_document_processing_job: {
+        Args: {
+          chunk_rows: Json;
+          expected_worker_identity: string;
+          final_status: string;
+          page_rows: Json;
+          target_job_id: string;
+        };
+        Returns: boolean;
+      };
       create_household: { Args: { raw_name: string }; Returns: string };
+      fail_document_processing_job: {
+        Args: { expected_worker_identity: string; safe_error_code: string; target_job_id: string };
+        Returns: boolean;
+      };
+      get_document_processing_status: {
+        Args: { target_document_id: string };
+        Returns: {
+          attempt_count: number;
+          completed_at: string | null;
+          failed_at: string | null;
+          started_at: string | null;
+          status: string;
+        }[];
+      };
       is_active_household_member: {
         Args: { target_household: string };
         Returns: boolean;
@@ -1132,6 +1253,15 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      queue_document_processing: {
+        Args: { target_document_id: string };
+        Returns: {
+          already_queued: boolean;
+          attempt_count: number;
+          job_id: string;
+          processing_status: string;
+        }[];
       };
     };
     Enums: {

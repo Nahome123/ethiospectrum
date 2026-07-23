@@ -35,10 +35,12 @@ export const DOCUMENT_UPLOAD_STATUSES = ["pending", "uploaded", "failed", "archi
 
 export const DOCUMENT_PROCESSING_STATUSES = [
   "not_started",
+  "queued",
   "processing",
-  "ready",
+  "completed",
   "failed",
-  "deleted",
+  "unsupported",
+  "needs_ocr",
 ] as const;
 
 export type DocumentCategory = (typeof DOCUMENT_CATEGORIES)[number];

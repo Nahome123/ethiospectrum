@@ -34,6 +34,7 @@ export async function DocumentCard({
 }) {
   const t = await getTranslations("documents");
   const isUploaded = document.upload_status === "uploaded" && !document.deleted_at;
+  const isArchived = document.upload_status === "archived" || Boolean(document.deleted_at);
   const assignedName = document.dependent_id
     ? (document.dependentName ?? t("archivedFamilyMember"))
     : t("householdLevel");
@@ -52,7 +53,7 @@ export async function DocumentCard({
         </div>
         <div className="flex flex-wrap justify-end gap-2">
           <DocumentStatusBadge kind="upload" status={document.upload_status} />
-          <DocumentStatusBadge kind="processing" status={document.processing_status} />
+          {!isArchived ? <DocumentStatusBadge kind="processing" status={document.processing_status} /> : null}
         </div>
       </div>
 
@@ -79,12 +80,14 @@ export async function DocumentCard({
             {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(document.created_at))}
           </dd>
         </div>
-        <div>
-          <dt className="font-semibold">{t("processingStatus")}</dt>
-          <dd className="mt-1">
-            <DocumentStatusBadge kind="processing" status={document.processing_status} />
-          </dd>
-        </div>
+        {!isArchived ? (
+          <div>
+            <dt className="font-semibold">{t("processingStatus")}</dt>
+            <dd className="mt-1">
+              <DocumentStatusBadge kind="processing" status={document.processing_status} />
+            </dd>
+          </div>
+        ) : null}
       </dl>
 
       <div className="mt-6 flex flex-wrap gap-3">

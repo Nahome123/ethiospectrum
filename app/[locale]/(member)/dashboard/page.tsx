@@ -76,6 +76,43 @@ export default async function DashboardPage() {
               {t("failedDocumentCount", { count: documentSummary.failedCount })}
             </Link>
           ) : null}
+          {documentSummary.awaitingProcessingCount ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("awaitingProcessingCount", { count: documentSummary.awaitingProcessingCount })}
+            </p>
+          ) : null}
+          {documentSummary.processingCount ? (
+            <Link
+              className="mt-1 block text-sm text-primary underline underline-offset-4"
+              href="/documents?processingStatus=processing"
+            >
+              {t("processingDocumentCount", { count: documentSummary.processingCount })}
+            </Link>
+          ) : null}
+          {documentSummary.completedCount ? (
+            <Link
+              className="mt-1 block text-sm text-primary underline underline-offset-4"
+              href="/documents?processingStatus=completed"
+            >
+              {t("completedDocumentCount", { count: documentSummary.completedCount })}
+            </Link>
+          ) : null}
+          {documentSummary.processingFailedCount ? (
+            <Link
+              className="mt-1 block text-sm text-primary underline underline-offset-4"
+              href="/documents?processingStatus=failed"
+            >
+              {t("processingFailedDocumentCount", { count: documentSummary.processingFailedCount })}
+            </Link>
+          ) : null}
+          {documentSummary.needsOcrCount ? (
+            <Link
+              className="mt-1 block text-sm text-primary underline underline-offset-4"
+              href="/documents?processingStatus=needs_ocr"
+            >
+              {t("needsOcrDocumentCount", { count: documentSummary.needsOcrCount })}
+            </Link>
+          ) : null}
           {documents.length ? (
             <ul className="mt-3 space-y-1 text-sm">
               {documents.map((document) => (

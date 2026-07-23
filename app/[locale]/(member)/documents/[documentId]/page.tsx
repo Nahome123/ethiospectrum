@@ -1,10 +1,16 @@
 import { getTranslations } from "next-intl/server";
 import { ArchiveDocumentButton } from "@/components/documents/archive-document-button";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
+import { ProcessDocumentButton } from "@/components/documents/process-document-button";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { formatDocumentFileSize, getDocumentFileType } from "@/lib/documents/constants";
-import { canArchiveDocument, getDocumentDependentName, getVisibleDocument } from "@/lib/documents/server";
+import {
+  canArchiveDocument,
+  getDocumentDependentName,
+  getDocumentProcessingDetails,
+  getVisibleDocument,
+} from "@/lib/documents/server";
 import { documentIdSchema } from "@/lib/validation/document";
 
 export default async function DocumentDetailPage({
@@ -21,10 +27,19 @@ export default async function DocumentDetailPage({
   if (!record) return <p>{t("notFound")}</p>;
 
   const { context, document } = record;
-  const dependentName = await getDocumentDependentName(document.dependent_id, context.household.id);
   const isUploaded = document.upload_status === "uploaded" && !document.deleted_at;
+  const isArchived = document.upload_status === "archived" || Boolean(document.deleted_at);
+  const [dependentName, processingDetails] = await Promise.all([
+    getDocumentDependentName(document.dependent_id, context.household.id),
+    isUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
+  ]);
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
+  const canQueueProcessing =
+    context.canProcess && isUploaded && ["not_started", "failed"].includes(document.processing_status);
+  const retryProcessing = document.processing_status === "failed";
+  const lastProcessedAt =
+    processingDetails?.completedAt ?? processingDetails?.failedAt ?? processingDetails?.startedAt ?? null;
   const fileType = getDocumentFileType(document.mime_type);
   const typeLabel =
     fileType === "pdf"
@@ -57,7 +72,7 @@ export default async function DocumentDetailPage({
         </div>
         <div className="flex flex-wrap gap-2">
           <DocumentStatusBadge kind="upload" status={document.upload_status} />
-          <DocumentStatusBadge kind="processing" status={document.processing_status} />
+          {!isArchived ? <DocumentStatusBadge kind="processing" status={document.processing_status} /> : null}
         </div>
       </div>
 
@@ -104,12 +119,30 @@ export default async function DocumentDetailPage({
             <DocumentStatusBadge kind="upload" status={document.upload_status} />
           </dd>
         </div>
-        <div>
-          <dt className="font-semibold">{t("processingStatus")}</dt>
-          <dd className="mt-1">
-            <DocumentStatusBadge kind="processing" status={document.processing_status} />
-          </dd>
-        </div>
+        {!isArchived ? (
+          <>
+            <div>
+              <dt className="font-semibold">{t("processingStatus")}</dt>
+              <dd className="mt-1">
+                <DocumentStatusBadge kind="processing" status={document.processing_status} />
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold">{t("processingAttempts")}</dt>
+              <dd className="mt-1">{processingDetails?.attemptCount ?? 0}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold">{t("lastProcessed")}</dt>
+              <dd className="mt-1">
+                {lastProcessedAt
+                  ? new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(
+                      new Date(lastProcessedAt),
+                    )
+                  : t("notProcessed")}
+              </dd>
+            </div>
+          </>
+        ) : null}
       </dl>
       <div className="mt-6 flex flex-wrap gap-3">
         {isUploaded ? (
@@ -120,8 +153,14 @@ export default async function DocumentDetailPage({
             {t("download")}
           </a>
         ) : null}
+        {canQueueProcessing ? (
+          <ProcessDocumentButton documentId={document.id} locale={locale} retry={retryProcessing} />
+        ) : null}
         {canArchive ? <ArchiveDocumentButton documentId={document.id} locale={locale} /> : null}
       </div>
+      {document.processing_status === "needs_ocr" || document.processing_status === "unsupported" ? (
+        <p className="mt-3 text-sm text-muted-foreground">{t("extractionUnavailable")}</p>
+      ) : null}
     </section>
   );
 }

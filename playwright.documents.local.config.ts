@@ -1,7 +1,9 @@
 import { execFileSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
 import { defineConfig, devices } from "@playwright/test";
 
 const localSupabaseUrl = /^http:\/\/(?:127\.0\.0\.1|localhost)(?::\d+)?(?:\/|$)/i;
+const localDocumentProcessingSecret = randomBytes(32).toString("hex");
 
 function readStatusValue(output: string, name: string) {
   const line = output.split(/\r?\n/).find((candidate) => candidate.startsWith(`${name}=`));
@@ -42,6 +44,8 @@ function getLocalSupabaseEnvironment() {
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishableKey,
     NEXT_PUBLIC_SUPABASE_URL: url,
     SUPABASE_SECRET_KEY: secretKey,
+    // Generated only for this local process; it is never a deployment secret.
+    DOCUMENT_PROCESSING_SECRET: localDocumentProcessingSecret,
   };
 }
 

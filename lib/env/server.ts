@@ -14,6 +14,11 @@ const optionalServiceRoleKey = z.preprocess(
   z.string().min(1).optional(),
 );
 
+const optionalDocumentProcessingSecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(32).optional(),
+);
+
 export interface ServerSupabaseEnv extends PublicSupabaseEnv {
   secretKey?: string;
 }
@@ -79,4 +84,21 @@ export function requireSupabaseAdminEnv(input?: EnvInput): SupabaseAdminEnv {
     );
   }
   return { ...env, secretKey: env.secretKey };
+}
+
+/** Separate internal-invocation secret; never reuse the Supabase service key. */
+export function getDocumentProcessingSecret(input?: EnvInput): string | undefined {
+  return optionalDocumentProcessingSecret.parse(
+    input?.DOCUMENT_PROCESSING_SECRET ?? process.env.DOCUMENT_PROCESSING_SECRET,
+  );
+}
+
+export function requireDocumentProcessingSecret(input?: EnvInput): string {
+  const secret = getDocumentProcessingSecret(input);
+  if (!secret) {
+    throw new SupabaseConfigurationError(
+      "DOCUMENT_PROCESSING_SECRET is required for controlled document-processing invocation.",
+    );
+  }
+  return secret;
 }
