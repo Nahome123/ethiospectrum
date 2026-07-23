@@ -4,7 +4,7 @@ Ethiospectrum is a multilingual family-support platform foundation for organizin
 
 ## Current status
 
-Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, and RLS-protected member/admin shells.
+Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, and RLS-protected dependent profile management.
 
 Planned: profile and household synchronization, private storage, document upload/OCR/processing, AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
 
@@ -53,6 +53,8 @@ Apply `supabase/migrations/` only through the local Supabase CLI or a reviewed m
 
 ETH-009 owns `profiles`, `user_roles`, `households`, and `household_members`. The Auth trigger creates a profile and a default `member` role for every new Auth user; it ignores role metadata. Household creation is available only through `public.create_household(name)`, which atomically adds the active owner membership. Run `pnpm db:types` after local migrations to refresh `lib/supabase/database.types.ts`. Never run `pnpm db:push` without a reviewed migration and explicit approval.
 
+ETH-011 adds active dependent profiles at `/[locale]/dependents`. Owners and household administrators may create, edit, and archive them; active members and viewers can read active profiles only. Archiving is irreversible in the current UI: active lists and direct profile routes exclude archived profiles, while owners and administrators retain database visibility needed to complete the authorized archive transition. The server action derives both household and actor from the verified session; it never accepts either value from a browser form.
+
 For local-only administrator testing, use a direct SQL console against the local database after creating a synthetic user: `update public.user_roles set role = 'administrator' where user_id = '<synthetic UUID>';`. Do not run this against a hosted project without a reviewed role-governance procedure.
 
 `lib/supabase/browser.ts` is the only browser client entry point. Server Component, route-handler, server-action, proxy, and admin utilities are separate modules. They throw a clear development configuration error when invoked without the required local values; they do not create a placeholder session or fake user.
@@ -79,4 +81,4 @@ Treat family data as sensitive. Never commit real keys or private documents; do 
 
 ## Next recommended issue
 
-`ETH-010 Build family onboarding`.
+`ETH-012 Implement secure document upload`.

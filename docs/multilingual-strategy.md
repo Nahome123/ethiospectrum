@@ -7,3 +7,5 @@ Routes always use `/en`, `/am`, or `/es`; `proxy.ts` negotiates routes and the r
 Native Amharic and Spanish reviewers must approve all sensitive, legal, medical, immigration, and benefit-related content. AI may assist only with non-sensitive draft translation; it cannot independently translate specialized terms or approve final content. To add a locale, update routing, messages, metadata alternates, tests, and reviewer workflow together.
 
 The ETH-008 authentication strings in Amharic and Spanish are implementation drafts and require native-speaker review before a public launch. This includes account recovery, confirmation-link, password, access-denied, and terms/privacy wording.
+
+ETH-011 adds aligned dependent-management strings for profile labels, validation, archive confirmation, permission messaging, empty states, and dashboard counts. The Amharic and Spanish implementation drafts require native-speaker review before launch, especially the sensitive notes guidance and archive wording.

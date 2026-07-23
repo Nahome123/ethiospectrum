@@ -267,8 +267,10 @@ export type Database = {
       };
       dependents: {
         Row: {
+          archived_at: string | null;
           birth_year: number | null;
           created_at: string;
+          created_by: string;
           first_name: string;
           grade_level: string | null;
           household_id: string;
@@ -280,8 +282,10 @@ export type Database = {
           updated_at: string;
         };
         Insert: {
+          archived_at?: string | null;
           birth_year?: number | null;
           created_at?: string;
+          created_by: string;
           first_name: string;
           grade_level?: string | null;
           household_id: string;
@@ -293,8 +297,10 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          archived_at?: string | null;
           birth_year?: number | null;
           created_at?: string;
+          created_by?: string;
           first_name?: string;
           grade_level?: string | null;
           household_id?: string;
