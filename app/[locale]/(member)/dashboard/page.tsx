@@ -24,8 +24,37 @@ export default async function DashboardPage() {
         .eq("household_id", context.household.id)
         .is("archived_at", null)
     : { count: 0 };
+  const documentResult = context
+    ? await supabase
+        .from("documents")
+        .select("id, title")
+        .eq("household_id", context.household.id)
+        .eq("upload_status", "uploaded")
+        .is("deleted_at", null)
+        .order("created_at", { ascending: false })
+        .limit(3)
+    : { data: [] as { id: string; title: string }[] };
+  const documentCountResult = context
+    ? await supabase
+        .from("documents")
+        .select("id", { count: "exact", head: true })
+        .eq("household_id", context.household.id)
+        .eq("upload_status", "uploaded")
+        .is("deleted_at", null)
+    : { count: 0 };
+  const incompleteDocumentCountResult = context
+    ? await supabase
+        .from("documents")
+        .select("id", { count: "exact", head: true })
+        .eq("household_id", context.household.id)
+        .in("upload_status", ["pending", "failed"])
+        .is("deleted_at", null)
+    : { count: 0 };
   const dependents = dependentResult.data ?? [];
   const dependentCount = dependentCountResult.count ?? 0;
+  const documents = documentResult.data ?? [];
+  const documentCount = documentCountResult.count ?? 0;
+  const incompleteDocumentCount = incompleteDocumentCountResult.count ?? 0;
   return (
     <section>
       <p className="text-sm font-bold uppercase tracking-[0.12em] text-secondary-foreground">
@@ -52,7 +81,32 @@ export default async function DashboardPage() {
             {dependentsT("manage")}
           </Link>
         </article>
-        {["upcoming", "recommended", "recentDocuments", "ask", "resource"].map((item) => (
+        <article className="rounded-xl border border-border bg-white p-5">
+          <h2 className="font-bold">{t("recentDocuments")}</h2>
+          <p className="mt-3 text-sm text-muted-foreground">{t("documentCount", { count: documentCount })}</p>
+          {incompleteDocumentCount ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("pendingDocumentCount", { count: incompleteDocumentCount })}
+            </p>
+          ) : null}
+          {documents.length ? (
+            <ul className="mt-3 space-y-1 text-sm">
+              {documents.map((document) => (
+                <li key={document.id}>
+                  <Link className="underline hover:text-primary" href={`/documents/${document.id}`}>
+                    {document.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-3 text-sm text-muted-foreground">{t("documentsEmpty")}</p>
+          )}
+          <Link className="mt-4 inline-block font-semibold text-primary underline" href="/documents">
+            {t("manageDocuments")}
+          </Link>
+        </article>
+        {["upcoming", "recommended", "ask", "resource"].map((item) => (
           <article className="rounded-xl border border-border bg-white p-5" key={item}>
             <h2 className="font-bold">{t(item)}</h2>
             <p className="mt-3 text-sm text-muted-foreground">

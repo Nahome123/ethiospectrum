@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:e2e:documents:local": "playwright test -c playwright.documents.local.config.ts",
     "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

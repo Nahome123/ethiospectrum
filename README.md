@@ -4,13 +4,13 @@ Ethiospectrum is a multilingual family-support platform foundation for organizin
 
 ## Current status
 
-Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, and RLS-protected dependent profile management.
+Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, and household-scoped private document upload, download, and archive flows.
 
-Planned: profile and household synchronization, private storage, document upload/OCR/processing, AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
+Planned: profile and household synchronization, document OCR/processing, AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
 
 ## Stack and architecture
 
-Next.js 16 App Router, React 19, TypeScript, Tailwind 4, shadcn Luma, next-intl, Zod, React Hook Form, Vitest, Playwright, and axe. Public routes live in `app/[locale]/(marketing)`. `proxy.ts` supports `/en`, `/am`, and `/es`; `/` redirects to `/en`. Future private data belongs in Supabase with row-level security.
+Next.js 16 App Router, React 19, TypeScript, Tailwind 4, shadcn Luma, next-intl, Zod, React Hook Form, Vitest, Playwright, and axe. Public routes live in `app/[locale]/(marketing)`. `proxy.ts` supports `/en`, `/am`, and `/es`; `/` redirects to `/en`. Household and document data belongs in Supabase behind row-level security.
 
 ## Prerequisites and installation
 
@@ -55,6 +55,18 @@ ETH-009 owns `profiles`, `user_roles`, `households`, and `household_members`. Th
 
 ETH-011 adds active dependent profiles at `/[locale]/dependents`. Owners and household administrators may create, edit, and archive them; active members and viewers can read active profiles only. Archiving is irreversible in the current UI: active lists and direct profile routes exclude archived profiles, while owners and administrators retain database visibility needed to complete the authorized archive transition. The server action derives both household and actor from the verified session; it never accepts either value from a browser form.
 
+ETH-012 creates the private `family-documents` Storage bucket through a migration. It accepts PDF, DOCX, and TXT uploads up to 20 MiB. The prepare action derives the active household and actor, validates metadata, creates a pending `documents` row, and receives a Supabase time-limited signed upload token (currently valid for two hours). The browser uploads directly with that token and then calls the completion action; the server checks the expected private object metadata before marking the row uploaded. Object paths are generated from trusted values only:
+
+```text
+households/{householdId}/dependents/{dependentId|unassigned}/documents/{documentId}/{safeFilename}
+```
+
+The bucket is never public and the application never calls `getPublicUrl`. Authenticated active household members may read uploaded document metadata and download their household's uploaded documents. Owners, household administrators, and members may upload; viewers and removed members may not. Owners, administrators, or the original uploader while still an active non-viewer may archive a document. Archive keeps the physical object for a future retention workflow and removes it from the active list. A previously issued upload token is a bounded bearer capability and cannot be individually revoked: after membership removal or archive it may still place an orphan object at its one generated path until it expires, but it cannot complete or be read through the app. Scheduled orphan cleanup is a future operational task.
+
+The migration marks any pre-ETH-012, non-archived document row without upload lifecycle metadata as `failed` rather than trusting an unverified legacy path. Before a hosted rollout, inventory any such records and plan a reviewed re-upload or data migration; do not rely on an automatic conversion.
+
+For a local manual check, run the local Supabase stack and reset the database, sign in with synthetic users, complete household onboarding, and upload a small synthetic PDF, DOCX, or TXT file. Confirm that it appears in the documents list, detail page, dashboard count, and signed download flow; then archive it and confirm that it leaves the active list. Also verify empty, unsupported, and over-20-MiB file behavior. Do not use real personal documents or hosted production data for these checks.
+
 For local-only administrator testing, use a direct SQL console against the local database after creating a synthetic user: `update public.user_roles set role = 'administrator' where user_id = '<synthetic UUID>';`. Do not run this against a hosted project without a reviewed role-governance procedure.
 
 `lib/supabase/browser.ts` is the only browser client entry point. Server Component, route-handler, server-action, proxy, and admin utilities are separate modules. They throw a clear development configuration error when invoked without the required local values; they do not create a placeholder session or fake user.
@@ -69,7 +81,7 @@ ETH-008 uses a cookie-based PKCE flow. In the Supabase **Confirm signup** and **
 {{ .ConfirmationURL }}
 ```
 
-Do not build these links from `{{ .SiteURL }}`: doing so ignores the application's local or per-environment callback URL. For localized recovery links, the application sends the `next` destination through `resetPasswordForEmail`; do not insert real project URLs or keys into templates. Test signup confirmation and password reset against the local project. CAPTCHA, OAuth, custom SMTP, profile synchronization, storage upload, and administrator-assignment tooling remain out of scope.
+Do not build these links from `{{ .SiteURL }}`: doing so ignores the application's local or per-environment callback URL. For localized recovery links, the application sends the `next` destination through `resetPasswordForEmail`; do not insert real project URLs or keys into templates. Test signup confirmation and password reset against the local project. CAPTCHA, OAuth, custom SMTP, profile synchronization, document processing, and administrator-assignment tooling remain out of scope.
 
 ## Localization and contribution
 
@@ -81,4 +93,4 @@ Treat family data as sensitive. Never commit real keys or private documents; do 
 
 ## Next recommended issue
 
-`ETH-012 Implement secure document upload`.
+`ETH-013 Build document binder`: improve organization, filtering, and retention-oriented document workflows without adding OCR, parsing, AI, public sharing, or permanent deletion.

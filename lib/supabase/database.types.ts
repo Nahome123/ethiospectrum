@@ -456,10 +456,12 @@ export type Database = {
           id: string;
           mime_type: string;
           original_filename: string;
-          processing_status: Database["public"]["Enums"]["processing_status"];
+          processing_status: string;
+          storage_bucket: string;
           storage_path: string;
           title: string;
           updated_at: string;
+          upload_status: Database["public"]["Enums"]["document_upload_status"];
           uploaded_by: string;
         };
         Insert: {
@@ -473,10 +475,12 @@ export type Database = {
           id?: string;
           mime_type: string;
           original_filename: string;
-          processing_status?: Database["public"]["Enums"]["processing_status"];
+          processing_status?: string;
+          storage_bucket?: string;
           storage_path: string;
           title: string;
           updated_at?: string;
+          upload_status?: Database["public"]["Enums"]["document_upload_status"];
           uploaded_by: string;
         };
         Update: {
@@ -490,10 +494,12 @@ export type Database = {
           id?: string;
           mime_type?: string;
           original_filename?: string;
-          processing_status?: Database["public"]["Enums"]["processing_status"];
+          processing_status?: string;
+          storage_bucket?: string;
           storage_path?: string;
           title?: string;
           updated_at?: string;
+          upload_status?: Database["public"]["Enums"]["document_upload_status"];
           uploaded_by?: string;
         };
         Relationships: [
@@ -1130,6 +1136,7 @@ export type Database = {
     };
     Enums: {
       app_role: "member" | "specialist" | "content_editor" | "administrator";
+      document_upload_status: "pending" | "uploaded" | "failed" | "archived";
       household_permission: "owner" | "administrator" | "member" | "viewer";
       member_status: "active" | "invited" | "removed";
       membership_status: "active" | "invited" | "removed";
@@ -1260,6 +1267,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["member", "specialist", "content_editor", "administrator"],
+      document_upload_status: ["pending", "uploaded", "failed", "archived"],
       household_permission: ["owner", "administrator", "member", "viewer"],
       member_status: ["active", "invited", "removed"],
       membership_status: ["active", "invited", "removed"],
