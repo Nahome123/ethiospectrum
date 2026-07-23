@@ -64,19 +64,6 @@ export async function getUploadDependents() {
   return { context, dependents: data ?? [] };
 }
 
-export async function getHouseholdDocuments() {
-  const context = await getDocumentContext();
-  if (!context) return { context: null, documents: [] as DocumentRow[] };
-
-  const supabase = await createServerComponentSupabaseClient();
-  const { data } = await supabase
-    .from("documents")
-    .select("*")
-    .eq("household_id", context.household.id)
-    .order("created_at", { ascending: false });
-  return { context, documents: data ?? [] };
-}
-
 export async function getVisibleDocument(documentId: string) {
   const context = await getDocumentContext();
   if (!context) return null;
@@ -84,21 +71,23 @@ export async function getVisibleDocument(documentId: string) {
   const supabase = await createServerComponentSupabaseClient();
   const { data } = await supabase
     .from("documents")
-    .select("*")
+    .select(
+      "id, household_id, dependent_id, uploaded_by, title, original_filename, mime_type, file_size, document_type, processing_status, upload_status, created_at, deleted_at",
+    )
     .eq("id", documentId)
     .eq("household_id", context.household.id)
     .maybeSingle();
   return data ? { context, document: data } : null;
 }
 
-export async function getDocumentDependentName(dependentId: string | null) {
+export async function getDocumentDependentName(dependentId: string | null, householdId: string) {
   if (!dependentId) return null;
   const supabase = await createServerComponentSupabaseClient();
   const { data } = await supabase
     .from("dependents")
     .select("first_name, preferred_name")
     .eq("id", dependentId)
-    .is("archived_at", null)
+    .eq("household_id", householdId)
     .maybeSingle();
   return data ? data.preferred_name || data.first_name : null;
 }

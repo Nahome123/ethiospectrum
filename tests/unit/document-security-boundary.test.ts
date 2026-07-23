@@ -67,9 +67,11 @@ describe("document upload application boundaries", () => {
 
   it("counts and previews only active uploaded documents on the dashboard", () => {
     const dashboard = source("app/[locale]/(member)/dashboard/page.tsx");
+    const binderQuery = source("lib/documents/binder-query.ts");
 
-    expect(dashboard).toContain('.eq("upload_status", "uploaded")');
-    expect(dashboard).toContain('.is("deleted_at", null)');
+    expect(dashboard).toContain("getDocumentDashboardSummary");
+    expect(binderQuery).toContain('.eq("upload_status", "uploaded")');
+    expect(binderQuery).toContain('.is("deleted_at", null)');
     expect(dashboard).toContain("documentCount");
     expect(dashboard).toContain("recentDocuments");
   });
@@ -83,5 +85,30 @@ describe("document upload application boundaries", () => {
     expect(documentServer).toContain('.eq("status", "active")');
     expect(documentServer).toContain('"owner", "administrator", "member"');
     expect(documentServer).not.toContain("lib/supabase/admin");
+  });
+
+  it("keeps binder queries server-only, household-scoped, and free of elevated or public storage access", () => {
+    const binderQuery = source("lib/documents/binder-query.ts");
+    const binderPage = source("app/[locale]/(member)/documents/page.tsx");
+    const binderValidation = source("lib/validation/document-binder.ts");
+
+    expect(binderQuery).toContain('import "server-only"');
+    expect(binderQuery).toContain("getDocumentContext");
+    expect(binderQuery).toContain('.eq("household_id", context.household.id)');
+    expect(binderQuery).toContain('.is("deleted_at", null)');
+    expect(binderQuery).toContain("createDocumentMetadataSearchFilter");
+    expect(binderQuery).not.toContain("lib/supabase/admin");
+    expect(binderQuery).not.toContain("SUPABASE_SECRET_KEY");
+    expect(binderQuery).not.toContain("getPublicUrl");
+    expect(binderValidation).toContain("original_filename");
+    expect(binderValidation).not.toContain("householdId");
+    expect(binderPage).toContain("{binder.context.canUpload ?");
+  });
+
+  it("guards the binder upload control with the server-derived viewer capability", () => {
+    const binderPage = source("app/[locale]/(member)/documents/page.tsx");
+
+    expect(binderPage).toContain("{binder.context.canUpload ?");
+    expect(binderPage).toContain('href="/documents/upload"');
   });
 });

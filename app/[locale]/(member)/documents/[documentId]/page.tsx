@@ -1,10 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { ArchiveDocumentButton } from "@/components/documents/archive-document-button";
-import { Badge } from "@/components/ui/badge";
+import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { formatDocumentFileSize, getDocumentFileType } from "@/lib/documents/constants";
-import { getDocumentDependentName, getVisibleDocument, canArchiveDocument } from "@/lib/documents/server";
+import { canArchiveDocument, getDocumentDependentName, getVisibleDocument } from "@/lib/documents/server";
 import { documentIdSchema } from "@/lib/validation/document";
 
 export default async function DocumentDetailPage({
@@ -16,24 +16,25 @@ export default async function DocumentDetailPage({
   const locale = localeParam as AppLocale;
   const t = await getTranslations("documents");
   if (!documentIdSchema.safeParse(documentId).success) return <p>{t("notFound")}</p>;
+
   const record = await getVisibleDocument(documentId);
   if (!record) return <p>{t("notFound")}</p>;
 
   const { context, document } = record;
-  const dependentName = await getDocumentDependentName(document.dependent_id);
+  const dependentName = await getDocumentDependentName(document.dependent_id, context.household.id);
   const isUploaded = document.upload_status === "uploaded" && !document.deleted_at;
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
   const fileType = getDocumentFileType(document.mime_type);
-  const statusLabel =
-    document.upload_status === "uploaded"
-      ? t("statusUploaded")
-      : document.upload_status === "failed"
-        ? t("statusFailed")
-        : document.upload_status === "archived"
-          ? t("statusArchived")
-          : t("statusPending");
   const typeLabel =
+    fileType === "pdf"
+      ? t("fileTypePdf")
+      : fileType === "docx"
+        ? t("fileTypeDocx")
+        : fileType === "txt"
+          ? t("fileTypeTxt")
+          : t("fileTypeUnknown");
+  const categoryLabel =
     document.document_type === "education"
       ? t("categoryEducation")
       : document.document_type === "health"
@@ -42,54 +43,72 @@ export default async function DocumentDetailPage({
           ? t("categoryLegal")
           : document.document_type === "other"
             ? t("categoryOther")
-            : fileType === "pdf"
-              ? t("fileTypePdf")
-              : fileType === "docx"
-                ? t("fileTypeDocx")
-                : fileType === "txt"
-                  ? t("fileTypeTxt")
-                  : t("fileTypeUnknown");
+            : t("noCategory");
 
   return (
-    <section className="max-w-2xl">
-      <Link className="text-sm font-semibold text-primary underline" href="/documents">
-        {t("title")}
+    <section className="max-w-3xl">
+      <Link className="text-sm font-semibold text-primary underline underline-offset-4" href="/documents">
+        {t("backToBinder")}
       </Link>
       <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">{document.title}</h1>
+        <div className="min-w-0">
+          <h1 className="break-words text-3xl font-bold">{document.title}</h1>
           <p className="mt-2 break-all text-muted-foreground">{document.original_filename}</p>
         </div>
-        <Badge variant={document.upload_status === "failed" ? "destructive" : "secondary"}>
-          {statusLabel}
-        </Badge>
+        <div className="flex flex-wrap gap-2">
+          <DocumentStatusBadge kind="upload" status={document.upload_status} />
+          <DocumentStatusBadge kind="processing" status={document.processing_status} />
+        </div>
       </div>
-      <dl className="mt-8 grid gap-4 rounded-xl border bg-white p-6 sm:grid-cols-2">
+
+      <dl className="mt-8 grid gap-x-8 gap-y-5 rounded-2xl border bg-card p-6 sm:grid-cols-2">
         <div>
-          <dt className="font-semibold">{t("documentType")}</dt>
-          <dd>{typeLabel}</dd>
+          <dt className="font-semibold">{t("originalFilename")}</dt>
+          <dd className="mt-1 break-all">{document.original_filename}</dd>
+        </div>
+        <div>
+          <dt className="font-semibold">{t("documentCategory")}</dt>
+          <dd className="mt-1">{categoryLabel}</dd>
+        </div>
+        <div>
+          <dt className="font-semibold">{t("fileType")}</dt>
+          <dd className="mt-1">{typeLabel}</dd>
         </div>
         <div>
           <dt className="font-semibold">{t("fileSize")}</dt>
-          <dd>{formatDocumentFileSize(document.file_size, locale)}</dd>
+          <dd className="mt-1">{formatDocumentFileSize(document.file_size, locale)}</dd>
         </div>
         <div>
           <dt className="font-semibold">{t("uploadDate")}</dt>
-          <dd>
-            {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(document.created_at))}
+          <dd className="mt-1">
+            {new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(
+              new Date(document.created_at),
+            )}
           </dd>
         </div>
         <div>
           <dt className="font-semibold">{t("assignedDependent")}</dt>
-          <dd>{document.dependent_id ? (dependentName ?? t("householdMember")) : t("householdLevel")}</dd>
+          <dd className="mt-1">
+            {document.dependent_id ? (dependentName ?? t("archivedFamilyMember")) : t("householdLevel")}
+          </dd>
         </div>
         <div>
           <dt className="font-semibold">{t("uploader")}</dt>
-          <dd>{document.uploaded_by === context.userId ? t("you") : t("householdMember")}</dd>
+          <dd className="mt-1">
+            {document.uploaded_by === context.userId ? t("you") : t("householdMember")}
+          </dd>
+        </div>
+        <div>
+          <dt className="font-semibold">{t("uploadStatus")}</dt>
+          <dd className="mt-1">
+            <DocumentStatusBadge kind="upload" status={document.upload_status} />
+          </dd>
         </div>
         <div>
           <dt className="font-semibold">{t("processingStatus")}</dt>
-          <dd>{t("notProcessed")}</dd>
+          <dd className="mt-1">
+            <DocumentStatusBadge kind="processing" status={document.processing_status} />
+          </dd>
         </div>
       </dl>
       <div className="mt-6 flex flex-wrap gap-3">
