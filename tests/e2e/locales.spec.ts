@@ -43,6 +43,10 @@ test("protected member and administrator paths redirect to localized login", asy
   await expect(page).toHaveURL(/\/am\/login\?next=%2Fam%2Fdashboard$/);
   await page.goto("/am/documents");
   await expect(page).toHaveURL(/\/am\/login\?next=%2Fam%2Fdocuments$/);
+  await page.goto("/am/dependents");
+  await expect(page).toHaveURL(/\/am\/login\?next=%2Fam%2Fdependents$/);
+  await page.goto("/am/dependents/new");
+  await expect(page).toHaveURL(/\/am\/login\?next=%2Fam%2Fdependents%2Fnew$/);
   await page.goto("/es/admin");
   await expect(page).toHaveURL(/\/es\/login\?next=%2Fes%2Fadmin$/);
 });

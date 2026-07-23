@@ -46,12 +46,9 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
-          <label className="text-sm font-semibold">
-            {t("member.dependentSelector")}
-            <select className="ml-2 min-h-10 rounded-md border border-input bg-white px-2">
-              <option>{t("member.allDependents")}</option>
-            </select>
-          </label>
+          <Link className="text-sm font-semibold underline" href="/dependents">
+            {t("member.allDependents")}
+          </Link>
           <div className="flex items-center gap-3">
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>

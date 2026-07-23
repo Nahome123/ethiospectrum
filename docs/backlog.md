@@ -2,6 +2,8 @@
 
 Each issue below uses synthetic data only. Unless stated otherwise, all require Zod validation, server/database authorization, keyboard-accessible UI, English/Amharic/Spanish review, and unit/integration/e2e coverage.
 
+ETH-011 is implemented locally with household-scoped dependent profiles, archive-only removal, server actions, RLS authorization tests, and translated UI. Native Amharic and Spanish review plus manual accessibility review remain required before release.
+
 | Issue                                          | Problem and user story                               | Requirements and acceptance criteria                                     | Dependencies / security / exclusions                  |
 | ---------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------- |
 | ETH-001 Initialize Next.js project             | As an engineer, I need a stable app base.            | Next.js, strict TypeScript, pnpm, and Luma build in CI.                  | Done; excludes product integrations.                  |

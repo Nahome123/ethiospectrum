@@ -31,4 +31,21 @@ describe("household authorization application boundary", () => {
       expect(readFileSync(resolve(file), "utf8")).toContain("<Database>");
     }
   });
+
+  it("derives dependent authorization from the server context without an elevated client", () => {
+    const actions = readFileSync(resolve("lib/dependents/actions.ts"), "utf8");
+    const dependentServer = readFileSync(resolve("lib/dependents/server.ts"), "utf8");
+
+    expect(dependentServer).toContain('import "server-only"');
+    expect(actions).toContain("getDependentContext");
+    expect(actions).toContain("getActiveDependent");
+    expect(actions).toContain("context.household.id");
+    expect(actions).not.toContain("lib/supabase/admin");
+    expect(actions).not.toContain('formData.get("household_id")');
+    expect(actions).not.toContain('formData.get("created_by")');
+    expect(actions).not.toContain("initialDependentActionState");
+    expect(actions).not.toContain("export const");
+    expect(actions).not.toContain("export type");
+    expect(actions).not.toContain("export *");
+  });
 });
