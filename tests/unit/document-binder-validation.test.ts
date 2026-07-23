@@ -68,6 +68,23 @@ describe("document binder URL validation", () => {
     });
   });
 
+  it("accepts the controlled processing lifecycle and rejects retired statuses", () => {
+    for (const processingStatus of [
+      "not_started",
+      "queued",
+      "processing",
+      "completed",
+      "failed",
+      "unsupported",
+      "needs_ocr",
+    ]) {
+      expect(parseDocumentBinderSearchParams({ processingStatus }).processingStatus).toBe(processingStatus);
+    }
+
+    expect(parseDocumentBinderSearchParams({ processingStatus: "ready" }).processingStatus).toBeNull();
+    expect(parseDocumentBinderSearchParams({ processingStatus: "deleted" }).processingStatus).toBeNull();
+  });
+
   it("uses the household-level sentinel without accepting a household identifier", () => {
     const filters = parseDocumentBinderSearchParams({
       dependent: "unassigned",

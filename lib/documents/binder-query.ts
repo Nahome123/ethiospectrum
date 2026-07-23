@@ -68,6 +68,11 @@ export type DocumentDashboardSummary = {
   activeCount: number;
   pendingCount: number;
   failedCount: number;
+  awaitingProcessingCount: number;
+  processingCount: number;
+  completedCount: number;
+  processingFailedCount: number;
+  needsOcrCount: number;
   recentDocuments: Pick<DocumentRow, "id" | "title">[];
 };
 
@@ -241,11 +246,32 @@ export async function getDocumentBinder(filters: DocumentBinderFilters): Promise
 export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSummary> {
   const context = await getDocumentContext();
   if (!context) {
-    return { context: null, activeCount: 0, pendingCount: 0, failedCount: 0, recentDocuments: [] };
+    return {
+      context: null,
+      activeCount: 0,
+      pendingCount: 0,
+      failedCount: 0,
+      awaitingProcessingCount: 0,
+      processingCount: 0,
+      completedCount: 0,
+      processingFailedCount: 0,
+      needsOcrCount: 0,
+      recentDocuments: [],
+    };
   }
 
   const supabase = await createServerComponentSupabaseClient();
-  const [recentResult, activeCountResult, pendingCountResult, failedCountResult] = await Promise.all([
+  const [
+    recentResult,
+    activeCountResult,
+    pendingCountResult,
+    failedCountResult,
+    awaitingProcessingCountResult,
+    processingCountResult,
+    completedCountResult,
+    processingFailedCountResult,
+    needsOcrCountResult,
+  ] = await Promise.all([
     supabase
       .from("documents")
       .select("id, title")
@@ -272,6 +298,41 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
       .eq("household_id", context.household.id)
       .eq("upload_status", "failed")
       .is("deleted_at", null),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("upload_status", "uploaded")
+      .is("deleted_at", null)
+      .in("processing_status", ["not_started", "queued"]),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("upload_status", "uploaded")
+      .is("deleted_at", null)
+      .eq("processing_status", "processing"),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("upload_status", "uploaded")
+      .is("deleted_at", null)
+      .eq("processing_status", "completed"),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("upload_status", "uploaded")
+      .is("deleted_at", null)
+      .eq("processing_status", "failed"),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("upload_status", "uploaded")
+      .is("deleted_at", null)
+      .eq("processing_status", "needs_ocr"),
   ]);
 
   return {
@@ -279,6 +340,13 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
     activeCount: activeCountResult.error ? 0 : (activeCountResult.count ?? 0),
     pendingCount: pendingCountResult.error ? 0 : (pendingCountResult.count ?? 0),
     failedCount: failedCountResult.error ? 0 : (failedCountResult.count ?? 0),
+    awaitingProcessingCount: awaitingProcessingCountResult.error
+      ? 0
+      : (awaitingProcessingCountResult.count ?? 0),
+    processingCount: processingCountResult.error ? 0 : (processingCountResult.count ?? 0),
+    completedCount: completedCountResult.error ? 0 : (completedCountResult.count ?? 0),
+    processingFailedCount: processingFailedCountResult.error ? 0 : (processingFailedCountResult.count ?? 0),
+    needsOcrCount: needsOcrCountResult.error ? 0 : (needsOcrCountResult.count ?? 0),
     recentDocuments: recentResult.error ? [] : (recentResult.data ?? []),
   };
 }

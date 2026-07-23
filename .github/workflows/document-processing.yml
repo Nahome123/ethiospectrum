@@ -1,0 +1,38 @@
+name: Process private documents
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+# This scheduler only needs its configured endpoint and invocation secret.
+permissions: {}
+
+concurrency:
+  group: document-processing
+  cancel-in-progress: false
+
+jobs:
+  process:
+    name: Invoke the protected document processor
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      DOCUMENT_PROCESSING_ORIGIN: ${{ vars.DOCUMENT_PROCESSING_ORIGIN }}
+      DOCUMENT_PROCESSING_SECRET: ${{ secrets.DOCUMENT_PROCESSING_SECRET }}
+    steps:
+      - name: Validate scheduler configuration
+        shell: bash
+        run: |
+          if [ -z "$DOCUMENT_PROCESSING_ORIGIN" ] || [ -z "$DOCUMENT_PROCESSING_SECRET" ]; then
+            echo "The document-processing origin or secret is not configured."
+            exit 1
+          fi
+
+      - name: Run one bounded processing batch
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --retry 2 --retry-connrefused \
+            --request POST "${DOCUMENT_PROCESSING_ORIGIN%/}/api/internal/document-processing" \
+            --header "x-document-processing-secret: $DOCUMENT_PROCESSING_SECRET" \
+            --header "Accept: application/json"

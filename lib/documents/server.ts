@@ -18,6 +18,15 @@ export type DocumentContext = {
   userId: string;
   permission: HouseholdPermission;
   canUpload: boolean;
+  canProcess: boolean;
+};
+
+export type DocumentProcessingDetails = {
+  status: string;
+  attemptCount: number;
+  startedAt: string | null;
+  completedAt: string | null;
+  failedAt: string | null;
 };
 
 export async function getDocumentContext(): Promise<DocumentContext | null> {
@@ -40,6 +49,7 @@ export async function getDocumentContext(): Promise<DocumentContext | null> {
     userId: claims.sub,
     permission: data.permission,
     canUpload: uploadPermissions.has(data.permission),
+    canProcess: uploadPermissions.has(data.permission),
   };
 }
 
@@ -90,4 +100,23 @@ export async function getDocumentDependentName(dependentId: string | null, house
     .eq("household_id", householdId)
     .maybeSingle();
   return data ? data.preferred_name || data.first_name : null;
+}
+
+/** Reads only the job fields approved for a document detail page. */
+export async function getDocumentProcessingDetails(
+  documentId: string,
+): Promise<DocumentProcessingDetails | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_document_processing_status", {
+    target_document_id: documentId,
+  });
+  const processing = data?.[0];
+  if (error || !processing) return null;
+  return {
+    status: processing.status,
+    attemptCount: processing.attempt_count,
+    startedAt: processing.started_at,
+    completedAt: processing.completed_at,
+    failedAt: processing.failed_at,
+  };
 }

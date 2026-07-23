@@ -133,10 +133,12 @@ function BinderFilterFields({
         >
           <option value="">{t("allProcessingStatuses")}</option>
           <option value="not_started">{t("notProcessed")}</option>
+          <option value="queued">{t("processingQueued")}</option>
           <option value="processing">{t("processing")}</option>
-          <option value="ready">{t("processingReady")}</option>
+          <option value="completed">{t("processingCompleted")}</option>
           <option value="failed">{t("processingFailed")}</option>
-          <option value="deleted">{t("processingDeleted")}</option>
+          <option value="unsupported">{t("processingUnsupported")}</option>
+          <option value="needs_ocr">{t("processingNeedsOcr")}</option>
         </select>
       </div>
       <div className="space-y-1.5">

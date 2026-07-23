@@ -6,7 +6,7 @@ Ethiospectrum is a multilingual family-support platform foundation for organizin
 
 Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, private document upload/download/archive flows, and a household-scoped digital document binder.
 
-Planned: profile and household synchronization, document OCR/processing, AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
+Planned: profile and household synchronization, document OCR, AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
 
 ## Stack and architecture
 
@@ -67,6 +67,8 @@ The migration marks any pre-ETH-012, non-archived document row without upload li
 
 ETH-013 turns `/[locale]/documents` into a URL-driven document binder. It derives the current household on the server, validates every search/filter/sort/page value, searches only safe metadata (title, normalized filename, and category), filters by active dependent or household-level assignment, category, MIME type, lifecycle/processing status, and created-date range, and returns 12 rows per server-side page. Sorting is restricted to newest, oldest, or title order with a deterministic ID tiebreaker. The default binder excludes soft-archived rows; an explicit archive-status filter can show only records the caller's existing RLS policy permits. It does not search document content, call a public Storage URL, use the administrative client, or alter private object retention. Native Amharic and Spanish review remains required before release.
 
+ETH-014 adds an opt-in, server-only processing foundation for active uploaded PDF, DOCX, and TXT records. An authorized non-viewer can queue work, while a separate internal scheduler route with a distinct server-only secret runs a small service-role batch. The worker claims jobs atomically, revalidates the private object path/metadata, extracts bounded text, and persists only authorized page/chunk derivatives through protected database functions. Browser sessions cannot write jobs or derivatives, and the member UI shows only safe processing status/timestamps rather than document text. This issue does not add OCR, embeddings, AI analysis, content search, public sharing, or permanent deletion. Review [the document-processing runbook](docs/document-processing-design.md) before configuring a scheduler.
+
 For a local manual check, run the local Supabase stack and reset the database, sign in with synthetic users, complete household onboarding, and upload small synthetic PDF, DOCX, and TXT files with several titles, categories, and one active dependent. Confirm that the binder's metadata search, each filter, controlled sort, clear action, date range, pagination, mobile filter dialog, detail back link, dashboard links/counts, and 60-second signed download work for the current household only. Archive a record and confirm it disappears from the default binder, remains visible only through the archive-status filter when RLS allows it, and leaves its private object intact. Also verify empty, unsupported, and over-20-MiB file behavior. Do not use real personal documents or hosted production data for these checks.
 
 For local-only administrator testing, use a direct SQL console against the local database after creating a synthetic user: `update public.user_roles set role = 'administrator' where user_id = '<synthetic UUID>';`. Do not run this against a hosted project without a reviewed role-governance procedure.
@@ -83,7 +85,7 @@ ETH-008 uses a cookie-based PKCE flow. In the Supabase **Confirm signup** and **
 {{ .ConfirmationURL }}
 ```
 
-Do not build these links from `{{ .SiteURL }}`: doing so ignores the application's local or per-environment callback URL. For localized recovery links, the application sends the `next` destination through `resetPasswordForEmail`; do not insert real project URLs or keys into templates. Test signup confirmation and password reset against the local project. CAPTCHA, OAuth, custom SMTP, profile synchronization, document processing, and administrator-assignment tooling remain out of scope.
+Do not build these links from `{{ .SiteURL }}`: doing so ignores the application's local or per-environment callback URL. For localized recovery links, the application sends the `next` destination through `resetPasswordForEmail`; do not insert real project URLs or keys into templates. Test signup confirmation and password reset against the local project. CAPTCHA, OAuth, custom SMTP, profile synchronization, and administrator-assignment tooling remain out of scope.
 
 ## Localization and contribution
 
@@ -95,4 +97,4 @@ Treat family data as sensitive. Never commit real keys or private documents; do 
 
 ## Next recommended issue
 
-`ETH-014 Add document-processing jobs`: introduce a reviewed, idempotent processing workflow only after the private upload and metadata-only binder boundaries are stable. It must not add document-content search, OCR, public sharing, or permanent deletion without separate approval.
+`ETH-015 Add authorized extracted-text review`: build any future user-facing text capability only with a new review of parent-document authorization, excerpt minimization, retention, localization, and accessibility. It must not add OCR, AI, public sharing, or unrestricted document-content search without separate approval.

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
 
 const localSupabaseUrl = /^http:\/\/(?:127\.0\.0\.1|localhost)(?::\d+)?(?:\/|$)/i;
 const isDedicatedLocalRun =
@@ -12,7 +13,7 @@ test.describe("documents workflow (local Supabase only)", () => {
     "Document mutation coverage requires the dedicated local Playwright configuration.",
   );
 
-  test("protects and organizes synthetic household documents in the binder", async ({ page }) => {
+  test("protects and organizes synthetic household documents in the binder", async ({ browser, page }) => {
     test.setTimeout(180_000);
     const suffix = `${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`;
     const email = `documents-e2e-${suffix}@example.test`;
@@ -20,6 +21,7 @@ test.describe("documents workflow (local Supabase only)", () => {
     const dependentName = "Synthetic dependent";
     const firstTitle = `Synthetic binder 00 ${suffix}`;
     const filename = "synthetic-local-document.txt";
+    const householdName = `Local document household ${suffix}`;
 
     async function uploadSyntheticDocument({
       title,
@@ -60,7 +62,7 @@ test.describe("documents workflow (local Supabase only)", () => {
     ]);
 
     await page.goto("/en/onboarding");
-    await page.getByLabel("Household name").fill(`Local document household ${suffix}`);
+    await page.getByLabel("Household name").fill(householdName);
     await page.getByRole("checkbox").check();
     await Promise.all([
       page.waitForURL(/\/en\/dashboard$/),
@@ -94,9 +96,84 @@ test.describe("documents workflow (local Supabase only)", () => {
     });
     await page.getByRole("button", { name: "Upload document" }).click();
     await page.waitForURL(/\/en\/documents\/[0-9a-f-]{36}$/);
+    const firstDocumentId = new URL(page.url()).pathname.split("/").at(-1);
+    expect(firstDocumentId).toMatch(/^[0-9a-f-]{36}$/);
     await expect(page.getByRole("heading", { level: 1, name: firstTitle })).toBeVisible();
     await expect(page.getByRole("link", { name: "Back to document binder" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Download" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Process document" })).toBeVisible();
+
+    const processButton = page.getByRole("button", { name: "Process document" });
+    await processButton.focus();
+    await expect(processButton).toBeFocused();
+    await processButton.press("Enter");
+    await expect(page.getByRole("status")).toHaveText("This document is queued for processing.");
+
+    const rejectedWorkerRequest = await page.request.post("/api/internal/document-processing");
+    expect(rejectedWorkerRequest.status()).toBe(401);
+
+    const processingSecret = process.env.DOCUMENT_PROCESSING_SECRET;
+    expect(processingSecret).toBeTruthy();
+    const workerRequest = await page.request.post("/api/internal/document-processing", {
+      headers: { "x-document-processing-secret": processingSecret ?? "" },
+    });
+    expect(workerRequest.status()).toBe(200);
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Processing status: Completed").count();
+      })
+      .toBeGreaterThan(0);
+
+    await page.goto(`/am/documents/${firstDocumentId}`);
+    await expect(page.getByLabel("የማስኬጃ ሁኔታ: ተጠናቋል")).toBeVisible();
+    await page.goto(`/es/documents/${firstDocumentId}`);
+    await expect(page.getByLabel("Estado de procesamiento: Completado")).toBeVisible();
+
+    const localSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const localSupabaseSecret = process.env.SUPABASE_SECRET_KEY;
+    if (!localSupabaseUrl || !localSupabaseSecret || !firstDocumentId) {
+      throw new Error("The dedicated local document test configuration is incomplete.");
+    }
+    const admin = createClient(localSupabaseUrl, localSupabaseSecret);
+    const { data: household, error: householdError } = await admin
+      .from("households")
+      .select("id")
+      .eq("name", householdName)
+      .maybeSingle();
+    if (householdError || !household) throw new Error("The synthetic local household was not created.");
+
+    const viewerEmail = `documents-viewer-${suffix}@example.test`;
+    const { data: viewerAuth, error: viewerAuthError } = await admin.auth.admin.createUser({
+      email: viewerEmail,
+      password,
+      email_confirm: true,
+    });
+    if (viewerAuthError || !viewerAuth.user) throw new Error("The synthetic local viewer was not created.");
+    const { error: membershipError } = await admin.from("household_members").insert({
+      household_id: household.id,
+      user_id: viewerAuth.user.id,
+      permission: "viewer",
+      status: "active",
+      joined_at: new Date().toISOString(),
+    });
+    if (membershipError) throw new Error("The synthetic local viewer membership was not created.");
+
+    const viewerContext = await browser.newContext();
+    const viewerPage = await viewerContext.newPage();
+    await viewerPage.goto("/en/login");
+    await viewerPage.getByLabel("Email address").fill(viewerEmail);
+    await viewerPage.getByLabel("Password").fill(password);
+    await Promise.all([
+      viewerPage.waitForURL(/\/en\/dashboard$/),
+      viewerPage.getByRole("button", { name: "Log in" }).click(),
+    ]);
+    await viewerPage.goto(`/en/documents/${firstDocumentId}`);
+    await expect(viewerPage.getByRole("heading", { level: 1, name: firstTitle })).toBeVisible();
+    await expect(viewerPage.getByRole("button", { name: "Process document" })).toHaveCount(0);
+    await viewerContext.close();
+
+    await page.goto(`/en/documents/${firstDocumentId}`);
 
     const download = page.waitForEvent("download");
     await page.getByRole("link", { name: "Download" }).click();

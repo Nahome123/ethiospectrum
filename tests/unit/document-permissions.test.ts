@@ -11,6 +11,7 @@ function context(permission: DocumentContext["permission"], userId = anotherUser
     userId,
     permission,
     canUpload: permission === "owner" || permission === "administrator" || permission === "member",
+    canProcess: permission === "owner" || permission === "administrator" || permission === "member",
   };
 }
 
