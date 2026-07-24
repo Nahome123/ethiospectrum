@@ -1,6 +1,6 @@
 begin;
 
-select plan(70);
+select plan(84);
 
 -- Synthetic identities only. Auth synchronization creates the related profile
 -- rows; this suite never stores real document data or credentials.
@@ -41,6 +41,7 @@ select has_column('public', 'document_processing_jobs', 'attempt_count', 'proces
 select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_processing_jobs'::regclass), 'processing-job RLS is enabled and forced');
 select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_pages'::regclass), 'document-page RLS is enabled and forced');
 select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_chunks'::regclass), 'document-chunk RLS is enabled and forced');
+select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_analyses'::regclass), 'dormant analyses RLS is enabled and forced');
 select has_function('public', 'queue_document_processing', array['uuid'], 'queue function exists');
 select has_function('public', 'get_document_processing_status', array['uuid'], 'safe status function exists');
 select has_function('public', 'claim_next_document_processing_job', array['text'], 'worker claim function exists');
@@ -56,6 +57,7 @@ values
   ('92000000-0000-0000-0000-000000000001', '91000000-0000-0000-0000-000000000001', 'Queue document', 'queue.txt', 'ignored', 'text/plain', 1024, 'other'),
   ('92000000-0000-0000-0000-000000000001', '91000000-0000-0000-0000-000000000001', 'Retry document', 'retry.txt', 'ignored', 'text/plain', 1024, 'other'),
   ('92000000-0000-0000-0000-000000000001', '91000000-0000-0000-0000-000000000001', 'Archive document', 'archive.txt', 'ignored', 'text/plain', 1024, 'other'),
+  ('92000000-0000-0000-0000-000000000001', '91000000-0000-0000-0000-000000000001', 'Future document', 'future.txt', 'ignored', 'text/plain', 1024, 'other'),
   ('92000000-0000-0000-0000-000000000001', '91000000-0000-0000-0000-000000000001', 'Failed upload document', 'failed-upload.txt', 'ignored', 'text/plain', 1024, 'other');
 
 reset role;
@@ -125,6 +127,13 @@ select throws_ok(
   'a member cannot write extracted pages directly'
 );
 select throws_ok(
+  $$insert into public.document_chunks (document_id, page_number, chunk_index, content, character_count)
+      values ((select id from public.documents where title = 'Queue document'), 1, 0, 'forbidden', 9)$$,
+  '42501',
+  null,
+  'a member cannot write extracted chunks directly'
+);
+select throws_ok(
   $$select * from public.claim_next_document_processing_job('ordinary-browser-caller')$$,
   '42501',
   null,
@@ -135,6 +144,14 @@ reset role;
 set local role anon;
 select throws_ok($$select * from public.document_processing_jobs$$, '42501', null, 'an anonymous user cannot query processing jobs');
 select throws_ok($$select * from public.document_pages$$, '42501', null, 'an anonymous user cannot read extracted pages');
+select throws_ok($$select * from public.document_chunks$$, '42501', null, 'an anonymous user cannot read extracted chunks');
+select throws_ok($$select * from public.document_analyses$$, '42501', null, 'an anonymous user cannot read dormant analyses');
+select throws_ok(
+  $$select * from public.get_document_processing_status('00000000-0000-0000-0000-000000000000'::uuid)$$,
+  '42501',
+  null,
+  'an anonymous user cannot invoke the safe status function'
+);
 
 reset role;
 set local role authenticated;
@@ -171,6 +188,14 @@ reset role;
 select is((select status from public.document_processing_jobs where document_id = (select id from public.documents where title = 'Queue document')), 'processing', 'claiming marks the job processing');
 select is((select attempt_count from public.document_processing_jobs where document_id = (select id from public.documents where title = 'Queue document')), 1, 'claiming increments the attempt count once');
 select is((select processing_status from public.documents where title = 'Queue document'), 'processing', 'claiming marks the document processing');
+select ok(
+  (
+    select locked_at is not null and locked_by = 'synthetic-worker-one' and started_at is not null
+    from public.document_processing_jobs
+    where document_id = (select id from public.documents where title = 'Queue document')
+  ),
+  'claiming records the worker lease and start timestamp'
+);
 
 set local role service_role;
 set local request.jwt.claim.role = 'service_role';
@@ -185,6 +210,18 @@ select is(
   ),
   false,
   'a different worker cannot complete a claimed job'
+);
+select throws_ok(
+  $$select public.complete_document_processing_job(
+      (select id from public.document_processing_jobs where document_id = (select id from public.documents where title = 'Queue document')),
+      'synthetic-worker-one',
+      'completed',
+      jsonb_build_array(jsonb_build_object('page_number', 1, 'content', repeat('x', 1201), 'character_count', 1201)),
+      jsonb_build_array(jsonb_build_object('page_number', 1, 'chunk_index', 0, 'content', repeat('x', 1201), 'character_count', 1201, 'token_estimate', 1))
+    )$$,
+  '23514',
+  null,
+  'the completion boundary rejects an oversized chunk'
 );
 select ok(
   public.complete_document_processing_job(
@@ -206,6 +243,21 @@ select is((select count(*) from public.document_chunks where document_id = (sele
 set local role service_role;
 set local request.jwt.claim.role = 'service_role';
 select is((select count(*) from public.claim_next_document_processing_job('synthetic-worker-after-completion')), 0::bigint, 'a completed job is never claimed again');
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000001';
+select lives_ok(
+  $$select * from public.queue_document_processing((select id from public.documents where title = 'Future document'))$$,
+  'an eligible document can be queued for a future worker pass'
+);
+reset role;
+update public.document_processing_jobs
+set available_at = now() + interval '1 hour'
+where document_id = (select id from public.documents where title = 'Future document');
+set local role service_role;
+set local request.jwt.claim.role = 'service_role';
+select is((select count(*) from public.claim_next_document_processing_job('synthetic-worker-before-available')), 0::bigint, 'a future queued job is skipped');
 
 reset role;
 set local role authenticated;
@@ -260,6 +312,10 @@ select is((select error_message from public.document_processing_jobs where docum
 
 set local role authenticated;
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000001';
+select ok(
+  (select retryable from public.get_document_processing_status((select id from public.documents where title = 'Retry document'))),
+  'the safe status surface reports a failed job below the retry limit as retryable'
+);
 select lives_ok(
   $$select * from public.queue_document_processing((select id from public.documents where title = 'Retry document'))$$,
   'an owner can retry a failed document before the bounded limit'
@@ -310,6 +366,14 @@ select ok(
 reset role;
 select is((select attempt_count from public.document_processing_jobs where document_id = (select id from public.documents where title = 'Retry document')), 3, 'attempts stop at the configured maximum');
 
+set local role authenticated;
+set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000001';
+select ok(
+  not (select retryable from public.get_document_processing_status((select id from public.documents where title = 'Retry document'))),
+  'the safe status surface suppresses retry after the maximum attempts'
+);
+
+reset role;
 set local role service_role;
 set local request.jwt.claim.role = 'service_role';
 select is((select count(*) from public.claim_next_document_processing_job('synthetic-worker-after-max-attempts')), 0::bigint, 'a job at the retry limit is never claimed again');
@@ -324,6 +388,20 @@ select throws_ok(
   'a document cannot exceed the retry limit'
 );
 
+reset role;
+update public.household_members
+set status = 'removed'
+where household_id = '92000000-0000-0000-0000-000000000001'
+  and user_id = '91000000-0000-0000-0000-000000000002';
+set local role authenticated;
+set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'a removed member immediately loses extracted-page access');
+select is((select count(*) from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'a removed member immediately loses extracted-chunk access');
+select is((select count(*) from public.get_document_processing_status((select id from public.documents where title = 'Queue document'))), 0::bigint, 'a removed member immediately loses processing-status access');
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000001';
 select lives_ok(
   $$select * from public.queue_document_processing((select id from public.documents where title = 'Archive document'))$$,
   'an uploaded document can be queued before an archive'
@@ -349,18 +427,10 @@ select lives_ok(
   'an owner can archive a completed document'
 );
 
-set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000002';
+set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000003';
 select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'archiving the parent immediately hides extracted pages');
+select is((select count(*) from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'archiving the parent immediately hides extracted chunks');
 select is((select count(*) from public.get_document_processing_status((select id from public.documents where title = 'Queue document'))), 0::bigint, 'archiving the parent immediately hides processing status');
-
-reset role;
-update public.household_members
-set status = 'removed'
-where household_id = '92000000-0000-0000-0000-000000000001'
-  and user_id = '91000000-0000-0000-0000-000000000002';
-set local role authenticated;
-set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000002';
-select is((select count(*) from public.get_document_processing_status((select id from public.documents where title = 'Retry document'))), 0::bigint, 'a removed member immediately loses processing-status access');
 
 select * from finish();
 rollback;

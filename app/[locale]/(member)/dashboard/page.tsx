@@ -105,6 +105,14 @@ export default async function DashboardPage() {
               {t("processingFailedDocumentCount", { count: documentSummary.processingFailedCount })}
             </Link>
           ) : null}
+          {documentSummary.unsupportedCount ? (
+            <Link
+              className="mt-1 block text-sm text-primary underline underline-offset-4"
+              href="/documents?processingStatus=unsupported"
+            >
+              {t("unsupportedDocumentCount", { count: documentSummary.unsupportedCount })}
+            </Link>
+          ) : null}
           {documentSummary.needsOcrCount ? (
             <Link
               className="mt-1 block text-sm text-primary underline underline-offset-4"

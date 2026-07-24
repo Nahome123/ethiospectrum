@@ -1,5 +1,6 @@
 import "server-only";
 
+import { DOCUMENT_ALLOWED_MIME_TYPES } from "@/lib/documents/constants";
 import type { Database } from "@/lib/supabase/types";
 import {
   createServerComponentSupabaseClient,
@@ -27,6 +28,7 @@ export type DocumentProcessingDetails = {
   startedAt: string | null;
   completedAt: string | null;
   failedAt: string | null;
+  retryable: boolean;
 };
 
 export async function getDocumentContext(): Promise<DocumentContext | null> {
@@ -58,6 +60,25 @@ export function canArchiveDocument(context: DocumentContext, document: Pick<Docu
     archiveManagerPermissions.has(context.permission) ||
     (context.canUpload && document.uploaded_by === context.userId)
   );
+}
+
+/** Keeps member controls aligned with the database's safe queue eligibility. */
+export function canQueueDocumentProcessing(
+  context: DocumentContext,
+  document: Pick<DocumentRow, "deleted_at" | "mime_type" | "processing_status" | "upload_status">,
+  processingDetails: Pick<DocumentProcessingDetails, "retryable"> | null,
+): boolean {
+  if (
+    !context.canProcess ||
+    document.upload_status !== "uploaded" ||
+    Boolean(document.deleted_at) ||
+    !DOCUMENT_ALLOWED_MIME_TYPES.includes(document.mime_type)
+  ) {
+    return false;
+  }
+
+  if (document.processing_status === "not_started") return true;
+  return document.processing_status === "failed" && processingDetails?.retryable === true;
 }
 
 export async function getUploadDependents() {
@@ -118,5 +139,6 @@ export async function getDocumentProcessingDetails(
     startedAt: processing.started_at,
     completedAt: processing.completed_at,
     failedAt: processing.failed_at,
+    retryable: processing.retryable,
   };
 }
