@@ -1,14 +1,20 @@
-# Secure document-processing foundation
+# Secure document-processing and summary foundation
 
 ETH-014 adds a deliberately small, private processing foundation to the existing
 private upload and metadata-only binder. It makes an authorized uploaded PDF,
 DOCX, or TXT document eligible for server-side text extraction. It does not make
-document text searchable or visible in the member UI.
+document text searchable or generally visible in the member UI.
 
-This is not an OCR, AI analysis, embeddings, vector-search, document-chat,
-translation, malware-scanning, public-sharing, notification, or retention/
-deletion feature. Those capabilities need their own privacy, product, and
-security reviews before they are added.
+ETH-015 builds on completed extraction with a separate, source-grounded summary
+boundary. It may render a completed structured summary and short protected source
+excerpts for verification, but it does not expose an entire extracted document to
+the browser or make the content searchable.
+
+This is not an OCR, document-chat, general-purpose assistant, embeddings,
+vector-search, cross-document search, translation of stored source text,
+malware-scanning, public-sharing, notification, or retention/deletion feature.
+Those capabilities need their own privacy, product, and security reviews before
+they are added.
 
 ## Processing lifecycle
 
@@ -36,6 +42,27 @@ configured maximum of three attempts. Completed, unsupported, and OCR-needed
 documents cannot be requeued by this foundation. `FOR UPDATE SKIP LOCKED` and a
 unique job-to-document relationship ensure concurrent workers cannot claim the
 same row.
+
+## Summary lifecycle
+
+`public.document_summaries` is separate from upload and processing state. It is
+eligible only when its parent document is uploaded, unarchived, has
+`processing_status = completed`, and has authorized extracted pages or chunks.
+One controlled record represents a document and one supported summary language.
+
+| Summary status | Meaning                                                              | Next allowed status                       |
+| -------------- | -------------------------------------------------------------------- | ----------------------------------------- |
+| `queued`       | An authorized request awaits the protected summary worker.           | `generating`, `failed`                    |
+| `generating`   | One bounded worker holds the summary lease.                          | `completed`, `failed`                     |
+| `completed`    | Validated structured output and document-scoped sources were stored. | reused, not regenerated automatically     |
+| `failed`       | A safe worker failure occurred.                                      | `queued`, subject to bounded retry policy |
+
+The database permits one summary record per document/language and keeps attempts
+bounded. Completed summaries may be reused for the same document/language. The
+request path must prevent active duplicates and must not change archive,
+processing, or source rows to make a document eligible. `not_started`, `queued`,
+`processing`, `failed`, `unsupported`, and `needs_ocr` document processing states
+are not summary-eligible.
 
 ## Trust boundaries and data flow
 
@@ -106,6 +133,50 @@ the document, status, pages, and chunks from active user flows; it does not
 physically delete the private object or derived rows in ETH-014. Retry and
 failure workflows clear extracted rows so stale partial text is not retained.
 
+## Summary trust boundary and source grounding
+
+1. An active owner, household administrator, or member requests an allowed
+   summary language from the document detail route. The browser supplies no
+   household ID, actor ID, source ID, extracted text, provider, model, prompt
+   version, storage path, or job state. Active viewers may read an existing
+   accessible summary, but cannot request or retry provider work.
+2. `public.request_document_summary(uuid, text)` derives identity, household
+   membership, document eligibility, source existence, language, reuse/duplicate
+   behavior, and retry eligibility. It returns a safe narrow result; a matching
+   status helper returns only safe user-facing state.
+3. A protected internal summary worker, invoked with a distinct
+   `DOCUMENT_SUMMARY_SECRET`, claims a small bounded batch with
+   `public.claim_next_document_summary_job(text)`. It rechecks the document and
+   reads only trusted, ordered pages/chunks from the same parent.
+4. The server-only provider boundary builds a structured request in which the
+   document is clearly data, not instruction. It ignores document text asking
+   it to reveal secrets, change format, call tools, execute code, visit URLs, or
+   change authorization.
+5. `complete_document_summary_job` validates structured output and resolves
+   every source reference against the parent document before it writes a
+   completed record. It stores safe provider/model identifiers, prompt version,
+   and bounded excerpts only; it never stores API keys, signed URLs, full prompt
+   bodies, or raw provider responses.
+
+Provider calls are server-only. The initial OpenAI integration is behind a
+provider-neutral interface so browser code never imports an SDK or receives an
+API key. Missing `OPENAI_API_KEY` or `OPENAI_SUMMARY_MODEL` fails closed; the
+worker secret is also required and distinct from `DOCUMENT_PROCESSING_SECRET`
+and `SUPABASE_SECRET_KEY`.
+
+Long documents are processed deterministically in source order with maximum
+chunks, characters, batches, and provider calls. A staged implementation may
+use validated intermediate summaries, but it must not loop indefinitely or
+silently claim full coverage after excluding material. `source_coverage` is
+`full` or `partial` so the UI does not imply that a bounded subset represents an
+entire document.
+
+Structured sections may be empty when unsupported by the source. The worker does
+not invent names, dates, deadlines, diagnoses, legal conclusions, or requirements.
+The detail UI labels page versus logical-section sources honestly, renders text
+without unsafe HTML, keeps source previews keyboard accessible, and encourages
+users to verify important statements against the original document.
+
 ## Operations runbook
 
 ### Configure and deploy
@@ -124,6 +195,22 @@ failure workflows clear extracted rows so stale partial text is not retained.
 4. Deploy the application only after the database migration and server-only
    environment configuration are present. A scheduler may run only after that
    deployment is healthy.
+
+### Summary worker configuration
+
+Before enabling a summary worker in any reviewed environment, apply its migration
+locally, refresh generated types, and configure all three server-only values:
+
+- `OPENAI_API_KEY` for the provider boundary.
+- `OPENAI_SUMMARY_MODEL` for the reviewed current model selection.
+- `DOCUMENT_SUMMARY_SECRET` for the protected summary-worker invocation.
+
+Do not put a real value in `.env.example`, use any of them in a browser, or reuse
+the processing worker secret. A scheduler must send the summary secret only in
+the designated request header, send no document-specific body, and receive only
+aggregate batch counts or a generic temporary-unavailable response. Deploy the
+migration and server configuration before enabling a scheduler; this document
+does not imply that a hosted migration or scheduler has been enabled.
 
 ### GitHub Actions scheduler
 
@@ -173,6 +260,11 @@ do not add an endpoint that returns document-specific failure details.
 - A stale worker lease is converted to a bounded safe failure by a later
   protected worker pass. Archive cancels active work; never revive an archived
   row merely to finish processing.
+- Monitor summary work using aggregate queue/state counts and sanitized failure
+  codes only. Never place prompts, source text, excerpts, generated summaries,
+  API keys, model responses, or document identifiers in telemetry.
+- Retry only the safe, bounded `failed` summary path. Do not manually insert,
+  edit, claim, complete, or relabel a summary through a browser or SQL console.
 
 ## Local verification
 
@@ -204,6 +296,15 @@ synthetic viewer cannot start processing. pgTAP separately verifies queue
 idempotency, worker-only claim/complete/fail access, bounded retries, archive
 cancellation, and parent-document derivative RLS.
 
-Before release, perform keyboard/screen-reader/mobile checks on the new status
-and retry controls and request native Amharic and Spanish review of the
-processing terminology. Do not treat automated translation as native review.
+ETH-015 local verification must use only synthetic documents and mocked provider
+responses. It must cover eligible and ineligible document states, owner/admin/
+member request access, viewer read-only behavior, removed and cross-household
+denial, all summary statuses, English/Amharic/Spanish selection, source-reference
+keyboard access, bounded long-document behavior, prompt-injection resistance,
+and generic worker errors. It must not call a paid API or point a local test at a
+hosted project.
+
+Before release, perform keyboard/screen-reader/mobile checks on processing and
+summary status/retry controls, source previews, long-content wrapping, and the
+language selector. Request native Amharic and Spanish review of the summary and
+verification terminology. Do not treat automated translation as native review.

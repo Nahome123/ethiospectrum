@@ -85,22 +85,37 @@ function documentQuery(result: { data: unknown[]; count: number; error?: Error |
   return chain;
 }
 
+function summaryStatusQuery(result: { data?: unknown[]; error?: Error | null } = {}) {
+  const chain = {
+    select: vi.fn(),
+    eq: vi.fn(),
+    in: vi.fn(async () => ({ data: result.data ?? [], error: result.error ?? null })),
+  };
+  chain.select.mockReturnValue(chain);
+  chain.eq.mockReturnValue(chain);
+  return chain;
+}
+
 function binderClient({
   activeDependents = [{ id: dependentId, first_name: "Synthetic", preferred_name: null }],
   documents = [binderDocument()],
   count = 1,
+  summaryRows = [],
 }: {
   activeDependents?: unknown[];
   documents?: unknown[];
   count?: number;
+  summaryRows?: unknown[];
 } = {}) {
   const activeDependentsChain = activeDependentsQuery(activeDependents);
   const documentsChain = documentQuery({ data: documents, count });
+  const summaryStatusChain = summaryStatusQuery({ data: summaryRows });
   const from = vi.fn((table: string) => {
     if (table === "dependents") return activeDependentsChain;
+    if (table === "document_summaries") return summaryStatusChain;
     return documentsChain;
   });
-  return { client: { from }, activeDependentsChain, documentsChain, from };
+  return { client: { from }, activeDependentsChain, documentsChain, summaryStatusChain, from };
 }
 
 function dashboardQuery(result: { count?: number; data?: unknown[]; error?: Error | null }) {
@@ -272,6 +287,25 @@ describe("document binder server query", () => {
     expect(fixture.documentsChain.order).toHaveBeenNthCalledWith(2, "id", { ascending: false });
   });
 
+  it("adds only a batched lifecycle status for visible binder documents and never selects summary content", async () => {
+    const fixture = binderClient({
+      summaryRows: [
+        { document_id: documentId, status: "failed" },
+        { document_id: documentId, status: "completed" },
+      ],
+    });
+    mocks.createServerComponentSupabaseClient.mockResolvedValue(fixture.client);
+
+    const result = await getDocumentBinder(parseDocumentBinderSearchParams({}));
+
+    expect(fixture.summaryStatusChain.eq).toHaveBeenCalledWith("household_id", householdId);
+    expect(fixture.summaryStatusChain.in).toHaveBeenCalledWith("document_id", [documentId]);
+    expect(fixture.summaryStatusChain.select).toHaveBeenCalledWith("document_id, status");
+    expect(fixture.summaryStatusChain.select.mock.calls[0][0]).not.toContain("structured_summary");
+    expect(fixture.summaryStatusChain.select.mock.calls[0][0]).not.toContain("source_references");
+    expect(result.documents[0]).toMatchObject({ summaryStatus: "completed" });
+  });
+
   it("counts every active processing terminal state, including unsupported documents, while excluding archives", async () => {
     const fixture = dashboardClient([
       { data: [{ id: documentId, title: "Synthetic active document" }] },
@@ -283,6 +317,9 @@ describe("document binder server query", () => {
       { count: 1 },
       { count: 1 },
       { count: 1 },
+      { count: 1 },
+      { count: 3 },
+      { count: 2 },
       { count: 1 },
     ]);
     mocks.createServerComponentSupabaseClient.mockResolvedValue(fixture.client);
@@ -296,12 +333,19 @@ describe("document binder server query", () => {
       needsOcrCount: 1,
       processingCount: 1,
       processingFailedCount: 1,
+      summaryAvailableCount: 3,
+      summaryFailedCount: 1,
+      summaryPendingCount: 2,
       unsupportedCount: 1,
     });
-    expect(fixture.from).toHaveBeenCalledTimes(10);
+    expect(fixture.from).toHaveBeenCalledTimes(13);
     const unsupportedQuery = fixture.queries[8];
     expect(unsupportedQuery?.eq).toHaveBeenCalledWith("upload_status", "uploaded");
     expect(unsupportedQuery?.eq).toHaveBeenCalledWith("processing_status", "unsupported");
     expect(unsupportedQuery?.is).toHaveBeenCalledWith("deleted_at", null);
+    const availableSummariesQuery = fixture.queries[10];
+    expect(availableSummariesQuery?.eq).toHaveBeenCalledWith("household_id", householdId);
+    expect(availableSummariesQuery?.eq).toHaveBeenCalledWith("status", "completed");
+    expect(availableSummariesQuery?.select).toHaveBeenCalledWith("id", { count: "exact", head: true });
   });
 });

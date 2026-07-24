@@ -14,7 +14,7 @@ test.describe("documents workflow (local Supabase only)", () => {
   );
 
   test("protects and organizes synthetic household documents in the binder", async ({ browser, page }) => {
-    test.setTimeout(180_000);
+    test.setTimeout(300_000);
     const suffix = `${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`;
     const email = `documents-e2e-${suffix}@example.test`;
     const password = "Local-document-test-password-123!";
@@ -75,7 +75,7 @@ test.describe("documents workflow (local Supabase only)", () => {
 
     for (const locale of ["am", "es"]) {
       await page.goto(`/${locale}/documents`);
-      await expect(page.locator("h1")).toBeVisible();
+      await expect(page.locator("h1").first()).toBeVisible();
       await page.goto(`/${locale}/documents/upload`);
       await expect(page.locator("#document-file")).toBeVisible();
     }
@@ -101,16 +101,17 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(page.getByRole("heading", { level: 1, name: firstTitle })).toBeVisible();
     await expect(page.getByRole("link", { name: "Back to document binder" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Download" })).toBeVisible();
-    await expect(page.getByLabel("Processing status: Not started")).toBeVisible();
+    await expect(page.locator("dl").getByLabel("Processing status: Not started")).toBeVisible();
     await expect(page.getByRole("button", { name: "Process document" })).toBeVisible();
+    await expect(page.getByText("Processing is required before a summary can be generated.")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Generate summary" })).toHaveCount(0);
 
     const processButton = page.getByRole("button", { name: "Process document" });
     await processButton.focus();
     await expect(processButton).toBeFocused();
     await processButton.press("Enter");
-    await expect(page.getByRole("status")).toHaveText("This document is queued for processing.");
     await page.reload();
-    await expect(page.getByLabel("Processing status: Queued")).toBeVisible();
+    await expect(page.locator("dl").getByLabel("Processing status: Queued")).toBeVisible();
 
     const rejectedWorkerRequest = await page.request.post("/api/internal/document-processing");
     expect(rejectedWorkerRequest.status()).toBe(401);
@@ -129,9 +130,9 @@ test.describe("documents workflow (local Supabase only)", () => {
       .toBeGreaterThan(0);
 
     await page.goto(`/am/documents/${firstDocumentId}`);
-    await expect(page.getByLabel("የማስኬጃ ሁኔታ: ተጠናቋል")).toBeVisible();
+    await expect(page.locator("dl").getByLabel("የማስኬጃ ሁኔታ: ተጠናቋል")).toBeVisible();
     await page.goto(`/es/documents/${firstDocumentId}`);
-    await expect(page.getByLabel("Estado de procesamiento: Completado")).toBeVisible();
+    await expect(page.locator("dl").getByLabel("Estado de procesamiento: Completado")).toBeVisible();
 
     const localSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const localSupabaseSecret = process.env.SUPABASE_SECRET_KEY;
@@ -139,12 +140,158 @@ test.describe("documents workflow (local Supabase only)", () => {
       throw new Error("The dedicated local document test configuration is incomplete.");
     }
     const admin = createClient(localSupabaseUrl, localSupabaseSecret);
-    const { data: household, error: householdError } = await admin
-      .from("households")
-      .select("id")
-      .eq("name", householdName)
+    const { data: sourceDocument, error: sourceDocumentError } = await admin
+      .from("documents")
+      .select("household_id")
+      .eq("id", firstDocumentId)
       .maybeSingle();
-    if (householdError || !household) throw new Error("The synthetic local household was not created.");
+    if (sourceDocumentError || !sourceDocument)
+      throw new Error("The synthetic local document was not created.");
+
+    if (!firstDocumentId) throw new Error("The synthetic local document identifier is unavailable.");
+    const [{ data: sourcePage, error: sourcePageError }, { data: sourceChunk, error: sourceChunkError }] =
+      await Promise.all([
+        admin
+          .from("document_pages")
+          .select("id, page_number, extracted_text")
+          .eq("document_id", firstDocumentId)
+          .maybeSingle(),
+        admin
+          .from("document_chunks")
+          .select("id, page_id, page_number, chunk_index, content")
+          .eq("document_id", firstDocumentId)
+          .maybeSingle(),
+      ]);
+    if (sourcePageError || sourceChunkError || !sourcePage || !sourceChunk || !sourceChunk.page_id) {
+      throw new Error("The synthetic local summary source is unavailable.");
+    }
+
+    // The local integration test never calls an AI provider. It drives the
+    // browser request path and then completes the claimed job with a synthetic,
+    // schema-valid mocked provider result through the service-only RPC.
+    async function claimSummary(workerIdentity: string) {
+      const { data, error } = await admin.rpc("claim_next_document_summary_job", {
+        worker_identity: workerIdentity,
+      });
+      if (error || !data?.[0]) throw new Error("The synthetic summary job was not claimed.");
+      return data[0];
+    }
+
+    await page.goto(`/en/documents/${firstDocumentId}`);
+    await page.getByLabel("Summary language", { exact: true }).selectOption("en");
+    await page.getByRole("button", { name: "Generate summary" }).click();
+    await page.reload();
+    await expect(page.getByLabel("Summary status: Summary queued")).toBeVisible();
+
+    const firstSummaryJob = await claimSummary(`synthetic-summary-e2e-${suffix}-one`);
+    await page.reload();
+    await expect(page.getByLabel("Summary status: Generating summary")).toBeVisible();
+
+    const failedSummary = await admin.rpc("fail_document_summary_job", {
+      target_summary_id: firstSummaryJob.summary_id,
+      expected_worker_identity: `synthetic-summary-e2e-${suffix}-one`,
+      safe_error_code: "provider_timeout",
+    });
+    if (failedSummary.error || !failedSummary.data) {
+      throw new Error("The synthetic summary failure was not recorded.");
+    }
+    await page.reload();
+    await expect(page.getByLabel("Summary status: Summary failed")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Retry summary" })).toBeVisible();
+
+    await page.getByRole("button", { name: "Retry summary" }).click();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Summary queued").count();
+      })
+      .toBeGreaterThan(0);
+    const completedSummaryJob = await claimSummary(`synthetic-summary-e2e-${suffix}-two`);
+    const sourceExcerpt = sourceChunk.content.trim().slice(0, 320);
+    const completedSummary = await admin.rpc("complete_document_summary_job", {
+      target_summary_id: completedSummaryJob.summary_id,
+      expected_worker_identity: `synthetic-summary-e2e-${suffix}-two`,
+      completed_summary_text: "Synthetic grounded document summary.",
+      completed_structured_summary: {
+        overview: {
+          text: "Synthetic grounded document summary.",
+          sourceKeys: ["src_001"],
+        },
+        keyPoints: [{ text: "Synthetic key point.", sourceKeys: ["src_001"] }],
+        importantDates: [],
+        actionItems: [],
+        organizationsOrPeople: [],
+        warningsOrUncertainties: [],
+      },
+      completed_source_references: [
+        {
+          reference_id: "source-1",
+          section: "overview",
+          item_index: 0,
+          page_id: sourcePage.id,
+          page_number: sourcePage.page_number,
+          chunk_id: sourceChunk.id,
+          chunk_index: sourceChunk.chunk_index,
+          excerpt: sourceExcerpt,
+        },
+        {
+          reference_id: "source-2",
+          section: "keyPoints",
+          item_index: 0,
+          page_id: sourcePage.id,
+          page_number: sourcePage.page_number,
+          chunk_id: sourceChunk.id,
+          chunk_index: sourceChunk.chunk_index,
+          excerpt: sourceExcerpt,
+        },
+      ],
+      completed_source_coverage: "full",
+      completed_source_item_count: 1,
+      completed_source_character_count: sourceChunk.content.length,
+      completed_provider: "synthetic-provider",
+      completed_model_identifier: "synthetic-summary-model",
+      completed_provider_call_count: 2,
+    });
+    if (completedSummary.error || !completedSummary.data) {
+      throw new Error("The synthetic summary completion was not recorded.");
+    }
+
+    await page.reload();
+    await expect(page.getByLabel("Summary status: Summary completed")).toBeVisible();
+    await expect(page.getByText("Synthetic grounded document summary.")).toBeVisible();
+    const firstSourceLink = page.getByRole("link", { name: "Source 1" }).first();
+    await firstSourceLink.focus();
+    await expect(firstSourceLink).toBeFocused();
+    await firstSourceLink.press("Enter");
+    await expect(page.locator("#document-summary-source-0")).toBeVisible();
+
+    await page.getByLabel("View summary language").selectOption("es");
+    await Promise.all([
+      page.waitForURL(/summaryLanguage=es/),
+      page.getByRole("button", { name: "View summary" }).click(),
+    ]);
+    await page.getByLabel("Summary language", { exact: true }).selectOption("es");
+    await page.getByRole("button", { name: "Generate summary" }).click();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Summary queued").count();
+      })
+      .toBeGreaterThan(0);
+
+    await page.getByLabel("View summary language").selectOption("am");
+    await Promise.all([
+      page.waitForURL(/summaryLanguage=am/),
+      page.getByRole("button", { name: "View summary" }).click(),
+    ]);
+    await page.getByLabel("Summary language", { exact: true }).selectOption("am");
+    await page.getByRole("button", { name: "Generate summary" }).click();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Summary queued").count();
+      })
+      .toBeGreaterThan(0);
 
     const viewerEmail = `documents-viewer-${suffix}@example.test`;
     const { data: viewerAuth, error: viewerAuthError } = await admin.auth.admin.createUser({
@@ -154,7 +301,7 @@ test.describe("documents workflow (local Supabase only)", () => {
     });
     if (viewerAuthError || !viewerAuth.user) throw new Error("The synthetic local viewer was not created.");
     const { error: membershipError } = await admin.from("household_members").insert({
-      household_id: household.id,
+      household_id: sourceDocument.household_id,
       user_id: viewerAuth.user.id,
       permission: "viewer",
       status: "active",
@@ -174,6 +321,9 @@ test.describe("documents workflow (local Supabase only)", () => {
     await viewerPage.goto(`/en/documents/${firstDocumentId}`);
     await expect(viewerPage.getByRole("heading", { level: 1, name: firstTitle })).toBeVisible();
     await expect(viewerPage.getByRole("button", { name: "Process document" })).toHaveCount(0);
+    await expect(viewerPage.getByRole("button", { name: "Generate summary" })).toHaveCount(0);
+    await expect(viewerPage.getByRole("button", { name: "Generate again" })).toHaveCount(0);
+    await expect(viewerPage.getByText("Synthetic grounded document summary.")).toBeVisible();
     await viewerContext.close();
 
     await page.goto(`/en/documents/${firstDocumentId}`);

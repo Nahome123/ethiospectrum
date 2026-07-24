@@ -2,6 +2,14 @@ import "server-only";
 
 import { DOCUMENT_ALLOWED_MIME_TYPES } from "@/lib/documents/constants";
 import type { Database } from "@/lib/supabase/types";
+import type { DocumentSummaryLanguage, DocumentSummaryStatus } from "./summaries/constants";
+import { documentSummaryLanguageSchema } from "./summaries/schemas";
+import {
+  type DocumentSummaryStoredSourceReference,
+  parseStoredDocumentSummary,
+  parseStoredDocumentSummarySourceReferences,
+} from "./summaries/storage";
+import type { DocumentSummaryOutput } from "./summaries/types";
 import {
   createServerComponentSupabaseClient,
   getCurrentHousehold,
@@ -29,6 +37,27 @@ export type DocumentProcessingDetails = {
   completedAt: string | null;
   failedAt: string | null;
   retryable: boolean;
+};
+
+export type DocumentSummaryDetails = {
+  status: DocumentSummaryStatus;
+  language: DocumentSummaryLanguage;
+  retryable: boolean;
+  requestedAt: string;
+  startedAt: string | null;
+  completedAt: string | null;
+  failedAt: string | null;
+  sourceCoverage: "full" | "partial";
+  structuredSummary: DocumentSummaryOutput | null;
+  sourceReferences: readonly Pick<
+    DocumentSummaryStoredSourceReference,
+    "section" | "item_index" | "page_number" | "chunk_index" | "excerpt"
+  >[];
+};
+
+export type DocumentSummaryEligibility = {
+  canRequest: boolean;
+  reason: "processing" | "ocr" | "unavailable" | null;
 };
 
 export async function getDocumentContext(): Promise<DocumentContext | null> {
@@ -79,6 +108,53 @@ export function canQueueDocumentProcessing(
 
   if (document.processing_status === "not_started") return true;
   return document.processing_status === "failed" && processingDetails?.retryable === true;
+}
+
+/** Summary requests share the non-viewer household permission boundary with processing. */
+export function canQueueDocumentSummary(
+  context: DocumentContext,
+  document: Pick<DocumentRow, "deleted_at" | "processing_status" | "upload_status">,
+): boolean {
+  return (
+    context.canProcess &&
+    document.upload_status === "uploaded" &&
+    document.processing_status === "completed" &&
+    document.deleted_at === null
+  );
+}
+
+/**
+ * Eligibility is determined from trusted document state and an RLS-protected
+ * existence query. It deliberately never loads extracted text into the page.
+ */
+export async function getDocumentSummaryEligibility(
+  context: DocumentContext,
+  document: Pick<DocumentRow, "deleted_at" | "id" | "processing_status" | "upload_status">,
+): Promise<DocumentSummaryEligibility> {
+  if (document.processing_status === "needs_ocr") return { canRequest: false, reason: "ocr" };
+  if (
+    document.upload_status !== "uploaded" ||
+    document.deleted_at !== null ||
+    document.processing_status !== "completed"
+  ) {
+    return { canRequest: false, reason: "processing" };
+  }
+
+  const supabase = await createServerComponentSupabaseClient();
+  const [pages, chunks] = await Promise.all([
+    supabase
+      .from("document_pages")
+      .select("id", { count: "exact", head: true })
+      .eq("document_id", document.id),
+    supabase
+      .from("document_chunks")
+      .select("id", { count: "exact", head: true })
+      .eq("document_id", document.id),
+  ]);
+  if (pages.error || chunks.error || (pages.count ?? 0) + (chunks.count ?? 0) === 0) {
+    return { canRequest: false, reason: "unavailable" };
+  }
+  return { canRequest: context.canProcess, reason: context.canProcess ? null : "unavailable" };
 }
 
 export async function getUploadDependents() {
@@ -140,5 +216,51 @@ export async function getDocumentProcessingDetails(
     completedAt: processing.completed_at,
     failedAt: processing.failed_at,
     retryable: processing.retryable,
+  };
+}
+
+/** Reads only reviewed, display-safe summary fields through summary RLS. */
+export async function getDocumentSummaryDetails(
+  documentId: string,
+  language: DocumentSummaryLanguage,
+): Promise<DocumentSummaryDetails | null> {
+  const validLanguage = documentSummaryLanguageSchema.safeParse(language);
+  if (!validLanguage.success) return null;
+
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase
+    .from("document_summaries")
+    .select(
+      "language, status, requested_at, started_at, completed_at, failed_at, attempt_count, max_attempts, source_coverage, structured_summary, source_references",
+    )
+    .eq("document_id", documentId)
+    .eq("language", validLanguage.data)
+    .maybeSingle();
+  if (error || !data) return null;
+
+  const status = ["queued", "generating", "completed", "failed"].find((item) => item === data.status);
+  const sourceCoverage =
+    data.source_coverage === "partial" ? "partial" : data.source_coverage === "full" ? "full" : null;
+  const sourceReferences = parseStoredDocumentSummarySourceReferences(data.source_references);
+  if (!status || !sourceCoverage || !sourceReferences) return null;
+
+  return {
+    status: status as DocumentSummaryStatus,
+    language: validLanguage.data,
+    retryable: data.status === "failed" && data.attempt_count < data.max_attempts,
+    requestedAt: data.requested_at,
+    startedAt: data.started_at,
+    completedAt: data.completed_at,
+    failedAt: data.failed_at,
+    sourceCoverage,
+    structuredSummary:
+      data.status === "completed" ? parseStoredDocumentSummary(data.structured_summary) : null,
+    sourceReferences: sourceReferences.map((reference) => ({
+      section: reference.section,
+      item_index: reference.item_index,
+      page_number: reference.page_number,
+      chunk_index: reference.chunk_index,
+      excerpt: reference.excerpt,
+    })),
   };
 }
