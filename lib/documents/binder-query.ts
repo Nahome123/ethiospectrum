@@ -72,7 +72,6 @@ export type DocumentDashboardSummary = {
   processingCount: number;
   completedCount: number;
   processingFailedCount: number;
-  unsupportedCount: number;
   needsOcrCount: number;
   recentDocuments: Pick<DocumentRow, "id" | "title">[];
 };
@@ -256,7 +255,6 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
       processingCount: 0,
       completedCount: 0,
       processingFailedCount: 0,
-      unsupportedCount: 0,
       needsOcrCount: 0,
       recentDocuments: [],
     };
@@ -272,7 +270,6 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
     processingCountResult,
     completedCountResult,
     processingFailedCountResult,
-    unsupportedCountResult,
     needsOcrCountResult,
   ] = await Promise.all([
     supabase
@@ -335,13 +332,6 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
       .eq("household_id", context.household.id)
       .eq("upload_status", "uploaded")
       .is("deleted_at", null)
-      .eq("processing_status", "unsupported"),
-    supabase
-      .from("documents")
-      .select("id", { count: "exact", head: true })
-      .eq("household_id", context.household.id)
-      .eq("upload_status", "uploaded")
-      .is("deleted_at", null)
       .eq("processing_status", "needs_ocr"),
   ]);
 
@@ -356,7 +346,6 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
     processingCount: processingCountResult.error ? 0 : (processingCountResult.count ?? 0),
     completedCount: completedCountResult.error ? 0 : (completedCountResult.count ?? 0),
     processingFailedCount: processingFailedCountResult.error ? 0 : (processingFailedCountResult.count ?? 0),
-    unsupportedCount: unsupportedCountResult.error ? 0 : (unsupportedCountResult.count ?? 0),
     needsOcrCount: needsOcrCountResult.error ? 0 : (needsOcrCountResult.count ?? 0),
     recentDocuments: recentResult.error ? [] : (recentResult.data ?? []),
   };

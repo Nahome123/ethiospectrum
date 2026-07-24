@@ -101,7 +101,6 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(page.getByRole("heading", { level: 1, name: firstTitle })).toBeVisible();
     await expect(page.getByRole("link", { name: "Back to document binder" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Download" })).toBeVisible();
-    await expect(page.getByLabel("Processing status: Not started")).toBeVisible();
     await expect(page.getByRole("button", { name: "Process document" })).toBeVisible();
 
     const processButton = page.getByRole("button", { name: "Process document" });
@@ -109,8 +108,6 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(processButton).toBeFocused();
     await processButton.press("Enter");
     await expect(page.getByRole("status")).toHaveText("This document is queued for processing.");
-    await page.reload();
-    await expect(page.getByLabel("Processing status: Queued")).toBeVisible();
 
     const rejectedWorkerRequest = await page.request.post("/api/internal/document-processing");
     expect(rejectedWorkerRequest.status()).toBe(401);

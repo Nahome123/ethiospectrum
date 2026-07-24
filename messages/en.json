@@ -225,7 +225,6 @@
     "processingDocumentCount": "{count} processing",
     "completedDocumentCount": "{count} completed",
     "processingFailedDocumentCount": "{count} processing failed",
-    "unsupportedDocumentCount": "{count} unsupported",
     "needsOcrDocumentCount": "{count} need OCR"
   },
   "emptyStates": {
@@ -368,9 +367,6 @@
     "processingAlreadyQueued": "This document is already queued for processing.",
     "processingStarted": "This document is queued for processing.",
     "extractionUnavailable": "Text extraction is not available for this document.",
-    "tryAgain": "Try again",
-    "textExtracted": "Text extracted",
-    "noExtractableText": "No extractable text",
     "processingAttempts": "Processing attempts",
     "lastProcessed": "Last processed",
     "download": "Download",

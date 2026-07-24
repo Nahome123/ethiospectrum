@@ -225,7 +225,6 @@
     "processingDocumentCount": "{count} በማስኬድ ላይ",
     "completedDocumentCount": "{count} ተጠናቀዋል",
     "processingFailedDocumentCount": "{count} ማስኬዳቸው አልተሳካም",
-    "unsupportedDocumentCount": "{count} የማይደገፉ",
     "needsOcrDocumentCount": "{count} OCR ያስፈልጋቸዋል"
   },
   "emptyStates": {
@@ -368,9 +367,6 @@
     "processingAlreadyQueued": "ሰነዱ አስቀድሞ ለማስኬድ ተሰልፏል።",
     "processingStarted": "ሰነዱ ለማስኬድ ተሰልፏል።",
     "extractionUnavailable": "ከዚህ ሰነድ ጽሑፍ ማውጣት አልተቻለም።",
-    "tryAgain": "እንደገና ሞክር",
-    "textExtracted": "ጽሑፍ ወጥቷል",
-    "noExtractableText": "ሊወጣ የሚችል ጽሑፍ የለም",
     "processingAttempts": "የሙከራ ብዛት",
     "lastProcessed": "ለመጨረሻ ጊዜ የተሰራበት",
     "download": "አውርድ",

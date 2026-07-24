@@ -6,6 +6,7 @@ import {
   DOCUMENT_PROCESSING_DOCX_MAX_ENTRIES,
   DOCUMENT_PROCESSING_DOCX_MAX_UNCOMPRESSED_BYTES,
   DOCUMENT_PROCESSING_MAX_FILE_BYTES,
+  DOCUMENT_PROCESSING_PDF_TEXTLESS_PAGE_CHARACTERS,
 } from "./constants";
 import { DocumentProcessingError, isDocumentProcessingError } from "./errors";
 import { ensureExtractedTextWithinLimit, normalizeExtractedText, splitIntoLogicalSections } from "./text";
@@ -198,6 +199,10 @@ async function extractPdf(bytes: Uint8Array): Promise<ExtractedDocument> {
       .map((page, index) => ({ pageNumber: index + 1, content: normalizeExtractedText(page) }))
       .filter((page) => Boolean(page.content));
     ensureExtractedTextWithinLimit(sections);
+    const allPagesHaveLittleText = extracted.text.every(
+      (page) => normalizeExtractedText(page).length < DOCUMENT_PROCESSING_PDF_TEXTLESS_PAGE_CHARACTERS,
+    );
+    if (allPagesHaveLittleText) return { outcome: "needs_ocr", sections: [] };
     return sections.length ? { outcome: "completed", sections } : { outcome: "needs_ocr", sections: [] };
   } catch (error) {
     if (isDocumentProcessingError(error)) throw error;

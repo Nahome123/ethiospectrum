@@ -28,7 +28,6 @@ export type DocumentProcessingDetails = {
   startedAt: string | null;
   completedAt: string | null;
   failedAt: string | null;
-  retryable: boolean;
 };
 
 export async function getDocumentContext(): Promise<DocumentContext | null> {
@@ -139,6 +138,5 @@ export async function getDocumentProcessingDetails(
     startedAt: processing.started_at,
     completedAt: processing.completed_at,
     failedAt: processing.failed_at,
-    retryable: processing.retryable,
   };
 }

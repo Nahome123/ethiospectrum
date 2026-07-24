@@ -97,21 +97,6 @@ describe("document processing parsers", () => {
     expect(mocks.extractText).toHaveBeenCalledTimes(1);
   });
 
-  it("completes a PDF with a short but valid extracted text value", async () => {
-    mocks.extractText.mockResolvedValue({ text: ["Hi"] });
-
-    await expect(
-      extractDocumentText({
-        bytes: new TextEncoder().encode("%PDF-1.4"),
-        filename: "note.pdf",
-        mimeType: "application/pdf",
-      }),
-    ).resolves.toEqual({
-      outcome: "completed",
-      sections: [{ pageNumber: 1, content: "Hi" }],
-    });
-  });
-
   it("rejects a declared PDF without a bounded PDF header before parser execution", async () => {
     await expect(
       extractDocumentText({
