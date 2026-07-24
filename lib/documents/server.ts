@@ -60,6 +60,15 @@ export type DocumentSummaryEligibility = {
   reason: "processing" | "ocr" | "unavailable" | null;
 };
 
+export type DocumentOcrDetails = {
+  status: "queued" | "processing" | "completed" | "failed" | "cancelled";
+  attemptCount: number;
+  startedAt: string | null;
+  completedAt: string | null;
+  failedAt: string | null;
+  retryable: boolean;
+};
+
 export async function getDocumentContext(): Promise<DocumentContext | null> {
   const claims = await getCurrentSupabaseClaims();
   const household = await getCurrentHousehold();
@@ -108,6 +117,24 @@ export function canQueueDocumentProcessing(
 
   if (document.processing_status === "not_started") return true;
   return document.processing_status === "failed" && processingDetails?.retryable === true;
+}
+
+/** OCR is restricted to an active, textless PDF and the same non-viewer roles. */
+export function canQueueDocumentOcr(
+  context: DocumentContext,
+  document: Pick<DocumentRow, "deleted_at" | "mime_type" | "processing_status" | "upload_status">,
+  ocrDetails: Pick<DocumentOcrDetails, "retryable" | "status"> | null,
+): boolean {
+  if (
+    !context.canProcess ||
+    document.upload_status !== "uploaded" ||
+    document.deleted_at !== null ||
+    document.mime_type !== "application/pdf" ||
+    document.processing_status !== "needs_ocr"
+  ) {
+    return false;
+  }
+  return !ocrDetails || (ocrDetails.status === "failed" && ocrDetails.retryable);
 }
 
 /** Summary requests share the non-viewer household permission boundary with processing. */
@@ -216,6 +243,35 @@ export async function getDocumentProcessingDetails(
     completedAt: processing.completed_at,
     failedAt: processing.failed_at,
     retryable: processing.retryable,
+  };
+}
+
+/** Reads only the reviewed, display-safe OCR lifecycle fields. */
+export async function getDocumentOcrDetails(documentId: string): Promise<DocumentOcrDetails | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_document_ocr_status", {
+    target_document_id: documentId,
+  });
+  const ocr = data?.[0];
+  const status = ocr?.status;
+  if (
+    error ||
+    !ocr ||
+    (status !== "queued" &&
+      status !== "processing" &&
+      status !== "completed" &&
+      status !== "failed" &&
+      status !== "cancelled")
+  ) {
+    return null;
+  }
+  return {
+    status,
+    attemptCount: ocr.attempt_count,
+    startedAt: ocr.started_at,
+    completedAt: ocr.completed_at,
+    failedAt: ocr.failed_at,
+    retryable: ocr.retryable,
   };
 }
 

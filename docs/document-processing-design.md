@@ -10,11 +10,12 @@ boundary. It may render a completed structured summary and short protected sourc
 excerpts for verification, but it does not expose an entire extracted document to
 the browser or make the content searchable.
 
-This is not an OCR, document-chat, general-purpose assistant, embeddings,
-vector-search, cross-document search, translation of stored source text,
-malware-scanning, public-sharing, notification, or retention/deletion feature.
-Those capabilities need their own privacy, product, and security reviews before
-they are added.
+ETH-014's normal extractor does not OCR, but ETH-016 adds a separately reviewed,
+bounded fallback for scanned PDFs already marked `needs_ocr`. It is not document
+Q&A, document chat, embeddings, vector-search, cross-document search,
+translation of stored source text, malware-scanning, public sharing,
+notification, or retention/deletion. Those capabilities need their own privacy,
+product, and security reviews before they are added.
 
 ## Processing lifecycle
 
@@ -29,19 +30,19 @@ lifecycle. A document must be uploaded and unarchived before it can be queued.
 | `completed`     | Bounded page and chunk text were committed atomically.        | terminal                                          |
 | `failed`        | A safe, retryable worker failure occurred.                    | `queued`, while attempts remain                   |
 | `unsupported`   | The current parser cannot handle the uploaded content safely. | terminal                                          |
-| `needs_ocr`     | The PDF lacks sufficient extractable text.                    | terminal in this issue                            |
+| `needs_ocr`     | The PDF lacks sufficient extractable text.                    | `completed` only through protected usable OCR     |
 
 `public.document_processing_jobs` has one job per document. Its worker state
 also includes `cancelled`, used when an active document is archived. Archive
 state belongs to `documents.upload_status` and `deleted_at`; it supersedes any
 processing state, removes active access, and is not a processing retry.
 
-The queue function is idempotent: an existing `queued` or `processing` job is
-returned instead of duplicated. A failed job can be requeued only before its
-configured maximum of three attempts. Completed, unsupported, and OCR-needed
-documents cannot be requeued by this foundation. `FOR UPDATE SKIP LOCKED` and a
-unique job-to-document relationship ensure concurrent workers cannot claim the
-same row.
+The normal-extraction queue function is idempotent: an existing `queued` or
+`processing` job is returned instead of duplicated. A failed job can be
+requeued only before its configured maximum of three attempts. Completed,
+unsupported, and OCR-needed documents cannot be requeued by that extraction
+foundation. `FOR UPDATE SKIP LOCKED` and a unique job-to-document relationship
+ensure concurrent workers cannot claim the same row.
 
 ## Summary lifecycle
 
@@ -106,7 +107,8 @@ The extraction boundary has intentionally strict limits:
 - DOCX is preflighted as a bounded ZIP archive before raw-text extraction.
   External file access and HTML conversion are not used.
 - PDF extraction preserves page numbering. A textless PDF resolves to
-  `needs_ocr`; OCR is not attempted.
+  `needs_ocr`; it remains there until a separately authorized OCR completion
+  stores usable output.
 - Normalized text, page rows, chunks, and total character volume are bounded.
   Chunks use deterministic, page-scoped indexes and estimated token counts;
   every newly written chunk is also database-capped at 1,200 characters.
@@ -177,6 +179,57 @@ The detail UI labels page versus logical-section sources honestly, renders text
 without unsafe HTML, keeps source previews keyboard accessible, and encourages
 users to verify important statements against the original document.
 
+## OCR fallback lifecycle
+
+`public.document_ocr_jobs` is independent from the original extraction job so a
+normal parser outcome of `needs_ocr` is not overwritten. It has one row per
+document and the worker lifecycle `queued`, `processing`, `completed`, `failed`,
+or `cancelled`. The queue function is browser-reachable only for an active
+owner, household administrator, or member requesting an active uploaded,
+unarchived `application/pdf` whose document status is exactly `needs_ocr`.
+It derives every identifier and rejects viewers, removed/anonymous/unrelated
+users, non-PDFs, archived/incomplete records, active duplicates, and completed
+or otherwise ineligible documents. A failed job can be retried only while its
+maximum of three attempts remains; an archive cancels queued/processing OCR.
+
+The service-role-only claim function uses the same document-first lock ordering
+and `FOR UPDATE SKIP LOCKED` strategy as normal processing. It records bounded
+worker identity, attempts, availability, lock, start, completion, and failure
+timestamps; a later worker converts a stale lease to the safe `failed` state.
+The protected route is `POST /api/internal/document-ocr`, accepts no document
+ID/path/body, requires the distinct `DOCUMENT_OCR_SECRET` in
+`x-document-ocr-secret`, compares it in constant time, processes at most two
+jobs, and returns aggregate counts only.
+
+Before OCR, the worker revalidates the private bucket/path, PDF MIME type, and
+20 MiB file limit. `unpdf` plus `@napi-rs/canvas` render at most 50 pages one at
+a time in memory. PDF.js evaluation, remote worker fetching, and public/image
+Storage output are disabled. The renderer caps each image at 2,048 pixels per
+dimension, 3,000,000 pixels per page, 24,000,000 total pixels, 8 MiB encoded
+image bytes, a 20-second page operation, and a 90-second document operation;
+it destroys document/page resources on every exit. These controls reduce
+resource risk, but do not certify that a PDF is malware-free.
+
+The initial provider is OpenAI behind a server-only mockable interface. It
+requires `OCR_PROVIDER=openai`, `OCR_API_KEY`, and `OCR_MODEL` together, uses no
+tools or browser identifiers, disables provider response storage, and applies a
+30-second request timeout. No automated test calls it. Missing configuration
+fails closed. Page responses remove only null/transport artifacts, normalize
+line endings and excess blank lines, preserve multilingual Unicode (including
+Amharic and Spanish accents), and never translate or transliterate. A page is
+capped at 12,000 characters and a document at 1,048,576 characters; no useful
+text safely fails the job rather than writing a placeholder.
+
+`complete_document_ocr_job` is the only completion path. It validates the
+lease, safe provider/model identifiers, ordered bounded page/chunk JSON, and
+page-to-chunk consistency; transactionally replaces stale derivatives; then
+records completion and transitions the parent from `needs_ocr` to `completed`.
+No page images are persisted. Failure leaves the parent at `needs_ocr` and
+stores only a safe status/error code for a permitted retry. The UI exposes only
+localized OCR state and a warning that OCR may contain errors; users must verify
+text with the original PDF. It makes no accuracy, certification, or professional
+advice claim.
+
 ## Operations runbook
 
 ### Configure and deploy
@@ -211,6 +264,27 @@ the designated request header, send no document-specific body, and receive only
 aggregate batch counts or a generic temporary-unavailable response. Deploy the
 migration and server configuration before enabling a scheduler; this document
 does not imply that a hosted migration or scheduler has been enabled.
+
+### OCR worker configuration
+
+Before enabling OCR in a reviewed non-production environment, apply the OCR
+migration locally, refresh generated types, and configure these server-only
+values together:
+
+- `OCR_PROVIDER` — currently the literal `openai`.
+- `OCR_API_KEY` — the provider credential, never a `NEXT_PUBLIC_` value.
+- `OCR_MODEL` — the reviewed vision-capable model identifier.
+- `DOCUMENT_OCR_SECRET` — a unique high-entropy invocation secret of at least
+  32 characters, distinct from `SUPABASE_SECRET_KEY`, `DOCUMENT_PROCESSING_SECRET`,
+  and `DOCUMENT_SUMMARY_SECRET`.
+
+A scheduler may call `/api/internal/document-ocr` only with the secret in
+`x-document-ocr-secret`, no body, and no document-specific query parameters.
+It receives aggregate counts or a generic `503`; do not use logs or endpoint
+responses to inspect documents, page images, OCR text, provider responses, or
+technical errors. First verify only synthetic PDFs and a mocked provider in a
+non-production environment. This runbook does not imply a hosted provider,
+migration, or scheduler has been enabled.
 
 ### GitHub Actions scheduler
 
@@ -252,8 +326,10 @@ do not add an endpoint that returns document-specific failure details.
 - A user with queue permission may retry `failed` work through the UI while
   attempts remain. Do not manually alter `processing_status`, insert jobs, or
   edit page/chunk rows in a browser or SQL console to force a retry.
-- `unsupported` and `needs_ocr` are terminal current-scope outcomes. Do not
-  relabel them completed or use an unreviewed OCR provider to work around them.
+- `unsupported` is terminal. `needs_ocr` may become `completed` only through
+  `complete_document_ocr_job` after valid OCR pages/chunks are committed in the
+  same transaction. Do not manually relabel it or substitute an unreviewed OCR
+  provider.
 - If the worker appears unhealthy, disable its scheduler, preserve the private
   data boundary, investigate aggregate/sanitized signals, rotate the distinct
   invocation secret when appropriate, and resume only after the reviewed fix.
@@ -303,6 +379,16 @@ denial, all summary statuses, English/Amharic/Spanish selection, source-referenc
 keyboard access, bounded long-document behavior, prompt-injection resistance,
 and generic worker errors. It must not call a paid API or point a local test at a
 hosted project.
+
+ETH-016 local verification must use only a synthetic image-only PDF and a mocked
+provider response. Verify owner, administrator, and member request access;
+viewer, removed, unrelated, archived, non-PDF, incomplete, completed, and
+active-job denial; queued/processing/completed/failed/retry states; keyboard
+submission; English/Amharic/Spanish labels; worker-secret rejection; bounded
+page/file errors; and that successful OCR changes `needs_ocr` to `completed`
+only after page/chunk storage. Confirm failed/empty OCR remains `needs_ocr`, no
+page images or OCR text are logged or publicly accessible, and users see the
+accuracy/verify-original notice. Request native Amharic and Spanish review.
 
 Before release, perform keyboard/screen-reader/mobile checks on processing and
 summary status/retry controls, source previews, long-content wrapping, and the

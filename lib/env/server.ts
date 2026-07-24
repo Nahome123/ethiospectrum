@@ -40,6 +40,32 @@ const optionalDocumentSummarySecret = z.preprocess(
   z.string().min(32).optional(),
 );
 
+const optionalOcrProvider = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.enum(["openai"]).optional(),
+);
+
+const optionalOcrApiKey = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(1).optional(),
+);
+
+const optionalOcrModel = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z
+    .string()
+    .trim()
+    .min(1)
+    .max(120)
+    .regex(/^[A-Za-z0-9._-]+$/)
+    .optional(),
+);
+
+const optionalDocumentOcrSecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(32).optional(),
+);
+
 export interface ServerSupabaseEnv extends PublicSupabaseEnv {
   secretKey?: string;
 }
@@ -49,6 +75,12 @@ export interface SupabaseAdminEnv extends PublicSupabaseEnv {
 }
 
 export interface OpenAiSummaryEnv {
+  apiKey: string;
+  model: string;
+}
+
+export interface OcrProviderEnv {
+  provider: "openai";
   apiKey: string;
   model: string;
 }
@@ -167,6 +199,46 @@ export function requireDocumentSummarySecret(input?: EnvInput): string {
   if (!secret) {
     throw new SupabaseConfigurationError(
       "DOCUMENT_SUMMARY_SECRET is required for controlled document-summary invocation.",
+    );
+  }
+  return secret;
+}
+
+/** Server-only OCR provider configuration. All values are required together. */
+export function getOcrProviderEnv(input?: EnvInput): OcrProviderEnv | undefined {
+  const provider = optionalOcrProvider.parse(input?.OCR_PROVIDER ?? process.env.OCR_PROVIDER);
+  const apiKey = optionalOcrApiKey.parse(input?.OCR_API_KEY ?? process.env.OCR_API_KEY);
+  const model = optionalOcrModel.parse(input?.OCR_MODEL ?? process.env.OCR_MODEL);
+
+  if (!provider && !apiKey && !model) return undefined;
+  if (!provider || !apiKey || !model) {
+    throw new SupabaseConfigurationError(
+      "OCR_PROVIDER, OCR_API_KEY, and OCR_MODEL must be configured together for document OCR.",
+    );
+  }
+  return { provider, apiKey, model };
+}
+
+export function requireOcrProviderEnv(input?: EnvInput): OcrProviderEnv {
+  const env = getOcrProviderEnv(input);
+  if (!env) {
+    throw new SupabaseConfigurationError(
+      "OCR_PROVIDER, OCR_API_KEY, and OCR_MODEL are required for controlled document OCR.",
+    );
+  }
+  return env;
+}
+
+/** Separate internal-invocation secret; never reuse processing, summary, or Supabase secrets. */
+export function getDocumentOcrSecret(input?: EnvInput): string | undefined {
+  return optionalDocumentOcrSecret.parse(input?.DOCUMENT_OCR_SECRET ?? process.env.DOCUMENT_OCR_SECRET);
+}
+
+export function requireDocumentOcrSecret(input?: EnvInput): string {
+  const secret = getDocumentOcrSecret(input);
+  if (!secret) {
+    throw new SupabaseConfigurationError(
+      "DOCUMENT_OCR_SECRET is required for controlled document-OCR invocation.",
     );
   }
   return secret;

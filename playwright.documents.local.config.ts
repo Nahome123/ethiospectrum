@@ -17,6 +17,8 @@ function readLocalEnvironmentValue(name: string) {
 
 const localDocumentProcessingSecret =
   readLocalEnvironmentValue("DOCUMENT_PROCESSING_SECRET") ?? randomBytes(32).toString("hex");
+const localDocumentOcrSecret =
+  readLocalEnvironmentValue("DOCUMENT_OCR_SECRET") ?? randomBytes(32).toString("hex");
 
 function readStatusValue(output: string, name: string) {
   const line = output.split(/\r?\n/).find((candidate) => candidate.startsWith(`${name}=`));
@@ -59,6 +61,7 @@ function getLocalSupabaseEnvironment() {
     SUPABASE_SECRET_KEY: secretKey,
     // Generated only for this local process; it is never a deployment secret.
     DOCUMENT_PROCESSING_SECRET: localDocumentProcessingSecret,
+    DOCUMENT_OCR_SECRET: localDocumentOcrSecret,
   };
 }
 
