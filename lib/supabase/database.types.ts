@@ -425,6 +425,74 @@ export type Database = {
           },
         ];
       };
+      document_ocr_jobs: {
+        Row: {
+          attempt_count: number;
+          available_at: string;
+          completed_at: string | null;
+          created_at: string;
+          document_id: string;
+          error_code: string | null;
+          error_message: string | null;
+          failed_at: string | null;
+          id: string;
+          locked_at: string | null;
+          locked_by: string | null;
+          max_attempts: number;
+          model_identifier: string | null;
+          provider: string | null;
+          started_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id: string;
+          error_code?: string | null;
+          error_message?: string | null;
+          failed_at?: string | null;
+          id?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          provider?: string | null;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id?: string;
+          error_code?: string | null;
+          error_message?: string | null;
+          failed_at?: string | null;
+          id?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          provider?: string | null;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_ocr_jobs_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: true;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       document_pages: {
         Row: {
           character_count: number;
@@ -1315,6 +1383,22 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
+      claim_next_document_ocr_job: {
+        Args: { worker_identity: string };
+        Returns: {
+          attempt_count: number;
+          dependent_id: string;
+          document_id: string;
+          file_size: number;
+          household_id: string;
+          job_id: string;
+          max_attempts: number;
+          mime_type: string;
+          original_filename: string;
+          storage_bucket: string;
+          storage_path: string;
+        }[];
+      };
       claim_next_document_processing_job: {
         Args: { worker_identity: string };
         Returns: {
@@ -1342,6 +1426,17 @@ export type Database = {
           prompt_version: string;
           summary_id: string;
         }[];
+      };
+      complete_document_ocr_job: {
+        Args: {
+          chunk_rows: Json;
+          completed_model_identifier: string;
+          completed_provider: string;
+          expected_worker_identity: string;
+          page_rows: Json;
+          target_job_id: string;
+        };
+        Returns: boolean;
       };
       complete_document_processing_job: {
         Args: {
@@ -1374,6 +1469,14 @@ export type Database = {
         Returns: string;
       };
       create_household: { Args: { raw_name: string }; Returns: string };
+      fail_document_ocr_job: {
+        Args: {
+          expected_worker_identity: string;
+          safe_error_code: string;
+          target_job_id: string;
+        };
+        Returns: boolean;
+      };
       fail_document_processing_job: {
         Args: {
           expected_worker_identity: string;
@@ -1389,6 +1492,17 @@ export type Database = {
           target_summary_id: string;
         };
         Returns: boolean;
+      };
+      get_document_ocr_status: {
+        Args: { target_document_id: string };
+        Returns: {
+          attempt_count: number;
+          completed_at: string;
+          failed_at: string;
+          retryable: boolean;
+          started_at: string;
+          status: string;
+        }[];
       };
       get_document_processing_status: {
         Args: { target_document_id: string };
@@ -1423,6 +1537,15 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      queue_document_ocr: {
+        Args: { target_document_id: string };
+        Returns: {
+          already_queued: boolean;
+          attempt_count: number;
+          job_id: string;
+          ocr_status: string;
+        }[];
       };
       queue_document_processing: {
         Args: { target_document_id: string };

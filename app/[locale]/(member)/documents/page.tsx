@@ -123,12 +123,12 @@ export default async function DocumentsPage({
                 </li>
               ))}
             </ul>
-            <Link
+            <a
               className="font-semibold text-primary underline underline-offset-4"
               href={getDocumentBinderClearHref(locale)}
             >
               {t("clearFilters")}
-            </Link>
+            </a>
           </div>
         ) : null}
 

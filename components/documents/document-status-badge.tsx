@@ -29,7 +29,7 @@ function processingStatusPresentation(status: string, t: Awaited<ReturnType<type
     case "unsupported":
       return { label: t("processingUnsupported"), variant: "outline" as const };
     case "needs_ocr":
-      return { label: t("processingNeedsOcr"), variant: "outline" as const };
+      return { label: t("ocrScannedRequired"), variant: "outline" as const };
     default:
       return { label: t("notProcessed"), variant: "secondary" as const };
   }
