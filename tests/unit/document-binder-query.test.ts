@@ -14,7 +14,7 @@ vi.mock("@/lib/documents/server", () => ({
   canArchiveDocument: mocks.canArchiveDocument,
 }));
 
-import { getDocumentBinder } from "@/lib/documents/binder-query";
+import { getDocumentBinder, getDocumentDashboardSummary } from "@/lib/documents/binder-query";
 import { parseDocumentBinderSearchParams } from "@/lib/validation/document-binder";
 
 const householdId = "10000000-0000-4000-8000-000000000001";
@@ -27,6 +27,7 @@ function documentContext() {
     userId: "40000000-0000-4000-8000-000000000004",
     permission: "member" as const,
     canUpload: true,
+    canProcess: true,
   };
 }
 
@@ -100,6 +101,45 @@ function binderClient({
     return documentsChain;
   });
   return { client: { from }, activeDependentsChain, documentsChain, from };
+}
+
+function dashboardQuery(result: { count?: number; data?: unknown[]; error?: Error | null }) {
+  const chain = {
+    select: vi.fn(),
+    eq: vi.fn(),
+    is: vi.fn(),
+    in: vi.fn(),
+    order: vi.fn(),
+    limit: vi.fn(),
+    then: <TResult1 = { count?: number; data?: unknown[]; error: Error | null }, TResult2 = never>(
+      onfulfilled?:
+        | ((value: {
+            count?: number;
+            data?: unknown[];
+            error: Error | null;
+          }) => TResult1 | PromiseLike<TResult1>)
+        | null,
+      onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
+    ) => Promise.resolve({ ...result, error: result.error ?? null }).then(onfulfilled, onrejected),
+  };
+  chain.select.mockReturnValue(chain);
+  chain.eq.mockReturnValue(chain);
+  chain.is.mockReturnValue(chain);
+  chain.in.mockReturnValue(chain);
+  chain.order.mockReturnValue(chain);
+  chain.limit.mockReturnValue(chain);
+  return chain;
+}
+
+function dashboardClient(results: { count?: number; data?: unknown[]; error?: Error | null }[]) {
+  const queries = results.map(dashboardQuery);
+  const pendingQueries = [...queries];
+  const from = vi.fn(() => {
+    const query = pendingQueries.shift();
+    if (!query) throw new Error("Unexpected dashboard query");
+    return query;
+  });
+  return { client: { from }, from, queries };
 }
 
 describe("document binder server query", () => {
@@ -230,5 +270,38 @@ describe("document binder server query", () => {
     expect(searchExpression).not.toContain(")");
     expect(fixture.documentsChain.order).toHaveBeenNthCalledWith(1, "created_at", { ascending: false });
     expect(fixture.documentsChain.order).toHaveBeenNthCalledWith(2, "id", { ascending: false });
+  });
+
+  it("counts every active processing terminal state, including unsupported documents, while excluding archives", async () => {
+    const fixture = dashboardClient([
+      { data: [{ id: documentId, title: "Synthetic active document" }] },
+      { count: 8 },
+      { count: 1 },
+      { count: 1 },
+      { count: 2 },
+      { count: 1 },
+      { count: 1 },
+      { count: 1 },
+      { count: 1 },
+      { count: 1 },
+    ]);
+    mocks.createServerComponentSupabaseClient.mockResolvedValue(fixture.client);
+
+    const summary = await getDocumentDashboardSummary();
+
+    expect(summary).toMatchObject({
+      activeCount: 8,
+      awaitingProcessingCount: 2,
+      completedCount: 1,
+      needsOcrCount: 1,
+      processingCount: 1,
+      processingFailedCount: 1,
+      unsupportedCount: 1,
+    });
+    expect(fixture.from).toHaveBeenCalledTimes(10);
+    const unsupportedQuery = fixture.queries[8];
+    expect(unsupportedQuery?.eq).toHaveBeenCalledWith("upload_status", "uploaded");
+    expect(unsupportedQuery?.eq).toHaveBeenCalledWith("processing_status", "unsupported");
+    expect(unsupportedQuery?.is).toHaveBeenCalledWith("deleted_at", null);
   });
 });

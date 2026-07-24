@@ -1241,6 +1241,7 @@ export type Database = {
           attempt_count: number;
           completed_at: string | null;
           failed_at: string | null;
+          retryable: boolean;
           started_at: string | null;
           status: string;
         }[];

@@ -81,7 +81,8 @@ The extraction boundary has intentionally strict limits:
 - PDF extraction preserves page numbering. A textless PDF resolves to
   `needs_ocr`; OCR is not attempted.
 - Normalized text, page rows, chunks, and total character volume are bounded.
-  Chunks use deterministic, page-scoped indexes and estimated token counts.
+  Chunks use deterministic, page-scoped indexes and estimated token counts;
+  every newly written chunk is also database-capped at 1,200 characters.
 - Completed output must contain valid page and chunk rows. Unsupported and
   OCR-needed terminal results cannot carry extraction output. Failure clears
   partial output.
@@ -95,8 +96,8 @@ scanning remain required follow-up work before any broader processing feature.
 Jobs, pages, chunks, and analyses force RLS. Normal browser sessions have no
 direct job-table access and no direct write access to any derivative table.
 The current member UI uses the narrow processing-status RPC result only:
-status, attempt count, and safe timestamps. It does not render worker identity,
-lock state, error code/message, storage data, or text.
+status, attempt count, retry eligibility, and safe timestamps. It does not
+render worker identity, lock state, error code/message, storage data, or text.
 
 Page and chunk reads derive authorization from an active, uploaded,
 unarchived parent document and active household membership. A caller who loses
@@ -196,12 +197,12 @@ pnpm build
 
 The local document Playwright configuration creates a fresh process-only
 processing secret and refuses a non-local Supabase URL. It verifies that a
-secret-less worker request is rejected, a synthetic uploaded TXT document can
-be keyboard-queued and processed through the protected route, English/Amharic/
-Spanish completed labels render, and a synthetic viewer cannot start
-processing. pgTAP separately verifies queue idempotency, worker-only
-claim/complete/fail access, bounded retries, archive cancellation, and
-parent-document derivative RLS.
+secret-less worker request is rejected, a synthetic uploaded TXT document shows
+the initial and queued statuses, can be keyboard-queued and processed through
+the protected route, English/Amharic/Spanish completed labels render, and a
+synthetic viewer cannot start processing. pgTAP separately verifies queue
+idempotency, worker-only claim/complete/fail access, bounded retries, archive
+cancellation, and parent-document derivative RLS.
 
 Before release, perform keyboard/screen-reader/mobile checks on the new status
 and retry controls and request native Amharic and Spanish review of the

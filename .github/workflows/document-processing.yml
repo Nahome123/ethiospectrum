@@ -29,10 +29,32 @@ jobs:
             exit 1
           fi
 
+          node <<'NODE'
+          const value = process.env.DOCUMENT_PROCESSING_ORIGIN;
+
+          try {
+            const url = new URL(value);
+            if (
+              url.protocol !== "https:" ||
+              url.username ||
+              url.password ||
+              url.pathname !== "/" ||
+              url.search ||
+              url.hash ||
+              value !== url.origin
+            ) {
+              throw new Error("invalid document-processing origin");
+            }
+          } catch {
+            console.error("The document-processing origin must be an exact HTTPS origin.");
+            process.exit(1);
+          }
+          NODE
+
       - name: Run one bounded processing batch
         shell: bash
         run: |
           curl --fail --silent --show-error --retry 2 --retry-connrefused \
-            --request POST "${DOCUMENT_PROCESSING_ORIGIN%/}/api/internal/document-processing" \
+            --request POST "${DOCUMENT_PROCESSING_ORIGIN}/api/internal/document-processing" \
             --header "x-document-processing-secret: $DOCUMENT_PROCESSING_SECRET" \
             --header "Accept: application/json"

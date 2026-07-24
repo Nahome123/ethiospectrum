@@ -7,6 +7,7 @@ import type { AppLocale } from "@/i18n/routing";
 import { formatDocumentFileSize, getDocumentFileType } from "@/lib/documents/constants";
 import {
   canArchiveDocument,
+  canQueueDocumentProcessing,
   getDocumentDependentName,
   getDocumentProcessingDetails,
   getVisibleDocument,
@@ -35,9 +36,8 @@ export default async function DocumentDetailPage({
   ]);
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
-  const canQueueProcessing =
-    context.canProcess && isUploaded && ["not_started", "failed"].includes(document.processing_status);
-  const retryProcessing = document.processing_status === "failed";
+  const canQueueProcessing = canQueueDocumentProcessing(context, document, processingDetails);
+  const retryProcessing = canQueueProcessing && document.processing_status === "failed";
   const lastProcessedAt =
     processingDetails?.completedAt ?? processingDetails?.failedAt ?? processingDetails?.startedAt ?? null;
   const fileType = getDocumentFileType(document.mime_type);
