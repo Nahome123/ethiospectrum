@@ -12,6 +12,7 @@ import {
   type DocumentBinderFilters,
 } from "@/lib/validation/document-binder";
 import { canArchiveDocument, getDocumentContext, type DocumentContext } from "./server";
+import type { DocumentSummaryStatus } from "./summaries/constants";
 
 type DocumentRow = Database["public"]["Tables"]["documents"]["Row"];
 type DocumentBinderRow = Pick<
@@ -35,6 +36,11 @@ type DependentOption = Pick<
   "id" | "first_name" | "preferred_name"
 >;
 
+type DocumentSummaryStatusRow = Pick<
+  Database["public"]["Tables"]["document_summaries"]["Row"],
+  "document_id" | "status"
+>;
+
 export type DocumentBinderDependent = {
   id: string;
   name: string;
@@ -43,6 +49,7 @@ export type DocumentBinderDependent = {
 export type DocumentBinderDocument = DocumentBinderRow & {
   dependentName: string | null;
   canArchive: boolean;
+  summaryStatus: DocumentSummaryStatus | null;
 };
 
 export type DocumentBinderPagination = {
@@ -72,7 +79,11 @@ export type DocumentDashboardSummary = {
   processingCount: number;
   completedCount: number;
   processingFailedCount: number;
+  unsupportedCount: number;
   needsOcrCount: number;
+  summaryAvailableCount: number;
+  summaryPendingCount: number;
+  summaryFailedCount: number;
   recentDocuments: Pick<DocumentRow, "id" | "title">[];
 };
 
@@ -92,6 +103,20 @@ function emptyPagination(page = 1): DocumentBinderPagination {
 
 function dependentName(dependent: DependentOption): string {
   return dependent.preferred_name || dependent.first_name;
+}
+
+function documentSummaryStatus(value: string): DocumentSummaryStatus | null {
+  if (value === "queued" || value === "generating" || value === "completed" || value === "failed") {
+    return value;
+  }
+  return null;
+}
+
+function summaryStatusPriority(status: DocumentSummaryStatus): number {
+  if (status === "completed") return 4;
+  if (status === "generating") return 3;
+  if (status === "queued") return 2;
+  return 1;
 }
 
 function normalizeFiltersForHousehold(
@@ -208,14 +233,38 @@ export async function getDocumentBinder(filters: DocumentBinderFilters): Promise
         .filter((dependentId): dependentId is string => Boolean(dependentId && !names.has(dependentId))),
     ),
   ];
-  if (unresolvedDependentIds.length) {
-    const dependentNamesResult = await supabase
-      .from("dependents")
-      .select("id, first_name, preferred_name")
-      .eq("household_id", context.household.id)
-      .in("id", unresolvedDependentIds);
+  const [dependentNamesResult, summaryStatusResult] = await Promise.all([
+    unresolvedDependentIds.length
+      ? supabase
+          .from("dependents")
+          .select("id, first_name, preferred_name")
+          .eq("household_id", context.household.id)
+          .in("id", unresolvedDependentIds)
+      : Promise.resolve(null),
+    rows.length
+      ? supabase
+          .from("document_summaries")
+          .select("document_id, status")
+          .eq("household_id", context.household.id)
+          .in(
+            "document_id",
+            rows.map((document) => document.id),
+          )
+      : Promise.resolve(null),
+  ]);
+  if (dependentNamesResult) {
     for (const dependent of (dependentNamesResult.data ?? []) as DependentOption[]) {
       names.set(dependent.id, dependentName(dependent));
+    }
+  }
+
+  const summariesByDocument = new Map<string, DocumentSummaryStatus>();
+  if (!summaryStatusResult?.error) {
+    for (const summary of (summaryStatusResult?.data ?? []) as DocumentSummaryStatusRow[]) {
+      const status = documentSummaryStatus(summary.status);
+      const current = summariesByDocument.get(summary.document_id);
+      if (!status || (current && summaryStatusPriority(current) >= summaryStatusPriority(status))) continue;
+      summariesByDocument.set(summary.document_id, status);
     }
   }
 
@@ -229,6 +278,7 @@ export async function getDocumentBinder(filters: DocumentBinderFilters): Promise
         !document.deleted_at &&
         document.upload_status !== "archived" &&
         canArchiveDocument(context, document),
+      summaryStatus: summariesByDocument.get(document.id) ?? null,
     })),
     filters: { ...effectiveFilters, page },
     pagination: {
@@ -255,7 +305,11 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
       processingCount: 0,
       completedCount: 0,
       processingFailedCount: 0,
+      unsupportedCount: 0,
       needsOcrCount: 0,
+      summaryAvailableCount: 0,
+      summaryPendingCount: 0,
+      summaryFailedCount: 0,
       recentDocuments: [],
     };
   }
@@ -270,7 +324,11 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
     processingCountResult,
     completedCountResult,
     processingFailedCountResult,
+    unsupportedCountResult,
     needsOcrCountResult,
+    summaryAvailableCountResult,
+    summaryPendingCountResult,
+    summaryFailedCountResult,
   ] = await Promise.all([
     supabase
       .from("documents")
@@ -332,7 +390,29 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
       .eq("household_id", context.household.id)
       .eq("upload_status", "uploaded")
       .is("deleted_at", null)
+      .eq("processing_status", "unsupported"),
+    supabase
+      .from("documents")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("upload_status", "uploaded")
+      .is("deleted_at", null)
       .eq("processing_status", "needs_ocr"),
+    supabase
+      .from("document_summaries")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("status", "completed"),
+    supabase
+      .from("document_summaries")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .in("status", ["queued", "generating"]),
+    supabase
+      .from("document_summaries")
+      .select("id", { count: "exact", head: true })
+      .eq("household_id", context.household.id)
+      .eq("status", "failed"),
   ]);
 
   return {
@@ -346,7 +426,11 @@ export async function getDocumentDashboardSummary(): Promise<DocumentDashboardSu
     processingCount: processingCountResult.error ? 0 : (processingCountResult.count ?? 0),
     completedCount: completedCountResult.error ? 0 : (completedCountResult.count ?? 0),
     processingFailedCount: processingFailedCountResult.error ? 0 : (processingFailedCountResult.count ?? 0),
+    unsupportedCount: unsupportedCountResult.error ? 0 : (unsupportedCountResult.count ?? 0),
     needsOcrCount: needsOcrCountResult.error ? 0 : (needsOcrCountResult.count ?? 0),
+    summaryAvailableCount: summaryAvailableCountResult.error ? 0 : (summaryAvailableCountResult.count ?? 0),
+    summaryPendingCount: summaryPendingCountResult.error ? 0 : (summaryPendingCountResult.count ?? 0),
+    summaryFailedCount: summaryFailedCountResult.error ? 0 : (summaryFailedCountResult.count ?? 0),
     recentDocuments: recentResult.error ? [] : (recentResult.data ?? []),
   };
 }

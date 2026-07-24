@@ -1,9 +1,22 @@
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
 
 const localSupabaseUrl = /^http:\/\/(?:127\.0\.0\.1|localhost)(?::\d+)?(?:\/|$)/i;
-const localDocumentProcessingSecret = randomBytes(32).toString("hex");
+
+function readLocalEnvironmentValue(name: string) {
+  const path = ".env.local";
+  if (!existsSync(path)) return undefined;
+  const line = readFileSync(path, "utf8")
+    .split(/\r?\n/)
+    .find((candidate) => candidate.startsWith(`${name}=`));
+  const value = line?.slice(name.length + 1).trim();
+  return value || undefined;
+}
+
+const localDocumentProcessingSecret =
+  readLocalEnvironmentValue("DOCUMENT_PROCESSING_SECRET") ?? randomBytes(32).toString("hex");
 
 function readStatusValue(output: string, name: string) {
   const line = output.split(/\r?\n/).find((candidate) => candidate.startsWith(`${name}=`));

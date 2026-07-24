@@ -105,6 +105,14 @@ export default async function DashboardPage() {
               {t("processingFailedDocumentCount", { count: documentSummary.processingFailedCount })}
             </Link>
           ) : null}
+          {documentSummary.unsupportedCount ? (
+            <Link
+              className="mt-1 block text-sm text-primary underline underline-offset-4"
+              href="/documents?processingStatus=unsupported"
+            >
+              {t("unsupportedDocumentCount", { count: documentSummary.unsupportedCount })}
+            </Link>
+          ) : null}
           {documentSummary.needsOcrCount ? (
             <Link
               className="mt-1 block text-sm text-primary underline underline-offset-4"
@@ -112,6 +120,21 @@ export default async function DashboardPage() {
             >
               {t("needsOcrDocumentCount", { count: documentSummary.needsOcrCount })}
             </Link>
+          ) : null}
+          {documentSummary.summaryAvailableCount ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("summaryAvailableCount", { count: documentSummary.summaryAvailableCount })}
+            </p>
+          ) : null}
+          {documentSummary.summaryPendingCount ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("summaryPendingCount", { count: documentSummary.summaryPendingCount })}
+            </p>
+          ) : null}
+          {documentSummary.summaryFailedCount ? (
+            <p className="mt-1 text-sm text-destructive">
+              {t("summaryFailedCount", { count: documentSummary.summaryFailedCount })}
+            </p>
           ) : null}
           {documents.length ? (
             <ul className="mt-3 space-y-1 text-sm">

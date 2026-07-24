@@ -19,12 +19,38 @@ const optionalDocumentProcessingSecret = z.preprocess(
   z.string().min(32).optional(),
 );
 
+const optionalOpenAiApiKey = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(1).optional(),
+);
+
+const optionalOpenAiSummaryModel = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z
+    .string()
+    .trim()
+    .min(1)
+    .max(120)
+    .regex(/^[A-Za-z0-9._-]+$/)
+    .optional(),
+);
+
+const optionalDocumentSummarySecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(32).optional(),
+);
+
 export interface ServerSupabaseEnv extends PublicSupabaseEnv {
   secretKey?: string;
 }
 
 export interface SupabaseAdminEnv extends PublicSupabaseEnv {
   secretKey: string;
+}
+
+export interface OpenAiSummaryEnv {
+  apiKey: string;
+  model: string;
 }
 
 export function parseServerSupabaseEnv(input: EnvInput): ServerSupabaseEnv | undefined {
@@ -98,6 +124,49 @@ export function requireDocumentProcessingSecret(input?: EnvInput): string {
   if (!secret) {
     throw new SupabaseConfigurationError(
       "DOCUMENT_PROCESSING_SECRET is required for controlled document-processing invocation.",
+    );
+  }
+  return secret;
+}
+
+/** Server-only provider configuration for bounded document summaries. */
+export function getOpenAiSummaryEnv(input?: EnvInput): OpenAiSummaryEnv | undefined {
+  const apiKey = optionalOpenAiApiKey.parse(input?.OPENAI_API_KEY ?? process.env.OPENAI_API_KEY);
+  const model = optionalOpenAiSummaryModel.parse(
+    input?.OPENAI_SUMMARY_MODEL ?? process.env.OPENAI_SUMMARY_MODEL,
+  );
+
+  if (!apiKey && !model) return undefined;
+  if (!apiKey || !model) {
+    throw new SupabaseConfigurationError(
+      "OPENAI_API_KEY and OPENAI_SUMMARY_MODEL must be configured together for document summaries.",
+    );
+  }
+  return { apiKey, model };
+}
+
+export function requireOpenAiSummaryEnv(input?: EnvInput): OpenAiSummaryEnv {
+  const env = getOpenAiSummaryEnv(input);
+  if (!env) {
+    throw new SupabaseConfigurationError(
+      "OPENAI_API_KEY and OPENAI_SUMMARY_MODEL are required for controlled document summaries.",
+    );
+  }
+  return env;
+}
+
+/** Separate internal-invocation secret; never reuse processing or Supabase secrets. */
+export function getDocumentSummarySecret(input?: EnvInput): string | undefined {
+  return optionalDocumentSummarySecret.parse(
+    input?.DOCUMENT_SUMMARY_SECRET ?? process.env.DOCUMENT_SUMMARY_SECRET,
+  );
+}
+
+export function requireDocumentSummarySecret(input?: EnvInput): string {
+  const secret = getDocumentSummarySecret(input);
+  if (!secret) {
+    throw new SupabaseConfigurationError(
+      "DOCUMENT_SUMMARY_SECRET is required for controlled document-summary invocation.",
     );
   }
   return secret;
