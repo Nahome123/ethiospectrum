@@ -1350,6 +1350,39 @@ export type Database = {
           },
         ];
       };
+      training_progress: {
+        Row: {
+          completed_at: string | null;
+          completed_sections: string[];
+          course_key: string;
+          id: string;
+          last_section: string | null;
+          started_at: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          completed_at?: string | null;
+          completed_sections?: string[];
+          course_key: string;
+          id?: string;
+          last_section?: string | null;
+          started_at?: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          completed_sections?: string[];
+          course_key?: string;
+          id?: string;
+          last_section?: string | null;
+          started_at?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       user_roles: {
         Row: {
           granted_at: string;
@@ -1554,6 +1587,14 @@ export type Database = {
           attempt_count: number;
           job_id: string;
           processing_status: string;
+        }[];
+      };
+      record_training_progress: {
+        Args: { mark_completed?: boolean; target_section: string };
+        Returns: {
+          completed_at: string;
+          completed_sections: string[];
+          last_section: string;
         }[];
       };
       request_document_summary: {

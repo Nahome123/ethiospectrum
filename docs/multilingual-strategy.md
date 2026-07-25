@@ -9,3 +9,5 @@ Native Amharic and Spanish reviewers must approve all sensitive, legal, medical,
 The ETH-008 authentication strings in Amharic and Spanish are implementation drafts and require native-speaker review before a public launch. This includes account recovery, confirmation-link, password, access-denied, and terms/privacy wording.
 
 ETH-011 adds aligned dependent-management strings for profile labels, validation, archive confirmation, permission messaging, empty states, and dashboard counts. The Amharic and Spanish implementation drafts require native-speaker review before launch, especially the sensitive notes guidance and archive wording.
+
+The RBT training UI adds aligned English, Amharic, and Spanish control, progress, error, navigation, and educational-notice strings. The supplied lesson itself is a bilingual English/Amharic source artifact and remains intentionally source-faithful; it is not machine-retranslated when a visitor selects Spanish. Native Amharic review must check the supplied lesson terminology and mixed-script source text, while native Spanish review must approve the surrounding application controls and notices before release.

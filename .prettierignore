@@ -5,3 +5,4 @@ test-results/
 coverage/
 supabase/.temp/
 pnpm-lock.yaml
+docs/source-artifacts/rbt-errorless-teaching-original.html

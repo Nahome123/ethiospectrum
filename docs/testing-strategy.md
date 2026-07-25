@@ -58,3 +58,14 @@ Manual document checks use only a local Supabase project and small synthetic fix
 8. Upload a small synthetic image-only PDF and run its normal extraction until it shows `needs_ocr`. With a mocked local OCR provider, verify Run OCR/Retry OCR, queued/processing/completed/failed states, the `needs_ocr → completed` transition only after page/chunk rows exist, bounded retry, and the localized warning that OCR may contain errors and should be checked against the original. Confirm viewers/removed/other-household users cannot request it, archive cancels it, no page image becomes public, and empty OCR stays `needs_ocr`.
 
 Do not upload personal, production, or sensitive documents during automated or manual tests.
+
+RBT training has unit coverage for source-body preservation, all seven section mappings, flashcard Q4–Q15 content, glossary terms, source attribution, progress normalization, Server Action input/identity boundaries, keyboard answer reveal, and glossary filtering. Its pgTAP test verifies the fixed course key, normalized sections, anonymous denial, own-row access, cross-user isolation, direct user-ID assignment denial, invalid-section rejection, uniqueness, and the all-sections completion timestamp. The local browser flow creates only synthetic confirmed users; it exercises the protected route, direct section navigation, English/Amharic/Spanish rendering, keyboard flashcards, glossary search, mobile reflow, persisted progress, and a second user seeing no first-user progress.
+
+Run that mutation-capable browser flow only against local Supabase:
+
+```bash
+pnpm db:start
+pnpm test:e2e:training:local
+```
+
+Manual RBT checks: sign in with a synthetic account; confirm each direct route and the resume link; use Tab and Enter to reveal and hide an answer; search then clear the glossary; mark a section complete and reload; sign in as a different synthetic user and verify the prior progress is absent; inspect the narrow viewport for horizontal page overflow; and verify the educational, non-certification notice remains visible. Do not alter supplied lesson text during manual QA; log clinical, attribution, translation, or source anomalies in `docs/rbt-training-content-review.md` for review.
