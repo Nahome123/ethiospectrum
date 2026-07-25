@@ -31,3 +31,7 @@ export function getSafeLocaleRedirect(
 export function getLocaleDashboardPath(locale: AppLocale): string {
   return `/${locale}/dashboard`;
 }
+
+export function getLocaleOnboardingPath(locale: AppLocale): string {
+  return `/${locale}/onboarding`;
+}

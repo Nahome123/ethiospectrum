@@ -8,5 +8,5 @@ export type SupabaseRole = Database["public"]["Enums"]["app_role"];
 export type HouseholdSummary = Pick<Database["public"]["Tables"]["households"]["Row"], "id" | "name">;
 export type MemberProfile = Pick<
   Database["public"]["Tables"]["profiles"]["Row"],
-  "first_name" | "preferred_locale" | "timezone"
+  "first_name" | "last_name" | "preferred_locale" | "timezone"
 >;

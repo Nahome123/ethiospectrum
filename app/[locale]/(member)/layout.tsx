@@ -1,8 +1,11 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { MemberShell } from "@/components/layout/member-shell";
 import { requireUser } from "@/lib/auth/guards";
-import { getLocaleDashboardPath, getSafeLocaleRedirect } from "@/lib/auth/redirects";
+import { getLocaleDashboardPath, getLocaleOnboardingPath, getSafeLocaleRedirect } from "@/lib/auth/redirects";
+import { getCurrentHouseholdContext } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
+
 export default async function MemberLayout({
   children,
   params,
@@ -12,5 +15,14 @@ export default async function MemberLayout({
   const pathname = (await headers()).get("x-ethiospectrum-pathname");
   const returnTo = getSafeLocaleRedirect(pathname, getLocaleDashboardPath(locale), locale);
   await requireUser(locale, returnTo);
+
+  const householdContext = await getCurrentHouseholdContext();
+  const onboardingPath = getLocaleOnboardingPath(locale);
+  if (pathname === onboardingPath) {
+    if (householdContext) redirect(getLocaleDashboardPath(locale));
+  } else if (!householdContext) {
+    redirect(onboardingPath);
+  }
+
   return <MemberShell>{children}</MemberShell>;
 }

@@ -4,6 +4,22 @@ import { cookies } from "next/headers";
 import { requireServerSupabaseEnv } from "@/lib/env/server";
 import type { Database, HouseholdSummary, MemberProfile, SupabaseRole, User } from "./types";
 
+type HouseholdPermission = Database["public"]["Enums"]["household_permission"];
+type ActiveHouseholdRow = Pick<
+  Database["public"]["Tables"]["households"]["Row"],
+  "id" | "name" | "deleted_at"
+>;
+type ActiveHouseholdMembership = {
+  household: ActiveHouseholdRow | null;
+  permission: HouseholdPermission;
+};
+
+export type CurrentHouseholdContext = {
+  household: HouseholdSummary;
+  permission: HouseholdPermission;
+  userId: string;
+};
+
 /**
  * Creates a request-scoped client for Server Components.
  * Server Components cannot write cookies; session refresh belongs in middleware or a mutable request boundary.
@@ -45,7 +61,7 @@ export async function getCurrentMemberProfile(userId: string): Promise<MemberPro
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase
     .from("profiles")
-    .select("first_name, preferred_locale, timezone")
+    .select("first_name, last_name, preferred_locale, timezone")
     .eq("id", userId)
     .maybeSingle();
 
@@ -56,20 +72,49 @@ export async function getCurrentMemberProfile(userId: string): Promise<MemberPro
   return data;
 }
 
-/** Reads the caller's active household through RLS; returns null while onboarding is incomplete. */
-export async function getCurrentHousehold(): Promise<HouseholdSummary | null> {
+/**
+ * Resolves the caller's sole active household from their RLS-visible membership.
+ * The database enforces a single active membership; the bounded, ordered query
+ * additionally fails safely if a legacy data-integrity problem is encountered.
+ */
+export async function getCurrentHouseholdContext(): Promise<CurrentHouseholdContext | null> {
+  const claims = await getCurrentSupabaseClaims();
+  if (!claims || typeof claims.sub !== "string") return null;
+
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase
-    .from("households")
-    .select("id, name")
-    .is("deleted_at", null)
-    .order("created_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
+    .from("household_members")
+    .select("household:households!inner(id, name, deleted_at), permission")
+    .eq("user_id", claims.sub)
+    .eq("status", "active")
+    .is("household.deleted_at", null)
+    .order("joined_at", { ascending: true })
+    .order("id", { ascending: true })
+    .limit(2);
+
   if (error) {
-    return null;
+    throw new Error("Unable to resolve the active household.");
   }
-  return data;
+
+  const memberships = (data ?? []) as ActiveHouseholdMembership[];
+  if (memberships.length === 0) return null;
+  if (memberships.length > 1) {
+    console.error("Active household resolution found multiple active memberships.");
+  }
+
+  const membership = memberships[0];
+  if (!membership?.household) return null;
+
+  return {
+    household: { id: membership.household.id, name: membership.household.name },
+    permission: membership.permission,
+    userId: claims.sub,
+  };
+}
+
+/** Reads the caller's active household through the shared membership resolver. */
+export async function getCurrentHousehold(): Promise<HouseholdSummary | null> {
+  return (await getCurrentHouseholdContext())?.household ?? null;
 }
 
 /** Returns null for an unavailable or untrusted role so callers fail closed. */

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getSafeLocaleRedirect, isSafeInternalPath } from "@/lib/auth/redirects";
+import { getLocaleOnboardingPath, getSafeLocaleRedirect, isSafeInternalPath } from "@/lib/auth/redirects";
 
 describe("authentication redirects", () => {
   const fallback = "/en/dashboard";
@@ -17,5 +17,11 @@ describe("authentication redirects", () => {
   it("rejects unsupported and mismatched locale paths", () => {
     expect(getSafeLocaleRedirect("/fr/dashboard", fallback)).toBe(fallback);
     expect(getSafeLocaleRedirect("/es/dashboard", fallback, "en")).toBe(fallback);
+  });
+
+  it("builds localized onboarding paths without nesting locale prefixes", () => {
+    expect(getLocaleOnboardingPath("en")).toBe("/en/onboarding");
+    expect(getLocaleOnboardingPath("am")).toBe("/am/onboarding");
+    expect(getLocaleOnboardingPath("es")).toBe("/es/onboarding");
   });
 });

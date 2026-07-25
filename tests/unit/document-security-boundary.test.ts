@@ -78,11 +78,13 @@ describe("document upload application boundaries", () => {
 
   it("derives document authorization from active household membership on the server", () => {
     const documentServer = source("lib/documents/server.ts");
+    const supabaseServer = source("lib/supabase/server.ts");
 
     expect(documentServer).toContain('import "server-only"');
-    expect(documentServer).toContain("getCurrentSupabaseClaims");
-    expect(documentServer).toContain("getCurrentHousehold");
-    expect(documentServer).toContain('.eq("status", "active")');
+    expect(documentServer).toContain("getCurrentHouseholdContext");
+    expect(supabaseServer).toContain("getCurrentSupabaseClaims");
+    expect(supabaseServer).toContain('.from("household_members")');
+    expect(supabaseServer).toContain('.eq("status", "active")');
     expect(documentServer).toContain('"owner", "administrator", "member"');
     expect(documentServer).not.toContain("lib/supabase/admin");
   });

@@ -1,26 +1,14 @@
 import "server-only";
-import {
-  getCurrentSupabaseClaims,
-  getCurrentHousehold,
-  createServerComponentSupabaseClient,
-} from "@/lib/supabase/server";
+import { getCurrentHouseholdContext, createServerComponentSupabaseClient } from "@/lib/supabase/server";
 
 export async function getDependentContext() {
-  const claims = await getCurrentSupabaseClaims();
-  const household = await getCurrentHousehold();
-  if (!claims || typeof claims.sub !== "string" || !household) return null;
-  const supabase = await createServerComponentSupabaseClient();
-  const { data } = await supabase
-    .from("household_members")
-    .select("permission")
-    .eq("household_id", household.id)
-    .eq("user_id", claims.sub)
-    .eq("status", "active")
-    .maybeSingle();
+  const context = await getCurrentHouseholdContext();
+  if (!context) return null;
+
   return {
-    household,
-    userId: claims.sub,
-    canManage: data?.permission === "owner" || data?.permission === "administrator",
+    household: context.household,
+    userId: context.userId,
+    canManage: context.permission === "owner" || context.permission === "administrator",
   };
 }
 

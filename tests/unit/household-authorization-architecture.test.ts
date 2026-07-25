@@ -48,4 +48,25 @@ describe("household authorization application boundary", () => {
     expect(actions).not.toContain("export type");
     expect(actions).not.toContain("export *");
   });
+
+  it("uses one membership-backed household resolver across member data boundaries", () => {
+    const server = readFileSync(resolve("lib/supabase/server.ts"), "utf8");
+    const dependentServer = readFileSync(resolve("lib/dependents/server.ts"), "utf8");
+    const documentServer = readFileSync(resolve("lib/documents/server.ts"), "utf8");
+
+    expect(server).toContain("getCurrentHouseholdContext");
+    expect(server).toContain('from("household_members")');
+    expect(server).toContain('eq("status", "active")');
+    expect(dependentServer).toContain("getCurrentHouseholdContext");
+    expect(documentServer).toContain("getCurrentHouseholdContext");
+  });
+
+  it("keeps onboarding server actions free of browser-trusted IDs and elevated clients", () => {
+    const actions = readFileSync(resolve("lib/onboarding/actions.ts"), "utf8");
+
+    expect(actions).not.toContain("lib/supabase/admin");
+    expect(actions).not.toContain('formData.get("householdId")');
+    expect(actions).not.toContain('formData.get("userId")');
+    expect(actions).not.toContain('formData.get("role")');
+  });
 });

@@ -33,9 +33,11 @@ export default async function DashboardPage() {
   const documentCount = documentSummary.activeCount;
   return (
     <section>
-      <p className="text-sm font-bold uppercase tracking-[0.12em] text-secondary-foreground">
-        {common("sample")}
-      </p>
+      {context ? (
+        <p className="text-sm font-bold uppercase tracking-[0.12em] text-secondary-foreground">
+          {t("householdWorkspace", { householdName: context.household.name })}
+        </p>
+      ) : null}
       <h1 className="mt-3 text-3xl font-bold">{t("welcome")}</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">{t("intro")}</p>
       <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">

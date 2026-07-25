@@ -10,11 +10,7 @@ import {
   parseStoredDocumentSummarySourceReferences,
 } from "./summaries/storage";
 import type { DocumentSummaryOutput } from "./summaries/types";
-import {
-  createServerComponentSupabaseClient,
-  getCurrentHousehold,
-  getCurrentSupabaseClaims,
-} from "@/lib/supabase/server";
+import { createServerComponentSupabaseClient, getCurrentHouseholdContext } from "@/lib/supabase/server";
 
 type HouseholdPermission = Database["public"]["Enums"]["household_permission"];
 type DocumentRow = Database["public"]["Tables"]["documents"]["Row"];
@@ -70,26 +66,15 @@ export type DocumentOcrDetails = {
 };
 
 export async function getDocumentContext(): Promise<DocumentContext | null> {
-  const claims = await getCurrentSupabaseClaims();
-  const household = await getCurrentHousehold();
-  if (!claims || typeof claims.sub !== "string" || !household) return null;
-
-  const supabase = await createServerComponentSupabaseClient();
-  const { data } = await supabase
-    .from("household_members")
-    .select("permission")
-    .eq("household_id", household.id)
-    .eq("user_id", claims.sub)
-    .eq("status", "active")
-    .maybeSingle();
-  if (!data) return null;
+  const context = await getCurrentHouseholdContext();
+  if (!context) return null;
 
   return {
-    household,
-    userId: claims.sub,
-    permission: data.permission,
-    canUpload: uploadPermissions.has(data.permission),
-    canProcess: uploadPermissions.has(data.permission),
+    household: context.household,
+    userId: context.userId,
+    permission: context.permission,
+    canUpload: uploadPermissions.has(context.permission),
+    canProcess: uploadPermissions.has(context.permission),
   };
 }
 

@@ -1465,7 +1465,14 @@ export type Database = {
         Returns: boolean;
       };
       complete_household_onboarding: {
-        Args: { raw_name: string; raw_policy_version: string };
+        Args: {
+          raw_first_name?: string;
+          raw_last_name?: string;
+          raw_name: string;
+          raw_policy_version: string;
+          raw_preferred_locale?: string;
+          raw_timezone?: string;
+        };
         Returns: string;
       };
       create_household: { Args: { raw_name: string }; Returns: string };

@@ -9,3 +9,5 @@ Native Amharic and Spanish reviewers must approve all sensitive, legal, medical,
 The ETH-008 authentication strings in Amharic and Spanish are implementation drafts and require native-speaker review before a public launch. This includes account recovery, confirmation-link, password, access-denied, and terms/privacy wording.
 
 ETH-011 adds aligned dependent-management strings for profile labels, validation, archive confirmation, permission messaging, empty states, and dashboard counts. The Amharic and Spanish implementation drafts require native-speaker review before launch, especially the sensitive notes guidance and archive wording.
+
+ETH-010 adds aligned onboarding strings for personal information, household information, names, preferred language, IANA timezone guidance, acknowledgement, validation, and error states. The Amharic and Spanish onboarding drafts require native-speaker review before launch, particularly the time-zone terminology and consent wording. Amharic remains left-to-right.
