@@ -11,6 +11,13 @@ const emptyProgress: TrainingProgress = {
   completedAt: null,
 };
 
+function isTrainingProgressSchemaUnavailable(error: { code: string }): boolean {
+  // `42P01` is PostgreSQL's undefined-table error. `PGRST205` is the
+  // equivalent PostgREST schema-cache response. Either indicates a deployment
+  // has not applied the reviewed progress migration yet.
+  return error.code === "42P01" || error.code === "PGRST205";
+}
+
 export async function getCurrentRbtTrainingProgress(userId: string): Promise<TrainingProgress> {
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase
@@ -20,7 +27,15 @@ export async function getCurrentRbtTrainingProgress(userId: string): Promise<Tra
     .eq("course_key", rbtCourseKey)
     .maybeSingle();
 
-  if (error) throw new Error("Unable to load training progress.");
+  if (error) {
+    if (isTrainingProgressSchemaUnavailable(error)) {
+      console.error(
+        `RBT training progress is unavailable because its schema has not been applied (${error.code}).`,
+      );
+      return emptyProgress;
+    }
+    throw new Error("Unable to load training progress.");
+  }
   if (!data) return emptyProgress;
 
   return normalizeRbtProgress({

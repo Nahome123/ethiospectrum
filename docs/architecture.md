@@ -48,6 +48,8 @@ The protected `/[locale]/training/rbt` entry resumes a signed-in user at the las
 
 `public.training_progress` stores one progress row per authenticated user and fixed RBT course key. The browser sends only an allowed section key. Server Actions Zod-validate it, require the session, and call the security-invoker `record_training_progress` function, which derives `auth.uid()` and never accepts a user ID. RLS permits a user to select, insert, or update only their own row. Progress is a reading aid—not a score, credential, completion certificate, or clinical record—and is deliberately unrelated to households, dependents, documents, and the service-role client.
 
+Deployments must apply the uniquely versioned progress migration before enabling saved progress. If that table is temporarily absent from the PostgREST schema cache, the lesson remains readable with empty progress and the server records the safe schema error; other database failures still fail closed and are not treated as empty progress.
+
 The download route validates the UUID, authenticated session, active household, and active uploaded document through RLS before creating a 60-second signed URL and redirecting to it. It uses the same safe response for a missing or inaccessible document. The browser never receives a public URL, storage secret, unrelated row data, or an administrative client. The member-facing actions module has a top-level `"use server"` directive and exports only async functions; state, schemas, constants, and synchronous helpers live in neutral modules so Next.js Server Actions remain valid.
 
 The `family-documents` bucket is private and migration-defined. Its trusted object paths have this shape:
