@@ -1,0 +1,60 @@
+name: Generate grounded document summaries
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+# This scheduler only needs its configured endpoint and summary invocation secret.
+permissions: {}
+
+concurrency:
+  group: document-summaries
+  cancel-in-progress: false
+
+jobs:
+  summarize:
+    name: Invoke the protected document-summary worker
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      DOCUMENT_SUMMARY_ORIGIN: ${{ vars.DOCUMENT_SUMMARY_ORIGIN }}
+      DOCUMENT_SUMMARY_SECRET: ${{ secrets.DOCUMENT_SUMMARY_SECRET }}
+    steps:
+      - name: Validate scheduler configuration
+        shell: bash
+        run: |
+          if [ -z "$DOCUMENT_SUMMARY_ORIGIN" ] || [ -z "$DOCUMENT_SUMMARY_SECRET" ]; then
+            echo "The document-summary origin or secret is not configured."
+            exit 1
+          fi
+
+          node <<'NODE'
+          const value = process.env.DOCUMENT_SUMMARY_ORIGIN;
+
+          try {
+            const url = new URL(value);
+            if (
+              url.protocol !== "https:" ||
+              url.username ||
+              url.password ||
+              url.pathname !== "/" ||
+              url.search ||
+              url.hash ||
+              value !== url.origin
+            ) {
+              throw new Error("invalid document-summary origin");
+            }
+          } catch {
+            console.error("The document-summary origin must be an exact HTTPS origin.");
+            process.exit(1);
+          }
+          NODE
+
+      - name: Run one bounded summary batch
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --retry 2 --retry-connrefused \
+            --request POST "${DOCUMENT_SUMMARY_ORIGIN}/api/internal/document-summaries" \
+            --header "x-document-summary-secret: $DOCUMENT_SUMMARY_SECRET" \
+            --header "Accept: application/json"

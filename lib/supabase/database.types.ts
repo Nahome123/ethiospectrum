@@ -425,6 +425,74 @@ export type Database = {
           },
         ];
       };
+      document_ocr_jobs: {
+        Row: {
+          attempt_count: number;
+          available_at: string;
+          completed_at: string | null;
+          created_at: string;
+          document_id: string;
+          error_code: string | null;
+          error_message: string | null;
+          failed_at: string | null;
+          id: string;
+          locked_at: string | null;
+          locked_by: string | null;
+          max_attempts: number;
+          model_identifier: string | null;
+          provider: string | null;
+          started_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id: string;
+          error_code?: string | null;
+          error_message?: string | null;
+          failed_at?: string | null;
+          id?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          provider?: string | null;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id?: string;
+          error_code?: string | null;
+          error_message?: string | null;
+          failed_at?: string | null;
+          id?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          provider?: string | null;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_ocr_jobs_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: true;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       document_pages: {
         Row: {
           character_count: number;
@@ -521,6 +589,121 @@ export type Database = {
             columns: ["document_id"];
             isOneToOne: true;
             referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      document_summaries: {
+        Row: {
+          attempt_count: number;
+          available_at: string;
+          completed_at: string | null;
+          created_at: string;
+          document_id: string;
+          error_code: string | null;
+          failed_at: string | null;
+          household_id: string;
+          id: string;
+          language: string;
+          locked_at: string | null;
+          locked_by: string | null;
+          max_attempts: number;
+          model_identifier: string | null;
+          prompt_version: string;
+          provider: string | null;
+          provider_call_count: number;
+          requested_at: string;
+          requested_by: string;
+          source_character_count: number;
+          source_coverage: string;
+          source_item_count: number;
+          source_references: Json;
+          started_at: string | null;
+          status: string;
+          structured_summary: Json | null;
+          summary_text: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id: string;
+          error_code?: string | null;
+          failed_at?: string | null;
+          household_id: string;
+          id?: string;
+          language: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          prompt_version?: string;
+          provider?: string | null;
+          provider_call_count?: number;
+          requested_at?: string;
+          requested_by: string;
+          source_character_count?: number;
+          source_coverage?: string;
+          source_item_count?: number;
+          source_references?: Json;
+          started_at?: string | null;
+          status?: string;
+          structured_summary?: Json | null;
+          summary_text?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id?: string;
+          error_code?: string | null;
+          failed_at?: string | null;
+          household_id?: string;
+          id?: string;
+          language?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          prompt_version?: string;
+          provider?: string | null;
+          provider_call_count?: number;
+          requested_at?: string;
+          requested_by?: string;
+          source_character_count?: number;
+          source_coverage?: string;
+          source_item_count?: number;
+          source_references?: Json;
+          started_at?: string | null;
+          status?: string;
+          structured_summary?: Json | null;
+          summary_text?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_summaries_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_summaries_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_summaries_requested_by_fkey";
+            columns: ["requested_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -1233,6 +1416,22 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
+      claim_next_document_ocr_job: {
+        Args: { worker_identity: string };
+        Returns: {
+          attempt_count: number;
+          dependent_id: string;
+          document_id: string;
+          file_size: number;
+          household_id: string;
+          job_id: string;
+          max_attempts: number;
+          mime_type: string;
+          original_filename: string;
+          storage_bucket: string;
+          storage_path: string;
+        }[];
+      };
       claim_next_document_processing_job: {
         Args: { worker_identity: string };
         Returns: {
@@ -1249,6 +1448,29 @@ export type Database = {
           storage_path: string;
         }[];
       };
+      claim_next_document_summary_job: {
+        Args: { worker_identity: string };
+        Returns: {
+          attempt_count: number;
+          document_id: string;
+          household_id: string;
+          language: string;
+          max_attempts: number;
+          prompt_version: string;
+          summary_id: string;
+        }[];
+      };
+      complete_document_ocr_job: {
+        Args: {
+          chunk_rows: Json;
+          completed_model_identifier: string;
+          completed_provider: string;
+          expected_worker_identity: string;
+          page_rows: Json;
+          target_job_id: string;
+        };
+        Returns: boolean;
+      };
       complete_document_processing_job: {
         Args: {
           chunk_rows: Json;
@@ -1259,11 +1481,35 @@ export type Database = {
         };
         Returns: boolean;
       };
+      complete_document_summary_job: {
+        Args: {
+          completed_model_identifier: string;
+          completed_provider: string;
+          completed_provider_call_count: number;
+          completed_source_character_count: number;
+          completed_source_coverage: string;
+          completed_source_item_count: number;
+          completed_source_references: Json;
+          completed_structured_summary: Json;
+          completed_summary_text: string;
+          expected_worker_identity: string;
+          target_summary_id: string;
+        };
+        Returns: boolean;
+      };
       complete_household_onboarding: {
         Args: { raw_name: string; raw_policy_version: string };
         Returns: string;
       };
       create_household: { Args: { raw_name: string }; Returns: string };
+      fail_document_ocr_job: {
+        Args: {
+          expected_worker_identity: string;
+          safe_error_code: string;
+          target_job_id: string;
+        };
+        Returns: boolean;
+      };
       fail_document_processing_job: {
         Args: {
           expected_worker_identity: string;
@@ -1271,6 +1517,25 @@ export type Database = {
           target_job_id: string;
         };
         Returns: boolean;
+      };
+      fail_document_summary_job: {
+        Args: {
+          expected_worker_identity: string;
+          safe_error_code: string;
+          target_summary_id: string;
+        };
+        Returns: boolean;
+      };
+      get_document_ocr_status: {
+        Args: { target_document_id: string };
+        Returns: {
+          attempt_count: number;
+          completed_at: string;
+          failed_at: string;
+          retryable: boolean;
+          started_at: string;
+          status: string;
+        }[];
       };
       get_document_processing_status: {
         Args: { target_document_id: string };
@@ -1283,6 +1548,20 @@ export type Database = {
           status: string;
         }[];
       };
+      get_document_summary_status: {
+        Args: { requested_language: string; target_document_id: string };
+        Returns: {
+          completed_at: string;
+          failed_at: string;
+          language: string;
+          requested_at: string;
+          retryable: boolean;
+          source_coverage: string;
+          started_at: string;
+          status: string;
+          summary_id: string;
+        }[];
+      };
       is_active_household_member: {
         Args: { target_household: string };
         Returns: boolean;
@@ -1291,6 +1570,15 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      queue_document_ocr: {
+        Args: { target_document_id: string };
+        Returns: {
+          already_queued: boolean;
+          attempt_count: number;
+          job_id: string;
+          ocr_status: string;
+        }[];
       };
       queue_document_processing: {
         Args: { target_document_id: string };
@@ -1307,6 +1595,15 @@ export type Database = {
           completed_at: string;
           completed_sections: string[];
           last_section: string;
+        }[];
+      };
+      request_document_summary: {
+        Args: { requested_language: string; target_document_id: string };
+        Returns: {
+          already_active: boolean;
+          reused_completed: boolean;
+          summary_id: string;
+          summary_status: string;
         }[];
       };
     };

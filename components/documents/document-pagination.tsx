@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { buildDocumentBinderHref } from "@/lib/documents/binder-url";
 import type { DocumentBinderFilters } from "@/lib/validation/document-binder";
@@ -24,24 +23,24 @@ export async function DocumentPagination({
       </p>
       <div className="flex items-center gap-3">
         {pagination.hasPreviousPage ? (
-          <Link
+          <a
             className="rounded-4xl border px-4 py-2 font-semibold text-primary underline-offset-4 hover:underline"
             href={buildDocumentBinderHref(locale, filters, { page: pagination.page - 1 })}
           >
             {t("previousPage")}
-          </Link>
+          </a>
         ) : (
           <span aria-disabled="true" className="rounded-4xl border px-4 py-2 text-muted-foreground">
             {t("previousPage")}
           </span>
         )}
         {pagination.hasNextPage ? (
-          <Link
+          <a
             className="rounded-4xl border px-4 py-2 font-semibold text-primary underline-offset-4 hover:underline"
             href={buildDocumentBinderHref(locale, filters, { page: pagination.page + 1 })}
           >
             {t("nextPage")}
-          </Link>
+          </a>
         ) : (
           <span aria-disabled="true" className="rounded-4xl border px-4 py-2 text-muted-foreground">
             {t("nextPage")}

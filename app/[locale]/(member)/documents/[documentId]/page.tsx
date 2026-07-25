@@ -1,26 +1,52 @@
 import { getTranslations } from "next-intl/server";
 import { ArchiveDocumentButton } from "@/components/documents/archive-document-button";
+import {
+  DocumentSummaryPanel,
+  type DocumentSummaryAvailability,
+} from "@/components/documents/document-summary-panel";
+import { DocumentSummaryRequestForm } from "@/components/documents/document-summary-request-form";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
+import { OcrDocumentButton } from "@/components/documents/ocr-document-button";
 import { ProcessDocumentButton } from "@/components/documents/process-document-button";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { formatDocumentFileSize, getDocumentFileType } from "@/lib/documents/constants";
 import {
   canArchiveDocument,
+  canQueueDocumentOcr,
   canQueueDocumentProcessing,
+  canQueueDocumentSummary,
   getDocumentDependentName,
+  getDocumentOcrDetails,
   getDocumentProcessingDetails,
+  getDocumentSummaryDetails,
+  getDocumentSummaryEligibility,
   getVisibleDocument,
 } from "@/lib/documents/server";
+import { documentSummaryLanguageSchema } from "@/lib/documents/summaries/schemas";
 import { documentIdSchema } from "@/lib/validation/document";
 
 export default async function DocumentDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; documentId: string }>;
+  searchParams: Promise<{ summaryLanguage?: string | string[] }>;
 }) {
-  const { locale: localeParam, documentId } = await params;
+  const [{ locale: localeParam, documentId }, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
   const locale = localeParam as AppLocale;
+  const requestedSummaryLanguage =
+    typeof resolvedSearchParams.summaryLanguage === "string" ? resolvedSearchParams.summaryLanguage : null;
+  const requestedLanguage = documentSummaryLanguageSchema.safeParse(requestedSummaryLanguage);
+  const localeLanguage = documentSummaryLanguageSchema.safeParse(locale);
+  const summaryLanguage = requestedLanguage.success
+    ? requestedLanguage.data
+    : localeLanguage.success
+      ? localeLanguage.data
+      : "en";
   const t = await getTranslations("documents");
   if (!documentIdSchema.safeParse(documentId).success) return <p>{t("notFound")}</p>;
 
@@ -30,14 +56,34 @@ export default async function DocumentDetailPage({
   const { context, document } = record;
   const isUploaded = document.upload_status === "uploaded" && !document.deleted_at;
   const isArchived = document.upload_status === "archived" || Boolean(document.deleted_at);
-  const [dependentName, processingDetails] = await Promise.all([
-    getDocumentDependentName(document.dependent_id, context.household.id),
-    isUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
-  ]);
+  const [dependentName, processingDetails, ocrDetails, summaryEligibility, summaryDetails] =
+    await Promise.all([
+      getDocumentDependentName(document.dependent_id, context.household.id),
+      isUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
+      isUploaded ? getDocumentOcrDetails(document.id) : Promise.resolve(null),
+      isUploaded
+        ? getDocumentSummaryEligibility(context, document)
+        : Promise.resolve({ canRequest: false, reason: "unavailable" as const }),
+      isUploaded ? getDocumentSummaryDetails(document.id, summaryLanguage) : Promise.resolve(null),
+    ]);
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
   const canQueueProcessing = canQueueDocumentProcessing(context, document, processingDetails);
   const retryProcessing = canQueueProcessing && document.processing_status === "failed";
+  const canQueueOcr = canQueueDocumentOcr(context, document, ocrDetails);
+  const retryOcr = canQueueOcr && ocrDetails?.status === "failed";
+  const canRequestSelectedSummary =
+    !summaryDetails || (summaryDetails.status === "failed" && summaryDetails.retryable);
+  const canQueueSummary =
+    summaryEligibility.canRequest && canQueueDocumentSummary(context, document) && canRequestSelectedSummary;
+  const summaryAvailability: DocumentSummaryAvailability =
+    summaryEligibility.reason === "ocr"
+      ? "ocr_required"
+      : summaryEligibility.reason === "processing"
+        ? "processing_required"
+        : summaryEligibility.reason === "unavailable" && context.canProcess
+          ? "unavailable"
+          : "eligible";
   const lastProcessedAt =
     processingDetails?.completedAt ?? processingDetails?.failedAt ?? processingDetails?.startedAt ?? null;
   const fileType = getDocumentFileType(document.mime_type);
@@ -156,8 +202,54 @@ export default async function DocumentDetailPage({
         {canQueueProcessing ? (
           <ProcessDocumentButton documentId={document.id} locale={locale} retry={retryProcessing} />
         ) : null}
+        {canQueueOcr ? <OcrDocumentButton documentId={document.id} locale={locale} retry={retryOcr} /> : null}
         {canArchive ? <ArchiveDocumentButton documentId={document.id} locale={locale} /> : null}
       </div>
+      {document.processing_status === "needs_ocr" || ocrDetails ? (
+        <section aria-labelledby="ocr-status-heading" className="mt-6 rounded-2xl border bg-card p-5">
+          <h2 className="text-lg font-semibold" id="ocr-status-heading">
+            {t("ocrStatus")}
+          </h2>
+          {document.processing_status === "needs_ocr" ? (
+            <p className="mt-2 text-sm text-muted-foreground">{t("scannedDocument")}</p>
+          ) : null}
+          {ocrDetails ? (
+            <p className="mt-2 text-sm" role="status">
+              {ocrDetails.status === "queued"
+                ? t("ocrQueued")
+                : ocrDetails.status === "processing"
+                  ? t("ocrProcessing")
+                  : ocrDetails.status === "completed"
+                    ? t("ocrCompleted")
+                    : ocrDetails.status === "failed"
+                      ? t("ocrFailed")
+                      : t("ocrCancelled")}
+            </p>
+          ) : null}
+          {document.processing_status === "needs_ocr" ? (
+            <p className="mt-2 text-sm text-muted-foreground">{t("ocrMayContainErrors")}</p>
+          ) : null}
+          {ocrDetails?.status === "completed" ? (
+            <p className="mt-2 text-sm text-muted-foreground">{t("verifyWithOriginal")}</p>
+          ) : null}
+        </section>
+      ) : null}
+      <DocumentSummaryPanel
+        availability={summaryAvailability}
+        canRequest={canQueueSummary}
+        details={summaryDetails}
+        locale={locale}
+        requestControl={
+          <DocumentSummaryRequestForm
+            documentId={document.id}
+            existing={summaryDetails?.status === "completed"}
+            locale={locale}
+            retry={summaryDetails?.status === "failed" && summaryDetails.retryable}
+          />
+        }
+        summaryLanguage={summaryLanguage}
+        sourceLocation={fileType === "pdf" ? "page" : "section"}
+      />
       {document.processing_status === "needs_ocr" || document.processing_status === "unsupported" ? (
         <p className="mt-3 text-sm text-muted-foreground">{t("extractionUnavailable")}</p>
       ) : null}

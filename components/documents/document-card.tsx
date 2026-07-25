@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { ArchiveDocumentButton } from "@/components/documents/archive-document-button";
+import { DocumentSummaryStatusBadge } from "@/components/documents/document-summary-status-badge";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -54,6 +55,7 @@ export async function DocumentCard({
         <div className="flex flex-wrap justify-end gap-2">
           <DocumentStatusBadge kind="upload" status={document.upload_status} />
           {!isArchived ? <DocumentStatusBadge kind="processing" status={document.processing_status} /> : null}
+          {!isArchived ? <DocumentSummaryStatusBadge status={document.summaryStatus} /> : null}
         </div>
       </div>
 

@@ -121,6 +121,21 @@ export default async function DashboardPage() {
               {t("needsOcrDocumentCount", { count: documentSummary.needsOcrCount })}
             </Link>
           ) : null}
+          {documentSummary.summaryAvailableCount ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("summaryAvailableCount", { count: documentSummary.summaryAvailableCount })}
+            </p>
+          ) : null}
+          {documentSummary.summaryPendingCount ? (
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t("summaryPendingCount", { count: documentSummary.summaryPendingCount })}
+            </p>
+          ) : null}
+          {documentSummary.summaryFailedCount ? (
+            <p className="mt-1 text-sm text-destructive">
+              {t("summaryFailedCount", { count: documentSummary.summaryFailedCount })}
+            </p>
+          ) : null}
           {documents.length ? (
             <ul className="mt-3 space-y-1 text-sm">
               {documents.map((document) => (
