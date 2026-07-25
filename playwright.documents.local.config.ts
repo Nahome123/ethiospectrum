@@ -54,7 +54,7 @@ Object.assign(process.env, localEnvironment);
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  testMatch: "documents.local.spec.ts",
+  testMatch: /(?:documents|training)\.local\.spec\.ts/,
   fullyParallel: false,
   workers: 1,
   timeout: 180_000,

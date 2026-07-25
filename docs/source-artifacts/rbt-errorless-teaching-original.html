@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RBT / Errorless Teaching Training | የRBT ስልጠና</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;600;700&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a6b3c;
+    --green-light: #2d9a5a;
+    --green-pale: #e8f5ee;
+    --gold: #c8982a;
+    --gold-light: #f0c84a;
+    --red: #b5251e;
+    --dark: #1a1a2e;
+    --text: #2a2a2a;
+    --text-light: #555;
+    --bg: #fafaf7;
+    --white: #ffffff;
+    --border: #dde8e2;
+    --shadow: 0 4px 24px rgba(26,107,60,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', 'Noto Sans Ethiopic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, var(--green) 0%, #0d4a27 60%, #1a1a2e 100%);
+    color: white;
+    padding: 64px 40px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(200,152,42,0.15);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .flag-stripe {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+  .flag-stripe span {
+    display: block;
+    width: 40px; height: 6px;
+    border-radius: 3px;
+  }
+  .flag-stripe .g { background: var(--green-light); }
+  .flag-stripe .y { background: var(--gold-light); }
+  .flag-stripe .r { background: var(--red); }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(200,152,42,0.25);
+    border: 1px solid rgba(200,152,42,0.5);
+    color: var(--gold-light);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero h1 .am {
+    display: block;
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: clamp(20px, 3.5vw, 36px);
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-top: 8px;
+  }
+  .hero-sub {
+    font-size: 16px;
+    opacity: 0.8;
+    margin-top: 12px;
+  }
+  .hero-sub .am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    color: rgba(255,255,255,0.7);
+    display: block;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  /* NAV TABS */
+  .tab-nav {
+    background: var(--dark);
+    padding: 0 20px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-btn {
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: white; }
+  .tab-btn.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold-light);
+  }
+
+  /* CONTENT */
+  .tab-content { display: none; padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* SECTION CARD */
+  .section-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--green);
+    position: relative;
+  }
+  .section-card.gold { border-left-color: var(--gold); }
+  .section-card.red { border-left-color: var(--red); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .section-title.gold { color: var(--gold); }
+  .section-title.red { color: var(--red); }
+  .section-title-am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 17px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  /* BILINGUAL ITEM */
+  .bi-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .bi-item:last-child { border-bottom: none; }
+  .bi-en {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .bi-am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  /* STEP BOX */
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .step-box {
+    background: var(--green);
+    color: white;
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .step-box.transfer { background: var(--gold); }
+  .step-box.distract { background: #2563a8; }
+  .step-box.check { background: var(--red); }
+  .step-num {
+    font-size: 32px;
+    font-weight: 900;
+    opacity: 0.3;
+    font-family: 'Playfair Display', serif;
+  }
+  .step-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 4px 0;
+    letter-spacing: 1px;
+  }
+  .step-am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 13px;
+    opacity: 0.9;
+    margin-top: 6px;
+  }
+  .step-desc {
+    font-size: 12px;
+    opacity: 0.85;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* BULLET LIST */
+  .bi-list { list-style: none; margin: 12px 0; }
+  .bi-list li {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 10px 0 10px 16px;
+    border-bottom: 1px dashed var(--border);
+    position: relative;
+  }
+  .bi-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 12px;
+    top: 12px;
+  }
+  .bi-list li:last-child { border-bottom: none; }
+  .bi-list .en { font-size: 14px; }
+  .bi-list .am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 13px;
+    color: var(--green);
+  }
+
+  /* FLASHCARD / Q&A */
+  .qa-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border: 1px solid var(--border);
+  }
+  .qa-q {
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+  .qa-a {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .qa-am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 6px;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+
+  /* GLOSSARY */
+  .gloss-item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .gloss-item:last-child { border-bottom: none; }
+  .gloss-term {
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 15px;
+  }
+  .gloss-term .am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    color: var(--green);
+    font-weight: 600;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  .gloss-def { font-size: 14px; color: var(--text-light); margin-top: 4px; }
+  .gloss-def-am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 13px;
+    color: #777;
+    margin-top: 3px;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: var(--green-pale);
+    border: 1px solid #b2d8c2;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 16px 0;
+  }
+  .highlight-box .en { font-weight: 600; color: var(--green); font-size: 15px; }
+  .highlight-box .am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 14px;
+    color: #2d6b47;
+    margin-top: 6px;
+  }
+
+  /* ERROR FLOW */
+  .error-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .ef-box {
+    background: var(--red);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .ef-box.green { background: var(--green); }
+  .ef-box.gold { background: var(--gold); }
+  .ef-box.blue { background: #2563a8; }
+  .ef-arrow { color: var(--text-light); font-size: 18px; }
+
+  /* TAKEAWAY */
+  .takeaway-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .takeaway-item {
+    background: var(--green-pale);
+    border-radius: 10px;
+    padding: 18px;
+    border-left: 4px solid var(--green);
+  }
+  .takeaway-item .en { font-size: 14px; font-weight: 600; color: var(--text); }
+  .takeaway-item .am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    font-size: 13px;
+    color: var(--green);
+    margin-top: 6px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+    color: var(--text-light);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 28px;
+    font-size: 13px;
+    margin-top: 40px;
+  }
+  footer .am {
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    display: block;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .bi-item, .bi-list li { grid-template-columns: 1fr; gap: 4px; }
+    .tab-content { padding: 24px 14px; }
+    .section-card { padding: 20px; }
+    .steps-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="flag-stripe">
+    <span class="g"></span><span class="g"></span><span class="g"></span>
+    <span style="width:8px;display:block"></span>
+    <span class="y"></span><span class="y"></span><span class="y"></span>
+    <span style="width:8px;display:block"></span>
+    <span class="r"></span><span class="r"></span><span class="r"></span>
+  </div>
+  <div class="hero-badge">RBT Training Guide · Bilingual Edition</div>
+  <h1>
+    Errorless Teaching & Intensive Teaching
+    <span class="am">ስህተት-አልባ ማስተማር እና ጠንካራ ማስተማር</span>
+  </h1>
+  <p class="hero-sub">
+    Nebraska ASD Network · Hopebridge Autism Therapy Centers
+    <span class="am">ለኢትዮጵያውያን RBT ተሰልጣኞች የቀረበ ሁለት-ቋንቋ ስልጠና</span>
+  </p>
+</div>
+
+<!-- NAV -->
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview · አጠቃላይ</button>
+  <button class="tab-btn" onclick="showTab('procedure')">Procedure · ሂደት</button>
+  <button class="tab-btn" onclick="showTab('errors')">Error Correction · ስህተት ማረም</button>
+  <button class="tab-btn" onclick="showTab('setup')">Setup · ዝግጅት</button>
+  <button class="tab-btn" onclick="showTab('flashcards')">Flashcards · ካርዶች</button>
+  <button class="tab-btn" onclick="showTab('glossary')">Glossary · መዝገበ ቃላት</button>
+  <button class="tab-btn" onclick="showTab('takeaways')">Takeaways · ማጠቃለያ</button>
+</nav>
+
+<!-- ===================== OVERVIEW ===================== -->
+<div id="overview" class="tab-content active">
+
+  <div class="section-card">
+    <div class="section-title">What is Errorless Teaching?</div>
+    <div class="section-title-am">ስህተት-አልባ ማስተማር ምንድነው?</div>
+    <div class="bi-item">
+      <div class="bi-en">An instructional method for teaching new skills and monitoring learned skills.</div>
+      <div class="bi-am">አዲስ ክህሎቶችን ለማስተማር እና የተማሩ ክህሎቶችን ለመከታተል የሚያገለግል የማስተማር ዘዴ ነው።</div>
+    </div>
+    <div class="bi-item">
+      <div class="bi-en">Involves using prompts that must be faded over time.</div>
+      <div class="bi-am">ከጊዜ ወደ ጊዜ ሊቀዘቅዙ የሚገባቸው ፍርዶችን (ፕሮምፕቶችን) መጠቀምን ያካትታል።</div>
+    </div>
+  </div>
+
+  <div class="section-card gold">
+    <div class="section-title gold">Why Use It? · ለምን እንጠቀምበት?</div>
+    <ul class="bi-list">
+      <li><span class="en">Used for individuals with learning difficulties and problem behaviors</span><span class="am">የመማር ችግር እና ችግሮች ያሉባቸው ሰዎች ለማስተማር ያገለግላል</span></li>
+      <li><span class="en">Faster acquisition of skills</span><span class="am">ክህሎቶችን በፍጥነት ለማዳበር ይረዳል</span></li>
+      <li><span class="en">More opportunities to access reinforcement</span><span class="am">ሽልማት ለማግኘት ብዙ አጋጣሚዎችን ይፈጥራል</span></li>
+      <li><span class="en">Positive learning environment</span><span class="am">አዎንታዊ የመማር ሁኔታን ያጠናክራል</span></li>
+      <li><span class="en">Engaging — fast-paced and varied tasks</span><span class="am">ፈጣን እና የተለያዩ ተግባሮች ስለሆኑ ተሳትፎን ያሳድጋሉ</span></li>
+    </ul>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">What Skills Can Be Taught?</div>
+    <div class="section-title-am">ምን ዓይነት ክህሎቶች ይማራሉ?</div>
+    <div class="highlight-box">
+      <div class="en">Almost any skill can be taught through errorless teaching!</div>
+      <div class="am">ማለት ይቻላል ማንኛውም ክህሎት በዚህ ዘዴ ሊማር ይችላል!</div>
+    </div>
+    <ul class="bi-list">
+      <li><span class="en">Daily Living Skills</span><span class="am">የዕለት ተዕለት ኑሮ ክህሎቶች</span></li>
+      <li><span class="en">Verbal Behavior</span><span class="am">የቃል ባህሪ</span></li>
+      <li><span class="en">Fine Motor Skills</span><span class="am">ደቃቃ የሞተር ክህሎቶች</span></li>
+      <li><span class="en">Motor Imitation</span><span class="am">የሞተር ኢሚቴሽን (ኮፒ ማድረግ)</span></li>
+    </ul>
+  </div>
+
+  <div class="section-card red">
+    <div class="section-title red">Scientific Basis · ሳይንሳዊ መሠረት</div>
+    <ul class="bi-list">
+      <li><span class="en">Errorless teaching is an effective technique within Applied Behavior Analysis (ABA)</span><span class="am">ስህተት-አልባ ማስተማር በABA ማዕቀፍ ውስጥ ውጤታማ ዘዴ ነው</span></li>
+      <li><span class="en">ABA is an evidence-based research practice for individuals with autism regardless of age</span><span class="am">ABA ለኦቲዝም ያለባቸው ሁሉ — በዕድሜ ሳይለይ — ሳይንሳዊ ማስረጃ ያለው ዘዴ ነው</span></li>
+      <li><span class="en">Reducing errors reduces problem behavior and keeps learning positive</span><span class="am">ስህተቶችን መቀነስ ችግር ያለው ባህሪን ይቀንሳል እና ትምህርትን አዎንታዊ ያደርጋል</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ===================== PROCEDURE ===================== -->
+<div id="procedure" class="tab-content">
+
+  <div class="section-card">
+    <div class="section-title">Two Types of Skills</div>
+    <div class="section-title-am">ሁለት ዓይነት ክህሎቶች</div>
+    <div class="bi-item">
+      <div class="bi-en"><strong>"Known" Skills</strong> — Previously-mastered items the student can already do easily.</div>
+      <div class="bi-am"><strong>"የሚታወቁ" ክህሎቶች</strong> — ተማሪው አስቀድሞ ቀድሞ የተማራቸውና በቀላሉ ሊሰራቸው የሚችላቸው።</div>
+    </div>
+    <div class="bi-item">
+      <div class="bi-en"><strong>"Target" Skills</strong> — New skill items targeted for instruction (not yet mastered).</div>
+      <div class="bi-am"><strong>"ዒላማ" ክህሎቶች</strong> — ለትምህርት የተያዙ አዲስ ነገሮች (ገና ያልተማሯቸው)።</div>
+    </div>
+    <div class="highlight-box">
+      <div class="en">📊 80:20 Ratio — 80% known skills to 20% target skills (may vary by student)</div>
+      <div class="am">80:20 ሬሾ — 80% የሚታወቁ ክህሎቶች እና 20% ዒላማ ክህሎቶች (በተማሪ ይለያያል)።</div>
+    </div>
+    <div class="bi-item">
+      <div class="bi-en">Lots of success minimizes frustration and builds behavioral momentum.</div>
+      <div class="bi-am">ብዙ ስኬት ስደሰት ስሜትን ይቀንሳል እና ትምህርታዊ ሞመንተምን (ፍጥነት) ያጠናክራል።</div>
+    </div>
+  </div>
+
+  <div class="divider">The 4-Step Teaching Procedure · 4 ደረጃ ያለው የማስተማር ሂደት</div>
+
+  <div class="steps-row">
+    <div class="step-box">
+      <div class="step-num">1</div>
+      <div class="step-name">PROMPT</div>
+      <div class="step-am">ፍርዱ (Prompt)</div>
+      <div class="step-desc">Give the least intrusive prompt that ensures a correct response</div>
+    </div>
+    <div class="step-box transfer">
+      <div class="step-num">2</div>
+      <div class="step-name">TRANSFER</div>
+      <div class="step-am">ማስተላለፍ</div>
+      <div class="step-desc">Ask again WITHOUT the prompt — test independence</div>
+    </div>
+    <div class="step-box distract">
+      <div class="step-num">3</div>
+      <div class="step-name">DISTRACT</div>
+      <div class="step-am">ሌሎች ነገሮች</div>
+      <div class="step-desc">Do some easy "known" skills to "wipe the slate clean"</div>
+    </div>
+    <div class="step-box check">
+      <div class="step-num">4</div>
+      <div class="step-name">CHECK</div>
+      <div class="step-am">ማረጋገጥ</div>
+      <div class="step-desc">Ask the target skill with NO prompting — assess true learning</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">1. PROMPT · ፍርዱ</div>
+    <ul class="bi-list">
+      <li><span class="en">Prompts are part of the antecedent condition (before the student behavior occurs)</span><span class="am">ፕሮምፕቶች ተማሪው ድርጊቱን ከማድረጉ በፊት ይሰጣሉ (ቅድምቱ ሁኔታ ነው)</span></li>
+      <li><span class="en">Start with a prompted trial so the student gets the behavior correct</span><span class="am">ተማሪው ትክክለኛ ምላሽ እንዲሰጥ ፍርዱ ካለ ሙከራ ጀምር</span></li>
+      <li><span class="en">Choose the prompt that is least intrusive but still ensures a correct response</span><span class="am">ትክክለኛ ምላሽ የሚያረጋግጥ ነገር ግን ትንሹ ጣልቃ ገቢ ፕሮምፕት ምረጥ</span></li>
+      <li><span class="en">You may need to do multiple prompt trials and fade slowly</span><span class="am">ብዙ ሙከራዎች ማድረግና ቀስ ብሎ ፕሮምፕቱን ማቀዝቀዝ ሊያስፈልግ ይችላል</span></li>
+    </ul>
+  </div>
+
+  <div class="section-card gold">
+    <div class="section-title gold">2. TRANSFER · ማስተላለፍ</div>
+    <ul class="bi-list">
+      <li><span class="en">Prompts are faded through the use of a transfer trial</span><span class="am">ፕሮምፕቶች በሽግግር ሙከራ አማካኝነት ቀስ ብለው ይቀዘቅዛሉ</span></li>
+      <li><span class="en">Ask the same question again but without the prompt</span><span class="am">ያው ጥያቄ ፕሮምፕት ሳይኖር ደጋግሞ ጠይቅ</span></li>
+      <li><span class="en">If student gives the desired behavior → move to distract trials</span><span class="am">ተማሪው ትክክለኛ ምላሽ ከሰጠ → ወደ "ሌሎች ነገሮች" ሂደት ሂድ</span></li>
+      <li><span class="en">If student does NOT give the desired behavior → move to error correction</span><span class="am">ትክክለኛ ምላሽ ካልሰጠ → ወደ ስህተት ማረም ሂደት ሂድ</span></li>
+    </ul>
+  </div>
+
+  <div class="section-card" style="border-left-color:#2563a8;">
+    <div class="section-title" style="color:#2563a8;">3. DISTRACT · ሌሎች ቀለል ያሉ ነገሮች</div>
+    <ul class="bi-list">
+      <li><span class="en">Place other responses between the prompt/transfer trials and the check trial</span><span class="am">ከፕሮምፕት/ሽግግር ሙከራዎች እና የማረጋገጥ ሙከራ መካከል ሌሎች ምላሾችን አስቀምጥ</span></li>
+      <li><span class="en">Think of it as "wiping the slate clean"</span><span class="am">ሰሌዳውን ጽድ ማድረግ አድርጎ ያስብ ("ሪሴት" ማድረግ)</span></li>
+      <li><span class="en">Distracter trials come from "known" skills — things the student has already mastered</span><span class="am">የሌሎች ነገሮች ሙከራዎች ተማሪው ቀደም ሲል ካወቀው ክህሎቶች ነው</span></li>
+    </ul>
+  </div>
+
+  <div class="section-card red">
+    <div class="section-title red">4. CHECK · ማረጋገጥ</div>
+    <ul class="bi-list">
+      <li><span class="en">Check trials assess whether the student can do the target skill after distractor trials</span><span class="am">የማረጋገጫ ሙከራ ተማሪው ሌሎች ነገሮች ካደረጉ በኋላ ዒላማ ክህሎቱን ይችልかどうかን ይፈትሻል</span></li>
+      <li><span class="en">There is NO prompting during the check trial</span><span class="am">በማረጋገጫ ሙከራ ወቅት ፕሮምፕት አይሰጥም</span></li>
+      <li><span class="en">Correct responses indicate that the student is learning</span><span class="am">ትክክለኛ ምላሽ ተማሪው እየተማረ ስለሆነ ያሳያል</span></li>
+      <li><span class="en">Give the STRONGEST reinforcement after the check trial for independent performance</span><span class="am">ተማሪው ብቻውን ካደረገ በኋላ ለምልክቱ ትልቅ ሽልማት ስጥ</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ===================== ERROR CORRECTION ===================== -->
+<div id="errors" class="tab-content">
+
+  <div class="section-card">
+    <div class="section-title">3 Types of Errors · 3 ዓይነት ስህተቶች</div>
+    <ul class="bi-list">
+      <li><span class="en"><strong>Incorrect</strong> — Wrong answer given</span><span class="am"><strong>ስህተት</strong> — ትክክል ያልሆነ ምላሽ ሲሰጥ</span></li>
+      <li><span class="en"><strong>No response / too much time</strong> — Student doesn't answer within time</span><span class="am"><strong>ምንም ምላሽ/ዘግይቶ</strong> — ተማሪው ወቅቱ ሳይሆን ምላሽ ካልሰጠ</span></li>
+      <li><span class="en"><strong>Scrolling</strong> — Student goes through multiple responses trying to find the right one</span><span class="am"><strong>መስኮት ማሸብለል</strong> — ተማሪው ብዙ ምላሾችን እየሞከረ ትክክለኛውን ሲፈልግ</span></li>
+    </ul>
+  </div>
+
+  <div class="section-card gold">
+    <div class="section-title gold">Error Correction Procedure · የስህተት ማረሚያ ሂደት</div>
+    <div class="bi-item">
+      <div class="bi-en">The error correction procedure is the same as the teaching procedure, but with an "End" step added at the beginning.</div>
+      <div class="bi-am">የስህተት ማረሚያ ሂደቱ ከማስተማሪያ ሂደቱ ጋር ተመሳሳይ ነው፤ ነገር ግን "ማቆሚያ" ደረጃ ይጨምርበታል።</div>
+    </div>
+    <div class="bi-item">
+      <div class="bi-en">End the trial wherever the student makes an error and go back to the beginning (the prompted trial) with a MORE intrusive prompt.</div>
+      <div class="bi-am">ተማሪው ስህተት ባደረገበት ቦታ ሙከራውን አቁምና ወደ መጀመሪያ ሂደት (ፍርዱ ሙከራ) ወደ ኋላ ሂድ — ነገር ግን ይበልጥ ጠንካራ ፕሮምፕት ይዘህ።</div>
+    </div>
+  </div>
+
+  <div class="divider">Error Correction Flow · የስህተት ማረሚያ ሂደት ደረጃዎች</div>
+
+  <div class="error-flow">
+    <div class="ef-box" style="background:#c0392b;">END</div>
+    <span class="ef-arrow">→</span>
+    <div class="ef-box green">PROMPT<br><small style="font-family:'Noto Sans Ethiopic';font-size:11px;">ፍርዱ (ይበልጥ ጠንካራ)</small></div>
+    <span class="ef-arrow">→</span>
+    <div class="ef-box gold">TRANSFER<br><small style="font-family:'Noto Sans Ethiopic';font-size:11px;">ማስተላለፍ</small></div>
+    <span class="ef-arrow">→</span>
+    <div class="ef-box blue">DISTRACT<br><small style="font-family:'Noto Sans Ethiopic';font-size:11px;">ሌሎች ነገሮች</small></div>
+    <span class="ef-arrow">→</span>
+    <div class="ef-box" style="background:#c0392b;">CHECK<br><small style="font-family:'Noto Sans Ethiopic';font-size:11px;">ማረጋገጥ</small></div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">Normal Teaching Flow · መደበኛ ማስተማሪያ ሂደት</div>
+    <div class="error-flow">
+      <div class="ef-box green">PROMPT</div>
+      <span class="ef-arrow">→</span>
+      <div class="ef-box gold">TRANSFER</div>
+      <span class="ef-arrow">→</span>
+      <div class="ef-box blue">DISTRACT</div>
+      <span class="ef-arrow">→</span>
+      <div class="ef-box" style="background:#c0392b;">CHECK</div>
+    </div>
+    <div style="margin-top:16px;" class="bi-item">
+      <div class="bi-en">If an error occurs at any step → add END before PROMPT and use a more intrusive prompt.</div>
+      <div class="bi-am">በማናቸውም ደረጃ ስህተት ከተፈጠረ → ፍርዱ (PROMPT) ከፊት END ጨምር እና ይበልጥ ጠንካራ ፕሮምፕት ተጠቀም።</div>
+    </div>
+  </div>
+
+  <div class="section-card red">
+    <div class="section-title red">Key Principle · ዋና መርህ</div>
+    <div class="highlight-box">
+      <div class="en">📌 Take probe data every day AND then errorlessly teach each target skill multiple times every day!</div>
+      <div class="am">በየቀኑ ፍተሻ ዳታ አሰብስብ እናም ቀን ቀን ዒላማ ክህሎቶቹን ስህተት-አልባ ዘዴ ብዙ ጊዜ አስተምር!</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== SETUP ===================== -->
+<div id="setup" class="tab-content">
+
+  <div class="section-card">
+    <div class="section-title">First Things First · ቅድሚያ ሊሰጣቸው የሚገቡ ነገሮች</div>
+    <div class="section-title-am">Pair Teaching with Improving Conditions! · ማስተማርን ከተሻሻሉ ሁኔታዎች ጋር አጣምር!</div>
+    <ul class="bi-list">
+      <li><span class="en">Pair instruction with positive reinforcement</span><span class="am">ትምህርትን ከአዎንታዊ ሽልማት ጋር አጣምር</span></li>
+      <li><span class="en">Fade in demands gradually</span><span class="am">ጥያቄዎችን ቀስ ብሎ ጨምር</span></li>
+      <li><span class="en">Low response effort at first</span><span class="am">መጀመሪያ ቀለል ያሉ ምላሾችን ጠይቅ</span></li>
+      <li><span class="en">Immediate delivery of reinforcement</span><span class="am">ሽልማቱን ወዲያውኑ ስጥ</span></li>
+      <li><span class="en">Reduce learner errors</span><span class="am">የተማሪው ስህተቶችን ቀንስ</span></li>
+      <li><span class="en">Fast-paced instruction</span><span class="am">ፈጣን ትምህርት</span></li>
+      <li><span class="en">Intersperse easy and hard tasks</span><span class="am">ቀለል ያሉ እና ከባድ ተግባሮችን ቀያይር</span></li>
+      <li><span class="en">Teach to fluency</span><span class="am">እስከ ቅልጥምነት ድረስ አስተምር</span></li>
+    </ul>
+    <div class="highlight-box">
+      <div class="en">⭐ All of the above help reduce escape-based behavior!</div>
+      <div class="am">ሁሉም ከላይ ያሉት ነገሮች ማምለጥ-ተኮር ባህሪን ለመቀነስ ይረዳሉ!</div>
+    </div>
+  </div>
+
+  <div class="section-card gold">
+    <div class="section-title gold">Getting Ready · ዝግጁ መሆን</div>
+    <div class="section-title-am">Teach Skills to Enhance Cooperation · ትብብርን ለማሳደግ ክህሎቶችን አስተምር</div>
+    <ul class="bi-list">
+      <li><span class="en">Ready hands — keep hands still and ready</span><span class="am">ዝግጁ እጆች — እጆቹ ዝም ብሎ ዝግጁ ሆነው ይቆዩ</span></li>
+      <li><span class="en">Wait — tolerate brief delays</span><span class="am">ጠብቅ — ትንሽ ቆይ ማለትን ይቀበሉ</span></li>
+      <li><span class="en">My turn (giving up reinforcers)</span><span class="am">የኔ ተራ (ሽልማቱን ለሌላ ሰው ሰጥ)</span></li>
+      <li><span class="en">Smooth transitions</span><span class="am">ስብስብ ሽግግሮች</span></li>
+      <li><span class="en">Accepting "no"</span><span class="am">"አይ" ማለትን ተቀበሉ</span></li>
+    </ul>
+    <div class="divider">Instructional Control · ትምህርታዊ ቁጥጥር</div>
+    <ul class="bi-list">
+      <li><span class="en">Every time the child wants something, you have an opportunity to teach</span><span class="am">ልጁ ነገር ሲፈልግ ሁሉ ለማስተማር አጋጣሚ አለህ</span></li>
+      <li><span class="en">Capitalize on "in the moment" motivation</span><span class="am">ልጁ ባለ "ጊዜ" ፍላጎቱን ተጠቀምበት</span></li>
+      <li><span class="en">Use what you know about the student to create a motivating context for learning</span><span class="am">ተማሪዉን ስለሚያነሳሳ ነገር ያለህን እውቀት ተጠቀምበት</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- ===================== FLASHCARDS ===================== -->
+<div id="flashcards" class="tab-content">
+
+  <div class="section-card">
+    <div class="section-title">Practice Questions · የልምምድ ጥያቄዎች</div>
+    <div class="section-title-am">Hopebridge RBT Training · Hopebridge RBT ስልጠና</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q4: Interviews and surveys are considered this type of measurement.</div>
+    <div class="qa-a">What is indirect measurement?</div>
+    <div class="qa-am">ጥያቄ፡ ቃለ-መጠይቆች እና የዳሰሳ ጥናቶች ምን ዓይነት ልኬት ናቸው? | መልስ፡ ቀጥተኛ ያልሆነ ልኬት (Indirect Measurement) ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q5: Every time Jayden asks for fruit, he receives fruit. What type of reinforcement schedule is this?</div>
+    <div class="qa-a">What is continuous (FR1)?</div>
+    <div class="qa-am">ጥያቄ፡ ጄይደን ፍሬ ሲጠይቅ ሁሌ ፍሬ ይቀበላል - ምን ዓይነት የሽልማት ሰሌዳ ነው? | መልስ፡ ቀጣይ (FR1) ሰሌዳ ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q6: Training a skill in multiple environments, with multiple exemplars and incorporating common stimuli, can lead to this.</div>
+    <div class="qa-a">What is generalization?</div>
+    <div class="qa-am">ጥያቄ፡ ክህሎት በብዙ አካባቢዎች ሲሰለጠን ወደ ምን ሊደርስ ይችላል? | መልስ፡ ወደ ዕቅፍ (Generalization) - አጠቃላይነት ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q7: Deprivation, immediacy, size, contingency — these are the principles of what?</div>
+    <div class="qa-a">What are the principles of reinforcement?</div>
+    <div class="qa-am">ጥያቄ፡ ጦምና፣ ወዲያውኑ፣ መጠን፣ ሁኔታ — ምን መርሆዎች ናቸው? | መልስ፡ የሽልማት መርሆዎች ምንድናቸው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q8: When implementing extinction, always plan for this momentary increase in frequency/magnitude of problem behavior.</div>
+    <div class="qa-a">What is extinction burst?</div>
+    <div class="qa-am">ጥያቄ፡ ዳሟ (Extinction) ሲተገበር ምን ሊከሰት ይጠበቃል? | መልስ፡ የዳሟ ፍንዳታ (Extinction Burst) ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q9: A preference assessment for an individual who does not have avid decision making skills.</div>
+    <div class="qa-a">What is force-choice?</div>
+    <div class="qa-am">ጥያቄ፡ ውሳኔ ሰጪ ችሎታ ለሌለው ሰው ምን ዓይነት ምርጫ ምዘና ይሰጥ? | መልስ፡ ኃይል-ምርጫ (Force-Choice) ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q10: In this type of preference assessment, the subject is given free access to stimuli and time allocated to each stimulus is measured.</div>
+    <div class="qa-a">What is free operant?</div>
+    <div class="qa-am">ጥያቄ፡ ርዕሰ-ጉዳዩ ለምረጥ ነፃ ሲሆን ለእያንዳንዱ ምን ዓይነት ምዘና ነው? | መልስ፡ ነፃ ኦፐራንት (Free Operant) ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q11: Clapping, talking, screaming, flapping arms, grabbing items, and smiling.</div>
+    <div class="qa-a">What is behavior?</div>
+    <div class="qa-am">ጥያቄ፡ ጥቁቡቅ፣ ማውራት፣ ጩኸት፣ እጆቹን ማናወጥ… ምን ይባላሉ? | መልስ፡ ባህሪ (Behavior) ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q12: Criterion for a definition.</div>
+    <div class="qa-a">What is objectivity, clarity, completeness, environment?</div>
+    <div class="qa-am">ጥያቄ፡ ትርጉምን ለመስጠት መስፈርቶቹ ምንድናቸው? | መልስ፡ ዓላማዊነት፣ ግልጽነት፣ ሙሉነት፣ አካባቢ ምንድናቸው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q13: About how long should the inter-trial interval in DTT last?</div>
+    <div class="qa-a">What is 3-5 seconds?</div>
+    <div class="qa-am">ጥያቄ፡ ในDTT ሙከራዎች መካከል ያለው ቆይታ ምን ያህል መሆን አለበት? | መልስ፡ 3-5 ሰከንዶች ምንድናቸው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q14: "What's this?" is a potential Sd for this verbal operant.</div>
+    <div class="qa-a">What is tact?</div>
+    <div class="qa-am">ጥያቄ፡ "ምንድነው ይህ?" ለምን ቃላዊ ኦፐራንት Sd ሊሆን ይችላል? | መልስ፡ ታክት (Tact) ምንድነው?</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q">Q15: Requests for a specific item or activity.</div>
+    <div class="qa-a">What is a mand?</div>
+    <div class="qa-am">ጥያቄ፡ ለተወሰነ ዕቃ ወይም ድርጊት ጥያቄ ምን ይባላል? | መልስ፡ ማንድ (Mand) ምንድነው?</div>
+  </div>
+
+</div>
+
+<!-- ===================== GLOSSARY ===================== -->
+<div id="glossary" class="tab-content">
+
+  <div class="section-card">
+    <div class="section-title">RBT Training Glossary</div>
+    <div class="section-title-am">የRBT ስልጠና መዝገበ ቃላት</div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">ABC <span class="am">ሀ-ባ-ሐ (ABC)</span></div>
+      <div class="gloss-def">Antecedent – Behavior – Consequence. Also known as the 3-term contingency.</div>
+      <div class="gloss-def-am">ቀዳሚ ሁኔታ – ባህሪ – ውጤት። የ3-ቃል ሁኔታዊ ሰሌዳ ተብሎም ይታወቃል።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Behavior <span class="am">ባህሪ</span></div>
+      <div class="gloss-def">Anything a person does that can be observed and measured. Has 4 functions: Automatic/Sensory, Escape, Attention, Access.</div>
+      <div class="gloss-def-am">ሰው የሚያደርገው ሁሉ — ሊታይ እና ሊለካ የሚችለው። 4 ተግባራት አሉ፡ ሰራሽ/ስሜት፣ ማምለጥ፣ ትኩረት፣ ተደራሽ።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Discrete Trial (DTT) <span class="am">ቆራጥ ሙከራ (DTT)</span></div>
+      <div class="gloss-def">A learning opportunity initiated and controlled by the teacher in which the correct response will be reinforced. Breaking a skill into smaller parts and teaching it with reinforcement.</div>
+      <div class="gloss-def-am">አስተማሪው የሚቆጣጠረው ትምህርታዊ አጋጣሚ ሲሆን ትክክለኛ ምላሽ ሽልማት ያገኛል። ክህሎቱን ትንንሽ ክፍሎች ከፍሎ ሽልማት ይዘህ ማስተማር።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Extinction <span class="am">ዳሟ (Extinction)</span></div>
+      <div class="gloss-def">The withholding of reinforcement for a previously reinforced behavior, resulting in reduction of that behavior.</div>
+      <div class="gloss-def-am">ቀድሞ ሽልማት ለሚያገኝ ባህሪ ሽልማቱን ማቆም — ያ ባህሪ ቀስ ብሎ ይቀንሳል።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Extinction Burst <span class="am">የዳሟ ፍንዳታ</span></div>
+      <div class="gloss-def">The increase in frequency and/or intensity of behavior in the early stages of extinction.</div>
+      <div class="gloss-def-am">ዳሟ ሲጀምር ባህሪ ቅድሚያ ብዙ ወይም ጠንካራ ሆኖ ይጨምራል።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Generalization <span class="am">አጠቃላይነት (Generalization)</span></div>
+      <div class="gloss-def">Change occurs when behavior happens outside of the learning environment — across settings, time, and people.</div>
+      <div class="gloss-def-am">ያ ባህሪ ከትምህርት አካባቢ ውጭ — በሌሎች ቦታዎች፣ ጊዜ እና ሰዎች ጋር — ሲከሰት።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Mand <span class="am">ማንድ</span></div>
+      <div class="gloss-def">A verbal operant — requests for a specific item or activity.</div>
+      <div class="gloss-def-am">ቃላዊ ኦፐራንት — ለተወሰነ ዕቃ ወይም ድርጊት ጥያቄ።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Tact <span class="am">ታክት</span></div>
+      <div class="gloss-def">A form of verbal behavior where the speaker sees, hears, smells, or tastes something and comments about it (a label).</div>
+      <div class="gloss-def-am">ተናጋሪው ነገር ሲያይ፣ ሲሰማ ወይም ሲሸት ስሙን ወይም ነውን ሲናገር — ስም ሰጪ ቃላዊ ባህሪ።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Reinforcement <span class="am">ሽልማት (Reinforcement)</span></div>
+      <div class="gloss-def">Positive: A stimulus presented after behavior that increases the behavior. Negative: A stimulus removed after behavior that increases the behavior.</div>
+      <div class="gloss-def-am">አዎንታዊ፡ ባህሪ ካደረጉ በኋላ ሚጨምር ነገር ሲሰጥ። አሉታዊ፡ ባህሪ ካደረጉ በኋላ ደስ የማያሰኝ ነገር ሲወሰድ።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Shaping <span class="am">ቀረፃ (Shaping)</span></div>
+      <div class="gloss-def">The process of reinforcing gradual changes in behavior so the behavior begins to look like the target behavior.</div>
+      <div class="gloss-def-am">ባህሪ ቀስ ብሎ ወደ ዒላማ ባህሪ እንዲቀርብ ሽልማቱ ቀስ ብሎ ለሚቀርቡ ዓይነቶች ሲሰጥ።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Task Analysis <span class="am">ተግባር ትንተና</span></div>
+      <div class="gloss-def">The process of breaking a skill down into smaller, more manageable components.</div>
+      <div class="gloss-def-am">ክህሎት ወደ ትናንሽ፣ ሊተዳደሩ ወደሚችሉ ክፍሎች የሚከፋፈልበት ሂደት።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Chaining <span class="am">ሰንሰለት ማስተማር</span></div>
+      <div class="gloss-def">Used to teach multi-step skills in which steps are defined through task analysis. Can be done backward, forward, or total task.</div>
+      <div class="gloss-def-am">ብዙ ደረጃ ያላቸውን ክህሎቶች ለማስተማር ያገለግላል። ወደ ኋላ፣ ወደ ፊት ወይም ሙሉ ደረጃ ሊሆን ይችላል።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Intraverbal <span class="am">ውስጠ-ቃላዊ (Intraverbal)</span></div>
+      <div class="gloss-def">Building blocks of conversation — the ability to discuss, describe, or answer a question about something not physically present.</div>
+      <div class="gloss-def-am">የውይይት ግንባታ ድንጋዮች — አካላዊ ሳይኖር ስለ ነገሮች ለመወያየት ወይም ጥያቄ ለመመለስ ችሎታ።</div>
+    </div>
+
+    <div class="gloss-item">
+      <div class="gloss-term">Prompt <span class="am">ፍርዱ (Prompt)</span></div>
+      <div class="gloss-def">Part of the antecedent condition (before behavior) that increases the likelihood of the correct response.</div>
+      <div class="gloss-def-am">ከባህሪ በፊት ያለ ሁኔታ ሲሆን ትክክለኛ ምላሽ ለማምጣት ይጠቅማል።</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ===================== TAKEAWAYS ===================== -->
+<div id="takeaways" class="tab-content">
+
+  <div class="section-card">
+    <div class="section-title">Take-Away Points</div>
+    <div class="section-title-am">ዋና ዋና መርሆዎች</div>
+    <div class="takeaway-grid">
+      <div class="takeaway-item">
+        <div class="en">✅ Errorless teaching can be used for a wide variety of skills</div>
+        <div class="am">ስህተት-አልባ ማስተማር ለብዙ ዓይነት ክህሎቶች ሊያገለግል ይችላል</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Errorless teaching is appropriate at nearly any age</div>
+        <div class="am">ስህተት-አልባ ማስተማር ለማንኛውም ዕድሜ ተስማሚ ነው</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Reducing errors reduces problem behavior and keeps learning positive</div>
+        <div class="am">ስህተቶችን መቀነስ ችግሩ ያለ ባህሪን ይቀንሳል</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Prompt with the least intrusive prompt that still ensures a correct response</div>
+        <div class="am">ትክክለኛ ምላሽ የሚያረጋግጥ ትንሽ ጣልቃ ገቢ ፕሮምፕት ተጠቀም</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Pick target skills that are appropriate and meaningful for each individual student</div>
+        <div class="am">ለእያንዳንዱ ተማሪ ተስማሚ ዒላማ ክህሎቶች ምረጥ</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Normal: Prompt – Transfer – Distract – Check</div>
+        <div class="am">መደበኛ ሂደት፡ ፍርዱ – ሽግግር – ሌሎች ነገሮች – ማረጋገጥ</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Error: End – Prompt – Transfer – Distract – Check</div>
+        <div class="am">ስህተት ሲኖር፡ ማቆም – ፍርዱ – ሽግግር – ሌሎች ነገሮች – ማረጋገጥ</div>
+      </div>
+      <div class="takeaway-item">
+        <div class="en">✅ Take probe data every day and errorlessly teach each target skill multiple times daily!</div>
+        <div class="am">ፍተሻ ዳታ በየቀኑ ሰብስብ እና ዒላማ ክህሎቶቹን ስህተት-አልባ ዘዴ ብዙ ጊዜ አስተምር!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card gold">
+    <div class="section-title gold">Questions We Answered · መልስ ያገኙ ጥያቄዎች</div>
+    <ul class="bi-list">
+      <li><span class="en"><u>What</u> is errorless teaching?</span><span class="am">ስህተት-አልባ ማስተማር ምንድነው?</span></li>
+      <li><span class="en"><u>Why</u> should we use errorless teaching?</span><span class="am">ለምን ስህተት-አልባ ማስተማር ልንጠቀምበት ይገባናል?</span></li>
+      <li><span class="en"><u>What</u> skills can be taught using errorless teaching?</span><span class="am">ምን ዓይነት ክህሎቶች ሊሰለጠኑ ይችላሉ?</span></li>
+      <li><span class="en"><u>How</u> do we balance target and learned skills?</span><span class="am">ዒላማ እና የተማሩ ክህሎቶችን እንዴት ነው ሚዛን ላይ ያስቀምጣቸው?</span></li>
+      <li><span class="en"><u>What</u> is the errorless teaching procedure?</span><span class="am">የስህተት-አልባ ማስተማር ሂደት ምንድነው?</span></li>
+      <li><span class="en"><u>How</u> do we correct errors?</span><span class="am">ስህተቶችን እንዴት ነው የምናርመው?</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <div>RBT Training Guide · Bilingual English / Amharic Edition · Hopebridge & Nebraska ASD Network</div>
+  <span class="am">የRBT ስልጠና ሁለት-ቋንቋ (አማርኛ / እንግሊዝኛ) ቅጂ · ለኢትዮጵያውያን ሠልጣኞች</span>
+</footer>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

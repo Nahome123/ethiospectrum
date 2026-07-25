@@ -13,6 +13,7 @@ const links = [
   "onboarding",
   "dependents",
   "documents",
+  "training",
   "assistant",
   "roadmap",
   "resources",

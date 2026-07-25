@@ -4,7 +4,7 @@ Ethiospectrum is a multilingual family-support platform foundation for organizin
 
 ## Current status
 
-Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, private document upload/download/archive flows, and a household-scoped digital document binder.
+Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, private document upload/download/archive flows, a household-scoped digital document binder, and a protected bilingual RBT Errorless Teaching study resource with user-only progress.
 
 Planned: profile and household synchronization, document OCR, AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
 
@@ -72,6 +72,8 @@ ETH-014 adds an opt-in, server-only processing foundation for active uploaded PD
 For a local manual check, run the local Supabase stack and reset the database, sign in with synthetic users, complete household onboarding, and upload small synthetic PDF, DOCX, and TXT files with several titles, categories, and one active dependent. Confirm that the binder's metadata search, each filter, controlled sort, clear action, date range, pagination, mobile filter dialog, detail back link, dashboard links/counts, and 60-second signed download work for the current household only. Archive a record and confirm it disappears from the default binder, remains visible only through the archive-status filter when RLS allows it, and leaves its private object intact. Also verify empty, unsupported, and over-20-MiB file behavior. Do not use real personal documents or hosted production data for these checks.
 
 For local-only administrator testing, use a direct SQL console against the local database after creating a synthetic user: `update public.user_roles set role = 'administrator' where user_id = '<synthetic UUID>';`. Do not run this against a hosted project without a reviewed role-governance procedure.
+
+The RBT resource is available after sign-in at `/[locale]/training/rbt`; individual sections are direct links under `/[locale]/training/rbt/{overview|procedure|error-correction|setup|flashcards|glossary|takeaways}`. It preserves the supplied bilingual lesson and attribution as an educational study resource, with no certification, score, competency, or clinical claim. Reading progress is limited to the signed-in user by RLS and an identity-derived RPC. Review [the RBT source and content-review notes](docs/rbt-training-source.md) before release; run `pnpm test:e2e:training:local` only against local Supabase with synthetic users.
 
 `lib/supabase/browser.ts` is the only browser client entry point. Server Component, route-handler, server-action, proxy, and admin utilities are separate modules. They throw a clear development configuration error when invoked without the required local values; they do not create a placeholder session or fake user.
 

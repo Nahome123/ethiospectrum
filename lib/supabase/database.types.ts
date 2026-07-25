@@ -370,8 +370,8 @@ export type Database = {
       };
       document_chunks: {
         Row: {
-          chunk_index: number;
           character_count: number;
+          chunk_index: number;
           content: string;
           created_at: string;
           document_id: string;
@@ -383,8 +383,8 @@ export type Database = {
           token_estimate: number | null;
         };
         Insert: {
-          chunk_index: number;
           character_count: number;
+          chunk_index: number;
           content: string;
           created_at?: string;
           document_id: string;
@@ -396,8 +396,8 @@ export type Database = {
           token_estimate?: number | null;
         };
         Update: {
-          chunk_index?: number;
           character_count?: number;
+          chunk_index?: number;
           content?: string;
           created_at?: string;
           document_id?: string;
@@ -1167,6 +1167,39 @@ export type Database = {
           },
         ];
       };
+      training_progress: {
+        Row: {
+          completed_at: string | null;
+          completed_sections: string[];
+          course_key: string;
+          id: string;
+          last_section: string | null;
+          started_at: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          completed_at?: string | null;
+          completed_sections?: string[];
+          course_key: string;
+          id?: string;
+          last_section?: string | null;
+          started_at?: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          completed_sections?: string[];
+          course_key?: string;
+          id?: string;
+          last_section?: string | null;
+          started_at?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       user_roles: {
         Row: {
           granted_at: string;
@@ -1200,15 +1233,11 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
-      complete_household_onboarding: {
-        Args: { raw_name: string; raw_policy_version: string };
-        Returns: string;
-      };
       claim_next_document_processing_job: {
         Args: { worker_identity: string };
         Returns: {
           attempt_count: number;
-          dependent_id: string | null;
+          dependent_id: string;
           document_id: string;
           file_size: number;
           household_id: string;
@@ -1230,19 +1259,27 @@ export type Database = {
         };
         Returns: boolean;
       };
+      complete_household_onboarding: {
+        Args: { raw_name: string; raw_policy_version: string };
+        Returns: string;
+      };
       create_household: { Args: { raw_name: string }; Returns: string };
       fail_document_processing_job: {
-        Args: { expected_worker_identity: string; safe_error_code: string; target_job_id: string };
+        Args: {
+          expected_worker_identity: string;
+          safe_error_code: string;
+          target_job_id: string;
+        };
         Returns: boolean;
       };
       get_document_processing_status: {
         Args: { target_document_id: string };
         Returns: {
           attempt_count: number;
-          completed_at: string | null;
-          failed_at: string | null;
+          completed_at: string;
+          failed_at: string;
           retryable: boolean;
-          started_at: string | null;
+          started_at: string;
           status: string;
         }[];
       };
@@ -1262,6 +1299,14 @@ export type Database = {
           attempt_count: number;
           job_id: string;
           processing_status: string;
+        }[];
+      };
+      record_training_progress: {
+        Args: { mark_completed?: boolean; target_section: string };
+        Returns: {
+          completed_at: string;
+          completed_sections: string[];
+          last_section: string;
         }[];
       };
     };

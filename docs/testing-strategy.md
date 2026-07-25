@@ -46,3 +46,14 @@ Manual document checks use only a local Supabase project and small synthetic fix
 6. Archive an uploaded document as an owner, administrator, and eligible original uploader; verify it leaves the default binder, appears only through the archive filter where existing RLS permits it, its active job is cancelled, its derivatives are inaccessible, and its object is not physically deleted by this issue. Check the mobile filter dialog with keyboard focus and request native Amharic and Spanish review before release.
 
 Do not upload personal, production, or sensitive documents during automated or manual tests.
+
+RBT training has unit coverage for source-body preservation, all seven section mappings, flashcard Q4–Q15 content, glossary terms, source attribution, progress normalization, Server Action input/identity boundaries, keyboard answer reveal, and glossary filtering. Its pgTAP test verifies the fixed course key, normalized sections, anonymous denial, own-row access, cross-user isolation, direct user-ID assignment denial, invalid-section rejection, uniqueness, and the all-sections completion timestamp. The local browser flow creates only synthetic confirmed users; it exercises the protected route, direct section navigation, English/Amharic/Spanish rendering, keyboard flashcards, glossary search, mobile reflow, persisted progress, and a second user seeing no first-user progress.
+
+Run that mutation-capable browser flow only against local Supabase:
+
+```bash
+pnpm db:start
+pnpm test:e2e:training:local
+```
+
+Manual RBT checks: sign in with a synthetic account; confirm each direct route and the resume link; use Tab and Enter to reveal and hide an answer; search then clear the glossary; mark a section complete and reload; sign in as a different synthetic user and verify the prior progress is absent; inspect the narrow viewport for horizontal page overflow; and verify the educational, non-certification notice remains visible. Do not alter supplied lesson text during manual QA; log clinical, attribution, translation, or source anomalies in `docs/rbt-training-content-review.md` for review.
