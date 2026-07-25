@@ -7,12 +7,14 @@ import { BrandLogo } from "./brand-logo";
 import { signOutAction } from "@/lib/auth/actions";
 import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
+import { MemberNavigation } from "./member-navigation";
 
 const links = [
   "dashboard",
   "onboarding",
   "dependents",
   "documents",
+  "training",
   "assistant",
   "roadmap",
   "resources",
@@ -32,17 +34,16 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
           <BrandLogo className="h-10 w-48" />
         </Link>
         <p className="mt-1 text-sm text-muted-foreground">{t("member.workspace")}</p>
-        <nav aria-label={t("member.workspace")} className="mt-6 flex gap-2 overflow-x-auto lg:flex-col">
-          {links.map((link) => (
-            <Link
-              className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium hover:bg-secondary"
-              href={link === "resources" ? "/member/resources" : `/${link}`}
-              key={link}
-            >
-              {t(`navigation.${link}`)}
-            </Link>
-          ))}
-        </nav>
+        <MemberNavigation
+          closeLabel={t("accessibility.closeMenu")}
+          items={links.map((link) => ({
+            href: link === "resources" ? "/member/resources" : `/${link}`,
+            label: t(`navigation.${link}`),
+          }))}
+          label={t("member.workspace")}
+          menuLabel={t("common.menu")}
+          openLabel={t("common.openMenu")}
+        />
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
