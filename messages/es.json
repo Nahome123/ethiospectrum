@@ -132,6 +132,151 @@
     "resourceThree": "Preguntas para llevar a una cita",
     "pageIntro": "Explora material educativo diseñado para ayudar a las familias a prepararse, organizarse y hacer preguntas informadas."
   },
+  "educationSupport": {
+    "eyebrow": "Apoyo educativo",
+    "title": "Entiende la planificación escolar con menos confusión.",
+    "description": "Ethiospectrum ayuda a las familias a comprender evaluaciones escolares, IEP, apoyos en el aula, servicios y próximos pasos prácticos con lenguaje claro.",
+    "primaryAction": "Explorar apoyo educativo",
+    "secondaryAction": "Preguntar al asistente",
+    "personalization": {
+      "visitor": {
+        "eyebrow": "Comienza con tu espacio familiar",
+        "description": "Crea un espacio privado cuando estés listo para organizar preguntas, documentos y próximos pasos.",
+        "action": "Crear tu espacio"
+      },
+      "needsHousehold": {
+        "eyebrow": "Tu espacio está esperando",
+        "description": "Termina de configurar tu hogar antes de organizar información sobre apoyo escolar.",
+        "action": "Terminar la configuración del hogar"
+      },
+      "ready": {
+        "eyebrow": "Continúa desde tu espacio",
+        "description": "Vuelve a tu espacio privado para organizar información y mantener juntos los próximos pasos útiles.",
+        "action": "Continuar en mi espacio"
+      }
+    },
+    "steps": {
+      "one": {
+        "title": "Comparte el apoyo que estás explorando",
+        "description": "Comienza con las preguntas, los documentos escolares o las áreas de apoyo importantes para tu familia."
+      },
+      "two": {
+        "title": "Revisa una guía educativa clara",
+        "description": "Usa explicaciones sencillas para prepararte para conversaciones con el equipo escolar."
+      },
+      "three": {
+        "title": "Prepara preguntas y notas para reuniones",
+        "description": "Reúne fortalezas, inquietudes, preguntas e ideas de seguimiento en una conversación enfocada."
+      },
+      "four": {
+        "title": "Mantén visibles los próximos pasos útiles",
+        "description": "Vuelve a tu espacio cuando estés listo para organizar lo que sigue."
+      }
+    },
+    "featuresEyebrow": "Una forma más tranquila de prepararse",
+    "featuresTitle": "Guías útiles para conversaciones escolares comunes.",
+    "featuresDescription": "Estas guías educativas ayudan a las familias a prepararse y hacer preguntas informadas. No deciden servicios, elegibilidad ni resultados.",
+    "features": {
+      "iepGuide": {
+        "title": "Guía de IEP",
+        "description": "Conoce las secciones comunes de un IEP, reúne preguntas y usa un esquema sencillo para organizar notas de reuniones."
+      },
+      "roadmap": {
+        "title": "Plan educativo",
+        "description": "Comienza tu espacio privado y conserva posibles próximos pasos, preguntas y fechas en un mismo lugar mientras se habilitan más herramientas."
+      },
+      "accommodations": {
+        "title": "Explorador de adaptaciones",
+        "description": "Revisa ejemplos de apoyos en el aula y la diferencia entre adaptaciones y modificaciones para conversar con el equipo escolar."
+      },
+      "eligibility": {
+        "title": "Evaluación y elegibilidad",
+        "description": "Comprende cómo la información médica y la elegibilidad escolar pueden tener propósitos diferentes sin hacer una determinación."
+      },
+      "familyNotes": {
+        "title": "Notas familiares",
+        "description": "Usa un esquema de notas para reuniones para registrar fortalezas, inquietudes, metas, preguntas, resultados y tareas de seguimiento."
+      },
+      "multilingual": {
+        "title": "Apoyo multilingüe",
+        "description": "Explora orientación mediante el sistema de idiomas de Ethiospectrum, incluido el amárico cuando haya una traducción revisada."
+      }
+    },
+    "featureActions": {
+      "openGuide": "Abrir guía",
+      "startRoadmap": "Comenzar configuración del espacio",
+      "learnMore": "Más información"
+    },
+    "articlesEyebrow": "Aprende antes de la reunión",
+    "articlesTitle": "Algunos lugares para comenzar.",
+    "articlesDescription": "Puntos de partida educativos y breves para planificar una conversación escolar.",
+    "articles": {
+      "eligibility": {
+        "category": "Planificación de IEP",
+        "title": "Comprender la elegibilidad para un IEP",
+        "summary": "Conoce por qué la elegibilidad escolar y la información médica pueden responder preguntas distintas."
+      },
+      "evaluation": {
+        "category": "Preparación para evaluación",
+        "title": "Prepararse para una evaluación escolar",
+        "summary": "Reúne observaciones y preguntas que puedan ayudarte a preparar una conversación con el equipo escolar."
+      },
+      "accommodations": {
+        "category": "Apoyos en el aula",
+        "title": "Adaptaciones y modificaciones",
+        "summary": "Aprende una distinción general para formular preguntas más claras sobre el apoyo en el aula."
+      }
+    },
+    "articleAction": "Leer la guía",
+    "assistant": {
+      "label": "Ayuda del asistente",
+      "title": "Pregunta al asistente de Ethio",
+      "description": "Abre el área de asistente existente cuando hayas iniciado sesión. Es para orientación educativa y no sustituye a un profesional escolar, defensor, abogado, médico o profesional clínico.",
+      "action": "Abrir asistente"
+    },
+    "membership": {
+      "eyebrow": "Vista previa de membresía",
+      "title": "Estamos explorando más herramientas de planificación.",
+      "description": "Los planes personalizados, explicaciones de documentos, preparación de reuniones, notas guardadas y herramientas de progreso no están disponibles como suscripción hoy.",
+      "action": "Ver novedades de membresía"
+    }
+  },
+  "educationGuide": {
+    "eyebrow": "Guía de aprendizaje educativo",
+    "title": "Prepárate para conversaciones escolares, un tema a la vez.",
+    "description": "Usa estos puntos de partida educativos generales para organizar preguntas para el equipo escolar. No son una decisión sobre un niño ni sobre un servicio escolar.",
+    "backToResources": "Volver a recursos",
+    "disclaimer": "Solo información educativa. Los procedimientos escolares y las reglas de elegibilidad pueden variar según el lugar y las circunstancias individuales.",
+    "topics": {
+      "iepGuide": {
+        "title": "Leer un IEP comenzando con preguntas",
+        "description": "Un IEP puede describir metas, servicios, apoyos y cómo se comunica el progreso. Úsalo para anotar lo que está claro, lo que necesita un ejemplo y lo que deseas preguntar al equipo."
+      },
+      "eligibility": {
+        "title": "Comprender la elegibilidad escolar",
+        "description": "La elegibilidad escolar es un proceso utilizado por un sistema escolar. La información médica puede aportar contexto, pero por sí sola no responde todas las preguntas de planificación escolar."
+      },
+      "evaluation": {
+        "title": "Prepararse para una evaluación escolar",
+        "description": "Anota fortalezas, situaciones que van bien, inquietudes y preguntas. Pregunta al equipo escolar qué información considerará y cómo se hablará de los resultados."
+      },
+      "accommodations": {
+        "title": "Adaptaciones y modificaciones",
+        "description": "Una adaptación generalmente cambia cómo un estudiante accede al aprendizaje, mientras que una modificación puede cambiar lo que se espera que aprenda. Las prácticas pueden variar, así que pregunta al equipo escolar cómo se planifica el apoyo."
+      },
+      "meetingNotes": {
+        "title": "Preparar notas y preguntas para reuniones",
+        "description": "Lleva una lista breve de fortalezas, inquietudes, preguntas, decisiones y tareas de seguimiento. Después de la reunión, anota quién hará qué y cuándo planeas volver a conversar."
+      },
+      "autismSupport": {
+        "title": "Apoyar a un estudiante autista en la escuela",
+        "description": "Las necesidades y fortalezas de cada estudiante son individuales. Las familias pueden preguntar al equipo escolar sobre comunicación, rutinas, necesidades sensoriales, participación y los apoyos que ya funcionan bien."
+      }
+    },
+    "nextStepTitle": "Mantén tu planificación privada y organizada.",
+    "nextStepDescription": "Crea un espacio familiar cuando estés listo para organizar preguntas y documentos. Más herramientas de planificación aún están en desarrollo.",
+    "nextStepAction": "Crear tu espacio"
+  },
   "privacy": {
     "eyebrow": "Privacidad y confianza",
     "title": "La información sensible merece límites cuidadosos.",

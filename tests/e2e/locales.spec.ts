@@ -10,6 +10,36 @@ test("supported locales render localized landing pages", async ({ page }) => {
     await expect(page.locator("h1")).toBeVisible();
   }
 });
+test("education support landing content is localized and has working destinations", async ({ page }) => {
+  await page.goto("/en");
+  await expect(
+    page.getByRole("heading", { name: "Understand school planning with less confusion." }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explore education support" })).toHaveAttribute(
+    "href",
+    "/en/resources/education",
+  );
+  const assistant = page.getByRole("link", { name: "Open assistant" });
+  await assistant.focus();
+  await expect(assistant).toBeFocused();
+  await expect(assistant).toHaveAttribute("href", "/en/assistant");
+
+  await page.setViewportSize({ width: 320, height: 740 });
+  await expect(page.getByRole("link", { name: "Open assistant" })).toBeVisible();
+
+  await page.goto("/am");
+  await expect(page.getByRole("heading", { name: "የትምህርት ቤት እቅድን በቀላል መንገድ ይረዱ።" })).toBeVisible();
+});
+test("education support reflows without horizontal overflow", async ({ page }) => {
+  for (const width of [320, 375, 430, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/en");
+    await expect(
+      page.getByRole("heading", { name: "Understand school planning with less confusion." }),
+    ).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  }
+});
 test("language selector preserves the current route", async ({ page }) => {
   await page.goto("/en/features");
   await page.getByLabel("Choose display language").selectOption("es");
