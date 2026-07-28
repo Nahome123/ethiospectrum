@@ -158,6 +158,10 @@
   "authentication": {
     "loginTitle": "Bienvenido de nuevo",
     "loginDescription": "Inicia sesión para volver a tu espacio familiar.",
+    "adminLoginTitle": "Inicio de sesión de administrador",
+    "adminLoginDescription": "Inicia sesión con tu cuenta autorizada de administrador.",
+    "adminLogin": "Iniciar sesión en el área de administración",
+    "adminLoginHint": "Este acceso está disponible solo para administradores autorizados.",
     "signupTitle": "Crea tu cuenta",
     "signupDescription": "Crea una cuenta para comenzar a usar tu espacio privado.",
     "email": "Correo electrónico",

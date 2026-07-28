@@ -158,6 +158,10 @@
   "authentication": {
     "loginTitle": "Welcome back",
     "loginDescription": "Sign in to return to your family workspace.",
+    "adminLoginTitle": "Administrator sign in",
+    "adminLoginDescription": "Sign in with your authorized administrator account.",
+    "adminLogin": "Sign in to the admin area",
+    "adminLoginHint": "This access is available only to authorized administrators.",
     "signupTitle": "Create your account",
     "signupDescription": "Create an account to begin using your private workspace.",
     "email": "Email address",

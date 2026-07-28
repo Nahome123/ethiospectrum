@@ -158,6 +158,10 @@
   "authentication": {
     "loginTitle": "እንኳን ደህና መጡ",
     "loginDescription": "ወደ የቤተሰብ የሥራ ቦታዎ ለመመለስ ይግቡ።",
+    "adminLoginTitle": "የአስተዳዳሪ መግቢያ",
+    "adminLoginDescription": "በተፈቀደ የአስተዳዳሪ መለያዎ ይግቡ።",
+    "adminLogin": "ወደ አስተዳዳሪ ክፍል ይግቡ",
+    "adminLoginHint": "ይህ መግቢያ ለተፈቀደላቸው አስተዳዳሪዎች ብቻ ነው።",
     "signupTitle": "መለያዎን ይፍጠሩ",
     "signupDescription": "የግል የሥራ ቦታዎን ለመጠቀም መለያ ይፍጠሩ።",
     "email": "የኢሜይል አድራሻ",
