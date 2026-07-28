@@ -1,6 +1,6 @@
 begin;
 
-select plan(76);
+select plan(111);
 
 -- Synthetic identities only. The Auth trigger creates the related profiles;
 -- no production documents, prompts, summaries, or credentials are used.
@@ -604,6 +604,211 @@ select is(
   (select count(*) from public.get_document_summary_status((select id from public.documents where title = 'Summary target document'), 'en')),
   0::bigint,
   'a removed member immediately loses summary-status access'
+);
+
+-- ETH-018 quality evaluation and human review operate on the existing completed
+-- English summary fixture. They never accept a browser-supplied household,
+-- reviewer identity, or role.
+reset role;
+-- The preceding ETH-015 revocation assertion deliberately removes this
+-- synthetic member. Restore only this fixture membership for the independent
+-- ETH-018 member-feedback tests below.
+update public.household_members
+set status = 'active'
+where household_id = 'a2000000-0000-0000-0000-000000000001'
+  and user_id = 'a1000000-0000-0000-0000-000000000003';
+select has_table('public', 'document_summary_evaluations', 'summary evaluations table exists');
+select has_table('public', 'document_summary_reviews', 'summary reviews table exists');
+select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_summary_evaluations'::regclass), 'evaluation RLS is enabled and forced');
+select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_summary_reviews'::regclass), 'review RLS is enabled and forced');
+select has_function('public', 'evaluate_document_summary', array['uuid', 'text'], 'deterministic summary evaluation function exists');
+select has_function('public', 'upsert_document_summary_review', array['uuid', 'text', 'integer', 'integer', 'integer', 'integer', 'integer', 'text[]', 'text', 'text'], 'controlled review function exists');
+
+set local role authenticated;
+set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000001';
+select lives_ok(
+  $$select public.evaluate_document_summary((select id from public.documents where title = 'Summary target document'), 'en')$$,
+  'an owner can run a deterministic quality evaluation'
+);
+select is(
+  (select status from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  'completed',
+  'a stored evaluation completes without a provider call'
+);
+select is(
+  (select grounding_score from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  100,
+  'valid same-document sources receive a full grounding score'
+);
+select is(
+  (select citation_coverage_score from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  100,
+  'every synthetic summary statement is covered by a citation'
+);
+select lives_ok(
+  $$select public.evaluate_document_summary((select id from public.documents where title = 'Summary target document'), 'en')$$,
+  'a repeated evaluation safely updates the same result'
+);
+select is(
+  (select count(*) from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  1::bigint,
+  'repeated evaluation does not create duplicate active records'
+);
+select lives_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    4, 4, 4, 4, 4, array['citation_missing']::text[], 'Owner synthetic feedback.', null
+  )$$,
+  'an owner can save a pending review'
+);
+select is(
+  (select reviewed_by from public.document_summary_reviews where feedback = 'Owner synthetic feedback.'),
+  'a1000000-0000-0000-0000-000000000001'::uuid,
+  'reviewer identity is derived from the authenticated caller'
+);
+
+set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000003';
+select lives_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    0, 0, 0, 0, 0, array['missing_information']::text[], 'Member feedback in Amharic: ማብራሪያ.', null
+  )$$,
+  'a member can submit feedback without a final decision'
+);
+select lives_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    0, 0, 0, 0, 0, array['translation_problem']::text[], 'Actualización en español.', null
+  )$$,
+  'a repeated pending member review updates instead of duplicating it'
+);
+select is(
+  (select count(*) from public.document_summary_reviews where reviewed_by = 'a1000000-0000-0000-0000-000000000003'),
+  1::bigint,
+  'one active review exists per summary and reviewer'
+);
+select throws_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    5, 5, 5, 5, 5, '{}'::text[], 'Member cannot approve.', 'approved'
+  )$$,
+  '42501', null,
+  'a member cannot make a household approval decision'
+);
+
+set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000004';
+select throws_ok(
+  $$select public.evaluate_document_summary((select id from public.documents where title = 'Summary target document'), 'en')$$,
+  '42501', null,
+  'a viewer cannot run an evaluation'
+);
+select throws_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    4, 4, 4, 4, 4, '{}'::text[], 'Viewer feedback.', null
+  )$$,
+  '42501', null,
+  'a viewer cannot submit a review'
+);
+select is(
+  (select count(*) from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  1::bigint,
+  'a viewer can read an accessible evaluation'
+);
+select is(
+  (select count(*) from public.document_summary_reviews where document_id = (select id from public.documents where title = 'Summary target document')),
+  2::bigint,
+  'a viewer can read accessible household reviews'
+);
+
+set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000002';
+select lives_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    5, 5, 5, 5, 5, '{}'::text[], 'Administrator approval.', 'approved'
+  )$$,
+  'an administrator can approve a completed, evaluated summary'
+);
+select is(
+  (select review_status from public.document_summary_reviews where feedback = 'Administrator approval.'),
+  'approved',
+  'approval is recorded as a controlled review state'
+);
+select throws_ok(
+  $$select public.upsert_document_summary_review(
+    (select id from public.documents where title = 'Summary target document'), 'en',
+    6, 5, 5, 5, 5, '{}'::text[], 'Invalid rating.', null
+  )$$,
+  '22023', null,
+  'ratings outside the controlled range are rejected'
+);
+select throws_ok(
+  $$insert into public.document_summary_reviews (summary_id, document_id, household_id, reviewed_by, feedback)
+    values ('00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000', 'a1000000-0000-0000-0000-000000000001', 'Forged browser write')$$,
+  '42501', null,
+  'browser roles cannot forge reviewer or household fields with a direct table write'
+);
+
+set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000005';
+select is(
+  (select count(*) from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  0::bigint,
+  'an unrelated household cannot read an evaluation'
+);
+select is(
+  (select count(*) from public.document_summary_reviews where document_id = (select id from public.documents where title = 'Summary target document')),
+  0::bigint,
+  'an unrelated household cannot read reviews'
+);
+
+reset role;
+set local role anon;
+select throws_ok(
+  $$select public.evaluate_document_summary('00000000-0000-0000-0000-000000000000', 'en')$$,
+  '42501', null,
+  'anonymous users cannot evaluate summaries'
+);
+
+reset role;
+update public.document_summaries
+set source_references = jsonb_build_array(jsonb_build_object(
+  'reference_id', 'source-1', 'section', 'overview', 'item_index', 0,
+  'page_id', (select page.id from public.document_pages as page join public.documents as document on document.id = page.document_id where document.title = 'Other source document'),
+  'page_number', 1,
+  'chunk_id', (select chunk.id from public.document_chunks as chunk join public.documents as document on document.id = chunk.document_id where document.title = 'Other source document'),
+  'chunk_index', 0,
+  'excerpt', 'Synthetic source for Other source document.'
+))
+where document_id = (select id from public.documents where title = 'Summary target document') and language = 'en';
+reset role;
+set local role authenticated;
+set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000001';
+select lives_ok(
+  $$select public.evaluate_document_summary((select id from public.documents where title = 'Summary target document'), 'en')$$,
+  'evaluation safely records an invalid cross-document source warning'
+);
+select is(
+  (select grounding_score from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  0,
+  'cross-document source references fail grounding evaluation'
+);
+select ok(
+  (select warnings @> '["invalid_or_cross_document_reference"]'::jsonb from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  'cross-document source references create a safe structured warning'
+);
+select lives_ok(
+  $$update public.documents set upload_status = 'archived' where title = 'Summary target document'$$,
+  'an archived summary document revokes its quality data'
+);
+select is(
+  (select count(*) from public.document_summary_evaluations where document_id = (select id from public.documents where title = 'Summary target document')),
+  0::bigint,
+  'archived documents hide evaluations immediately'
+);
+select is(
+  (select count(*) from public.document_summary_reviews where document_id = (select id from public.documents where title = 'Summary target document')),
+  0::bigint,
+  'archived documents hide reviews immediately'
 );
 
 select * from finish();

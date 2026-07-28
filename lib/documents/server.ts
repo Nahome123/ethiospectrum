@@ -10,6 +10,12 @@ import {
   parseStoredDocumentSummarySourceReferences,
 } from "./summaries/storage";
 import type { DocumentSummaryOutput } from "./summaries/types";
+import {
+  type DocumentSummaryReviewIssueCategory,
+  documentSummaryQualityWarningsSchema,
+  documentSummaryReviewSubmissionSchema,
+  parseDocumentSummaryQualityChecks,
+} from "./summary-quality-schemas";
 import type { DocumentQuestionLanguage, DocumentQuestionStatus } from "./questions/constants";
 import { documentQuestionLanguageSchema } from "./questions/schemas";
 import { parseStoredDocumentQuestionSourceReferences } from "./questions/storage";
@@ -61,6 +67,41 @@ export type DocumentSummaryDetails = {
 export type DocumentSummaryEligibility = {
   canRequest: boolean;
   reason: "processing" | "ocr" | "unavailable" | null;
+};
+
+export type DocumentSummaryQualityDetails = {
+  evaluation: {
+    status: "pending" | "completed" | "failed";
+    evaluatedAt: string | null;
+    overallScore: number | null;
+    groundingScore: number | null;
+    citationCoverageScore: number | null;
+    completenessScore: number | null;
+    languageScore: number | null;
+    safetyScore: number | null;
+    citationStatements: number;
+    citedStatements: number;
+    fullDocumentAnalysed: boolean;
+    partialDocument: boolean;
+    sameDocumentReferencesValid: boolean;
+    sourceReferencesValidJson: boolean;
+    structuredSummaryValid: boolean;
+    warnings: readonly string[];
+  } | null;
+  reviewStatus: "unreviewed" | "review_in_progress" | "approved" | "rejected" | "needs_revision";
+  reviews: readonly {
+    isOwnReview: boolean;
+    reviewStatus: "review_in_progress" | "approved" | "rejected" | "needs_revision";
+    overallRating: number | null;
+    accuracyRating: number | null;
+    completenessRating: number | null;
+    citationRating: number | null;
+    languageRating: number | null;
+    issueCategories: readonly DocumentSummaryReviewIssueCategory[];
+    feedback: string | null;
+    submittedAt: string | null;
+    updatedAt: string;
+  }[];
 };
 
 export type DocumentQuestionDetails = {
@@ -336,6 +377,137 @@ export async function getDocumentSummaryDetails(
       chunk_index: reference.chunk_index,
       excerpt: reference.excerpt,
     })),
+  };
+}
+
+/**
+ * Maps quality results to a deliberately small display contract. RLS is the
+ * authorization boundary; this parser additionally drops internal failures,
+ * database identifiers, and any malformed JSON before Server Component render.
+ */
+export async function getDocumentSummaryQualityDetails(
+  documentId: string,
+  language: DocumentSummaryLanguage,
+  currentUserId: string,
+): Promise<DocumentSummaryQualityDetails> {
+  const validLanguage = documentSummaryLanguageSchema.safeParse(language);
+  const empty: DocumentSummaryQualityDetails = { evaluation: null, reviewStatus: "unreviewed", reviews: [] };
+  if (!validLanguage.success) return empty;
+
+  const supabase = await createServerComponentSupabaseClient();
+  const summaryResult = await supabase
+    .from("document_summaries")
+    .select("id")
+    .eq("document_id", documentId)
+    .eq("language", validLanguage.data)
+    .eq("status", "completed")
+    .maybeSingle();
+  if (summaryResult.error || !summaryResult.data) return empty;
+
+  const [evaluationResult, reviewsResult] = await Promise.all([
+    supabase
+      .from("document_summary_evaluations")
+      .select(
+        "status, evaluated_at, overall_score, grounding_score, citation_coverage_score, completeness_score, language_score, safety_score, checks, warnings",
+      )
+      .eq("summary_id", summaryResult.data.id)
+      .maybeSingle(),
+    supabase
+      .from("document_summary_reviews")
+      .select(
+        "reviewed_by, review_status, overall_rating, accuracy_rating, completeness_rating, citation_rating, language_rating, issue_categories, feedback, submitted_at, updated_at",
+      )
+      .eq("summary_id", summaryResult.data.id)
+      .order("submitted_at", { ascending: false, nullsFirst: false })
+      .order("updated_at", { ascending: false })
+      .limit(12),
+  ]);
+
+  const evaluationRow = evaluationResult.data;
+  const checks = evaluationRow ? parseDocumentSummaryQualityChecks(evaluationRow.checks) : null;
+  const warnings = evaluationRow
+    ? documentSummaryQualityWarningsSchema.safeParse(evaluationRow.warnings)
+    : null;
+  const evaluationStatus = (["pending", "completed", "failed"] as const).find(
+    (status) => status === evaluationRow?.status,
+  );
+  const scores = evaluationRow
+    ? [
+        evaluationRow.overall_score,
+        evaluationRow.grounding_score,
+        evaluationRow.citation_coverage_score,
+        evaluationRow.completeness_score,
+        evaluationRow.language_score,
+        evaluationRow.safety_score,
+      ]
+    : [];
+  const evaluation =
+    evaluationRow &&
+    evaluationStatus &&
+    warnings?.success &&
+    (evaluationStatus !== "completed" || (checks !== null && scores.every((score) => score !== null)))
+      ? {
+          status: evaluationStatus,
+          evaluatedAt: evaluationRow.evaluated_at,
+          overallScore: evaluationRow.overall_score,
+          groundingScore: evaluationRow.grounding_score,
+          citationCoverageScore: evaluationRow.citation_coverage_score,
+          completenessScore: evaluationRow.completeness_score,
+          languageScore: evaluationRow.language_score,
+          safetyScore: evaluationRow.safety_score,
+          citationStatements: checks?.citationStatements ?? 0,
+          citedStatements: checks?.citedStatements ?? 0,
+          fullDocumentAnalysed: checks?.fullDocumentAnalysed ?? false,
+          partialDocument: checks?.partialDocument ?? false,
+          sameDocumentReferencesValid: checks?.sameDocumentReferencesValid ?? false,
+          sourceReferencesValidJson: checks?.sourceReferencesValidJson ?? false,
+          structuredSummaryValid: checks?.structuredSummaryValid ?? false,
+          warnings: warnings.data,
+        }
+      : null;
+
+  const reviews = (reviewsResult.data ?? []).flatMap((review) => {
+    const issueCategories = documentSummaryReviewSubmissionSchema.shape.issueCategories.safeParse(
+      review.issue_categories,
+    );
+    const reviewStatus = ["review_in_progress", "approved", "rejected", "needs_revision"].find(
+      (status) => status === review.review_status,
+    );
+    const ratings = [
+      review.overall_rating,
+      review.accuracy_rating,
+      review.completeness_rating,
+      review.citation_rating,
+      review.language_rating,
+    ];
+    if (
+      !issueCategories.success ||
+      !reviewStatus ||
+      ratings.some((rating) => rating !== null && (rating < 1 || rating > 5))
+    ) {
+      return [];
+    }
+    return [
+      {
+        isOwnReview: review.reviewed_by === currentUserId,
+        reviewStatus: reviewStatus as "review_in_progress" | "approved" | "rejected" | "needs_revision",
+        overallRating: review.overall_rating,
+        accuracyRating: review.accuracy_rating,
+        completenessRating: review.completeness_rating,
+        citationRating: review.citation_rating,
+        languageRating: review.language_rating,
+        issueCategories: issueCategories.data,
+        feedback: review.feedback,
+        submittedAt: review.submitted_at,
+        updatedAt: review.updated_at,
+      },
+    ];
+  });
+  const finalReview = reviews.find((review) => review.reviewStatus !== "review_in_progress");
+  return {
+    evaluation,
+    reviewStatus: finalReview?.reviewStatus ?? (reviews.length ? "review_in_progress" : "unreviewed"),
+    reviews,
   };
 }
 
