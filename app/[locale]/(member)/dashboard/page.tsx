@@ -1,4 +1,12 @@
-import { CalendarClock, ChevronRight, FileText, FolderOpen, Sparkles, Upload, UsersRound } from "lucide-react";
+import {
+  CalendarClock,
+  ChevronRight,
+  FileText,
+  FolderOpen,
+  Sparkles,
+  Upload,
+  UsersRound,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getDependentContext } from "@/lib/dependents/server";
@@ -71,7 +79,9 @@ export default async function DashboardPage() {
       <div className="flex flex-col gap-4 border-b border-border pb-7 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold text-primary">{common("sample")}</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{t("welcome")}</h1>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            {t("welcome")}
+          </h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{t("intro")}</p>
         </div>
         {documentSummary.context?.canUpload ? (
@@ -86,7 +96,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-7 grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.85fr)]">
-        <section className="rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6" aria-labelledby="documents-title">
+        <section
+          className="rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6"
+          aria-labelledby="documents-title"
+        >
           <div className="flex flex-col gap-4 border-b border-border/70 pb-5 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex min-w-0 gap-3">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -151,7 +164,9 @@ export default async function DashboardPage() {
                       <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-secondary text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary">
                         <FileText aria-hidden="true" size={17} />
                       </span>
-                      <span className="min-w-0 flex-1 truncate text-sm font-medium group-hover:text-primary">{document.title}</span>
+                      <span className="min-w-0 flex-1 truncate text-sm font-medium group-hover:text-primary">
+                        {document.title}
+                      </span>
                       <ChevronRight aria-hidden="true" className="shrink-0 text-muted-foreground" size={17} />
                     </Link>
                   </li>
@@ -166,7 +181,10 @@ export default async function DashboardPage() {
         </section>
 
         <div className="grid gap-6">
-          <section className="rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6" aria-labelledby="family-title">
+          <section
+            className="rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6"
+            aria-labelledby="family-title"
+          >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="flex size-10 items-center justify-center rounded-2xl bg-secondary text-foreground">
@@ -191,7 +209,10 @@ export default async function DashboardPage() {
                 {dependents.map((dependent) => {
                   const name = dependent.preferred_name || dependent.first_name;
                   return (
-                    <li className="inline-flex items-center gap-2 rounded-full bg-secondary/65 py-1.5 pr-3 pl-1.5 text-sm" key={dependent.id}>
+                    <li
+                      className="inline-flex items-center gap-2 rounded-full bg-secondary/65 py-1.5 pr-3 pl-1.5 text-sm"
+                      key={dependent.id}
+                    >
                       <span className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                         {name.slice(0, 1).toUpperCase()}
                       </span>
@@ -205,7 +226,10 @@ export default async function DashboardPage() {
             )}
           </section>
 
-          <section className="rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6" aria-labelledby="deadline-title">
+          <section
+            className="rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6"
+            aria-labelledby="deadline-title"
+          >
             <div className="flex size-10 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-700">
               <CalendarClock aria-hidden="true" size={20} />
             </div>
@@ -218,21 +242,30 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <section className="rounded-2xl border border-border/70 bg-card/70 p-5" aria-labelledby="recommended-title">
+        <section
+          className="rounded-2xl border border-border/70 bg-card/70 p-5"
+          aria-labelledby="recommended-title"
+        >
           <Sparkles aria-hidden="true" className="text-primary" size={19} />
           <h2 className="mt-3 font-semibold" id="recommended-title">
             {t("recommended")}
           </h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">{t("sampleAction")}</p>
         </section>
-        <section className="rounded-2xl border border-border/70 bg-card/70 p-5" aria-labelledby="assistant-title">
+        <section
+          className="rounded-2xl border border-border/70 bg-card/70 p-5"
+          aria-labelledby="assistant-title"
+        >
           <FileText aria-hidden="true" className="text-primary" size={19} />
           <h2 className="mt-3 font-semibold" id="assistant-title">
             {t("ask")}
           </h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">{common("sample")}</p>
         </section>
-        <section className="rounded-2xl border border-border/70 bg-card/70 p-5" aria-labelledby="resource-title">
+        <section
+          className="rounded-2xl border border-border/70 bg-card/70 p-5"
+          aria-labelledby="resource-title"
+        >
           <FolderOpen aria-hidden="true" className="text-primary" size={19} />
           <h2 className="mt-3 font-semibold" id="resource-title">
             {t("resource")}

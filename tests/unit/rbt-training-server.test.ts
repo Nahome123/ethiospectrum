@@ -34,9 +34,7 @@ describe("RBT training progress server query", () => {
     );
     mocks.createServerComponentSupabaseClient.mockResolvedValue(fixture);
 
-    await expect(
-      getCurrentRbtTrainingProgress("90000000-0000-4000-8000-000000000001"),
-    ).resolves.toEqual({
+    await expect(getCurrentRbtTrainingProgress("90000000-0000-4000-8000-000000000001")).resolves.toEqual({
       completedAt: null,
       completedSections: ["overview"],
       lastSection: "overview",
@@ -51,9 +49,7 @@ describe("RBT training progress server query", () => {
     mocks.createServerComponentSupabaseClient.mockResolvedValue(fixture);
     const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
 
-    await expect(
-      getCurrentRbtTrainingProgress("90000000-0000-4000-8000-000000000001"),
-    ).resolves.toEqual({
+    await expect(getCurrentRbtTrainingProgress("90000000-0000-4000-8000-000000000001")).resolves.toEqual({
       completedAt: null,
       completedSections: [],
       lastSection: null,
@@ -65,8 +61,8 @@ describe("RBT training progress server query", () => {
     const fixture = progressClient(null, { code: "42501" });
     mocks.createServerComponentSupabaseClient.mockResolvedValue(fixture);
 
-    await expect(
-      getCurrentRbtTrainingProgress("90000000-0000-4000-8000-000000000001"),
-    ).rejects.toThrow("Unable to load training progress.");
+    await expect(getCurrentRbtTrainingProgress("90000000-0000-4000-8000-000000000001")).rejects.toThrow(
+      "Unable to load training progress.",
+    );
   });
 });
