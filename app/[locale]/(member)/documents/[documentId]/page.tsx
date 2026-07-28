@@ -5,6 +5,11 @@ import {
   type DocumentSummaryAvailability,
 } from "@/components/documents/document-summary-panel";
 import { DocumentSummaryRequestForm } from "@/components/documents/document-summary-request-form";
+import {
+  DocumentQuestionPanel,
+  type DocumentQuestionAvailability,
+} from "@/components/documents/document-question-panel";
+import { DocumentQuestionRequestForm } from "@/components/documents/document-question-request-form";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { OcrDocumentButton } from "@/components/documents/ocr-document-button";
 import { ProcessDocumentButton } from "@/components/documents/process-document-button";
@@ -19,6 +24,7 @@ import {
   getDocumentDependentName,
   getDocumentOcrDetails,
   getDocumentProcessingDetails,
+  getDocumentQuestionDetails,
   getDocumentSummaryDetails,
   getDocumentSummaryEligibility,
   getVisibleDocument,
@@ -56,7 +62,7 @@ export default async function DocumentDetailPage({
   const { context, document } = record;
   const isUploaded = document.upload_status === "uploaded" && !document.deleted_at;
   const isArchived = document.upload_status === "archived" || Boolean(document.deleted_at);
-  const [dependentName, processingDetails, ocrDetails, summaryEligibility, summaryDetails] =
+  const [dependentName, processingDetails, ocrDetails, summaryEligibility, summaryDetails, questionDetails] =
     await Promise.all([
       getDocumentDependentName(document.dependent_id, context.household.id),
       isUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
@@ -65,6 +71,7 @@ export default async function DocumentDetailPage({
         ? getDocumentSummaryEligibility(context, document)
         : Promise.resolve({ canRequest: false, reason: "unavailable" as const }),
       isUploaded ? getDocumentSummaryDetails(document.id, summaryLanguage) : Promise.resolve(null),
+      isUploaded ? getDocumentQuestionDetails(document.id) : Promise.resolve([]),
     ]);
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
@@ -84,6 +91,8 @@ export default async function DocumentDetailPage({
         : summaryEligibility.reason === "unavailable" && context.canProcess
           ? "unavailable"
           : "eligible";
+  const questionAvailability: DocumentQuestionAvailability = summaryAvailability;
+  const canQueueQuestion = summaryEligibility.canRequest && canQueueDocumentSummary(context, document);
   const lastProcessedAt =
     processingDetails?.completedAt ?? processingDetails?.failedAt ?? processingDetails?.startedAt ?? null;
   const fileType = getDocumentFileType(document.mime_type);
@@ -248,6 +257,14 @@ export default async function DocumentDetailPage({
           />
         }
         summaryLanguage={summaryLanguage}
+        sourceLocation={fileType === "pdf" ? "page" : "section"}
+      />
+      <DocumentQuestionPanel
+        availability={questionAvailability}
+        canRequest={canQueueQuestion}
+        details={questionDetails}
+        locale={locale}
+        requestControl={<DocumentQuestionRequestForm documentId={document.id} locale={locale} />}
         sourceLocation={fileType === "pdf" ? "page" : "section"}
       />
       {document.processing_status === "needs_ocr" || document.processing_status === "unsupported" ? (

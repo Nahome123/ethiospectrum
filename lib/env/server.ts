@@ -40,6 +40,22 @@ const optionalDocumentSummarySecret = z.preprocess(
   z.string().min(32).optional(),
 );
 
+const optionalOpenAiQuestionModel = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z
+    .string()
+    .trim()
+    .min(1)
+    .max(120)
+    .regex(/^[A-Za-z0-9._-]+$/)
+    .optional(),
+);
+
+const optionalDocumentQuestionSecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(32).optional(),
+);
+
 const optionalOcrProvider = z.preprocess(
   (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
   z.enum(["openai"]).optional(),
@@ -75,6 +91,11 @@ export interface SupabaseAdminEnv extends PublicSupabaseEnv {
 }
 
 export interface OpenAiSummaryEnv {
+  apiKey: string;
+  model: string;
+}
+
+export interface OpenAiQuestionEnv {
   apiKey: string;
   model: string;
 }
@@ -187,6 +208,32 @@ export function requireOpenAiSummaryEnv(input?: EnvInput): OpenAiSummaryEnv {
   return env;
 }
 
+/** Server-only provider configuration for bounded, source-grounded document Q&A. */
+export function getOpenAiQuestionEnv(input?: EnvInput): OpenAiQuestionEnv | undefined {
+  const apiKey = optionalOpenAiApiKey.parse(input?.OPENAI_API_KEY ?? process.env.OPENAI_API_KEY);
+  const model = optionalOpenAiQuestionModel.parse(
+    input?.OPENAI_QUESTION_MODEL ?? process.env.OPENAI_QUESTION_MODEL,
+  );
+
+  if (!apiKey && !model) return undefined;
+  if (!apiKey || !model) {
+    throw new SupabaseConfigurationError(
+      "OPENAI_API_KEY and OPENAI_QUESTION_MODEL must be configured together for document questions.",
+    );
+  }
+  return { apiKey, model };
+}
+
+export function requireOpenAiQuestionEnv(input?: EnvInput): OpenAiQuestionEnv {
+  const env = getOpenAiQuestionEnv(input);
+  if (!env) {
+    throw new SupabaseConfigurationError(
+      "OPENAI_API_KEY and OPENAI_QUESTION_MODEL are required for document questions.",
+    );
+  }
+  return env;
+}
+
 /** Separate internal-invocation secret; never reuse processing or Supabase secrets. */
 export function getDocumentSummarySecret(input?: EnvInput): string | undefined {
   return optionalDocumentSummarySecret.parse(
@@ -199,6 +246,23 @@ export function requireDocumentSummarySecret(input?: EnvInput): string {
   if (!secret) {
     throw new SupabaseConfigurationError(
       "DOCUMENT_SUMMARY_SECRET is required for controlled document-summary invocation.",
+    );
+  }
+  return secret;
+}
+
+/** Separate internal-invocation secret; never reuse processing, summary, or Supabase secrets. */
+export function getDocumentQuestionSecret(input?: EnvInput): string | undefined {
+  return optionalDocumentQuestionSecret.parse(
+    input?.DOCUMENT_QUESTION_SECRET ?? process.env.DOCUMENT_QUESTION_SECRET,
+  );
+}
+
+export function requireDocumentQuestionSecret(input?: EnvInput): string {
+  const secret = getDocumentQuestionSecret(input);
+  if (!secret) {
+    throw new SupabaseConfigurationError(
+      "DOCUMENT_QUESTION_SECRET is required for controlled document-question invocation.",
     );
   }
   return secret;

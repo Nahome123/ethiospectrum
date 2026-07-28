@@ -10,6 +10,9 @@ import {
   parseStoredDocumentSummarySourceReferences,
 } from "./summaries/storage";
 import type { DocumentSummaryOutput } from "./summaries/types";
+import type { DocumentQuestionLanguage, DocumentQuestionStatus } from "./questions/constants";
+import { documentQuestionLanguageSchema } from "./questions/schemas";
+import { parseStoredDocumentQuestionSourceReferences } from "./questions/storage";
 import {
   createServerComponentSupabaseClient,
   getCurrentHousehold,
@@ -58,6 +61,21 @@ export type DocumentSummaryDetails = {
 export type DocumentSummaryEligibility = {
   canRequest: boolean;
   reason: "processing" | "ocr" | "unavailable" | null;
+};
+
+export type DocumentQuestionDetails = {
+  question: string;
+  language: DocumentQuestionLanguage;
+  status: DocumentQuestionStatus;
+  retryable: boolean;
+  completedAt: string | null;
+  sourceCoverage: "full" | "partial";
+  answer: string | null;
+  sourceReferences: readonly {
+    page_number: number;
+    chunk_index: number | null;
+    excerpt: string;
+  }[];
 };
 
 export type DocumentOcrDetails = {
@@ -319,4 +337,49 @@ export async function getDocumentSummaryDetails(
       excerpt: reference.excerpt,
     })),
   };
+}
+
+/**
+ * Reads a small, display-safe recent Q&A list through the same parent-document
+ * RLS boundary as summaries. Worker locks, provider metadata, and error codes
+ * are deliberately excluded from this server-rendered contract.
+ */
+export async function getDocumentQuestionDetails(
+  documentId: string,
+): Promise<readonly DocumentQuestionDetails[]> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_document_questions", { target_document_id: documentId });
+  if (error || !data) return [];
+
+  return data.flatMap((question) => {
+    const language = documentQuestionLanguageSchema.safeParse(question.language);
+    const status = ["queued", "answering", "completed", "failed"].find((item) => item === question.status);
+    const sourceCoverage =
+      question.source_coverage === "partial"
+        ? "partial"
+        : question.source_coverage === "full"
+          ? "full"
+          : null;
+    if (!language.success || !status || !sourceCoverage) return [];
+    const references =
+      status === "completed" ? parseStoredDocumentQuestionSourceReferences(question.source_references) : [];
+    if (status === "completed" && (!question.answer_text || !references)) return [];
+    return [
+      {
+        question: question.question,
+        language: language.data,
+        status: status as DocumentQuestionStatus,
+        retryable: question.retryable,
+        completedAt: question.completed_at,
+        sourceCoverage,
+        answer: status === "completed" ? question.answer_text : null,
+        sourceReferences:
+          references?.map((reference) => ({
+            page_number: reference.page_number,
+            chunk_index: reference.chunk_index,
+            excerpt: reference.excerpt,
+          })) ?? [],
+      },
+    ];
+  });
 }
