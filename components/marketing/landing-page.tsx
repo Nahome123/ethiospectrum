@@ -1,12 +1,15 @@
 import { BookOpen, CalendarDays, FileText, MessageCircleQuestion, ShieldCheck, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getEducationLandingState } from "@/lib/education/landing-server";
+import { EducationSupportSection } from "./education-support-section";
 import { FeatureCard } from "./feature-card";
 import { FamilyPhotoGallery } from "./family-photo-gallery";
 import { SectionHeading } from "./section-heading";
 
 export async function LandingPage() {
   const t = await getTranslations();
+  const educationLandingState = await getEducationLandingState();
   const cards = [
     [FileText, "documents"],
     [MessageCircleQuestion, "assistant"],
@@ -82,6 +85,7 @@ export async function LandingPage() {
           </div>
         </div>
       </section>
+      <EducationSupportSection state={educationLandingState} />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t("howItWorks.eyebrow")} title={t("howItWorks.title")} />
         <div className="mt-10 grid gap-5 md:grid-cols-3">

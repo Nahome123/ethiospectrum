@@ -4,6 +4,8 @@ Next.js 16 App Router provides locale-prefixed public, auth, member, and admin r
 
 Protected layouts use server-only guards that deny by default and redirect to localized login routes. PostgreSQL and RLS own data authorization; client state is never authorization.
 
+The public landing page includes an education-support section and `/[locale]/resources/education` guide route. The guide is static localized educational content with no user data, provider call, analytics payload, or subscription checkout. The landing page may derive only a coarse server-side `visitor`, `needs_household`, or `ready` state when Supabase is configured, then selects a safe destination without rendering household, dependent, school, diagnosis, document, or profile data. Without Supabase configuration it remains a credential-free visitor experience.
+
 ## Supabase integration boundary
 
 ETH-007 introduces a credential-safe utility layer. `lib/env/client.ts` validates and exposes only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; it supports a fully absent configuration so the marketing application continues to build. `lib/env/server.ts` is server-only and validates the optional secret key separately. A partial configuration is rejected and any utility invoked without its required configuration throws a clear development error.

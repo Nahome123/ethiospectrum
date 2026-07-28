@@ -132,6 +132,151 @@
     "resourceThree": "Questions to bring to an appointment",
     "pageIntro": "Browse educational material designed to help families prepare, organize, and ask informed questions."
   },
+  "educationSupport": {
+    "eyebrow": "Education support",
+    "title": "Understand school planning with less confusion.",
+    "description": "Ethiospectrum helps families make sense of school evaluations, IEPs, classroom supports, services, and practical next steps in plain language.",
+    "primaryAction": "Explore education support",
+    "secondaryAction": "Ask the assistant",
+    "personalization": {
+      "visitor": {
+        "eyebrow": "Start with your family workspace",
+        "description": "Create a private workspace when you are ready to organize questions, documents, and next steps.",
+        "action": "Create your workspace"
+      },
+      "needsHousehold": {
+        "eyebrow": "Your workspace is waiting",
+        "description": "Finish setting up your household before you begin organizing school support information.",
+        "action": "Finish household setup"
+      },
+      "ready": {
+        "eyebrow": "Continue from your workspace",
+        "description": "Return to your private workspace to organize information and keep useful next steps together.",
+        "action": "Continue in your workspace"
+      }
+    },
+    "steps": {
+      "one": {
+        "title": "Share the kind of support you are exploring",
+        "description": "Begin with the questions, school documents, or support areas that matter to your family."
+      },
+      "two": {
+        "title": "Review a clear education guide",
+        "description": "Use plain-language explanations to prepare for conversations with your school team."
+      },
+      "three": {
+        "title": "Prepare meeting questions and notes",
+        "description": "Bring strengths, concerns, questions, and follow-up ideas into one focused conversation."
+      },
+      "four": {
+        "title": "Keep useful next steps visible",
+        "description": "Return to your workspace when you are ready to organize what comes next."
+      }
+    },
+    "featuresEyebrow": "A calmer way to prepare",
+    "featuresTitle": "Helpful guides for common school conversations.",
+    "featuresDescription": "These educational guides help families prepare and ask informed questions. They do not decide services, eligibility, or outcomes.",
+    "features": {
+      "iepGuide": {
+        "title": "IEP guide",
+        "description": "Learn common IEP sections, collect questions, and use a simple outline to organize meeting notes."
+      },
+      "roadmap": {
+        "title": "Education roadmap",
+        "description": "Start your private workspace and keep possible next steps, questions, and dates in one place as tools become available."
+      },
+      "accommodations": {
+        "title": "Accommodations explorer",
+        "description": "Review examples of classroom supports and the difference between accommodations and modifications to discuss with the school team."
+      },
+      "eligibility": {
+        "title": "Evaluation and eligibility",
+        "description": "Understand how medical information and school-based eligibility can serve different purposes without making a determination."
+      },
+      "familyNotes": {
+        "title": "Family notes",
+        "description": "Use a meeting-notes outline to capture strengths, concerns, goals, questions, outcomes, and follow-up items."
+      },
+      "multilingual": {
+        "title": "Multilingual support",
+        "description": "Explore guidance through Ethiospectrum’s language system, including Amharic where a reviewed translation is available."
+      }
+    },
+    "featureActions": {
+      "openGuide": "Open guide",
+      "startRoadmap": "Start workspace setup",
+      "learnMore": "Learn more"
+    },
+    "articlesEyebrow": "Learn before the meeting",
+    "articlesTitle": "A few places to begin.",
+    "articlesDescription": "Short, educational starting points for planning a school conversation.",
+    "articles": {
+      "eligibility": {
+        "category": "IEP planning",
+        "title": "Understanding IEP eligibility",
+        "summary": "See why school eligibility and medical information can answer different questions."
+      },
+      "evaluation": {
+        "category": "Evaluation prep",
+        "title": "Preparing for a school evaluation",
+        "summary": "Gather observations and questions that can help you prepare for a conversation with the school team."
+      },
+      "accommodations": {
+        "category": "Classroom supports",
+        "title": "Accommodations and modifications",
+        "summary": "Learn a general distinction to help you ask clearer questions about classroom support."
+      }
+    },
+    "articleAction": "Read the guide",
+    "assistant": {
+      "label": "Assistant help",
+      "title": "Ask Ethio Assistant",
+      "description": "Open the existing assistant area when you are signed in. It is for educational guidance and does not replace a school professional, advocate, lawyer, doctor, or clinician.",
+      "action": "Open assistant"
+    },
+    "membership": {
+      "eyebrow": "Membership preview",
+      "title": "More planning tools are being explored.",
+      "description": "Personalized roadmaps, document explanations, meeting preparation, saved notes, and progress tools are not available as a subscription today.",
+      "action": "See membership updates"
+    }
+  },
+  "educationGuide": {
+    "eyebrow": "Education learning guide",
+    "title": "Prepare for school conversations one topic at a time.",
+    "description": "Use these general educational starting points to organize questions for your school team. They are not a decision about a child or a school service.",
+    "backToResources": "Back to resources",
+    "disclaimer": "Educational information only. School procedures and eligibility rules may vary by location and individual circumstances.",
+    "topics": {
+      "iepGuide": {
+        "title": "Reading an IEP with a question-first approach",
+        "description": "An IEP may describe goals, services, supports, and how progress is shared. Use it to note what is clear, what needs an example, and what you want to ask the team."
+      },
+      "eligibility": {
+        "title": "Understanding school-based eligibility",
+        "description": "School-based eligibility is a process used by a school system. Medical information may be useful context, but it does not by itself answer every school-planning question."
+      },
+      "evaluation": {
+        "title": "Preparing for a school evaluation",
+        "description": "Write down strengths, situations that are going well, concerns, and questions. Ask the school team what information they will consider and how results will be discussed."
+      },
+      "accommodations": {
+        "title": "Accommodations and modifications",
+        "description": "An accommodation generally changes how a student accesses learning, while a modification can change what learning is expected. Terms and practices can vary, so ask the school team how support is planned."
+      },
+      "meetingNotes": {
+        "title": "Preparing meeting notes and questions",
+        "description": "Bring a short list of strengths, concerns, questions, decisions, and follow-up items. After the meeting, note who will do what and when you plan to check in."
+      },
+      "autismSupport": {
+        "title": "Supporting an autistic student at school",
+        "description": "A student’s needs and strengths are individual. Families can ask the school team about communication, routines, sensory needs, participation, and the supports already working well."
+      }
+    },
+    "nextStepTitle": "Keep your planning private and organized.",
+    "nextStepDescription": "Create a family workspace when you are ready to organize questions and documents. More planning tools are still in development.",
+    "nextStepAction": "Create your workspace"
+  },
   "privacy": {
     "eyebrow": "Privacy and trust",
     "title": "Sensitive information deserves careful boundaries.",
