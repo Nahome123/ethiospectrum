@@ -60,6 +60,9 @@ test("localized authentication entry pages render accessible forms", async ({ pa
     await page.goto(`/${locale}/login`);
     await expect(page.locator("form")).toBeVisible();
     await expect(page.locator('input[type="email"]')).toBeVisible();
+    await expect(page.locator(`a[href="/${locale}/login?next=%2F${locale}%2Fadmin"]`)).toBeVisible();
+    await page.goto(`/${locale}/login?next=/${locale}/admin`);
+    await expect(page.locator("form")).toBeVisible();
     await page.goto(`/${locale}/signup`);
     await expect(page.locator('input[type="checkbox"]')).toBeVisible();
     await page.goto(`/${locale}/forgot-password`);

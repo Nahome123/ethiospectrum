@@ -8,7 +8,11 @@ const isDedicatedLocalRun =
   process.env.E2E_LOCAL_SUPABASE === "1" &&
   localSupabaseUrl.test(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "");
 
-function addSyntheticViewerMembership(householdId: string, userId: string): void {
+function addSyntheticHouseholdMembership(
+  householdId: string,
+  userId: string,
+  permission: "administrator" | "member" | "viewer" = "viewer",
+): void {
   if (!/^[0-9a-f-]{36}$/i.test(householdId) || !/^[0-9a-f-]{36}$/i.test(userId)) {
     throw new Error("The local viewer fixture has an invalid identifier.");
   }
@@ -24,7 +28,7 @@ function addSyntheticViewerMembership(householdId: string, userId: string): void
       "-d",
       "postgres",
       "-c",
-      `insert into public.household_members (household_id, user_id, permission, status, joined_at) values ('${householdId}', '${userId}', 'viewer', 'active', now())`,
+      `insert into public.household_members (household_id, user_id, permission, status, joined_at) values ('${householdId}', '${userId}', '${permission}', 'active', now())`,
     ],
     { stdio: "ignore" },
   );
@@ -237,10 +241,13 @@ test.describe("documents workflow (local Supabase only)", () => {
 
     const firstSummaryJob = await claimSummary(`synthetic-summary-e2e-${suffix}-one`);
     await expect
-      .poll(async () => {
-        await page.reload();
-        return page.getByLabel("Summary status: Generating summary").count();
-      })
+      .poll(
+        async () => {
+          await page.reload();
+          return page.getByLabel("Summary status: Generating summary").count();
+        },
+        { timeout: 15_000 },
+      )
       .toBeGreaterThan(0);
 
     const failedSummary = await admin.rpc("fail_document_summary_job", {
@@ -328,6 +335,73 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(firstSourceLink).toBeFocused();
     await firstSourceLink.press("Enter");
     await expect(page.locator("#document-summary-source-0")).toBeVisible();
+
+    await expect(page.getByRole("heading", { level: 2, name: "Summary quality and review" })).toBeVisible();
+    await page.getByRole("button", { name: "Evaluate summary quality" }).press("Enter");
+    await expect(page.getByText("Quality evaluation completed", { exact: true }).first()).toBeVisible();
+    await expect(page.getByText("Citation coverage", { exact: true })).toBeVisible();
+    await page.getByLabel("Overall rating").selectOption("5");
+    await page.getByLabel("Accuracy rating").selectOption("5");
+    await page.getByLabel("Completeness rating").selectOption("4");
+    await page.getByLabel("Source-reference rating").selectOption("5");
+    await page.getByLabel("Language-quality rating").selectOption("4");
+    await page.getByLabel("Internal-use decision").selectOption("approved");
+    await page.getByRole("button", { name: "Save review" }).press("Enter");
+    await expect(page.getByText("Approved for household internal use", { exact: true })).toBeVisible();
+
+    const administratorEmail = `documents-admin-${suffix}@example.test`;
+    const { data: administratorAuth, error: administratorAuthError } = await admin.auth.admin.createUser({
+      email: administratorEmail,
+      password,
+      email_confirm: true,
+    });
+    if (administratorAuthError || !administratorAuth.user) {
+      throw new Error("The synthetic local administrator was not created.");
+    }
+    addSyntheticHouseholdMembership(sourceDocument.household_id, administratorAuth.user.id, "administrator");
+    const administratorContext = await browser.newContext();
+    const administratorPage = await administratorContext.newPage();
+    await administratorPage.goto("/en/login");
+    await administratorPage.getByLabel("Email address").fill(administratorEmail);
+    await administratorPage.getByLabel("Password").fill(password);
+    await Promise.all([
+      administratorPage.waitForURL(/\/en\/dashboard$/),
+      administratorPage.getByRole("button", { name: "Log in" }).click(),
+    ]);
+    await administratorPage.goto(`/en/documents/${firstDocumentId}`);
+    await administratorPage.getByLabel("Overall rating").selectOption("2");
+    await administratorPage.getByLabel("Accuracy rating").selectOption("2");
+    await administratorPage.getByLabel("Completeness rating").selectOption("2");
+    await administratorPage.getByLabel("Source-reference rating").selectOption("2");
+    await administratorPage.getByLabel("Language-quality rating").selectOption("2");
+    await administratorPage.getByLabel("Internal-use decision").selectOption("rejected");
+    await administratorPage.getByRole("button", { name: "Save review" }).click();
+    await expect(administratorPage.getByText("Rejected", { exact: true })).toBeVisible();
+    await administratorContext.close();
+
+    const memberEmail = `documents-member-${suffix}@example.test`;
+    const { data: memberAuth, error: memberAuthError } = await admin.auth.admin.createUser({
+      email: memberEmail,
+      password,
+      email_confirm: true,
+    });
+    if (memberAuthError || !memberAuth.user) throw new Error("The synthetic local member was not created.");
+    addSyntheticHouseholdMembership(sourceDocument.household_id, memberAuth.user.id, "member");
+    const memberContext = await browser.newContext();
+    const memberPage = await memberContext.newPage();
+    await memberPage.goto("/en/login");
+    await memberPage.getByLabel("Email address").fill(memberEmail);
+    await memberPage.getByLabel("Password").fill(password);
+    await Promise.all([
+      memberPage.waitForURL(/\/en\/dashboard$/),
+      memberPage.getByRole("button", { name: "Log in" }).click(),
+    ]);
+    await memberPage.goto(`/en/documents/${firstDocumentId}`);
+    await expect(memberPage.getByLabel("Internal-use decision")).toHaveCount(0);
+    await memberPage.getByLabel("Feedback (optional)").fill("Member feedback for the synthetic summary.");
+    await memberPage.getByRole("button", { name: "Save review" }).click();
+    await expect(memberPage.getByText("Your feedback was saved.")).toBeVisible();
+    await memberContext.close();
 
     await page.getByLabel("View summary language").selectOption("es");
     await Promise.all([
@@ -482,7 +556,7 @@ test.describe("documents workflow (local Supabase only)", () => {
       email_confirm: true,
     });
     if (viewerAuthError || !viewerAuth.user) throw new Error("The synthetic local viewer was not created.");
-    addSyntheticViewerMembership(sourceDocument.household_id, viewerAuth.user.id);
+    addSyntheticHouseholdMembership(sourceDocument.household_id, viewerAuth.user.id);
     const viewerContext = await browser.newContext();
     const viewerPage = await viewerContext.newPage();
     await viewerPage.goto("/en/login");
@@ -529,9 +603,9 @@ test.describe("documents workflow (local Supabase only)", () => {
       .toBeGreaterThan(0);
     await expect(page.getByText("Verify text against the original PDF.")).toBeVisible();
     await page.goto(`/am/documents/${scannedDocumentId}`);
-    await expect(page.locator("h1")).toHaveText(scannedTitle);
+    await expect(page.getByRole("heading", { level: 1, name: scannedTitle })).toBeVisible();
     await page.goto(`/es/documents/${scannedDocumentId}`);
-    await expect(page.locator("h1")).toHaveText(scannedTitle);
+    await expect(page.getByRole("heading", { level: 1, name: scannedTitle })).toBeVisible();
 
     await viewerPage.goto(`/en/documents/${firstDocumentId}`);
     await expect(viewerPage.getByRole("heading", { level: 1, name: firstTitle })).toBeVisible();
@@ -539,6 +613,9 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(viewerPage.getByRole("button", { name: "Generate summary" })).toHaveCount(0);
     await expect(viewerPage.getByRole("button", { name: "Generate again" })).toHaveCount(0);
     await expect(viewerPage.getByRole("button", { name: "Ask question" })).toHaveCount(0);
+    await expect(viewerPage.getByRole("button", { name: "Evaluate summary quality" })).toHaveCount(0);
+    await expect(viewerPage.getByRole("button", { name: "Save review" })).toHaveCount(0);
+    await expect(viewerPage.getByText("Summary quality and review", { exact: true })).toBeVisible();
     await expect(viewerPage.getByText("Synthetic grounded document summary.")).toBeVisible();
     await expect(
       viewerPage.getByText("The synthetic document contains synthetic local content."),

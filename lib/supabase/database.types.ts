@@ -826,6 +826,173 @@ export type Database = {
           },
         ];
       };
+      document_summary_evaluations: {
+        Row: {
+          checks: Json;
+          citation_coverage_score: number | null;
+          completeness_score: number | null;
+          created_at: string;
+          document_id: string;
+          error_code: string | null;
+          evaluated_at: string | null;
+          evaluation_version: string;
+          grounding_score: number | null;
+          household_id: string;
+          id: string;
+          language_score: number | null;
+          overall_score: number | null;
+          safety_score: number | null;
+          status: string;
+          summary_id: string;
+          updated_at: string;
+          warnings: Json;
+        };
+        Insert: {
+          checks?: Json;
+          citation_coverage_score?: number | null;
+          completeness_score?: number | null;
+          created_at?: string;
+          document_id: string;
+          error_code?: string | null;
+          evaluated_at?: string | null;
+          evaluation_version?: string;
+          grounding_score?: number | null;
+          household_id: string;
+          id?: string;
+          language_score?: number | null;
+          overall_score?: number | null;
+          safety_score?: number | null;
+          status?: string;
+          summary_id: string;
+          updated_at?: string;
+          warnings?: Json;
+        };
+        Update: {
+          checks?: Json;
+          citation_coverage_score?: number | null;
+          completeness_score?: number | null;
+          created_at?: string;
+          document_id?: string;
+          error_code?: string | null;
+          evaluated_at?: string | null;
+          evaluation_version?: string;
+          grounding_score?: number | null;
+          household_id?: string;
+          id?: string;
+          language_score?: number | null;
+          overall_score?: number | null;
+          safety_score?: number | null;
+          status?: string;
+          summary_id?: string;
+          updated_at?: string;
+          warnings?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_summary_evaluations_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_summary_evaluations_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_summary_evaluations_summary_id_fkey";
+            columns: ["summary_id"];
+            isOneToOne: true;
+            referencedRelation: "document_summaries";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      document_summary_reviews: {
+        Row: {
+          accuracy_rating: number | null;
+          citation_rating: number | null;
+          completeness_rating: number | null;
+          created_at: string;
+          decision: string | null;
+          document_id: string;
+          feedback: string | null;
+          household_id: string;
+          id: string;
+          issue_categories: string[];
+          language_rating: number | null;
+          overall_rating: number | null;
+          review_status: string;
+          reviewed_by: string;
+          submitted_at: string | null;
+          summary_id: string;
+          updated_at: string;
+        };
+        Insert: {
+          accuracy_rating?: number | null;
+          citation_rating?: number | null;
+          completeness_rating?: number | null;
+          created_at?: string;
+          decision?: string | null;
+          document_id: string;
+          feedback?: string | null;
+          household_id: string;
+          id?: string;
+          issue_categories?: string[];
+          language_rating?: number | null;
+          overall_rating?: number | null;
+          review_status?: string;
+          reviewed_by: string;
+          submitted_at?: string | null;
+          summary_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          accuracy_rating?: number | null;
+          citation_rating?: number | null;
+          completeness_rating?: number | null;
+          created_at?: string;
+          decision?: string | null;
+          document_id?: string;
+          feedback?: string | null;
+          household_id?: string;
+          id?: string;
+          issue_categories?: string[];
+          language_rating?: number | null;
+          overall_rating?: number | null;
+          review_status?: string;
+          reviewed_by?: string;
+          submitted_at?: string | null;
+          summary_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_summary_reviews_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_summary_reviews_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_summary_reviews_summary_id_fkey";
+            columns: ["summary_id"];
+            isOneToOne: false;
+            referencedRelation: "document_summaries";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       documents: {
         Row: {
           created_at: string;
@@ -1648,6 +1815,10 @@ export type Database = {
         Returns: string;
       };
       create_household: { Args: { raw_name: string }; Returns: string };
+      evaluate_document_summary: {
+        Args: { requested_language: string; target_document_id: string };
+        Returns: boolean;
+      };
       fail_document_ocr_job: {
         Args: {
           expected_worker_identity: string;
@@ -1798,6 +1969,21 @@ export type Database = {
           summary_id: string;
           summary_status: string;
         }[];
+      };
+      upsert_document_summary_review: {
+        Args: {
+          requested_accuracy_rating: number;
+          requested_citation_rating: number;
+          requested_completeness_rating: number;
+          requested_decision: string;
+          requested_feedback: string;
+          requested_issue_categories: string[];
+          requested_language: string;
+          requested_language_rating: number;
+          requested_overall_rating: number;
+          target_document_id: string;
+        };
+        Returns: boolean;
       };
     };
     Enums: {
