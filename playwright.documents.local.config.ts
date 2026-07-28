@@ -19,6 +19,8 @@ const localDocumentProcessingSecret =
   readLocalEnvironmentValue("DOCUMENT_PROCESSING_SECRET") ?? randomBytes(32).toString("hex");
 const localDocumentOcrSecret =
   readLocalEnvironmentValue("DOCUMENT_OCR_SECRET") ?? randomBytes(32).toString("hex");
+const localDocumentQuestionSecret =
+  readLocalEnvironmentValue("DOCUMENT_QUESTION_SECRET") ?? randomBytes(32).toString("hex");
 
 function readStatusValue(output: string, name: string) {
   const line = output.split(/\r?\n/).find((candidate) => candidate.startsWith(`${name}=`));
@@ -62,6 +64,7 @@ function getLocalSupabaseEnvironment() {
     // Generated only for this local process; it is never a deployment secret.
     DOCUMENT_PROCESSING_SECRET: localDocumentProcessingSecret,
     DOCUMENT_OCR_SECRET: localDocumentOcrSecret,
+    DOCUMENT_QUESTION_SECRET: localDocumentQuestionSecret,
   };
 }
 

@@ -3,6 +3,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { requireOpenAiSummaryEnv } from "@/lib/env/server";
+import { loadProcessedDocumentSourceChunks } from "@/lib/documents/source-material";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import {
   DOCUMENT_SUMMARY_MAX_PROVIDER_CALLS,
@@ -138,79 +139,6 @@ async function markJobFailed({
   }
 }
 
-async function loadSources(
-  admin: DocumentSummaryWorkerAdminClient,
-  job: ClaimedDocumentSummaryJob,
-): Promise<readonly DocumentSummarySourceChunk[]> {
-  const [documentResult, chunksResult, pagesResult] = await Promise.all([
-    admin
-      .from("documents")
-      .select("id, household_id, upload_status, processing_status, deleted_at")
-      .eq("id", job.document_id)
-      .maybeSingle(),
-    admin
-      .from("document_chunks")
-      .select("id, document_id, page_id, page_number, chunk_index, content")
-      .eq("document_id", job.document_id)
-      .order("page_number", { ascending: true })
-      .order("chunk_index", { ascending: true })
-      .order("id", { ascending: true }),
-    admin
-      .from("document_pages")
-      .select("id, document_id, page_number, extracted_text")
-      .eq("document_id", job.document_id)
-      .order("page_number", { ascending: true })
-      .order("id", { ascending: true }),
-  ]);
-
-  const document = documentResult.data;
-  if (
-    documentResult.error ||
-    !document ||
-    document.id !== job.document_id ||
-    document.household_id !== job.household_id ||
-    document.upload_status !== "uploaded" ||
-    document.processing_status !== "completed" ||
-    document.deleted_at !== null ||
-    chunksResult.error ||
-    pagesResult.error
-  ) {
-    throw new Error("Document summary source material is unavailable.");
-  }
-
-  const pages = pagesResult.data ?? [];
-  const chunks = chunksResult.data ?? [];
-  const pagesById = new Map(pages.map((page) => [page.id, page]));
-  const chunksCanBeSafelyCited =
-    chunks.length > 0 &&
-    chunks.every((chunk) => {
-      if (!chunk.page_id) return false;
-      const page = pagesById.get(chunk.page_id);
-      return Boolean(page && page.document_id === job.document_id && page.page_number === chunk.page_number);
-    });
-
-  if (chunksCanBeSafelyCited) {
-    return chunks.map((chunk) => ({
-      documentId: job.document_id,
-      pageId: chunk.page_id as string,
-      chunkId: chunk.id,
-      pageNumber: chunk.page_number,
-      chunkIndex: chunk.chunk_index,
-      content: chunk.content,
-    }));
-  }
-
-  if (!pages.length) throw new DocumentSummarySourceSelectionError();
-  return pages.map((page) => ({
-    documentId: job.document_id,
-    pageId: page.id,
-    chunkId: null,
-    pageNumber: page.page_number,
-    chunkIndex: null,
-    content: page.extracted_text,
-  }));
-}
-
 function assertProviderBudget(currentCallCount: number, result: DocumentSummaryProviderResult): number {
   const nextCallCount = currentCallCount + result.providerCallCount;
   if (nextCallCount > DOCUMENT_SUMMARY_MAX_PROVIDER_CALLS) {
@@ -315,7 +243,10 @@ async function processClaimedJob({
 }): Promise<"completed" | "failed"> {
   let failureCode: DocumentSummaryFailureCode = "document_unavailable";
   try {
-    const sources = await loadSources(admin, job);
+    const sources = await loadProcessedDocumentSourceChunks(admin, {
+      documentId: job.document_id,
+      householdId: job.household_id,
+    });
     const generated = await generateSummary({ job, provider, sources });
     const references = resolveDocumentSummarySourceReferences(
       generated.structuredSummary,

@@ -22,13 +22,7 @@ function isCurrentPath(pathname: string, href: string): boolean {
   return pathname === href || (href !== "/dashboard" && pathname.startsWith(`${href}/`));
 }
 
-export function MemberNavigation({
-  closeLabel,
-  items,
-  label,
-  menuLabel,
-  openLabel,
-}: MemberNavigationProps) {
+export function MemberNavigation({ closeLabel, items, label, menuLabel, openLabel }: MemberNavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -47,10 +41,7 @@ export function MemberNavigation({
       </button>
       <nav
         aria-label={label}
-        className={cn(
-          "mt-4 grid min-w-0 gap-1 lg:mt-6 lg:grid",
-          isOpen ? "grid" : "hidden lg:grid",
-        )}
+        className={cn("mt-4 grid min-w-0 gap-1 lg:mt-6 lg:grid", isOpen ? "grid" : "hidden lg:grid")}
         id="member-navigation"
       >
         {items.map(({ href, label: itemLabel }) => {

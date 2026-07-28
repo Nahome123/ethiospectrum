@@ -142,7 +142,11 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(page.getByRole("link", { name: "Download" })).toBeVisible();
     await expect(page.locator("dl").getByLabel("Processing status: Not started")).toBeVisible();
     await expect(page.getByRole("button", { name: "Process document" })).toBeVisible();
-    await expect(page.getByText("Processing is required before a summary can be generated.")).toBeVisible();
+    await expect(
+      page
+        .getByRole("region", { name: "Document summary" })
+        .getByText("Processing is required before a summary can be generated."),
+    ).toBeVisible();
     await expect(page.getByRole("button", { name: "Generate summary" })).toHaveCount(0);
 
     const processButton = page.getByRole("button", { name: "Process document" });
@@ -213,15 +217,31 @@ test.describe("documents workflow (local Supabase only)", () => {
       return data[0];
     }
 
+    async function claimQuestion(workerIdentity: string) {
+      const { data, error } = await admin.rpc("claim_next_document_question_job", {
+        worker_identity: workerIdentity,
+      });
+      if (error || !data?.[0]) throw new Error("The synthetic question job was not claimed.");
+      return data[0];
+    }
+
     await page.goto(`/en/documents/${firstDocumentId}`);
     await page.getByLabel("Summary language", { exact: true }).selectOption("en");
     await page.getByRole("button", { name: "Generate summary" }).click();
-    await page.reload();
-    await expect(page.getByLabel("Summary status: Summary queued")).toBeVisible();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Summary queued").count();
+      })
+      .toBeGreaterThan(0);
 
     const firstSummaryJob = await claimSummary(`synthetic-summary-e2e-${suffix}-one`);
-    await page.reload();
-    await expect(page.getByLabel("Summary status: Generating summary")).toBeVisible();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Generating summary").count();
+      })
+      .toBeGreaterThan(0);
 
     const failedSummary = await admin.rpc("fail_document_summary_job", {
       target_summary_id: firstSummaryJob.summary_id,
@@ -231,8 +251,12 @@ test.describe("documents workflow (local Supabase only)", () => {
     if (failedSummary.error || !failedSummary.data) {
       throw new Error("The synthetic summary failure was not recorded.");
     }
-    await page.reload();
-    await expect(page.getByLabel("Summary status: Summary failed")).toBeVisible();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Summary failed").count();
+      })
+      .toBeGreaterThan(0);
     await expect(page.getByRole("button", { name: "Retry summary" })).toBeVisible();
 
     await page.getByRole("button", { name: "Retry summary" }).click();
@@ -292,8 +316,12 @@ test.describe("documents workflow (local Supabase only)", () => {
       throw new Error("The synthetic summary completion was not recorded.");
     }
 
-    await page.reload();
-    await expect(page.getByLabel("Summary status: Summary completed")).toBeVisible();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Summary status: Summary completed").count();
+      })
+      .toBeGreaterThan(0);
     await expect(page.getByText("Synthetic grounded document summary.")).toBeVisible();
     const firstSourceLink = page.getByRole("link", { name: "Source 1" }).first();
     await firstSourceLink.focus();
@@ -328,6 +356,60 @@ test.describe("documents workflow (local Supabase only)", () => {
         return page.getByLabel("Summary status: Summary queued").count();
       })
       .toBeGreaterThan(0);
+
+    await page.goto(`/en/documents/${firstDocumentId}`);
+    const rejectedQuestionWorker = await page.request.post("/api/internal/document-questions");
+    expect(rejectedQuestionWorker.status()).toBe(401);
+    await page.getByLabel("Your question").fill("What does this synthetic document say?");
+    await page.getByRole("button", { name: "Ask question" }).click();
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Answer status: Question queued").count();
+      })
+      .toBeGreaterThan(0);
+    const firstQuestionJob = await claimQuestion(`synthetic-question-e2e-${suffix}-one`);
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Answer status: Preparing a cited answer").count();
+      })
+      .toBeGreaterThan(0);
+    const completedQuestion = await admin.rpc("complete_document_question_job", {
+      target_question_id: firstQuestionJob.question_id,
+      expected_worker_identity: `synthetic-question-e2e-${suffix}-one`,
+      completed_answer_text: "The synthetic document contains synthetic local content.",
+      completed_source_references: [
+        {
+          reference_id: "source-1",
+          page_id: sourcePage.id,
+          page_number: sourcePage.page_number,
+          chunk_id: sourceChunk.id,
+          chunk_index: sourceChunk.chunk_index,
+          excerpt: sourceExcerpt,
+        },
+      ],
+      completed_source_coverage: "full",
+      completed_source_item_count: 1,
+      completed_source_character_count: sourceChunk.content.length,
+      completed_provider: "synthetic-provider",
+      completed_model_identifier: "synthetic-question-model",
+      completed_provider_call_count: 1,
+    });
+    if (completedQuestion.error || !completedQuestion.data) {
+      throw new Error("The synthetic question completion was not recorded.");
+    }
+    await expect
+      .poll(async () => {
+        await page.reload();
+        return page.getByLabel("Answer status: Answer completed").count();
+      })
+      .toBeGreaterThan(0);
+    await expect(page.getByText("The synthetic document contains synthetic local content.")).toBeVisible();
+    await page.goto(`/am/documents/${firstDocumentId}`);
+    await expect(page.locator("#document-summary-title")).toBeVisible();
+    await page.goto(`/es/documents/${firstDocumentId}`);
+    await expect(page.locator("#document-summary-title")).toBeVisible();
 
     const scannedTitle = `Synthetic scanned PDF ${suffix}`;
     await uploadSyntheticDocument({
@@ -456,7 +538,11 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(viewerPage.getByRole("button", { name: "Process document" })).toHaveCount(0);
     await expect(viewerPage.getByRole("button", { name: "Generate summary" })).toHaveCount(0);
     await expect(viewerPage.getByRole("button", { name: "Generate again" })).toHaveCount(0);
+    await expect(viewerPage.getByRole("button", { name: "Ask question" })).toHaveCount(0);
     await expect(viewerPage.getByText("Synthetic grounded document summary.")).toBeVisible();
+    await expect(
+      viewerPage.getByText("The synthetic document contains synthetic local content."),
+    ).toBeVisible();
     await viewerPage.goto(`/en/documents/${scannedDocumentId}`);
     await expect(viewerPage.getByRole("button", { name: "Run OCR" })).toHaveCount(0);
     await expect(viewerPage.getByRole("button", { name: "Retry OCR" })).toHaveCount(0);

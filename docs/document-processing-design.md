@@ -265,6 +265,25 @@ aggregate batch counts or a generic temporary-unavailable response. Deploy the
 migration and server configuration before enabling a scheduler; this document
 does not imply that a hosted migration or scheduler has been enabled.
 
+### Document-question worker configuration
+
+ETH-017 Q&A must remain limited to one completed private document per request.
+Before enabling its worker in a reviewed environment, apply the migration
+locally, refresh generated types, and configure all three server-only values:
+
+- `OPENAI_API_KEY` for the shared provider boundary.
+- `OPENAI_QUESTION_MODEL` for the reviewed Q&A model selection.
+- `DOCUMENT_QUESTION_SECRET` for the dedicated protected worker route.
+
+The last value must be a unique high-entropy secret, distinct from all
+Supabase, processing, summary, and OCR secrets. A scheduler may call only
+`POST /api/internal/document-questions`, send it in
+`x-document-question-secret`, omit every document/question/body parameter, and
+receive only aggregate counts or a generic temporary-unavailable response. Do
+not place prompts, source text, answers, citations, identifiers, or secrets in
+logs. Use a mocked provider and synthetic local documents for validation; this
+does not claim a hosted migration, model configuration, or scheduler exists.
+
 ### OCR worker configuration
 
 Before enabling OCR in a reviewed non-production environment, apply the OCR

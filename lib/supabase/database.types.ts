@@ -593,6 +593,124 @@ export type Database = {
           },
         ];
       };
+      document_questions: {
+        Row: {
+          answer_text: string | null;
+          attempt_count: number;
+          available_at: string;
+          completed_at: string | null;
+          created_at: string;
+          document_id: string;
+          error_code: string | null;
+          failed_at: string | null;
+          household_id: string;
+          id: string;
+          language: string;
+          locked_at: string | null;
+          locked_by: string | null;
+          max_attempts: number;
+          model_identifier: string | null;
+          prompt_version: string;
+          provider: string | null;
+          provider_call_count: number;
+          question: string;
+          question_normalized: string;
+          requested_at: string;
+          requested_by: string;
+          source_character_count: number;
+          source_coverage: string;
+          source_item_count: number;
+          source_references: Json;
+          started_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          answer_text?: string | null;
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id: string;
+          error_code?: string | null;
+          failed_at?: string | null;
+          household_id: string;
+          id?: string;
+          language: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          prompt_version?: string;
+          provider?: string | null;
+          provider_call_count?: number;
+          question: string;
+          question_normalized: string;
+          requested_at?: string;
+          requested_by: string;
+          source_character_count?: number;
+          source_coverage?: string;
+          source_item_count?: number;
+          source_references?: Json;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          answer_text?: string | null;
+          attempt_count?: number;
+          available_at?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          document_id?: string;
+          error_code?: string | null;
+          failed_at?: string | null;
+          household_id?: string;
+          id?: string;
+          language?: string;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          prompt_version?: string;
+          provider?: string | null;
+          provider_call_count?: number;
+          question?: string;
+          question_normalized?: string;
+          requested_at?: string;
+          requested_by?: string;
+          source_character_count?: number;
+          source_coverage?: string;
+          source_item_count?: number;
+          source_references?: Json;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_questions_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_questions_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_questions_requested_by_fkey";
+            columns: ["requested_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       document_summaries: {
         Row: {
           attempt_count: number;
@@ -1448,6 +1566,19 @@ export type Database = {
           storage_path: string;
         }[];
       };
+      claim_next_document_question_job: {
+        Args: { worker_identity: string };
+        Returns: {
+          attempt_count: number;
+          document_id: string;
+          household_id: string;
+          language: string;
+          max_attempts: number;
+          prompt_version: string;
+          question: string;
+          question_id: string;
+        }[];
+      };
       claim_next_document_summary_job: {
         Args: { worker_identity: string };
         Returns: {
@@ -1478,6 +1609,21 @@ export type Database = {
           final_status: string;
           page_rows: Json;
           target_job_id: string;
+        };
+        Returns: boolean;
+      };
+      complete_document_question_job: {
+        Args: {
+          completed_answer_text: string;
+          completed_model_identifier: string;
+          completed_provider: string;
+          completed_provider_call_count: number;
+          completed_source_character_count: number;
+          completed_source_coverage: string;
+          completed_source_item_count: number;
+          completed_source_references: Json;
+          expected_worker_identity: string;
+          target_question_id: string;
         };
         Returns: boolean;
       };
@@ -1518,6 +1664,14 @@ export type Database = {
         };
         Returns: boolean;
       };
+      fail_document_question_job: {
+        Args: {
+          expected_worker_identity: string;
+          safe_error_code: string;
+          target_question_id: string;
+        };
+        Returns: boolean;
+      };
       fail_document_summary_job: {
         Args: {
           expected_worker_identity: string;
@@ -1545,6 +1699,32 @@ export type Database = {
           failed_at: string;
           retryable: boolean;
           started_at: string;
+          status: string;
+        }[];
+      };
+      get_document_question_status: {
+        Args: { target_question_id: string };
+        Returns: {
+          completed_at: string;
+          failed_at: string;
+          question_id: string;
+          requested_at: string;
+          retryable: boolean;
+          source_coverage: string;
+          started_at: string;
+          status: string;
+        }[];
+      };
+      get_document_questions: {
+        Args: { target_document_id: string };
+        Returns: {
+          answer_text: string;
+          completed_at: string;
+          language: string;
+          question: string;
+          retryable: boolean;
+          source_coverage: string;
+          source_references: Json;
           status: string;
         }[];
       };
@@ -1595,6 +1775,19 @@ export type Database = {
           completed_at: string;
           completed_sections: string[];
           last_section: string;
+        }[];
+      };
+      request_document_question: {
+        Args: {
+          requested_language: string;
+          requested_question: string;
+          target_document_id: string;
+        };
+        Returns: {
+          already_active: boolean;
+          question_id: string;
+          question_status: string;
+          reused_completed: boolean;
         }[];
       };
       request_document_summary: {
