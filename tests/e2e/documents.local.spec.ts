@@ -330,11 +330,17 @@ test.describe("documents workflow (local Supabase only)", () => {
       })
       .toBeGreaterThan(0);
     await expect(page.getByText("Synthetic grounded document summary.")).toBeVisible();
-    const firstSourceLink = page.getByRole("link", { name: "Source 1" }).first();
-    await firstSourceLink.focus();
-    await expect(firstSourceLink).toBeFocused();
-    await firstSourceLink.press("Enter");
-    await expect(page.locator("#document-summary-source-0")).toBeVisible();
+    const firstSourceControl = page.getByRole("button", { name: "View source: Source 1" }).first();
+    await firstSourceControl.focus();
+    await expect(firstSourceControl).toBeFocused();
+    await firstSourceControl.press("Enter");
+    await expect(page).toHaveURL(/citationOwner=document_summary/);
+    const evidenceDialog = page.getByRole("dialog");
+    await expect(evidenceDialog).toContainText("Source evidence");
+    await expect(evidenceDialog).toContainText(sourceExcerpt);
+    await expect(evidenceDialog).toContainText("Original-page navigation is unavailable for this source.");
+    await evidenceDialog.getByRole("button", { name: "Close source" }).press("Enter");
+    await expect(firstSourceControl).toBeFocused();
 
     await expect(page.getByRole("heading", { level: 2, name: "Summary quality and review" })).toBeVisible();
     await page.getByRole("button", { name: "Evaluate summary quality" }).press("Enter");
@@ -480,6 +486,12 @@ test.describe("documents workflow (local Supabase only)", () => {
       })
       .toBeGreaterThan(0);
     await expect(page.getByText("The synthetic document contains synthetic local content.")).toBeVisible();
+    const questionSourceControl = page
+      .getByRole("region", { name: "Document questions" })
+      .getByRole("button", { name: "View source: Source 1" });
+    await questionSourceControl.press("Enter");
+    await expect(page.getByRole("dialog")).toContainText(sourceExcerpt);
+    await page.getByRole("dialog").getByRole("button", { name: "Close source" }).press("Enter");
     await page.goto(`/am/documents/${firstDocumentId}`);
     await expect(page.locator("#document-summary-title")).toBeVisible();
     await page.goto(`/es/documents/${firstDocumentId}`);
@@ -525,9 +537,13 @@ test.describe("documents workflow (local Supabase only)", () => {
       throw new Error("The synthetic chat completion was not recorded.");
     await page.reload();
     await expect(page.getByText("The synthetic document contains synthetic local content.")).toBeVisible();
-    await expect(page.getByText("Source 1 · Page 1", { exact: true })).toBeVisible();
+    const chatSourceControl = page.getByRole("button", { name: "View source: Source 1" });
+    await expect(chatSourceControl).toBeVisible();
     await expect(page.getByText(sourceChunk.content, { exact: true })).toHaveCount(0);
     await expect(page.getByRole("link", { name: /Source 1/u })).toHaveCount(0);
+    await chatSourceControl.press("Enter");
+    await expect(page.getByRole("dialog")).toContainText(sourceChunk.content);
+    await page.getByRole("dialog").getByRole("button", { name: "Close source" }).press("Enter");
     await page.getByLabel("Ask about this document").fill("What is the follow-up?");
     await page.getByRole("button", { name: "Send message" }).press("Enter");
     await expect(

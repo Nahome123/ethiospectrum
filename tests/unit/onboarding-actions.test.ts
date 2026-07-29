@@ -1,13 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  getUser: vi.fn(),
   rpc: vi.fn(),
   redirect: vi.fn(),
   revalidatePath: vi.fn(),
 }));
 
 vi.mock("@/lib/supabase/server-action", () => ({
-  createServerActionSupabaseClient: vi.fn(async () => ({ rpc: mocks.rpc })),
+  createServerActionSupabaseClient: vi.fn(async () => ({
+    auth: { getUser: mocks.getUser },
+    rpc: mocks.rpc,
+  })),
 }));
 vi.mock("next-intl/server", () => ({ getTranslations: vi.fn(async () => (key: string) => key) }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
@@ -27,6 +31,18 @@ function formData(values: Record<string, string>) {
 describe("onboarding actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mocks.getUser.mockResolvedValue({
+      data: {
+        user: {
+          user_metadata: {
+            first_name: "Teshome",
+            last_name: "Bekele",
+            preferred_locale: "am",
+          },
+        },
+      },
+      error: null,
+    });
     mocks.rpc.mockResolvedValue({ data: "household-id", error: null });
   });
 
@@ -37,8 +53,12 @@ describe("onboarding actions", () => {
       formData({ householdName: "  Teshome family  ", consentAccepted: "on" }),
     );
     expect(mocks.rpc).toHaveBeenCalledWith("complete_household_onboarding", {
+      raw_first_name: "Teshome",
+      raw_last_name: "Bekele",
       raw_name: "Teshome family",
       raw_policy_version: ONBOARDING_POLICY_VERSION,
+      raw_preferred_locale: "am",
+      raw_timezone: "UTC",
     });
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/", "layout");
     expect(mocks.redirect).toHaveBeenCalledWith("/am/dashboard");
@@ -69,6 +89,23 @@ describe("onboarding actions", () => {
       householdName: "Teshome family",
     });
     expect(mocks.redirect).not.toHaveBeenCalled();
+  });
+
+  it("returns a safe error without calling the onboarding RPC when the session is unavailable", async () => {
+    mocks.getUser.mockResolvedValue({ data: { user: null }, error: new Error("session unavailable") });
+
+    await expect(
+      completeOnboardingAction(
+        "en",
+        idle,
+        formData({ householdName: "Teshome family", consentAccepted: "on" }),
+      ),
+    ).resolves.toEqual({
+      status: "error",
+      message: "genericError",
+      householdName: "Teshome family",
+    });
+    expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
   it("rejects an unsupported locale before validation", async () => {

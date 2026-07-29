@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { DocumentChatAutoScroll } from "@/components/documents/document-chat-auto-scroll";
 import { DocumentChatComposer } from "@/components/documents/document-chat-composer";
 import { DocumentChatRetryButton } from "@/components/documents/document-chat-retry-button";
+import { CitationList } from "@/components/documents/citation-list";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import {
@@ -40,11 +41,11 @@ export default async function DocumentChatConversationPage({
   if (!record) return <p>{documentT("notFound")}</p>;
   const [eligibility, conversation] = await Promise.all([
     getDocumentChatEligibility(record.document),
-    getDocumentChatConversationDetails(documentId, conversationId),
+    getDocumentChatConversationDetails(documentId, conversationId, record.document.mime_type),
   ]);
   if (!eligibility.available || !conversation) return <p>{documentT("notFound")}</p>;
   const [summary, quality] = await Promise.all([
-    getDocumentSummaryDetails(documentId, conversation.language),
+    getDocumentSummaryDetails(documentId, conversation.language, record.document.mime_type),
     getDocumentSummaryQualityDetails(documentId, conversation.language, record.context.userId),
   ]);
   const hasPendingResponse = conversation.messages.some(
@@ -129,16 +130,7 @@ export default async function DocumentChatConversationPage({
                 ) : null}
                 <p className="break-words whitespace-pre-wrap">{message.content}</p>
                 {message.role === "assistant" && message.citations.length ? (
-                  <ol className="mt-4 flex flex-wrap gap-2" aria-label={chatT("source")}>
-                    {message.citations.map((citation, citationIndex) => (
-                      <li
-                        className="rounded-full border px-3 py-1 text-xs"
-                        key={`${message.id}-${citationIndex + 1}`}
-                      >
-                        {chatT("source")} {citationIndex + 1} · {chatT("page")} {citation.pageNumber}
-                      </li>
-                    ))}
-                  </ol>
+                  <CitationList citations={message.citations} locale={locale} />
                 ) : null}
               </div>
             ) : null}

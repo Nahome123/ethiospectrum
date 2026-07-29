@@ -1,6 +1,6 @@
 begin;
 
-select plan(35);
+select plan(43);
 
 -- Synthetic identities only. No production documents, prompts, answers, or
 -- credentials are present in this local pgTAP fixture.
@@ -33,6 +33,7 @@ select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid
 select has_function('public', 'request_document_question', array['uuid', 'text', 'text'], 'controlled question request function exists');
 select has_function('public', 'get_document_question_status', array['uuid'], 'safe question status function exists');
 select has_function('public', 'get_document_questions', array['uuid'], 'safe question read function exists');
+select has_function('public', 'get_document_citation_evidence', array['uuid', 'text', 'uuid', 'integer'], 'safe citation evidence function exists');
 select has_function('public', 'claim_next_document_question_job', array['text'], 'question claim function exists');
 select has_function('public', 'complete_document_question_job', array['uuid', 'text', 'text', 'jsonb', 'text', 'integer', 'integer', 'text', 'text', 'integer'], 'question completion function exists');
 select has_function('public', 'fail_document_question_job', array['uuid', 'text', 'text'], 'question failure function exists');
@@ -157,12 +158,66 @@ select ok(public.complete_document_question_job(
 ), 'service worker completes only a same-document cited answer');
 reset role;
 select is((select status from public.document_questions where question = 'What is the next step?'), 'completed', 'completion stores a completed state');
+select set_config(
+  'app.document_question_test_id',
+  (select id::text from public.document_questions where question = 'What is the next step?'),
+  true
+);
 
 set local role authenticated;
 set local request.jwt.claim.sub = 'b1000000-0000-0000-0000-000000000003';
 select is((select count(*) from public.get_document_questions((select id from public.documents where title = 'Question target document'))), 1::bigint, 'an active viewer can read an accessible answer through the safe function');
+select is(
+  (select availability from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    0
+  )),
+  'available',
+  'an active viewer can resolve evidence only through its completed question owner'
+);
+select is(
+  (select source_kind from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    0
+  )),
+  'section',
+  'a non-PDF source is represented as a logical section'
+);
+select ok(
+  (select char_length(excerpt) <= 600 from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    0
+  )),
+  'evidence exposes only a bounded excerpt'
+);
+select is(
+  (select availability from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    143
+  )),
+  'unavailable',
+  'an out-of-range citation returns the generic unavailable state'
+);
 set local request.jwt.claim.sub = 'b1000000-0000-0000-0000-000000000004';
 select is((select count(*) from public.get_document_questions((select id from public.documents where title = 'Question target document'))), 0::bigint, 'other household cannot read an answer');
+select is(
+  (select availability from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    0
+  )),
+  'unavailable',
+  'another household receives the same unavailable citation state'
+);
 reset role;
 
 update public.household_members set status = 'removed'
@@ -170,6 +225,16 @@ where household_id = 'b2000000-0000-0000-0000-000000000001' and user_id = 'b1000
 set local role authenticated;
 set local request.jwt.claim.sub = 'b1000000-0000-0000-0000-000000000003';
 select is((select count(*) from public.get_document_questions((select id from public.documents where title = 'Question target document'))), 0::bigint, 'a removed member loses answer access immediately');
+select is(
+  (select availability from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    0
+  )),
+  'unavailable',
+  'a removed member loses evidence access immediately'
+);
 reset role;
 
 update public.household_members set permission = 'administrator'
@@ -191,6 +256,18 @@ select lives_ok(
 reset role;
 update public.documents set upload_status = 'archived' where title = 'Archive question document';
 select is((select status from public.document_questions where question = 'What is archived?'), 'failed', 'archive cancels queued question work');
+
+update public.documents set upload_status = 'archived' where title = 'Question target document';
+select is(
+  (select availability from public.get_document_citation_evidence(
+    (select id from public.documents where title = 'Question target document'),
+    'document_qa_answer',
+    current_setting('app.document_question_test_id')::uuid,
+    0
+  )),
+  'unavailable',
+  'an archived source document returns the generic unavailable state'
+);
 
 set local role anon;
 select throws_ok(

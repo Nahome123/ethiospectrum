@@ -55,17 +55,10 @@ export async function requestDocumentSummaryAction(
     return { status: "error", message: t("summaryProcessingRequired") };
   }
 
-  const [pages, chunks] = await Promise.all([
-    supabase
-      .from("document_pages")
-      .select("id", { count: "exact", head: true })
-      .eq("document_id", document.id),
-    supabase
-      .from("document_chunks")
-      .select("id", { count: "exact", head: true })
-      .eq("document_id", document.id),
-  ]);
-  if (pages.error || chunks.error || (pages.count ?? 0) + (chunks.count ?? 0) === 0) {
+  const extraction = await supabase.rpc("get_document_extraction_availability", {
+    target_document_id: document.id,
+  });
+  if (extraction.error || extraction.data?.[0]?.has_sources !== true) {
     return { status: "error", message: t("summaryUnavailable") };
   }
 

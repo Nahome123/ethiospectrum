@@ -2038,7 +2038,14 @@ export type Database = {
         Returns: boolean;
       };
       complete_household_onboarding: {
-        Args: { raw_name: string; raw_policy_version: string };
+        Args: {
+          raw_first_name?: string;
+          raw_last_name?: string;
+          raw_name: string;
+          raw_policy_version: string;
+          raw_preferred_locale?: string;
+          raw_timezone?: string;
+        };
         Returns: string;
       };
       create_document_chat_conversation: {
@@ -2138,6 +2145,30 @@ export type Database = {
           sequence_number: number;
         }[];
       };
+      get_document_citation_evidence: {
+        Args: {
+          target_citation_index: number;
+          target_document_id: string;
+          target_owner_id: string;
+          target_owner_type: string;
+        };
+        Returns: {
+          availability: string;
+          can_open_original: boolean;
+          document_name: string;
+          excerpt: string;
+          excerpt_shortened: boolean;
+          is_partial_document: boolean;
+          page_number: number;
+          source_kind: string;
+        }[];
+      };
+      get_document_extraction_availability: {
+        Args: { target_document_id: string };
+        Returns: {
+          has_sources: boolean;
+        }[];
+      };
       get_document_ocr_status: {
         Args: { target_document_id: string };
         Returns: {
@@ -2180,6 +2211,7 @@ export type Database = {
           completed_at: string;
           language: string;
           question: string;
+          question_id: string;
           retryable: boolean;
           source_coverage: string;
           source_references: Json;

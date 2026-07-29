@@ -262,15 +262,35 @@ select is((select count(*) from public.claim_next_document_processing_job('synth
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000002';
-select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')), 1::bigint, 'an active member can read authorized extracted pages');
-select is((select count(*) from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')), 1::bigint, 'an active member can read authorized extracted chunks');
+select throws_ok(
+  $$select * from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'an active member cannot enumerate extracted pages directly'
+);
+select throws_ok(
+  $$select * from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'an active member cannot enumerate extracted chunks directly'
+);
 
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000003';
-select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')), 1::bigint, 'an active viewer inherits parent-document extraction access');
+select throws_ok(
+  $$select * from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'an active viewer cannot enumerate extracted pages directly'
+);
 
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000004';
-select is((select count(*) from public.document_pages where document_id = current_setting('app.document_processing_test_queue_id')::uuid), 0::bigint, 'an unrelated household cannot read extracted pages');
-select is((select count(*) from public.document_chunks where document_id = current_setting('app.document_processing_test_queue_id')::uuid), 0::bigint, 'an unrelated household cannot read extracted chunks');
+select throws_ok(
+  $$select * from public.document_pages where document_id = current_setting('app.document_processing_test_queue_id')::uuid$$,
+  '42501', null,
+  'an unrelated household cannot enumerate extracted pages'
+);
+select throws_ok(
+  $$select * from public.document_chunks where document_id = current_setting('app.document_processing_test_queue_id')::uuid$$,
+  '42501', null,
+  'an unrelated household cannot enumerate extracted chunks'
+);
 select is((select count(*) from public.get_document_processing_status(current_setting('app.document_processing_test_queue_id')::uuid)), 0::bigint, 'an unrelated household receives no processing status');
 
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000002';
@@ -395,8 +415,16 @@ where household_id = '92000000-0000-0000-0000-000000000001'
   and user_id = '91000000-0000-0000-0000-000000000002';
 set local role authenticated;
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000002';
-select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'a removed member immediately loses extracted-page access');
-select is((select count(*) from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'a removed member immediately loses extracted-chunk access');
+select throws_ok(
+  $$select * from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'a removed member cannot enumerate extracted pages'
+);
+select throws_ok(
+  $$select * from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'a removed member cannot enumerate extracted chunks'
+);
 select is((select count(*) from public.get_document_processing_status((select id from public.documents where title = 'Queue document'))), 0::bigint, 'a removed member immediately loses processing-status access');
 
 reset role;
@@ -428,8 +456,16 @@ select lives_ok(
 );
 
 set local request.jwt.claim.sub = '91000000-0000-0000-0000-000000000003';
-select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'archiving the parent immediately hides extracted pages');
-select is((select count(*) from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')), 0::bigint, 'archiving the parent immediately hides extracted chunks');
+select throws_ok(
+  $$select * from public.document_pages where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'archiving does not restore direct extracted-page access'
+);
+select throws_ok(
+  $$select * from public.document_chunks where document_id = (select id from public.documents where title = 'Queue document')$$,
+  '42501', null,
+  'archiving does not restore direct extracted-chunk access'
+);
 select is((select count(*) from public.get_document_processing_status((select id from public.documents where title = 'Queue document'))), 0::bigint, 'archiving the parent immediately hides processing status');
 
 select * from finish();
