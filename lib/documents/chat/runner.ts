@@ -52,7 +52,12 @@ type ClaimedDocumentChatMessage = {
 
 type DocumentChatWorkerAdminClient = ReturnType<typeof createSupabaseAdminClient>;
 
-export type DocumentChatBatchResult = { processed: number; completed: number; failed: number };
+export type DocumentChatBatchResult = {
+  processed: number;
+  completed: number;
+  failed: number;
+  failureCodes?: Partial<Record<DocumentChatFailureCode, number>>;
+};
 
 export type DocumentChatRunnerDependencies = {
   adminClient?: DocumentChatWorkerAdminClient;
@@ -183,7 +188,7 @@ async function processClaimedMessage({
   job: ClaimedDocumentChatMessage;
   provider: DocumentChatProvider;
   workerIdentity: string;
-}): Promise<"completed" | "failed"> {
+}): Promise<{ outcome: "completed" } | { outcome: "failed"; failureCode: DocumentChatFailureCode }> {
   let failureCode: DocumentChatFailureCode = "document_unavailable";
   try {
     const generated = await generateResponse({ admin, job, provider });
@@ -200,12 +205,12 @@ async function processClaimedMessage({
       completed_model_identifier: generated.result.modelIdentifier,
       completed_provider_call_count: generated.result.providerCallCount,
     });
-    if (!completed.error && completed.data) return "completed";
+    if (!completed.error && completed.data) return { outcome: "completed" };
   } catch (error) {
     failureCode = toFailureCode(error);
   }
   await markMessageFailed({ admin, job, workerIdentity, errorCode: failureCode });
-  return "failed";
+  return { outcome: "failed", failureCode };
 }
 
 /** Processes a small aggregate-only chat batch under ETH-017's worker secret. */
@@ -226,8 +231,12 @@ export async function runDocumentChatBatch(
     const outcome = await processClaimedMessage({ admin, job, provider, workerIdentity });
     revalidateDocumentChatPaths(job.document_id, job.conversation_id);
     result.processed += 1;
-    if (outcome === "completed") result.completed += 1;
-    else result.failed += 1;
+    if (outcome.outcome === "completed") result.completed += 1;
+    else {
+      result.failed += 1;
+      result.failureCodes ??= {};
+      result.failureCodes[outcome.failureCode] = (result.failureCodes[outcome.failureCode] ?? 0) + 1;
+    }
   }
   return result;
 }

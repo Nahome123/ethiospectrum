@@ -122,7 +122,7 @@ describe("document question runner", () => {
     const admin = createAdmin();
     await expect(
       runDocumentQuestionBatch(1, { adminClient: admin as never, provider: providerWith(["src_999"]) }),
-    ).resolves.toEqual({ processed: 1, completed: 0, failed: 1 });
+    ).resolves.toEqual({ processed: 1, completed: 0, failed: 1, failureCodes: { source_validation_failed: 1 } });
     expect(admin.rpc).toHaveBeenNthCalledWith(2, "fail_document_question_job", {
       target_question_id: job.question_id,
       expected_worker_identity: expect.any(String),

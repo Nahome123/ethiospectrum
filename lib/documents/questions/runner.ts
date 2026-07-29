@@ -56,7 +56,12 @@ type ClaimedDocumentQuestionJob = {
 
 type DocumentQuestionWorkerAdminClient = ReturnType<typeof createSupabaseAdminClient>;
 
-export type DocumentQuestionBatchResult = { processed: number; completed: number; failed: number };
+export type DocumentQuestionBatchResult = {
+  processed: number;
+  completed: number;
+  failed: number;
+  failureCodes?: Partial<Record<DocumentQuestionFailureCode, number>>;
+};
 
 export type DocumentQuestionRunnerDependencies = {
   adminClient?: DocumentQuestionWorkerAdminClient;
@@ -175,7 +180,7 @@ async function processClaimedJob({
   job: ClaimedDocumentQuestionJob;
   provider: DocumentQuestionProvider;
   workerIdentity: string;
-}): Promise<"completed" | "failed"> {
+}): Promise<{ outcome: "completed" } | { outcome: "failed"; failureCode: DocumentQuestionFailureCode }> {
   let failureCode: DocumentQuestionFailureCode = "document_unavailable";
   try {
     const generated = await answerQuestion({ admin, job, provider });
@@ -191,12 +196,12 @@ async function processClaimedJob({
       completed_model_identifier: generated.result.modelIdentifier,
       completed_provider_call_count: generated.result.providerCallCount,
     });
-    if (!completed.error && completed.data) return "completed";
+    if (!completed.error && completed.data) return { outcome: "completed" };
   } catch (error) {
     failureCode = toFailureCode(error);
   }
   await markJobFailed({ admin, job, workerIdentity, errorCode: failureCode });
-  return "failed";
+  return { outcome: "failed", failureCode };
 }
 
 /** Processes a small aggregate-only batch; document text never leaves this server boundary. */
@@ -218,8 +223,12 @@ export async function runDocumentQuestionBatch(
     const outcome = await processClaimedJob({ admin, job, provider, workerIdentity });
     revalidateDocumentQuestionPaths(job.document_id);
     result.processed += 1;
-    if (outcome === "completed") result.completed += 1;
-    if (outcome === "failed") result.failed += 1;
+    if (outcome.outcome === "completed") result.completed += 1;
+    if (outcome.outcome === "failed") {
+      result.failed += 1;
+      result.failureCodes ??= {};
+      result.failureCodes[outcome.failureCode] = (result.failureCodes[outcome.failureCode] ?? 0) + 1;
+    }
   }
   return result;
 }
