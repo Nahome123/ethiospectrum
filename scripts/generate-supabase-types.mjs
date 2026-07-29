@@ -19,7 +19,10 @@ if (result.status !== 0) {
   process.exit(result.status ?? 1);
 }
 
-const types = result.stdout.replace(/^Connecting to db \d+\r?\n/, "");
+// Supabase CLI 2.109+ may prepend more than one informational line on Windows.
+// Preserve only the schema contract rather than relying on one exact banner.
+const typeContractStart = result.stdout.indexOf("export type Json");
+const types = typeContractStart === -1 ? "" : result.stdout.slice(typeContractStart);
 if (!types.startsWith("export type Json")) {
   throw new Error("Supabase type generation did not produce a TypeScript schema contract.");
 }

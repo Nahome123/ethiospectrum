@@ -23,6 +23,7 @@ import {
   canQueueDocumentProcessing,
   canQueueDocumentSummary,
   getDocumentDependentName,
+  getDocumentChatEligibility,
   getDocumentOcrDetails,
   getDocumentProcessingDetails,
   getDocumentQuestionDetails,
@@ -55,7 +56,10 @@ export default async function DocumentDetailPage({
     : localeLanguage.success
       ? localeLanguage.data
       : "en";
-  const t = await getTranslations("documents");
+  const [t, chatT] = await Promise.all([
+    getTranslations("documents"),
+    getTranslations({ locale, namespace: "chat" }),
+  ]);
   if (!documentIdSchema.safeParse(documentId).success) return <p>{t("notFound")}</p>;
 
   const record = await getVisibleDocument(documentId);
@@ -72,6 +76,7 @@ export default async function DocumentDetailPage({
     summaryDetails,
     summaryQualityDetails,
     questionDetails,
+    chatEligibility,
   ] = await Promise.all([
     getDocumentDependentName(document.dependent_id, context.household.id),
     isUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
@@ -84,6 +89,9 @@ export default async function DocumentDetailPage({
       ? getDocumentSummaryQualityDetails(document.id, summaryLanguage, context.userId)
       : Promise.resolve({ evaluation: null, reviewStatus: "unreviewed" as const, reviews: [] }),
     isUploaded ? getDocumentQuestionDetails(document.id) : Promise.resolve([]),
+    isUploaded
+      ? getDocumentChatEligibility(document)
+      : Promise.resolve({ available: false, reason: "unavailable" as const }),
   ]);
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
@@ -219,6 +227,14 @@ export default async function DocumentDetailPage({
           >
             {t("download")}
           </a>
+        ) : null}
+        {chatEligibility.available ? (
+          <Link
+            className="rounded-4xl border bg-card px-4 py-2 font-semibold text-foreground"
+            href={`/documents/${document.id}/chat`}
+          >
+            {chatT("chatWithDocument")}
+          </Link>
         ) : null}
         {canQueueProcessing ? (
           <ProcessDocumentButton documentId={document.id} locale={locale} retry={retryProcessing} />

@@ -485,6 +485,76 @@ test.describe("documents workflow (local Supabase only)", () => {
     await page.goto(`/es/documents/${firstDocumentId}`);
     await expect(page.locator("#document-summary-title")).toBeVisible();
 
+    await page.goto(`/en/documents/${firstDocumentId}`);
+    await page.getByRole("link", { name: "Chat with document" }).click();
+    await expect(page.getByRole("heading", { level: 1, name: "Document chat" })).toBeVisible();
+    await page.getByLabel("Conversation language").selectOption("en");
+    await page.getByLabel("Ask about this document").fill("What does this synthetic document say?");
+    await page.getByRole("button", { name: "Start conversation" }).click();
+    await page.waitForURL(/\/en\/documents\/[0-9a-f-]{36}\/chat\/[0-9a-f-]{36}$/);
+    const chatConversationId = new URL(page.url()).pathname.split("/").at(-1);
+    expect(chatConversationId).toMatch(/^[0-9a-f-]{36}$/);
+    await expect(page.getByText("Generating response", { exact: true })).toBeVisible();
+    const chatClaim = await admin.rpc("claim_next_document_chat_message", {
+      worker_identity: `synthetic-chat-worker-${suffix}-one`,
+    });
+    if (chatClaim.error || !chatClaim.data?.[0])
+      throw new Error("The synthetic chat response was not claimed.");
+    const completedChat = await admin.rpc("complete_document_chat_message", {
+      target_message_id: chatClaim.data[0].message_id,
+      expected_worker_identity: `synthetic-chat-worker-${suffix}-one`,
+      completed_content: "The synthetic document contains synthetic local content.",
+      completed_result_type: "grounded_answer",
+      completed_citations: [
+        {
+          reference_id: "source-1",
+          page_id: sourcePage.id,
+          page_number: sourcePage.page_number,
+          chunk_id: sourceChunk.id,
+          chunk_index: sourceChunk.chunk_index,
+        },
+      ],
+      completed_source_coverage: "full",
+      completed_source_item_count: 1,
+      completed_source_character_count: sourceChunk.content.length,
+      completed_provider: "synthetic-provider",
+      completed_model_identifier: "synthetic-chat-model",
+      completed_provider_call_count: 1,
+    });
+    if (completedChat.error || !completedChat.data)
+      throw new Error("The synthetic chat completion was not recorded.");
+    await page.reload();
+    await expect(page.getByText("The synthetic document contains synthetic local content.")).toBeVisible();
+    await expect(page.getByText("Source 1 · Page 1", { exact: true })).toBeVisible();
+    await expect(page.getByText(sourceChunk.content, { exact: true })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /Source 1/u })).toHaveCount(0);
+    await page.getByLabel("Ask about this document").fill("What is the follow-up?");
+    await page.getByRole("button", { name: "Send message" }).press("Enter");
+    await expect(
+      page.getByText("A response is being prepared. Send another message after it is complete."),
+    ).toBeVisible();
+    const followUpClaim = await admin.rpc("claim_next_document_chat_message", {
+      worker_identity: `synthetic-chat-worker-${suffix}-two`,
+    });
+    if (followUpClaim.error || !followUpClaim.data?.[0])
+      throw new Error("The synthetic follow-up was not claimed.");
+    const failedChat = await admin.rpc("fail_document_chat_message", {
+      target_message_id: followUpClaim.data[0].message_id,
+      expected_worker_identity: `synthetic-chat-worker-${suffix}-two`,
+      safe_error_code: "provider_timeout",
+    });
+    if (failedChat.error || !failedChat.data) throw new Error("The synthetic chat failure was not recorded.");
+    await page.reload();
+    await expect(page.getByRole("button", { name: "Retry response" })).toBeVisible();
+    await page.getByRole("button", { name: "Retry response" }).press("Enter");
+    await expect(
+      page.getByText("A response is being prepared. Send another message after it is complete."),
+    ).toBeVisible();
+    await page.goto(`/am/documents/${firstDocumentId}/chat/${chatConversationId}`);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.goto(`/es/documents/${firstDocumentId}/chat/${chatConversationId}`);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
     const scannedTitle = `Synthetic scanned PDF ${suffix}`;
     await uploadSyntheticDocument({
       title: scannedTitle,
@@ -620,6 +690,15 @@ test.describe("documents workflow (local Supabase only)", () => {
     await expect(
       viewerPage.getByText("The synthetic document contains synthetic local content."),
     ).toBeVisible();
+    await viewerPage.goto(`/en/documents/${firstDocumentId}/chat`);
+    await expect(viewerPage.getByRole("heading", { level: 1, name: "Document chat" })).toBeVisible();
+    await expect(viewerPage.getByRole("button", { name: "Start conversation" })).toHaveCount(0);
+    await viewerPage.getByRole("link", { name: "What does this synthetic document say?" }).click();
+    await expect(
+      viewerPage.getByText("You can read this household conversation, but cannot send messages."),
+    ).toBeVisible();
+    await expect(viewerPage.getByRole("button", { name: "Send message" })).toHaveCount(0);
+    await expect(viewerPage.getByRole("button", { name: "Retry response" })).toHaveCount(0);
     await viewerPage.goto(`/en/documents/${scannedDocumentId}`);
     await expect(viewerPage.getByRole("button", { name: "Run OCR" })).toHaveCount(0);
     await expect(viewerPage.getByRole("button", { name: "Retry OCR" })).toHaveCount(0);

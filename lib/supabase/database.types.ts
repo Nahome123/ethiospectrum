@@ -368,6 +368,205 @@ export type Database = {
           },
         ];
       };
+      document_chat_conversations: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          creation_idempotency_key: string;
+          document_id: string;
+          household_id: string;
+          id: string;
+          language: string;
+          last_message_at: string | null;
+          status: string;
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          creation_idempotency_key: string;
+          document_id: string;
+          household_id: string;
+          id?: string;
+          language: string;
+          last_message_at?: string | null;
+          status?: string;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          creation_idempotency_key?: string;
+          document_id?: string;
+          household_id?: string;
+          id?: string;
+          language?: string;
+          last_message_at?: string | null;
+          status?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_chat_conversations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_chat_conversations_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_chat_conversations_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      document_chat_messages: {
+        Row: {
+          attempt_count: number;
+          available_at: string;
+          citations: Json;
+          completed_at: string | null;
+          content: string | null;
+          conversation_id: string;
+          created_at: string;
+          created_by: string | null;
+          document_id: string;
+          error_code: string | null;
+          failed_at: string | null;
+          household_id: string;
+          id: string;
+          idempotency_key: string | null;
+          in_reply_to_message_id: string | null;
+          locked_at: string | null;
+          locked_by: string | null;
+          max_attempts: number;
+          model_identifier: string | null;
+          provider: string | null;
+          provider_call_count: number;
+          result_type: string | null;
+          role: string;
+          sequence_number: number;
+          source_character_count: number;
+          source_coverage: string;
+          source_item_count: number;
+          started_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          attempt_count?: number;
+          available_at?: string;
+          citations?: Json;
+          completed_at?: string | null;
+          content?: string | null;
+          conversation_id: string;
+          created_at?: string;
+          created_by?: string | null;
+          document_id: string;
+          error_code?: string | null;
+          failed_at?: string | null;
+          household_id: string;
+          id?: string;
+          idempotency_key?: string | null;
+          in_reply_to_message_id?: string | null;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          provider?: string | null;
+          provider_call_count?: number;
+          result_type?: string | null;
+          role: string;
+          sequence_number: number;
+          source_character_count?: number;
+          source_coverage?: string;
+          source_item_count?: number;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          attempt_count?: number;
+          available_at?: string;
+          citations?: Json;
+          completed_at?: string | null;
+          content?: string | null;
+          conversation_id?: string;
+          created_at?: string;
+          created_by?: string | null;
+          document_id?: string;
+          error_code?: string | null;
+          failed_at?: string | null;
+          household_id?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          in_reply_to_message_id?: string | null;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          max_attempts?: number;
+          model_identifier?: string | null;
+          provider?: string | null;
+          provider_call_count?: number;
+          result_type?: string | null;
+          role?: string;
+          sequence_number?: number;
+          source_character_count?: number;
+          source_coverage?: string;
+          source_item_count?: number;
+          started_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_chat_messages_conversation_id_fkey";
+            columns: ["conversation_id"];
+            isOneToOne: false;
+            referencedRelation: "document_chat_conversations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_chat_messages_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_chat_messages_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_chat_messages_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_chat_messages_in_reply_to_message_id_fkey";
+            columns: ["in_reply_to_message_id"];
+            isOneToOne: false;
+            referencedRelation: "document_chat_messages";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       document_chunks: {
         Row: {
           character_count: number;
@@ -1701,6 +1900,18 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
+      claim_next_document_chat_message: {
+        Args: { worker_identity: string };
+        Returns: {
+          attempt_count: number;
+          conversation_id: string;
+          document_id: string;
+          household_id: string;
+          language: string;
+          max_attempts: number;
+          message_id: string;
+        }[];
+      };
       claim_next_document_ocr_job: {
         Args: { worker_identity: string };
         Returns: {
@@ -1758,6 +1969,22 @@ export type Database = {
           summary_id: string;
         }[];
       };
+      complete_document_chat_message: {
+        Args: {
+          completed_citations: Json;
+          completed_content: string;
+          completed_model_identifier: string;
+          completed_provider: string;
+          completed_provider_call_count: number;
+          completed_result_type: string;
+          completed_source_character_count: number;
+          completed_source_coverage: string;
+          completed_source_item_count: number;
+          expected_worker_identity: string;
+          target_message_id: string;
+        };
+        Returns: boolean;
+      };
       complete_document_ocr_job: {
         Args: {
           chunk_rows: Json;
@@ -1814,9 +2041,30 @@ export type Database = {
         Args: { raw_name: string; raw_policy_version: string };
         Returns: string;
       };
+      create_document_chat_conversation: {
+        Args: {
+          initial_message_content: string;
+          requested_idempotency_key: string;
+          requested_language: string;
+          target_document_id: string;
+        };
+        Returns: {
+          already_exists: boolean;
+          assistant_message_id: string;
+          conversation_id: string;
+        }[];
+      };
       create_household: { Args: { raw_name: string }; Returns: string };
       evaluate_document_summary: {
         Args: { requested_language: string; target_document_id: string };
+        Returns: boolean;
+      };
+      fail_document_chat_message: {
+        Args: {
+          expected_worker_identity: string;
+          safe_error_code: string;
+          target_message_id: string;
+        };
         Returns: boolean;
       };
       fail_document_ocr_job: {
@@ -1850,6 +2098,37 @@ export type Database = {
           target_summary_id: string;
         };
         Returns: boolean;
+      };
+      get_document_chat_conversation: {
+        Args: { target_conversation_id: string; target_document_id: string };
+        Returns: {
+          citations: Json;
+          completed_at: string;
+          content: string;
+          conversation_id: string;
+          created_at: string;
+          language: string;
+          message_id: string;
+          result_type: string;
+          retryable: boolean;
+          role: string;
+          source_coverage: string;
+          status: string;
+          title: string;
+        }[];
+      };
+      get_document_chat_conversations: {
+        Args: { target_document_id: string };
+        Returns: {
+          conversation_id: string;
+          created_at: string;
+          has_failed_response: boolean;
+          has_pending_response: boolean;
+          language: string;
+          last_message_at: string;
+          message_count: number;
+          title: string;
+        }[];
       };
       get_document_ocr_status: {
         Args: { target_document_id: string };
@@ -1968,6 +2247,26 @@ export type Database = {
           reused_completed: boolean;
           summary_id: string;
           summary_status: string;
+        }[];
+      };
+      retry_document_chat_response: {
+        Args: {
+          target_conversation_id: string;
+          target_document_id: string;
+          target_message_id: string;
+        };
+        Returns: boolean;
+      };
+      send_document_chat_message: {
+        Args: {
+          requested_idempotency_key: string;
+          requested_message_content: string;
+          target_conversation_id: string;
+          target_document_id: string;
+        };
+        Returns: {
+          already_exists: boolean;
+          assistant_message_id: string;
         }[];
       };
       upsert_document_summary_review: {
