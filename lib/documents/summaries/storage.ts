@@ -36,6 +36,21 @@ export const documentSummaryStoredSourceReferenceSchema = z
 
 export type DocumentSummaryStoredSourceReference = z.infer<typeof documentSummaryStoredSourceReferenceSchema>;
 
+const documentSummaryCitationLocationSchema = z
+  .object({
+    section: sourceReferenceSectionSchema,
+    item_index: z.number().int().nonnegative(),
+  })
+  .passthrough();
+
+/** Safely preserves statement placement for malformed legacy citations. */
+export function parseDocumentSummaryCitationLocation(
+  value: unknown,
+): Pick<DocumentSummaryStoredSourceReference, "section" | "item_index"> | null {
+  const parsed = documentSummaryCitationLocationSchema.safeParse(value);
+  return parsed.success ? parsed.data : null;
+}
+
 /** Converts neutral provider output into the stable, provider-independent database contract. */
 export function toStoredDocumentSummary(summary: DocumentSummaryOutput): Json {
   return {

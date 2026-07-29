@@ -7,8 +7,8 @@ import type { DocumentSummaryLanguage, DocumentSummaryStatus } from "./summaries
 import { documentSummaryLanguageSchema } from "./summaries/schemas";
 import {
   type DocumentSummaryStoredSourceReference,
+  parseDocumentSummaryCitationLocation,
   parseStoredDocumentSummary,
-  parseStoredDocumentSummarySourceReferences,
 } from "./summaries/storage";
 import type { DocumentSummaryOutput } from "./summaries/types";
 import {
@@ -19,7 +19,6 @@ import {
 } from "./summary-quality-schemas";
 import type { DocumentQuestionLanguage, DocumentQuestionStatus } from "./questions/constants";
 import { documentQuestionLanguageSchema } from "./questions/schemas";
-import { parseStoredDocumentQuestionSourceReferences } from "./questions/storage";
 import {
   type DocumentChatLanguage,
   type DocumentChatMessageRole,
@@ -27,7 +26,9 @@ import {
   type DocumentChatResultType,
 } from "./chat/constants";
 import { documentChatLanguageSchema } from "./chat/schemas";
-import { parseStoredDocumentChatCitations } from "./chat/storage";
+import { normalizeDocumentCitation } from "./citations/normalization";
+import { isRenderableStoredCitation, parseStoredCitationArray } from "./citations/schemas";
+import type { DocumentCitation } from "./citations/types";
 import {
   createServerComponentSupabaseClient,
   getCurrentHousehold,
@@ -58,6 +59,7 @@ export type DocumentProcessingDetails = {
 };
 
 export type DocumentSummaryDetails = {
+  id: string;
   status: DocumentSummaryStatus;
   language: DocumentSummaryLanguage;
   retryable: boolean;
@@ -67,10 +69,10 @@ export type DocumentSummaryDetails = {
   failedAt: string | null;
   sourceCoverage: "full" | "partial";
   structuredSummary: DocumentSummaryOutput | null;
-  sourceReferences: readonly Pick<
-    DocumentSummaryStoredSourceReference,
-    "section" | "item_index" | "page_number" | "chunk_index" | "excerpt"
-  >[];
+  sourceReferences: readonly (DocumentCitation & {
+    section: DocumentSummaryStoredSourceReference["section"] | null;
+    itemIndex: number | null;
+  })[];
 };
 
 export type DocumentSummaryEligibility = {
@@ -114,6 +116,7 @@ export type DocumentSummaryQualityDetails = {
 };
 
 export type DocumentQuestionDetails = {
+  id: string;
   question: string;
   language: DocumentQuestionLanguage;
   status: DocumentQuestionStatus;
@@ -121,11 +124,7 @@ export type DocumentQuestionDetails = {
   completedAt: string | null;
   sourceCoverage: "full" | "partial";
   answer: string | null;
-  sourceReferences: readonly {
-    page_number: number;
-    chunk_index: number | null;
-    excerpt: string;
-  }[];
+  sourceReferences: readonly DocumentCitation[];
 };
 
 export type DocumentChatEligibility = {
@@ -154,7 +153,7 @@ export type DocumentChatConversationDetails = {
     status: DocumentChatMessageStatus;
     content: string | null;
     resultType: DocumentChatResultType | null;
-    citations: readonly { pageNumber: number; chunkIndex: number | null }[];
+    citations: readonly DocumentCitation[];
     createdAt: string;
     completedAt: string | null;
     retryable: boolean;
@@ -252,10 +251,16 @@ export function canQueueDocumentSummary(
   );
 }
 
-/**
- * Eligibility is determined from trusted document state and an RLS-protected
- * existence query. It deliberately never loads extracted text into the page.
- */
+/** Reads a single derived availability flag without exposing extraction rows. */
+export async function hasAccessibleDocumentExtraction(documentId: string): Promise<boolean> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_document_extraction_availability", {
+    target_document_id: documentId,
+  });
+  return !error && data?.[0]?.has_sources === true;
+}
+
+/** Eligibility is determined from trusted document state and a narrow safe RPC. */
 export async function getDocumentSummaryEligibility(
   context: DocumentContext,
   document: Pick<DocumentRow, "deleted_at" | "id" | "processing_status" | "upload_status">,
@@ -269,18 +274,7 @@ export async function getDocumentSummaryEligibility(
     return { canRequest: false, reason: "processing" };
   }
 
-  const supabase = await createServerComponentSupabaseClient();
-  const [pages, chunks] = await Promise.all([
-    supabase
-      .from("document_pages")
-      .select("id", { count: "exact", head: true })
-      .eq("document_id", document.id),
-    supabase
-      .from("document_chunks")
-      .select("id", { count: "exact", head: true })
-      .eq("document_id", document.id),
-  ]);
-  if (pages.error || chunks.error || (pages.count ?? 0) + (chunks.count ?? 0) === 0) {
+  if (!(await hasAccessibleDocumentExtraction(document.id))) {
     return { canRequest: false, reason: "unavailable" };
   }
   return { canRequest: context.canProcess, reason: context.canProcess ? null : "unavailable" };
@@ -298,12 +292,8 @@ export async function getDocumentChatEligibility(
   ) {
     return { available: false, reason: "processing" };
   }
-  const supabase = await createServerComponentSupabaseClient();
-  const chunks = await supabase
-    .from("document_chunks")
-    .select("id", { count: "exact", head: true })
-    .eq("document_id", document.id);
-  if (chunks.error || (chunks.count ?? 0) === 0) return { available: false, reason: "unavailable" };
+  if (!(await hasAccessibleDocumentExtraction(document.id)))
+    return { available: false, reason: "unavailable" };
   return { available: true, reason: null };
 }
 
@@ -402,6 +392,7 @@ export async function getDocumentOcrDetails(documentId: string): Promise<Documen
 export async function getDocumentSummaryDetails(
   documentId: string,
   language: DocumentSummaryLanguage,
+  mimeType: string,
 ): Promise<DocumentSummaryDetails | null> {
   const validLanguage = documentSummaryLanguageSchema.safeParse(language);
   if (!validLanguage.success) return null;
@@ -410,7 +401,7 @@ export async function getDocumentSummaryDetails(
   const { data, error } = await supabase
     .from("document_summaries")
     .select(
-      "language, status, requested_at, started_at, completed_at, failed_at, attempt_count, max_attempts, source_coverage, structured_summary, source_references",
+      "id, language, status, requested_at, started_at, completed_at, failed_at, attempt_count, max_attempts, source_coverage, structured_summary, source_references",
     )
     .eq("document_id", documentId)
     .eq("language", validLanguage.data)
@@ -420,10 +411,12 @@ export async function getDocumentSummaryDetails(
   const status = ["queued", "generating", "completed", "failed"].find((item) => item === data.status);
   const sourceCoverage =
     data.source_coverage === "partial" ? "partial" : data.source_coverage === "full" ? "full" : null;
-  const sourceReferences = parseStoredDocumentSummarySourceReferences(data.source_references);
-  if (!status || !sourceCoverage || !sourceReferences) return null;
+  if (!status || !sourceCoverage) return null;
+  const sourceReferences =
+    status === "completed" ? parseStoredCitationArray(data.source_references) : ([] as readonly unknown[]);
 
   return {
+    id: data.id,
     status: status as DocumentSummaryStatus,
     language: validLanguage.data,
     retryable: data.status === "failed" && data.attempt_count < data.max_attempts,
@@ -434,13 +427,26 @@ export async function getDocumentSummaryDetails(
     sourceCoverage,
     structuredSummary:
       data.status === "completed" ? parseStoredDocumentSummary(data.structured_summary) : null,
-    sourceReferences: sourceReferences.map((reference) => ({
-      section: reference.section,
-      item_index: reference.item_index,
-      page_number: reference.page_number,
-      chunk_index: reference.chunk_index,
-      excerpt: reference.excerpt,
-    })),
+    sourceReferences: sourceReferences.flatMap((reference, citationIndex) => {
+      if (!isRenderableStoredCitation(reference)) return [];
+      const location = parseDocumentSummaryCitationLocation(reference);
+      return [
+        {
+          ...normalizeDocumentCitation({
+            documentId,
+            ownerId: data.id,
+            ownerType: "document_summary",
+            citationIndex,
+            sourceNumber: citationIndex + 1,
+            storedCitation: reference,
+            mimeType,
+            isPartialDocument: sourceCoverage === "partial",
+          }),
+          section: location?.section ?? null,
+          itemIndex: location?.item_index ?? null,
+        },
+      ];
+    }),
   };
 }
 
@@ -582,6 +588,7 @@ export async function getDocumentSummaryQualityDetails(
  */
 export async function getDocumentQuestionDetails(
   documentId: string,
+  mimeType: string,
 ): Promise<readonly DocumentQuestionDetails[]> {
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase.rpc("get_document_questions", { target_document_id: documentId });
@@ -597,11 +604,11 @@ export async function getDocumentQuestionDetails(
           ? "full"
           : null;
     if (!language.success || !status || !sourceCoverage) return [];
-    const references =
-      status === "completed" ? parseStoredDocumentQuestionSourceReferences(question.source_references) : [];
-    if (status === "completed" && (!question.answer_text || !references)) return [];
+    const references = status === "completed" ? parseStoredCitationArray(question.source_references) : [];
+    if (status === "completed" && !question.answer_text) return [];
     return [
       {
+        id: question.question_id,
         question: question.question,
         language: language.data,
         status: status as DocumentQuestionStatus,
@@ -609,12 +616,22 @@ export async function getDocumentQuestionDetails(
         completedAt: question.completed_at,
         sourceCoverage,
         answer: status === "completed" ? question.answer_text : null,
-        sourceReferences:
-          references?.map((reference) => ({
-            page_number: reference.page_number,
-            chunk_index: reference.chunk_index,
-            excerpt: reference.excerpt,
-          })) ?? [],
+        sourceReferences: references.flatMap((reference, citationIndex) =>
+          isRenderableStoredCitation(reference)
+            ? [
+                normalizeDocumentCitation({
+                  documentId,
+                  ownerId: question.question_id,
+                  ownerType: "document_qa_answer",
+                  citationIndex,
+                  sourceNumber: citationIndex + 1,
+                  storedCitation: reference,
+                  mimeType,
+                  isPartialDocument: sourceCoverage === "partial",
+                }),
+              ]
+            : [],
+        ),
       },
     ];
   });
@@ -660,6 +677,7 @@ export async function getDocumentChatConversations(
 export async function getDocumentChatConversationDetails(
   documentId: string,
   conversationId: string,
+  mimeType: string,
 ): Promise<DocumentChatConversationDetails | null> {
   if (!documentIdSchema.safeParse(conversationId).success) return null;
   const supabase = await createServerComponentSupabaseClient();
@@ -680,15 +698,14 @@ export async function getDocumentChatConversationDetails(
       ["grounded_answer", "insufficient_evidence", "outside_document", "partial_coverage"] as const
     ).find((value) => value === message.result_type);
     const sourceCoverage = (["full", "partial"] as const).find((value) => value === message.source_coverage);
-    const citations =
-      message.status === "completed" ? parseStoredDocumentChatCitations(message.citations) : [];
+    const citations = message.status === "completed" ? parseStoredCitationArray(message.citations) : [];
     if (
       !role ||
       !status ||
       !sourceCoverage ||
       !message.message_id ||
       !message.created_at ||
-      (status === "completed" && (!message.content?.trim() || citations === null)) ||
+      (status === "completed" && !message.content?.trim()) ||
       (role === "assistant" && status === "completed" && !resultType)
     ) {
       return [];
@@ -700,11 +717,22 @@ export async function getDocumentChatConversationDetails(
         status: status as DocumentChatMessageStatus,
         content: status === "completed" ? (message.content ?? null) : null,
         resultType: status === "completed" ? (resultType as DocumentChatResultType | null) : null,
-        citations:
-          citations?.map((citation) => ({
-            pageNumber: citation.page_number,
-            chunkIndex: citation.chunk_index,
-          })) ?? [],
+        citations: citations.flatMap((citation, citationIndex) =>
+          isRenderableStoredCitation(citation)
+            ? [
+                normalizeDocumentCitation({
+                  documentId,
+                  ownerId: message.message_id,
+                  ownerType: "document_chat_message",
+                  citationIndex,
+                  sourceNumber: citationIndex + 1,
+                  storedCitation: citation,
+                  mimeType,
+                  isPartialDocument: sourceCoverage === "partial",
+                }),
+              ]
+            : [],
+        ),
         createdAt: message.created_at,
         completedAt: message.completed_at ?? null,
         retryable: message.retryable === true,

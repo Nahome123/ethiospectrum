@@ -13,11 +13,11 @@ describe("document summary UI boundaries", () => {
 
     expect(panel.trimStart().startsWith('"use client"')).toBe(false);
     expect(panel).toContain("DocumentSummaryStatusBadge");
-    expect(panel).toContain("SourceReferences");
-    expect(panel).toContain("StatementSourceLinks");
+    expect(panel).toContain("CitationList");
+    expect(panel).toContain("StatementCitations");
+    expect(panel).not.toContain("<details");
+    expect(panel).not.toContain("reference.excerpt");
     expect(panel).toContain('t("summaryTranslationVerification")');
-    expect(panel).toContain('method="get"');
-    expect(panel).toContain('name="summaryLanguage"');
     expect(requestForm.trimStart().startsWith('"use client";')).toBe(true);
     expect(requestForm).toContain('from "@/lib/documents/summary-actions"');
     expect(requestForm).toContain('from "@/lib/documents/summary-action-state"');
@@ -62,6 +62,12 @@ describe("document summary UI boundaries", () => {
       "partialDocumentSummary",
       "summaryMayContainErrors",
       "summaryTranslationVerification",
+      "viewSource",
+      "citations",
+      "sourceEvidence",
+      "sourceUnavailable",
+      "openOriginalPage",
+      "onlyProcessedContent",
     ];
 
     for (const key of requiredKeys) {

@@ -185,7 +185,11 @@ reset role;
 
 set local role authenticated;
 set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000006';
-select is((select count(*) from public.document_pages where document_id = (select id from public.documents where title = 'OCR document')), 0::bigint, 'OCR output remains household scoped');
+select throws_ok(
+  $$select * from public.document_pages where document_id = (select id from public.documents where title = 'OCR document')$$,
+  '42501', null,
+  'browser roles cannot enumerate OCR source pages'
+);
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = 'a1000000-0000-0000-0000-000000000001';

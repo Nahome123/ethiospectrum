@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
+import { CitationList } from "@/components/documents/citation-list";
 import { DocumentQuestionStatusBadge } from "@/components/documents/document-question-status-badge";
 import type { AppLocale } from "@/i18n/routing";
+import type { DocumentCitation } from "@/lib/documents/citations/types";
 import type { DocumentQuestionLanguage, DocumentQuestionStatus } from "@/lib/documents/questions/constants";
 
 export type DocumentQuestionPanelDetails = {
@@ -12,11 +14,7 @@ export type DocumentQuestionPanelDetails = {
   completedAt: string | null;
   sourceCoverage: "full" | "partial";
   answer: string | null;
-  sourceReferences: readonly {
-    page_number: number;
-    chunk_index: number | null;
-    excerpt: string;
-  }[];
+  sourceReferences: readonly DocumentCitation[];
 };
 
 export type DocumentQuestionAvailability =
@@ -34,8 +32,9 @@ function languageLabel(
 function formatTimestamp(value: string | null, locale: AppLocale): string | null {
   if (!value) return null;
   const date = new Date(value);
-  if (Number.isNaN(date.valueOf())) return null;
-  return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(date);
+  return Number.isNaN(date.valueOf())
+    ? null
+    : new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(date);
 }
 
 function availabilityMessage(
@@ -48,21 +47,19 @@ function availabilityMessage(
   return null;
 }
 
-/** Renders protected question answers and excerpts on the server only. */
+/** Renders answers without excerpts; the evidence sheet resolves source text only on demand. */
 export async function DocumentQuestionPanel({
   locale,
   availability,
   canRequest,
   details,
   requestControl,
-  sourceLocation,
 }: {
   locale: AppLocale;
   availability: DocumentQuestionAvailability;
   canRequest: boolean;
   details: readonly DocumentQuestionPanelDetails[];
   requestControl?: ReactNode;
-  sourceLocation: "page" | "section";
 }) {
   const t = await getTranslations("documents");
   const eligibilityMessage = availabilityMessage(availability, t);
@@ -97,7 +94,7 @@ export async function DocumentQuestionPanel({
                     <h3 className="break-words font-semibold">{detail.question}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {t("answerLanguage")}: {languageLabel(detail.language, t)}
-                      {completedAt ? ` · ${t("generated")}: ${completedAt}` : ""}
+                      {completedAt ? ` • ${t("generated")}: ${completedAt}` : ""}
                     </p>
                   </div>
                   <DocumentQuestionStatusBadge status={detail.status} />
@@ -126,31 +123,17 @@ export async function DocumentQuestionPanel({
                       </p>
                     ) : null}
                     <p className="mt-4 break-words whitespace-pre-wrap">{detail.answer}</p>
-                    <section
-                      className="mt-4"
-                      aria-labelledby={`document-question-sources-${questionIndex + 1}`}
-                    >
-                      <h4 className="font-semibold" id={`document-question-sources-${questionIndex + 1}`}>
-                        {t("sources")}
-                      </h4>
-                      <ol className="mt-2 space-y-2">
-                        {detail.sourceReferences.map((reference, index) => (
-                          <li key={`${questionIndex + 1}-${index + 1}`}>
-                            <details className="rounded-lg border px-3 py-2">
-                              <summary className="cursor-pointer break-words font-semibold">
-                                {t("source")} {index + 1}: {t(sourceLocation)} {reference.page_number}
-                                {reference.chunk_index === null
-                                  ? null
-                                  : ` · ${t("chunk")} ${reference.chunk_index + 1}`}
-                              </summary>
-                              <p className="mt-2 break-words whitespace-pre-wrap text-sm text-muted-foreground">
-                                {reference.excerpt}
-                              </p>
-                            </details>
-                          </li>
-                        ))}
-                      </ol>
-                    </section>
+                    {detail.sourceReferences.length ? (
+                      <section
+                        className="mt-4"
+                        aria-labelledby={`document-question-sources-${questionIndex + 1}`}
+                      >
+                        <h4 className="font-semibold" id={`document-question-sources-${questionIndex + 1}`}>
+                          {t("citations")}
+                        </h4>
+                        <CitationList citations={detail.sourceReferences} locale={locale} />
+                      </section>
+                    ) : null}
                   </div>
                 ) : null}
               </li>

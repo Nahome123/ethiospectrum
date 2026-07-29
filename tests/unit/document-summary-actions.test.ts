@@ -58,16 +58,12 @@ function createEligibleClient({
       })),
     })),
   };
-  const contentQuery = {
-    select: vi.fn(() => ({ eq: vi.fn().mockResolvedValue({ count: 1, error: null }) })),
-  };
-  const rpc = vi.fn().mockResolvedValue(rpcResult);
+  const rpc = vi
+    .fn()
+    .mockResolvedValueOnce({ data: [{ has_sources: true }], error: null })
+    .mockResolvedValue(rpcResult);
   return {
-    from: vi
-      .fn()
-      .mockReturnValueOnce(documentQuery)
-      .mockReturnValueOnce(contentQuery)
-      .mockReturnValueOnce(contentQuery),
+    from: vi.fn().mockReturnValue(documentQuery),
     rpc,
   };
 }
@@ -118,6 +114,9 @@ describe("document summary request action", () => {
     expect(client.rpc).toHaveBeenCalledWith("request_document_summary", {
       target_document_id: documentId,
       requested_language: "es",
+    });
+    expect(client.rpc).toHaveBeenCalledWith("get_document_extraction_availability", {
+      target_document_id: documentId,
     });
     expect(mocks.revalidatePath).toHaveBeenCalledWith(`/es/documents/${documentId}`);
   });

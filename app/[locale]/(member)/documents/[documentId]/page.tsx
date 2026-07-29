@@ -84,11 +84,13 @@ export default async function DocumentDetailPage({
     isUploaded
       ? getDocumentSummaryEligibility(context, document)
       : Promise.resolve({ canRequest: false, reason: "unavailable" as const }),
-    isUploaded ? getDocumentSummaryDetails(document.id, summaryLanguage) : Promise.resolve(null),
+    isUploaded
+      ? getDocumentSummaryDetails(document.id, summaryLanguage, document.mime_type)
+      : Promise.resolve(null),
     isUploaded
       ? getDocumentSummaryQualityDetails(document.id, summaryLanguage, context.userId)
       : Promise.resolve({ evaluation: null, reviewStatus: "unreviewed" as const, reviews: [] }),
-    isUploaded ? getDocumentQuestionDetails(document.id) : Promise.resolve([]),
+    isUploaded ? getDocumentQuestionDetails(document.id, document.mime_type) : Promise.resolve([]),
     isUploaded
       ? getDocumentChatEligibility(document)
       : Promise.resolve({ available: false, reason: "unavailable" as const }),
@@ -285,7 +287,6 @@ export default async function DocumentDetailPage({
           />
         }
         summaryLanguage={summaryLanguage}
-        sourceLocation={fileType === "pdf" ? "page" : "section"}
       />
       {summaryDetails?.status === "completed" ? (
         <DocumentSummaryQualityPanel
@@ -304,7 +305,6 @@ export default async function DocumentDetailPage({
         details={questionDetails}
         locale={locale}
         requestControl={<DocumentQuestionRequestForm documentId={document.id} locale={locale} />}
-        sourceLocation={fileType === "pdf" ? "page" : "section"}
       />
       {document.processing_status === "needs_ocr" || document.processing_status === "unsupported" ? (
         <p className="mt-3 text-sm text-muted-foreground">{t("extractionUnavailable")}</p>
