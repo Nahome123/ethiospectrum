@@ -100,12 +100,9 @@ async function loadBoundedConversationHistory(
   admin: DocumentChatWorkerAdminClient,
   conversationId: string,
 ): Promise<readonly DocumentChatHistoryMessage[]> {
-  const history = await admin
-    .from("document_chat_messages")
-    .select("role, status, content, sequence_number")
-    .eq("conversation_id", conversationId)
-    .eq("status", "completed")
-    .order("sequence_number", { ascending: true });
+  const history = await admin.rpc("get_document_chat_worker_history", {
+    target_conversation_id: conversationId,
+  });
   if (history.error) throw new DocumentSummarySourceSelectionError();
   const messages = (history.data ?? []).flatMap((message) => {
     if ((message.role !== "user" && message.role !== "assistant") || !message.content?.trim()) return [];

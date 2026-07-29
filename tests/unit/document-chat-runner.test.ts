@@ -59,25 +59,25 @@ function createAdmin() {
     ],
     error: null,
   });
-  const historyBuilder = selectBuilder({
-    data: [
-      { role: "user", status: "completed", content: "What does the document say?", sequence_number: 1 },
-      { role: "assistant", status: "completed", content: "Earlier answer", sequence_number: 2 },
-      { role: "user", status: "completed", content: "What is next?", sequence_number: 3 },
-    ],
-    error: null,
-  });
   const from = vi.fn((table: string) => ({
     select: vi.fn(() => {
       if (table === "documents") return documentBuilder;
       if (table === "document_chunks") return chunkBuilder;
       if (table === "document_pages") return pageBuilder;
-      return historyBuilder;
+      throw new Error(`Unexpected table read: ${table}`);
     }),
   }));
   const rpc = vi
     .fn()
     .mockResolvedValueOnce({ data: [job], error: null })
+    .mockResolvedValueOnce({
+      data: [
+        { role: "user", content: "What does the document say?", sequence_number: 1 },
+        { role: "assistant", content: "Earlier answer", sequence_number: 2 },
+        { role: "user", content: "What is next?", sequence_number: 3 },
+      ],
+      error: null,
+    })
     .mockResolvedValueOnce({ data: true, error: null });
   return { from, rpc };
 }
@@ -110,7 +110,10 @@ describe("document chat runner", () => {
     expect(admin.rpc).toHaveBeenNthCalledWith(1, "claim_next_document_chat_message", {
       worker_identity: expect.stringMatching(/^document-chat-worker-/),
     });
-    expect(admin.rpc).toHaveBeenNthCalledWith(2, "complete_document_chat_message", {
+    expect(admin.rpc).toHaveBeenNthCalledWith(2, "get_document_chat_worker_history", {
+      target_conversation_id: job.conversation_id,
+    });
+    expect(admin.rpc).toHaveBeenNthCalledWith(3, "complete_document_chat_message", {
       target_message_id: job.message_id,
       expected_worker_identity: expect.stringMatching(/^document-chat-worker-/),
       completed_content: "Synthetic chat response.",
@@ -158,7 +161,7 @@ describe("document chat runner", () => {
         provider: providerWith({ resultType: "grounded_answer", sourceKeys: ["src_999"] }),
       }),
     ).resolves.toEqual({ processed: 1, completed: 0, failed: 1 });
-    expect(admin.rpc).toHaveBeenNthCalledWith(2, "fail_document_chat_message", {
+    expect(admin.rpc).toHaveBeenNthCalledWith(3, "fail_document_chat_message", {
       target_message_id: job.message_id,
       expected_worker_identity: expect.any(String),
       safe_error_code: "source_validation_failed",
