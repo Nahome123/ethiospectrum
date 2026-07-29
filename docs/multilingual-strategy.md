@@ -1,5 +1,9 @@
 # Multilingual strategy
 
+## ETH-021 roadmap wording
+
+ETH-021 adds aligned English, Amharic, and Spanish roadmap labels, categories, priorities, statuses, validation errors, archive/restore messaging, and read-only states. Long titles, names, descriptions, and translated labels use wrapping layouts; Amharic remains left-to-right. The Amharic and Spanish wording is an implementation draft and requires native-speaker review before release.
+
 Routes always use `/en`, `/am`, or `/es`; `proxy.ts` negotiates routes and the request config falls back to English only for an unsupported request locale internally. Invalid URLs are not silently treated as English pages. Locale-aware `Link` and navigation helpers preserve the selected locale.
 
 `messages/en.json`, `messages/am.json`, and `messages/es.json` have aligned structures. Add keys to all three in one change, then run the translation-completeness test. Amharic uses left-to-right direction and a Noto Sans Ethiopic-first CSS font stack. Avoid fixed-height controls because translations grow.

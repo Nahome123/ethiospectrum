@@ -1,5 +1,9 @@
 # Data model
 
+## ETH-021 household roadmap
+
+`roadmaps` has one optional default row per household. `roadmap_items` belongs to that household and roadmap and records a bounded title/description, allowlisted category/priority/status, calendar due date, optional active dependent, optional household-member assignment, trusted creator, server-owned completion timestamp, archive timestamp, deterministic sort order, update timestamp, and creator-scoped idempotency key. Integrity triggers ensure parent household consistency, immutable ownership links, and valid dependent/member references while allowing historical archived records to remain readable. The existing `reminders` table and its foreign key are intentional future groundwork and ETH-021 neither reads nor changes them.
+
 `auth.users` is the identity source. `public.profiles` stores only editable display fields, locale, timezone, and timestamps; it does not duplicate passwords, sessions, tokens, or email. The Auth trigger creates missing profiles and `public.user_roles` rows with the default `member` role, and the migration backfills existing Auth users without changing existing roles.
 
 `public.user_roles` isolates privileged application roles from user-editable profiles. `public.households` uses a soft-delete timestamp, a primary owner, and a creator. `public.household_members` joins an Auth user to a household with `owner`, `administrator`, `member`, or `viewer` permission and an `active`, `invited`, or `removed` lifecycle. An owner membership must be active. Household creation inserts the household and owner membership together through the database function; invitations and ownership transfer remain deferred.
