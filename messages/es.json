@@ -130,7 +130,9 @@
     "resourceOne": "Prepararse para una reunión escolar",
     "resourceTwo": "Lista para guardar registros familiares",
     "resourceThree": "Preguntas para llevar a una cita",
-    "pageIntro": "Explora material educativo diseñado para ayudar a las familias a prepararse, organizarse y hacer preguntas informadas."
+    "pageIntro": "Explora material educativo diseñado para ayudar a las familias a prepararse, organizarse y hacer preguntas informadas.",
+    "rbtTrainingDescription": "Aprende los conceptos de la enseñanza sin errores, practica los procedimientos y sigue tu progreso con esta guía educativa.",
+    "rbtTrainingAction": "Abrir guía de capacitación"
   },
   "educationSupport": {
     "eyebrow": "Apoyo educativo",
@@ -482,6 +484,7 @@
     "manage": "Administrar miembros de la familia"
   },
   "documents": {
+    "processingCouldNotStart": "Tu documento se cargó, pero no se pudo iniciar el procesamiento. Selecciona Procesar documento para intentarlo de nuevo.",
     "title": "Documentos",
     "description": "Guarda documentos del hogar de forma privada y comparte el acceso solo con miembros activos del hogar.",
     "binderTitle": "Archivador de documentos",
@@ -782,6 +785,7 @@
     "backToAnswer": "Volver a la respuesta"
   },
   "chat": {
+    "availableAfterProcessing": "Podrás conversar sobre este documento cuando termine el procesamiento.",
     "chatWithDocument": "Conversar sobre el documento",
     "documentChat": "Chat del documento",
     "description": "ContinÃºe una conversaciÃ³n privada basada en el documento. Las respuestas usan solo el contenido procesado de este documento.",

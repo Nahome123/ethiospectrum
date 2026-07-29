@@ -130,7 +130,9 @@
     "resourceOne": "Preparing for a school meeting",
     "resourceTwo": "Keeping a family records checklist",
     "resourceThree": "Questions to bring to an appointment",
-    "pageIntro": "Browse educational material designed to help families prepare, organize, and ask informed questions."
+    "pageIntro": "Browse educational material designed to help families prepare, organize, and ask informed questions.",
+    "rbtTrainingDescription": "Learn errorless teaching concepts, practice procedures, and track your progress through this educational guide.",
+    "rbtTrainingAction": "Open training guide"
   },
   "educationSupport": {
     "eyebrow": "Education support",
@@ -482,6 +484,7 @@
     "manage": "Manage family members"
   },
   "documents": {
+    "processingCouldNotStart": "Your document was uploaded, but processing could not start. Select Process document to try again.",
     "title": "Documents",
     "description": "Store household documents privately and share access only with active household members.",
     "binderTitle": "Document binder",
@@ -782,6 +785,7 @@
     "backToAnswer": "Back to answer"
   },
   "chat": {
+    "availableAfterProcessing": "Chat with this document will be available when processing is complete.",
     "chatWithDocument": "Chat with document",
     "documentChat": "Document chat",
     "description": "Continue a private, document-grounded conversation. Answers use only processed content from this document.",

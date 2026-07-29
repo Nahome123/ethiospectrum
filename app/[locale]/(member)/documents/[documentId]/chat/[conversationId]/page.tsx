@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { DocumentChatAutoScroll } from "@/components/documents/document-chat-auto-scroll";
 import { DocumentChatComposer } from "@/components/documents/document-chat-composer";
 import { DocumentChatRetryButton } from "@/components/documents/document-chat-retry-button";
+import { DocumentStatusRefresher } from "@/components/documents/document-status-refresher";
 import { CitationList } from "@/components/documents/citation-list";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -61,6 +62,7 @@ export default async function DocumentChatConversationPage({
 
   return (
     <section className="max-w-3xl">
+      <DocumentStatusRefresher active={hasPendingResponse} />
       <Link
         className="text-sm font-semibold text-primary underline underline-offset-4"
         href={`/documents/${documentId}/chat`}

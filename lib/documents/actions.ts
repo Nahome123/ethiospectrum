@@ -185,8 +185,20 @@ export async function completeDocumentUploadAction(
     .select("id")
     .maybeSingle();
   if (error || !completedDocument) return { status: "error", message: t("uploadFailed") };
+
+  // Queue local extraction after the file has been fully verified. This does
+  // not request an AI summary or chat response; those remain explicit actions.
+  // A queue failure must not turn a completed private upload into a failed one,
+  // because the detail page still provides the authorized retry control.
+  const processingQueue = await record.supabase.rpc("queue_document_processing", {
+    target_document_id: completedDocument.id,
+  });
   revalidateDocumentPaths(locale, record.document.id);
-  return { status: "complete", documentId: completedDocument.id };
+  return {
+    status: "complete",
+    documentId: completedDocument.id,
+    processingQueued: !processingQueue.error && Boolean(processingQueue.data?.[0]),
+  };
 }
 
 export async function markDocumentUploadFailedAction(

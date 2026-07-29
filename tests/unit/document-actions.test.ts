@@ -34,6 +34,7 @@ const storagePath = `households/${householdId}/dependents/unassigned/documents/$
 const idle = { status: "idle" } as const;
 
 type QueryResult<T> = { data: T | null; error: Error | null };
+type ProcessingQueueResult = { data: { job_id: string }[] | null; error: Error | null };
 
 function documentContext(overrides: Partial<{ canUpload: boolean; permission: string }> = {}) {
   return {
@@ -112,9 +113,11 @@ function pendingDocument() {
 function pendingDocumentClient({
   updateResult,
   objectResult = { data: { size: 1024, contentType: "application/pdf" }, error: null },
+  processingQueueResult = { data: [{ job_id: "processing-job-id" }], error: null },
 }: {
   updateResult: QueryResult<{ id: string }>;
   objectResult?: QueryResult<{ size?: number; contentType?: string }>;
+  processingQueueResult?: ProcessingQueueResult;
 }) {
   const query = queryChain({ data: pendingDocument(), error: null });
   const update = mutationChain(updateResult);
@@ -124,14 +127,17 @@ function pendingDocumentClient({
   };
   const info = vi.fn(async () => objectResult);
   const storageFrom = vi.fn(() => ({ info }));
+  const rpc = vi.fn(async () => processingQueueResult);
   return {
     client: {
       from: vi.fn(() => documents),
+      rpc,
       storage: { from: storageFrom },
     },
     documents,
     info,
     query,
+    rpc,
     storageFrom,
     update,
   };
@@ -204,6 +210,7 @@ describe("document upload actions", () => {
     await expect(completeDocumentUploadAction("en", documentId)).resolves.toEqual({
       status: "complete",
       documentId,
+      processingQueued: true,
     });
 
     expect(fixture.storageFrom).toHaveBeenCalledWith("family-documents");
@@ -215,9 +222,25 @@ describe("document upload actions", () => {
     expect(fixture.update.eq).toHaveBeenNthCalledWith(4, "upload_status", "pending");
     expect(fixture.update.select).toHaveBeenCalledWith("id");
     expect(fixture.update.maybeSingle).toHaveBeenCalledOnce();
+    expect(fixture.rpc).toHaveBeenCalledWith("queue_document_processing", { target_document_id: documentId });
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/en/documents");
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/en/dashboard");
     expect(mocks.revalidatePath).toHaveBeenCalledWith(`/en/documents/${documentId}`);
+  });
+
+  it("keeps a verified upload complete when automatic processing queueing is temporarily unavailable", async () => {
+    const fixture = pendingDocumentClient({
+      updateResult: { data: { id: documentId }, error: null },
+      processingQueueResult: { data: null, error: new Error("queue unavailable") },
+    });
+    mocks.createServerActionSupabaseClient.mockResolvedValue(fixture.client);
+
+    await expect(completeDocumentUploadAction("en", documentId)).resolves.toEqual({
+      status: "complete",
+      documentId,
+      processingQueued: false,
+    });
+    expect(fixture.rpc).toHaveBeenCalledWith("queue_document_processing", { target_document_id: documentId });
   });
 
   it("does not claim an upload completed when the guarded update returns no row", async () => {
@@ -231,6 +254,7 @@ describe("document upload actions", () => {
 
     expect(fixture.update.select).toHaveBeenCalledWith("id");
     expect(fixture.update.maybeSingle).toHaveBeenCalledOnce();
+    expect(fixture.rpc).not.toHaveBeenCalled();
     expect(mocks.revalidatePath).not.toHaveBeenCalled();
   });
 

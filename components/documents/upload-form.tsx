@@ -118,7 +118,8 @@ export function UploadDocumentForm({
         setUploadError(completed.status === "error" ? completed.message : t("uploadFailed"));
         return;
       }
-      router.push(`/${locale}/documents/${completed.documentId}`);
+      const processingQuery = completed.processingQueued ? "" : "?processing=not-started";
+      router.push(`/${locale}/documents/${completed.documentId}${processingQuery}`);
       router.refresh();
     };
     void upload();

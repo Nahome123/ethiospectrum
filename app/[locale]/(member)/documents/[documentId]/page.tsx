@@ -11,6 +11,7 @@ import {
   type DocumentQuestionAvailability,
 } from "@/components/documents/document-question-panel";
 import { DocumentQuestionRequestForm } from "@/components/documents/document-question-request-form";
+import { DocumentStatusRefresher } from "@/components/documents/document-status-refresher";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { OcrDocumentButton } from "@/components/documents/ocr-document-button";
 import { ProcessDocumentButton } from "@/components/documents/process-document-button";
@@ -40,7 +41,7 @@ export default async function DocumentDetailPage({
   searchParams,
 }: {
   params: Promise<{ locale: string; documentId: string }>;
-  searchParams: Promise<{ summaryLanguage?: string | string[] }>;
+  searchParams: Promise<{ processing?: string | string[]; summaryLanguage?: string | string[] }>;
 }) {
   const [{ locale: localeParam, documentId }, resolvedSearchParams] = await Promise.all([
     params,
@@ -49,6 +50,7 @@ export default async function DocumentDetailPage({
   const locale = localeParam as AppLocale;
   const requestedSummaryLanguage =
     typeof resolvedSearchParams.summaryLanguage === "string" ? resolvedSearchParams.summaryLanguage : null;
+  const processingQueueFailed = resolvedSearchParams.processing === "not-started";
   const requestedLanguage = documentSummaryLanguageSchema.safeParse(requestedSummaryLanguage);
   const localeLanguage = documentSummaryLanguageSchema.safeParse(locale);
   const summaryLanguage = requestedLanguage.success
@@ -136,9 +138,26 @@ export default async function DocumentDetailPage({
           : document.document_type === "other"
             ? t("categoryOther")
             : t("noCategory");
+  const hasPendingDocumentWork =
+    document.processing_status === "queued" ||
+    document.processing_status === "processing" ||
+    ocrDetails?.status === "queued" ||
+    ocrDetails?.status === "processing" ||
+    summaryDetails?.status === "queued" ||
+    summaryDetails?.status === "generating" ||
+    questionDetails.some((question) => question.status === "queued" || question.status === "answering");
+  const chatAvailabilityMessage =
+    chatEligibility.reason === "processing"
+      ? chatT("availableAfterProcessing")
+      : chatEligibility.reason === "ocr"
+        ? t("ocrRequired")
+        : chatEligibility.reason === "unavailable"
+          ? chatT("unavailable")
+          : null;
 
   return (
     <section className="max-w-3xl">
+      <DocumentStatusRefresher active={hasPendingDocumentWork} />
       <Link className="text-sm font-semibold text-primary underline underline-offset-4" href="/documents">
         {t("backToBinder")}
       </Link>
@@ -244,6 +263,16 @@ export default async function DocumentDetailPage({
         {canQueueOcr ? <OcrDocumentButton documentId={document.id} locale={locale} retry={retryOcr} /> : null}
         {canArchive ? <ArchiveDocumentButton documentId={document.id} locale={locale} /> : null}
       </div>
+      {processingQueueFailed ? (
+        <p className="mt-3 text-sm text-destructive" role="alert">
+          {t("processingCouldNotStart")}
+        </p>
+      ) : null}
+      {isUploaded && !chatEligibility.available && chatAvailabilityMessage ? (
+        <p className="mt-3 text-sm text-muted-foreground" role="status">
+          {chatAvailabilityMessage}
+        </p>
+      ) : null}
       {document.processing_status === "needs_ocr" || ocrDetails ? (
         <section aria-labelledby="ocr-status-heading" className="mt-6 rounded-2xl border bg-card p-5">
           <h2 className="text-lg font-semibold" id="ocr-status-heading">
