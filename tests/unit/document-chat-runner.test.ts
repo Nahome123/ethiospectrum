@@ -160,7 +160,12 @@ describe("document chat runner", () => {
         adminClient: admin as never,
         provider: providerWith({ resultType: "grounded_answer", sourceKeys: ["src_999"] }),
       }),
-    ).resolves.toEqual({ processed: 1, completed: 0, failed: 1 });
+    ).resolves.toEqual({
+      processed: 1,
+      completed: 0,
+      failed: 1,
+      failureCodes: { source_validation_failed: 1 },
+    });
     expect(admin.rpc).toHaveBeenNthCalledWith(3, "fail_document_chat_message", {
       target_message_id: job.message_id,
       expected_worker_identity: expect.any(String),
