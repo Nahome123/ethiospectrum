@@ -1,6 +1,6 @@
 begin;
 
-select plan(45);
+select plan(46);
 
 -- Synthetic identities and document text only. No production content or model
 -- credentials are present in this transactional pgTAP fixture.
@@ -32,6 +32,7 @@ select has_table('public', 'document_chat_conversations', 'chat conversation tab
 select has_table('public', 'document_chat_messages', 'chat message table exists');
 select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_chat_conversations'::regclass), 'conversation RLS is enabled and forced');
 select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid = 'public.document_chat_messages'::regclass), 'message RLS is enabled and forced');
+select has_function('public', 'get_document_chat_worker_history', array['uuid'], 'worker history function exists');
 select has_function('public', 'create_document_chat_conversation', array['uuid', 'text', 'text', 'uuid'], 'controlled conversation creation function exists');
 select has_function('public', 'send_document_chat_message', array['uuid', 'uuid', 'text', 'uuid'], 'controlled chat send function exists');
 select has_function('public', 'retry_document_chat_response', array['uuid', 'uuid', 'uuid'], 'controlled chat retry function exists');

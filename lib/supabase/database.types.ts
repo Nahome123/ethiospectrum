@@ -2130,6 +2130,14 @@ export type Database = {
           title: string;
         }[];
       };
+      get_document_chat_worker_history: {
+        Args: { target_conversation_id: string };
+        Returns: {
+          content: string;
+          role: string;
+          sequence_number: number;
+        }[];
+      };
       get_document_ocr_status: {
         Args: { target_document_id: string };
         Returns: {
