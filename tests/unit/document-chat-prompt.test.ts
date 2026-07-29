@@ -4,6 +4,7 @@ import { buildDocumentChatPrompt, getDocumentChatControlledInstructions } from "
 import {
   documentChatLanguageSchema,
   documentChatMessageInputSchema,
+  documentChatOutputJsonSchema,
   parseDocumentChatOutput,
 } from "@/lib/documents/chat/schemas";
 import { resolveDocumentChatCitations } from "@/lib/documents/chat/source-references";
@@ -89,6 +90,14 @@ describe("persistent document chat schemas and prompt", () => {
         sourceKeys: ["src_001"],
       }),
     ).toBeNull();
+    expect(
+      parseDocumentChatOutput({
+        answer: "Duplicate citations.",
+        resultType: "grounded_answer",
+        sourceKeys: ["src_001", "src_001"],
+      }),
+    ).toBeNull();
+    expect(documentChatOutputJsonSchema.properties.sourceKeys).not.toHaveProperty("uniqueItems");
   });
 
   it("keeps bounded prior messages separate from document evidence", () => {

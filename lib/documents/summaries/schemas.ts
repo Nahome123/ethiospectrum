@@ -102,7 +102,6 @@ const sourceKeysJsonSchema = {
   type: "array",
   items: { type: "string", pattern: "^src_[0-9]{3,5}$" },
   maxItems: DOCUMENT_SUMMARY_MAX_SOURCE_REFERENCES_PER_STATEMENT,
-  uniqueItems: true,
 } as const;
 
 const citedStatementJsonSchema = {
