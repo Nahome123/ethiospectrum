@@ -2,6 +2,7 @@ import "server-only";
 
 import { DOCUMENT_ALLOWED_MIME_TYPES } from "@/lib/documents/constants";
 import type { Database } from "@/lib/supabase/types";
+import { documentIdSchema } from "@/lib/validation/document";
 import type { DocumentSummaryLanguage, DocumentSummaryStatus } from "./summaries/constants";
 import { documentSummaryLanguageSchema } from "./summaries/schemas";
 import {
@@ -19,6 +20,14 @@ import {
 import type { DocumentQuestionLanguage, DocumentQuestionStatus } from "./questions/constants";
 import { documentQuestionLanguageSchema } from "./questions/schemas";
 import { parseStoredDocumentQuestionSourceReferences } from "./questions/storage";
+import {
+  type DocumentChatLanguage,
+  type DocumentChatMessageRole,
+  type DocumentChatMessageStatus,
+  type DocumentChatResultType,
+} from "./chat/constants";
+import { documentChatLanguageSchema } from "./chat/schemas";
+import { parseStoredDocumentChatCitations } from "./chat/storage";
 import {
   createServerComponentSupabaseClient,
   getCurrentHousehold,
@@ -116,6 +125,40 @@ export type DocumentQuestionDetails = {
     page_number: number;
     chunk_index: number | null;
     excerpt: string;
+  }[];
+};
+
+export type DocumentChatEligibility = {
+  available: boolean;
+  reason: "processing" | "ocr" | "unavailable" | null;
+};
+
+export type DocumentChatConversationListItem = {
+  id: string;
+  language: DocumentChatLanguage;
+  title: string;
+  createdAt: string;
+  lastMessageAt: string | null;
+  messageCount: number;
+  hasPendingResponse: boolean;
+  hasFailedResponse: boolean;
+};
+
+export type DocumentChatConversationDetails = {
+  id: string;
+  language: DocumentChatLanguage;
+  title: string;
+  messages: readonly {
+    id: string;
+    role: DocumentChatMessageRole;
+    status: DocumentChatMessageStatus;
+    content: string | null;
+    resultType: DocumentChatResultType | null;
+    citations: readonly { pageNumber: number; chunkIndex: number | null }[];
+    createdAt: string;
+    completedAt: string | null;
+    retryable: boolean;
+    sourceCoverage: "full" | "partial";
   }[];
 };
 
@@ -241,6 +284,27 @@ export async function getDocumentSummaryEligibility(
     return { canRequest: false, reason: "unavailable" };
   }
   return { canRequest: context.canProcess, reason: context.canProcess ? null : "unavailable" };
+}
+
+/** Chat is document-eligible for every active member; only non-viewers can write. */
+export async function getDocumentChatEligibility(
+  document: Pick<DocumentRow, "deleted_at" | "id" | "processing_status" | "upload_status">,
+): Promise<DocumentChatEligibility> {
+  if (document.processing_status === "needs_ocr") return { available: false, reason: "ocr" };
+  if (
+    document.upload_status !== "uploaded" ||
+    document.deleted_at !== null ||
+    document.processing_status !== "completed"
+  ) {
+    return { available: false, reason: "processing" };
+  }
+  const supabase = await createServerComponentSupabaseClient();
+  const chunks = await supabase
+    .from("document_chunks")
+    .select("id", { count: "exact", head: true })
+    .eq("document_id", document.id);
+  if (chunks.error || (chunks.count ?? 0) === 0) return { available: false, reason: "unavailable" };
+  return { available: true, reason: null };
 }
 
 export async function getUploadDependents() {
@@ -554,4 +618,101 @@ export async function getDocumentQuestionDetails(
       },
     ];
   });
+}
+
+/** Reads the safe, household-shared conversation list through its narrow RPC. */
+export async function getDocumentChatConversations(
+  documentId: string,
+): Promise<readonly DocumentChatConversationListItem[]> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_document_chat_conversations", {
+    target_document_id: documentId,
+  });
+  if (error || !data) return [];
+  return data.flatMap((conversation) => {
+    const language = documentChatLanguageSchema.safeParse(conversation.language);
+    if (
+      !language.success ||
+      !conversation.conversation_id ||
+      !conversation.title?.trim() ||
+      !conversation.created_at ||
+      !Number.isSafeInteger(conversation.message_count) ||
+      conversation.message_count < 0
+    ) {
+      return [];
+    }
+    return [
+      {
+        id: conversation.conversation_id,
+        language: language.data,
+        title: conversation.title,
+        createdAt: conversation.created_at,
+        lastMessageAt: conversation.last_message_at ?? null,
+        messageCount: conversation.message_count,
+        hasPendingResponse: conversation.has_pending_response === true,
+        hasFailedResponse: conversation.has_failed_response === true,
+      },
+    ];
+  });
+}
+
+/** Drops malformed rows and all worker/provider metadata before Server Component render. */
+export async function getDocumentChatConversationDetails(
+  documentId: string,
+  conversationId: string,
+): Promise<DocumentChatConversationDetails | null> {
+  if (!documentIdSchema.safeParse(conversationId).success) return null;
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_document_chat_conversation", {
+    target_document_id: documentId,
+    target_conversation_id: conversationId,
+  });
+  if (error || !data?.length) return null;
+  const first = data[0];
+  const language = documentChatLanguageSchema.safeParse(first.language);
+  if (!language.success || first.conversation_id !== conversationId || !first.title?.trim()) return null;
+  const messages = data.flatMap((message) => {
+    const role = (["user", "assistant"] as const).find((value) => value === message.role);
+    const status = (["pending", "generating", "completed", "failed"] as const).find(
+      (value) => value === message.status,
+    );
+    const resultType = (
+      ["grounded_answer", "insufficient_evidence", "outside_document", "partial_coverage"] as const
+    ).find((value) => value === message.result_type);
+    const sourceCoverage = (["full", "partial"] as const).find((value) => value === message.source_coverage);
+    const citations =
+      message.status === "completed" ? parseStoredDocumentChatCitations(message.citations) : [];
+    if (
+      !role ||
+      !status ||
+      !sourceCoverage ||
+      !message.message_id ||
+      !message.created_at ||
+      (status === "completed" && (!message.content?.trim() || citations === null)) ||
+      (role === "assistant" && status === "completed" && !resultType)
+    ) {
+      return [];
+    }
+    return [
+      {
+        id: message.message_id,
+        role: role as DocumentChatMessageRole,
+        status: status as DocumentChatMessageStatus,
+        content: status === "completed" ? (message.content ?? null) : null,
+        resultType: status === "completed" ? (resultType as DocumentChatResultType | null) : null,
+        citations:
+          citations?.map((citation) => ({
+            pageNumber: citation.page_number,
+            chunkIndex: citation.chunk_index,
+          })) ?? [],
+        createdAt: message.created_at,
+        completedAt: message.completed_at ?? null,
+        retryable: message.retryable === true,
+        sourceCoverage: sourceCoverage as "full" | "partial",
+      },
+    ];
+  });
+  return messages.length
+    ? { id: conversationId, language: language.data, title: first.title, messages }
+    : null;
 }
