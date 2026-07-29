@@ -38,7 +38,6 @@ export const documentQuestionOutputJsonSchema = {
       items: { type: "string", pattern: "^src_[0-9]{3,5}$" },
       minItems: 1,
       maxItems: DOCUMENT_QUESTION_MAX_SOURCE_REFERENCES,
-      uniqueItems: true,
     },
   },
 } as const;

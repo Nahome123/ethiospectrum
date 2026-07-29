@@ -44,7 +44,6 @@ export const documentChatOutputJsonSchema = {
       type: "array",
       items: { type: "string", pattern: "^src_[0-9]{3,5}$" },
       maxItems: DOCUMENT_CHAT_MAX_SOURCE_REFERENCES,
-      uniqueItems: true,
     },
   },
 } as const;

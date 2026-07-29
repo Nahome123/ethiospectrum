@@ -3,6 +3,10 @@ import {
   buildDocumentSummaryPrompt,
   getDocumentSummaryControlledInstructions,
 } from "@/lib/documents/summaries/prompt";
+import {
+  documentSummaryOutputJsonSchema,
+  parseDocumentSummaryOutput,
+} from "@/lib/documents/summaries/schemas";
 import { selectDocumentSummarySources } from "@/lib/documents/summaries/source-selection";
 
 const documentId = "document-one";
@@ -74,5 +78,21 @@ describe("document summary prompt", () => {
     expect(input.allowed_source_keys).toEqual(["src_001"]);
     expect(input.intermediate_summaries).toHaveLength(1);
     expect(getDocumentSummaryControlledInstructions()).toContain("legal conclusions");
+  });
+
+  it("keeps duplicate citation protection at the server validation boundary", () => {
+    expect(
+      parseDocumentSummaryOutput({
+        overview: { text: "Grounded.", sourceKeys: ["src_001", "src_001"] },
+        keyPoints: [],
+        importantDates: [],
+        actionItems: [],
+        organizationsOrPeople: [],
+        warningsOrUncertainties: [],
+      }),
+    ).toBeNull();
+    expect(documentSummaryOutputJsonSchema.properties.overview.properties.sourceKeys).not.toHaveProperty(
+      "uniqueItems",
+    );
   });
 });

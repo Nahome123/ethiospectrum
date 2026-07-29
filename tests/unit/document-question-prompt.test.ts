@@ -3,7 +3,11 @@ import {
   buildDocumentQuestionPrompt,
   getDocumentQuestionControlledInstructions,
 } from "@/lib/documents/questions/prompt";
-import { documentQuestionInputSchema, parseDocumentQuestionOutput } from "@/lib/documents/questions/schemas";
+import {
+  documentQuestionInputSchema,
+  documentQuestionOutputJsonSchema,
+  parseDocumentQuestionOutput,
+} from "@/lib/documents/questions/schemas";
 import { resolveDocumentQuestionSourceReferences } from "@/lib/documents/questions/source-references";
 
 const selection = {
@@ -41,6 +45,10 @@ describe("document question schemas and prompt", () => {
       sourceKeys: ["src_001"],
     });
     expect(parseDocumentQuestionOutput({ answer: "Unsupported.", sourceKeys: [] })).toBeNull();
+    expect(
+      parseDocumentQuestionOutput({ answer: "Duplicate citations.", sourceKeys: ["src_001", "src_001"] }),
+    ).toBeNull();
+    expect(documentQuestionOutputJsonSchema.properties.sourceKeys).not.toHaveProperty("uniqueItems");
   });
 
   it("keeps prompt instructions controlled while question and source text remain JSON data", () => {
