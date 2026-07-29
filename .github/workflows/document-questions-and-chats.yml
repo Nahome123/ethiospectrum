@@ -1,0 +1,68 @@
+name: Process document questions and chats
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+# This scheduler only needs its configured endpoint and question-worker secret.
+permissions: {}
+
+concurrency:
+  group: document-questions-and-chats
+  cancel-in-progress: false
+
+jobs:
+  process:
+    name: Invoke the protected document question and chat workers
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      DOCUMENT_QUESTION_ORIGIN: ${{ vars.DOCUMENT_QUESTION_ORIGIN }}
+      DOCUMENT_QUESTION_SECRET: ${{ secrets.DOCUMENT_QUESTION_SECRET }}
+    steps:
+      - name: Validate scheduler configuration
+        shell: bash
+        run: |
+          if [ -z "$DOCUMENT_QUESTION_ORIGIN" ] || [ -z "$DOCUMENT_QUESTION_SECRET" ]; then
+            echo "The document-question origin or secret is not configured."
+            exit 1
+          fi
+
+          node <<'NODE'
+          const value = process.env.DOCUMENT_QUESTION_ORIGIN;
+
+          try {
+            const url = new URL(value);
+            if (
+              url.protocol !== "https:" ||
+              url.username ||
+              url.password ||
+              url.pathname !== "/" ||
+              url.search ||
+              url.hash ||
+              value !== url.origin
+            ) {
+              throw new Error("invalid document-question origin");
+            }
+          } catch {
+            console.error("The document-question origin must be an exact HTTPS origin.");
+            process.exit(1);
+          }
+          NODE
+
+      - name: Run one bounded question batch
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --retry 2 --retry-connrefused \
+            --request POST "${DOCUMENT_QUESTION_ORIGIN}/api/internal/document-questions" \
+            --header "x-document-question-secret: $DOCUMENT_QUESTION_SECRET" \
+            --header "Accept: application/json"
+
+      - name: Run one bounded chat batch
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --retry 2 --retry-connrefused \
+            --request POST "${DOCUMENT_QUESTION_ORIGIN}/api/internal/document-chats" \
+            --header "x-document-question-secret: $DOCUMENT_QUESTION_SECRET" \
+            --header "Accept: application/json"
