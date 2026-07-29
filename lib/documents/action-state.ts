@@ -7,6 +7,6 @@ export type DocumentActionState =
       storagePath: string;
       uploadToken: string;
     }
-  | { status: "complete"; documentId: string };
+  | { status: "complete"; documentId: string; processingQueued: boolean };
 
 export const initialDocumentActionState: DocumentActionState = { status: "idle" };
