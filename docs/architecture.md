@@ -1,5 +1,9 @@
 # Architecture
 
+## ETH-021 roadmap
+
+ETH-021 adds a server-rendered household roadmap route group with client components only for form submission, archive confirmation, and keyboard-operable manual ordering. Data reads and every mutation use household-derived Supabase context; roadmap database functions derive the caller and current household from trusted session state. The implementation deliberately does not call, display, schedule, or mutate the existing reminder groundwork.
+
 Next.js 16 App Router provides locale-prefixed public, auth, member, and admin route groups. `next-intl` routing is handled by `proxy.ts`; `/` redirects to `/en`. Reusable shells separate public marketing, member, and administrator experiences. `config/brand.ts` is the canonical branding source. Next.js route groups do not prevent path collisions, so the protected member resources placeholder is `/[locale]/member/resources`, while public resources remains `/[locale]/resources`.
 
 Protected layouts use server-only guards that deny by default and redirect to localized login routes. PostgreSQL and RLS own data authorization; client state is never authorization.

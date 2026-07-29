@@ -1616,48 +1616,86 @@ export type Database = {
       };
       roadmap_items: {
         Row: {
-          category: string | null;
+          archived_at: string | null;
+          assigned_to: string | null;
+          category: string;
           completed_at: string | null;
           created_at: string;
+          created_by: string;
+          dependent_id: string | null;
           description: string | null;
           due_date: string | null;
+          household_id: string;
           id: string;
-          priority: string | null;
+          idempotency_key: string | null;
+          priority: string;
           roadmap_id: string;
+          sort_order: number;
           source_id: string | null;
           source_type: string | null;
           status: string;
           title: string;
+          updated_at: string;
         };
         Insert: {
-          category?: string | null;
+          archived_at?: string | null;
+          assigned_to?: string | null;
+          category?: string;
           completed_at?: string | null;
           created_at?: string;
+          created_by: string;
+          dependent_id?: string | null;
           description?: string | null;
           due_date?: string | null;
+          household_id: string;
           id?: string;
-          priority?: string | null;
+          idempotency_key?: string | null;
+          priority?: string;
           roadmap_id: string;
+          sort_order?: number;
           source_id?: string | null;
           source_type?: string | null;
           status?: string;
           title: string;
+          updated_at?: string;
         };
         Update: {
-          category?: string | null;
+          archived_at?: string | null;
+          assigned_to?: string | null;
+          category?: string;
           completed_at?: string | null;
           created_at?: string;
+          created_by?: string;
+          dependent_id?: string | null;
           description?: string | null;
           due_date?: string | null;
+          household_id?: string;
           id?: string;
-          priority?: string | null;
+          idempotency_key?: string | null;
+          priority?: string;
           roadmap_id?: string;
+          sort_order?: number;
           source_id?: string | null;
           source_type?: string | null;
           status?: string;
           title?: string;
+          updated_at?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "roadmap_items_dependent_id_fkey";
+            columns: ["dependent_id"];
+            isOneToOne: false;
+            referencedRelation: "dependents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "roadmap_items_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "roadmap_items_roadmap_id_fkey";
             columns: ["roadmap_id"];
@@ -1673,6 +1711,7 @@ export type Database = {
           dependent_id: string | null;
           household_id: string;
           id: string;
+          is_household_default: boolean;
           status: string;
           title: string;
           updated_at: string;
@@ -1682,6 +1721,7 @@ export type Database = {
           dependent_id?: string | null;
           household_id: string;
           id?: string;
+          is_household_default?: boolean;
           status?: string;
           title: string;
           updated_at?: string;
@@ -1691,6 +1731,7 @@ export type Database = {
           dependent_id?: string | null;
           household_id?: string;
           id?: string;
+          is_household_default?: boolean;
           status?: string;
           title?: string;
           updated_at?: string;
@@ -1896,6 +1937,13 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      archive_roadmap_item: {
+        Args: { expected_updated_at: string; target_item_id: string };
+        Returns: {
+          id: string;
+          updated_at: string;
+        }[];
+      };
       can_access_household: {
         Args: { target_household: string };
         Returns: boolean;
@@ -2062,6 +2110,23 @@ export type Database = {
         }[];
       };
       create_household: { Args: { raw_name: string }; Returns: string };
+      create_roadmap_item: {
+        Args: {
+          input_assigned_to?: string;
+          input_category?: string;
+          input_dependent_id?: string;
+          input_description?: string;
+          input_due_date?: string;
+          input_idempotency_key?: string;
+          input_priority?: string;
+          input_status?: string;
+          input_title: string;
+        };
+        Returns: {
+          id: string;
+          updated_at: string;
+        }[];
+      };
       evaluate_document_summary: {
         Args: { requested_language: string; target_document_id: string };
         Returns: boolean;
@@ -2241,6 +2306,53 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
+      list_roadmap_assignable_members: {
+        Args: never;
+        Returns: {
+          display_name: string;
+          user_id: string;
+        }[];
+      };
+      list_roadmap_items: {
+        Args: {
+          input_archived?: boolean;
+          input_assignee?: string;
+          input_category?: string;
+          input_completed?: boolean;
+          input_dependent_id?: string;
+          input_item_id?: string;
+          input_overdue?: boolean;
+          input_page?: number;
+          input_priority?: string;
+          input_sort?: string;
+          input_status?: string;
+        };
+        Returns: {
+          archived_at: string;
+          assigned_to: string;
+          assignee_is_former: boolean;
+          assignee_name: string;
+          can_archive: boolean;
+          can_edit: boolean;
+          can_reorder: boolean;
+          can_restore: boolean;
+          category: string;
+          completed_at: string;
+          created_at: string;
+          created_by: string;
+          dependent_id: string;
+          dependent_name: string;
+          description: string;
+          due_date: string;
+          id: string;
+          priority: string;
+          sort_order: number;
+          status: string;
+          title: string;
+          total_count: number;
+          updated_at: string;
+        }[];
+      };
       queue_document_ocr: {
         Args: { target_document_id: string };
         Returns: {
@@ -2267,6 +2379,17 @@ export type Database = {
           last_section: string;
         }[];
       };
+      reorder_roadmap_items: {
+        Args: {
+          expected_updated_at: string;
+          input_direction: string;
+          target_item_id: string;
+        };
+        Returns: {
+          id: string;
+          updated_at: string;
+        }[];
+      };
       request_document_question: {
         Args: {
           requested_language: string;
@@ -2289,6 +2412,13 @@ export type Database = {
           summary_status: string;
         }[];
       };
+      restore_roadmap_item: {
+        Args: { expected_updated_at: string; target_item_id: string };
+        Returns: {
+          id: string;
+          updated_at: string;
+        }[];
+      };
       retry_document_chat_response: {
         Args: {
           target_conversation_id: string;
@@ -2307,6 +2437,24 @@ export type Database = {
         Returns: {
           already_exists: boolean;
           assistant_message_id: string;
+        }[];
+      };
+      update_roadmap_item: {
+        Args: {
+          expected_updated_at: string;
+          input_assigned_to?: string;
+          input_category?: string;
+          input_dependent_id?: string;
+          input_description?: string;
+          input_due_date?: string;
+          input_priority?: string;
+          input_status?: string;
+          input_title: string;
+          target_item_id: string;
+        };
+        Returns: {
+          id: string;
+          updated_at: string;
         }[];
       };
       upsert_document_summary_review: {

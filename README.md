@@ -129,4 +129,4 @@ Treat family data as sensitive. Never commit real keys or private documents; do 
 
 ## Next recommended issue
 
-`ETH-021 Build roadmap management` remains next. ETH-020 is implemented locally and still requires native Amharic/Spanish review plus a reviewed non-production rollout; it does not imply a hosted migration or deployment.
+ETH-021 is implemented locally as a household roadmap with active-item and archived-item views, controlled filters and pagination, create/edit/detail routes, role-bounded assignment, controlled status changes, completion tracking, archive/restore, and owner/administrator manual ordering. It has no reminder, notification, scheduling, worker, provider, or deployment behavior. Native Amharic and Spanish review plus a reviewed non-production migration rollout remain required; this does not imply a hosted migration or deployment.

@@ -1,5 +1,9 @@
 # Testing strategy
 
+## ETH-021 roadmap verification
+
+ETH-021 database tests use synthetic households and verify forced RLS, anonymous denial, owner/administrator/member/viewer boundaries, removed/unrelated denial, idempotent creation, member self-assignment restrictions, status transitions, completion/reopen behavior, stale writes, archive/restore, manual ordering, and no roadmap writes to reminders. Unit tests cover Unicode/whitespace/length/date validation, controlled query parsing, status rules, and the server-action/database-function boundary. Before rollout, run a local browser flow with synthetic accounts to verify all locales, keyboard ordering, read-only viewer behavior, archived-item visibility, narrow wrapping, and 200% zoom; do not use hosted data.
+
 Unit tests cover branding, translation alignment, validation, rendering contracts, and the document binder's URL/query boundary. Playwright covers locale routing, root redirect, responsive navigation, accessibility scanning, protected redirects, and controlled local document flows using only synthetic data. Run `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`, `pnpm test:a11y`, and `pnpm build` before review; run the mutation-capable `pnpm test:e2e:documents:local` only against a local Supabase stack.
 
 Education-support coverage verifies the visitor/onboarding/ready landing-state mapping, English and Amharic copy, real guide/assistant/pricing destinations, keyboard-reachable action links, and the absence of household data or analytics payloads in the marketing section. Browser coverage checks the localized landing heading, guide and assistant links, keyboard focus, and narrow 320px presentation. It uses no child, school, health, or household fixture data.

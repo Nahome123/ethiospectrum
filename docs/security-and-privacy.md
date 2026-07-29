@@ -1,5 +1,9 @@
 # Security and privacy
 
+## ETH-021 roadmap controls
+
+Roadmap reads require an active household membership. Database functions derive `auth.uid()` and the active household, force RLS, revoke direct browser writes, and use a fixed empty search path. Owners and administrators can archive, restore, and reorder; members can create and update only their own or assigned active items and cannot assign another person; viewers read active items only. Mutations use an expected update timestamp to reject stale edits and an idempotency key to avoid duplicate creates. The roadmap does not access reminders, notifications, workers, provider credentials, or private document content.
+
 Family, dependent, education, healthcare, benefit, and document information are sensitive. The current trust boundary is browser -> authorized server action/API -> Supabase with RLS -> private storage. Service-role credentials stay server-side. Signed URLs are short-lived; document content is never placed in source control, logs, analytics, test fixtures, or prompts beyond an authorized runtime request.
 
 RLS is enabled on every private table. Household membership, explicit specialist assignment, and administrator checks govern access. Content editors can manage resources but cannot read household records. ETH-012 adds declared type, extension, filename, and size validation for private uploads. Security controls still planned before production include content-signature validation, malware scanning, production rate limits, CSRF review, headers, audit trails, retention/deletion workflows, backups/restoration testing, least privilege, and administrator MFA.
