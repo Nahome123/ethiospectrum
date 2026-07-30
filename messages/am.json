@@ -17,6 +17,7 @@
     "validationError": "የተጠየቁትን መስኮች ያረጋግጡ።",
     "saveError": "ይህን መረጃ ማስቀመጥ አልቻልንም።",
     "transitionError": "የሂደቱን ሁኔታ ማዘመን አልቻልንም።",
+    "selfReviewError": "ያስገቡትን መረጃ ሌላ አስተዳዳሪ ማጽደቅ አለበት።",
     "staleError": "ይህ መረጃ በሌላ ቦታ ተቀይሯል።",
     "workflowActions": "የሂደት ተግባራት",
     "submit": "ለግምገማ ያስገቡ",

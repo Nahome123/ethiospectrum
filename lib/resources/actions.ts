@@ -120,7 +120,12 @@ async function transition(
     target_resource_id: input.data.resourceId,
     expected_version: input.data.expectedVersion,
   });
-  if (error) return { status: "error", message: stale(error) ? t("staleError") : t("transitionError") };
+  if (error) {
+    if (rpc === "approve_resource" && error.code === "22023") {
+      return { status: "error", message: t("selfReviewError") };
+    }
+    return { status: "error", message: stale(error) ? t("staleError") : t("transitionError") };
+  }
   paths(locale, resourceId);
   return { status: "success", message: t("saved") };
 }

@@ -17,6 +17,7 @@
     "validationError": "Revise los campos requeridos e inténtelo de nuevo.",
     "saveError": "No pudimos guardar este recurso. Inténtelo de nuevo.",
     "transitionError": "No pudimos actualizar el flujo de trabajo. Inténtelo de nuevo.",
+    "selfReviewError": "Otro administrador debe aprobar un recurso que usted envió.",
     "staleError": "Este recurso cambió en otro lugar. Actualice e inténtelo de nuevo.",
     "workflowActions": "Acciones del flujo de trabajo",
     "submit": "Enviar a revisión",

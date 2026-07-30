@@ -17,6 +17,7 @@
     "validationError": "Check the required fields and try again.",
     "saveError": "We could not save this resource. Please try again.",
     "transitionError": "We could not update the workflow. Please try again.",
+    "selfReviewError": "Another administrator must approve a resource you submitted.",
     "staleError": "This resource changed elsewhere. Refresh and try again.",
     "workflowActions": "Resource workflow actions",
     "submit": "Submit for review",
