@@ -113,10 +113,6 @@ export async function updateRoadmapItemAction(
   const { error } = rescheduling.dueDateChanged
     ? await supabase.rpc("update_roadmap_item_and_reschedule_reminders", {
         ...updateArgs,
-        input_description: result.data.description,
-        input_due_date: result.data.dueDate,
-        input_dependent_id: result.data.dependentId,
-        input_assigned_to: result.data.assignedTo,
         input_reminder_schedules: rescheduling.schedules,
       })
     : await supabase.rpc("update_roadmap_item", updateArgs);
