@@ -1522,36 +1522,45 @@ export type Database = {
           created_at: string;
           id: string;
           locale: string;
+          review_note: string | null;
           resource_id: string;
           review_status: string;
           reviewed_by: string | null;
+          reviewed_at: string | null;
           summary: string;
           title: string;
           updated_at: string;
+          version: number;
         };
         Insert: {
           body: string;
           created_at?: string;
           id?: string;
           locale: string;
+          review_note?: string | null;
           resource_id: string;
           review_status?: string;
           reviewed_by?: string | null;
+          reviewed_at?: string | null;
           summary: string;
           title: string;
           updated_at?: string;
+          version?: number;
         };
         Update: {
           body?: string;
           created_at?: string;
           id?: string;
           locale?: string;
+          review_note?: string | null;
           resource_id?: string;
           review_status?: string;
           reviewed_by?: string | null;
+          reviewed_at?: string | null;
           summary?: string;
           title?: string;
           updated_at?: string;
+          version?: number;
         };
         Relationships: [
           {
@@ -1572,37 +1581,58 @@ export type Database = {
       };
       resources: {
         Row: {
+          archived_at: string | null;
+          archived_by: string | null;
           author_id: string | null;
           category: string;
           created_at: string;
+          first_published_at: string | null;
           id: string;
+          idempotency_key: string | null;
           published_at: string | null;
+          published_by: string | null;
           reviewed_at: string | null;
           slug: string;
           status: Database["public"]["Enums"]["resource_status"];
           updated_at: string;
+          updated_by: string | null;
+          version: number;
         };
         Insert: {
+          archived_at?: string | null;
+          archived_by?: string | null;
           author_id?: string | null;
           category: string;
           created_at?: string;
+          first_published_at?: string | null;
           id?: string;
+          idempotency_key?: string | null;
           published_at?: string | null;
+          published_by?: string | null;
           reviewed_at?: string | null;
           slug: string;
           status?: Database["public"]["Enums"]["resource_status"];
           updated_at?: string;
+          updated_by?: string | null;
+          version?: number;
         };
         Update: {
+          archived_at?: string | null;
+          archived_by?: string | null;
           author_id?: string | null;
           category?: string;
           created_at?: string;
+          first_published_at?: string | null;
           id?: string;
+          idempotency_key?: string | null;
           published_at?: string | null;
+          published_by?: string | null;
           reviewed_at?: string | null;
           slug?: string;
           status?: Database["public"]["Enums"]["resource_status"];
           updated_at?: string;
+          updated_by?: string | null;
+          version?: number;
         };
         Relationships: [
           {
@@ -1610,6 +1640,57 @@ export type Database = {
             columns: ["author_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      resource_audit_events: {
+        Row: {
+          action: string;
+          actor_user_id: string;
+          created_at: string;
+          from_status: Database["public"]["Enums"]["resource_status"] | null;
+          id: string;
+          resource_id: string;
+          resource_version: number;
+          safe_metadata: Json;
+          to_status: Database["public"]["Enums"]["resource_status"] | null;
+        };
+        Insert: {
+          action: string;
+          actor_user_id: string;
+          created_at?: string;
+          from_status?: Database["public"]["Enums"]["resource_status"] | null;
+          id?: string;
+          resource_id: string;
+          resource_version: number;
+          safe_metadata?: Json;
+          to_status?: Database["public"]["Enums"]["resource_status"] | null;
+        };
+        Update: {
+          action?: string;
+          actor_user_id?: string;
+          created_at?: string;
+          from_status?: Database["public"]["Enums"]["resource_status"] | null;
+          id?: string;
+          resource_id?: string;
+          resource_version?: number;
+          safe_metadata?: Json;
+          to_status?: Database["public"]["Enums"]["resource_status"] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "resource_audit_events_actor_user_id_fkey";
+            columns: ["actor_user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_audit_events_resource_id_fkey";
+            columns: ["resource_id"];
+            isOneToOne: false;
+            referencedRelation: "resources";
             referencedColumns: ["id"];
           },
         ];
@@ -2110,6 +2191,17 @@ export type Database = {
         }[];
       };
       create_household: { Args: { raw_name: string }; Returns: string };
+      create_resource_draft: {
+        Args: {
+          input_category: string;
+          input_idempotency_key: string;
+          input_body: string;
+          input_slug: string;
+          input_summary: string;
+          input_title: string;
+        };
+        Returns: { resource_id: string; resource_version: number }[];
+      };
       create_roadmap_item: {
         Args: {
           input_assigned_to?: string;
@@ -2125,6 +2217,82 @@ export type Database = {
         Returns: {
           id: string;
           updated_at: string;
+        }[];
+      };
+      update_resource_draft: {
+        Args: {
+          expected_version: number;
+          input_body: string;
+          input_category: string;
+          input_slug: string;
+          input_summary: string;
+          input_title: string;
+          target_resource_id: string;
+        };
+        Returns: { resource_id: string; resource_version: number }[];
+      };
+      submit_resource_for_review: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      withdraw_resource_review: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      approve_resource: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      reject_resource: {
+        Args: { expected_version: number; input_rejection_note: string; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      publish_resource: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      unpublish_resource: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      archive_resource: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
+      restore_resource: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
         }[];
       };
       evaluate_document_summary: {
