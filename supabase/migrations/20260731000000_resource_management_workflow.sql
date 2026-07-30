@@ -142,11 +142,11 @@ begin
     archived_by=case when audit_action='archived' then actor when audit_action='restored' then null else archived_by end,
     archived_at=case when audit_action='archived' then now() when audit_action='restored' then null else archived_at end
     where id=current_resource.id returning version,status into new_version,result_status;
-  update public.resource_translations set review_status=next_review,
-    reviewed_by=case when audit_action in ('approved','rejected') then actor when audit_action in ('unpublish','restore','withdraw') then null else reviewed_by end,
-    reviewed_at=case when audit_action in ('approved','rejected') then now() when audit_action in ('unpublish','restore','withdraw') then null else reviewed_at end,
-    review_note=case when audit_action='rejected' then btrim(input_rejection_note) when audit_action in ('unpublish','restore','withdraw') then null else review_note end,
-    version=version+1 where resource_id=current_resource.id and locale='en';
+  update public.resource_translations as translation set review_status=next_review,
+    reviewed_by=case when audit_action in ('approved','rejected') then actor when audit_action in ('unpublish','restore','withdraw') then null else translation.reviewed_by end,
+    reviewed_at=case when audit_action in ('approved','rejected') then now() when audit_action in ('unpublish','restore','withdraw') then null else translation.reviewed_at end,
+    review_note=case when audit_action='rejected' then btrim(input_rejection_note) when audit_action in ('unpublish','restore','withdraw') then null else translation.review_note end,
+    version=translation.version+1 where translation.resource_id=current_resource.id and translation.locale='en';
   insert into public.resource_audit_events(resource_id,actor_user_id,action,from_status,to_status,resource_version,safe_metadata)
     values(current_resource.id,actor,audit_action,current_resource.status,result_status,new_version,case when audit_action='rejected' then jsonb_build_object('rejection_note',btrim(input_rejection_note)) else '{}'::jsonb end);
   return query select current_resource.id,new_version,result_status;
