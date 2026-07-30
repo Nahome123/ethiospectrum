@@ -1,4 +1,4 @@
--- Correct an output-column/translation-column ambiguity in the applied ETH-023 transition function.
+-- Administrators own the complete resource workflow, including approval of their own submissions.
 create or replace function public.transition_resource(target_resource_id uuid, expected_version integer, input_action text, input_rejection_note text default null)
 returns table(resource_id uuid, resource_version integer, resource_status public.resource_status) language plpgsql security definer set search_path='' as $$
 declare actor uuid := auth.uid(); current_resource public.resources%rowtype; english public.resource_translations%rowtype; next_status public.resource_status; next_review text; audit_action text; new_version integer; result_status public.resource_status;
@@ -12,7 +12,7 @@ begin
   if input_action='submit' and current_resource.status='draft' then next_status:='in_review'; next_review:='in_review'; audit_action:='submitted';
   elsif input_action='withdraw' and current_resource.status='in_review' then next_status:='draft'; next_review:='draft'; audit_action:='withdrawn';
   elsif input_action='approve' and current_resource.status='in_review' and english.review_status='in_review' then next_status:='in_review'; next_review:='approved'; audit_action:='approved';
-  elsif input_action='reject' and current_resource.status='in_review' and english.review_status='in_review' and current_resource.updated_by<>actor and char_length(btrim(coalesce(input_rejection_note,''))) between 10 and 1000 then next_status:='draft'; next_review:='draft'; audit_action:='rejected';
+  elsif input_action='reject' and current_resource.status='in_review' and english.review_status='in_review' and char_length(btrim(coalesce(input_rejection_note,''))) between 10 and 1000 then next_status:='draft'; next_review:='draft'; audit_action:='rejected';
   elsif input_action='publish' and current_resource.status='in_review' and english.review_status='approved' then next_status:='published'; next_review:='approved'; audit_action:='published';
   elsif input_action='unpublish' and current_resource.status='published' then next_status:='draft'; next_review:='draft'; audit_action:='unpublished';
   elsif input_action='archive' and current_resource.status in ('draft','in_review','published') then next_status:='archived'; next_review:=english.review_status; audit_action:='archived';

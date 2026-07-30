@@ -128,7 +128,7 @@ begin
   if input_action in ('submit','publish') then perform private.validate_resource_content(current_resource.slug,current_resource.category,english.title,english.summary,english.body); end if;
   if input_action='submit' and current_resource.status='draft' then next_status:='in_review'; next_review:='in_review'; audit_action:='submitted';
   elsif input_action='withdraw' and current_resource.status='in_review' then next_status:='draft'; next_review:='draft'; audit_action:='withdrawn';
-  elsif input_action='approve' and current_resource.status='in_review' and english.review_status='in_review' and current_resource.updated_by<>actor then next_status:='in_review'; next_review:='approved'; audit_action:='approved';
+  elsif input_action='approve' and current_resource.status='in_review' and english.review_status='in_review' then next_status:='in_review'; next_review:='approved'; audit_action:='approved';
   elsif input_action='reject' and current_resource.status='in_review' and english.review_status='in_review' and current_resource.updated_by<>actor and char_length(btrim(coalesce(input_rejection_note,''))) between 10 and 1000 then next_status:='draft'; next_review:='draft'; audit_action:='rejected';
   elsif input_action='publish' and current_resource.status='in_review' and english.review_status='approved' then next_status:='published'; next_review:='approved'; audit_action:='published';
   elsif input_action='unpublish' and current_resource.status='published' then next_status:='draft'; next_review:='draft'; audit_action:='unpublished';

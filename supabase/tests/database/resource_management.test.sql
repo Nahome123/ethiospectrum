@@ -21,13 +21,13 @@ select lives_ok($$select * from public.create_resource_draft('family-school-meet
 select is((select count(*) from public.resources where slug='family-school-meeting'),1::bigint,'idempotent create does not duplicate a resource');
 select is((select count(*) from public.resource_translations where locale='en'),1::bigint,'draft has exactly one English translation');
 select lives_ok($$select * from public.submit_resource_for_review((select id from public.resources where slug='family-school-meeting'),1)$$,'editor can submit a draft');
-select throws_ok($$select * from public.approve_resource((select id from public.resources where slug='family-school-meeting'),2)$$,'22023',null,'submitting editor cannot approve the same submitted version');
+select lives_ok($$select * from public.approve_resource((select id from public.resources where slug='family-school-meeting'),2)$$,'submitting administrator can approve the same submitted version');
 select throws_ok($$select * from public.update_resource_draft((select id from public.resources where slug='family-school-meeting'),1,'family-school-meeting','education','Preparing for a school meeting','A practical guide for preparing useful questions before a school meeting.','This is a sufficiently long canonical English resource body that is safe to submit for editorial review.')$$,'42501',null,'in-review resource cannot be edited as a draft');
 
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub='23000000-0000-0000-0000-000000000002';
-select lives_ok($$select * from public.approve_resource((select id from public.resources where slug='family-school-meeting'),2)$$,'a different editor can approve');
+select is((select status from public.resources where slug='family-school-meeting'),'in_review'::public.resource_status,'approved resource remains in review until publication');
 select is((select review_status from public.resource_translations where resource_id=(select id from public.resources where slug='family-school-meeting') and locale='en'),'approved','approval applies to English content');
 select lives_ok($$select * from public.publish_resource((select id from public.resources where slug='family-school-meeting'),3)$$,'approved resource can publish');
 select isnt((select first_published_at from public.resources where slug='family-school-meeting'),null::timestamptz,'first publication is recorded');
