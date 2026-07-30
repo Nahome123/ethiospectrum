@@ -4,6 +4,8 @@ import type { AppLocale } from "@/i18n/routing";
 import { ResourceForm } from "@/components/resources/resource-form";
 import { getEditorResource } from "@/lib/resources/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditResourcePage({
   params,
 }: {

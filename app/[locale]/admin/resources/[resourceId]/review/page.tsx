@@ -5,6 +5,8 @@ import { ResourceTransitionControls } from "@/components/resources/resource-tran
 import { SafeMarkdown } from "@/components/resources/safe-markdown";
 import { getEditorResource, isReviewStatus } from "@/lib/resources/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReviewResourcePage({
   params,
 }: {

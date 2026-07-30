@@ -5,6 +5,8 @@ import type { AppLocale } from "@/i18n/routing";
 import { ResourceTransitionControls } from "@/components/resources/resource-transition-controls";
 import { isReviewStatus, getEditorResource } from "@/lib/resources/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditorResourcePage({
   params,
 }: {

@@ -3,6 +3,8 @@ import type { AppLocale } from "@/i18n/routing";
 import { ResourceForm } from "@/components/resources/resource-form";
 import { getResourceAccountHolders } from "@/lib/resources/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewResourcePage({ params }: { params: Promise<{ locale: AppLocale }> }) {
   const { locale } = await params;
   const [t, accountHolders] = await Promise.all([

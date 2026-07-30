@@ -3,6 +3,8 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { getEditorResources } from "@/lib/resources/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditorResourcesPage({ params }: { params: Promise<{ locale: AppLocale }> }) {
   const { locale } = await params;
   const [t, resources] = await Promise.all([
