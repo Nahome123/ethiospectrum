@@ -6,6 +6,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 export type MemberNavigationItem = {
+  badge?: string | null;
   href: string;
   label: string;
 };
@@ -44,7 +45,7 @@ export function MemberNavigation({ closeLabel, items, label, menuLabel, openLabe
         className={cn("mt-4 grid min-w-0 gap-1 lg:mt-6 lg:grid", isOpen ? "grid" : "hidden lg:grid")}
         id="member-navigation"
       >
-        {items.map(({ href, label: itemLabel }) => {
+        {items.map(({ badge, href, label: itemLabel }) => {
           const isCurrent = isCurrentPath(pathname, href);
           return (
             <Link
@@ -57,7 +58,15 @@ export function MemberNavigation({ closeLabel, items, label, menuLabel, openLabe
               key={href}
               onClick={() => setIsOpen(false)}
             >
-              {itemLabel}
+              <span>{itemLabel}</span>
+              {badge ? (
+                <span
+                  aria-label={`${itemLabel}: ${badge}`}
+                  className="ml-2 inline-flex min-w-5 justify-center rounded-full bg-primary px-1.5 py-0.5 text-xs text-primary-foreground"
+                >
+                  {badge}
+                </span>
+              ) : null}
             </Link>
           );
         })}

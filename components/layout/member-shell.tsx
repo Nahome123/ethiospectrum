@@ -8,6 +8,7 @@ import { signOutAction } from "@/lib/auth/actions";
 import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
 import { MemberNavigation } from "./member-navigation";
+import { formatUnseenReminderCount, getUnseenReminderCount } from "@/lib/reminders/server";
 
 const links = [
   "dashboard",
@@ -16,6 +17,7 @@ const links = [
   "documents",
   "assistant",
   "roadmap",
+  "reminders",
   "resources",
   "support",
   "settings",
@@ -24,7 +26,9 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
   const t = await getTranslations();
   const locale = (await getLocale()) as AppLocale;
   const user = await getCurrentSupabaseUser();
-  const profile = user ? await getCurrentMemberProfile(user.id) : null;
+  const [profile, unseenReminderCount] = user
+    ? await Promise.all([getCurrentMemberProfile(user.id), getUnseenReminderCount()])
+    : [null, 0];
   const displayName = profile?.first_name || user?.email || t("member.profile");
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">
@@ -36,8 +40,9 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
         <MemberNavigation
           closeLabel={t("accessibility.closeMenu")}
           items={links.map((link) => ({
+            badge: link === "reminders" ? formatUnseenReminderCount(unseenReminderCount) : null,
             href: link === "resources" ? "/member/resources" : `/${link}`,
-            label: t(`navigation.${link}`),
+            label: link === "reminders" ? t("reminders.title") : t(`navigation.${link}`),
           }))}
           label={t("member.workspace")}
           menuLabel={t("common.menu")}

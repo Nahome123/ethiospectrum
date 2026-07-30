@@ -8,6 +8,10 @@ Implemented: locale-prefixed public routes, responsive marketing UI, centralized
 
 Planned: profile and household synchronization, document OCR, general-purpose AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
 
+## ETH-022 personal reminders
+
+ETH-022 adds opt-in, personal, in-app-only roadmap reminders. Active household users, including viewers, can create reminders only for themselves on readable active action items with due dates. Supported offsets are 0, 1, 3, and 7 days, with a default local time of 09:00. Users confirm an IANA timezone and consent per reminder; the server rejects ambiguous/nonexistent daylight-saving times and calculates UTC scheduling values. No email, SMS, push, recurrence, or external delivery provider is used.
+
 ## Stack and architecture
 
 Next.js 16 App Router, React 19, TypeScript, Tailwind 4, shadcn Luma, next-intl, Zod, React Hook Form, Vitest, Playwright, and axe. Public routes live in `app/[locale]/(marketing)`. `proxy.ts` supports `/en`, `/am`, and `/es`; `/` redirects to `/en`. Household and document data belongs in Supabase behind row-level security.

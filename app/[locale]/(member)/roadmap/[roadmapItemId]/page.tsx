@@ -15,7 +15,10 @@ export default async function RoadmapItemPage({
   if (!roadmapItemIdSchema.safeParse(roadmapItemId).success) notFound();
   const [context, item] = await Promise.all([getRoadmapContext(), getRoadmapItem(roadmapItemId)]);
   if (!context || !item) notFound();
-  const t = await getTranslations({ locale, namespace: "roadmap" });
+  const [t, reminderTranslations] = await Promise.all([
+    getTranslations({ locale, namespace: "roadmap" }),
+    getTranslations({ locale, namespace: "reminders" }),
+  ]);
   return (
     <section className="mx-auto max-w-4xl">
       <Link className="text-sm font-semibold underline" href="/roadmap">
@@ -30,6 +33,14 @@ export default async function RoadmapItemPage({
               href={`/roadmap/${item.id}/edit`}
             >
               {t("editActionItem")}
+            </Link>
+          ) : null}
+          {!item.archived_at && item.due_date && !["completed", "cancelled"].includes(item.status) ? (
+            <Link
+              className="rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary"
+              href={`/roadmap/${item.id}/reminders/new`}
+            >
+              {reminderTranslations("remindMe")}
             </Link>
           ) : null}
           {item.can_archive || item.can_restore ? (
