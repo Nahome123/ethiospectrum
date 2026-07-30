@@ -10,6 +10,16 @@ type AuditRow = Database["public"]["Tables"]["resource_audit_events"]["Row"];
 export type ResourceCard = Pick<ResourceRow, "id" | "slug" | "category" | "published_at" | "status"> &
   Pick<TranslationRow, "title" | "summary">;
 export type EditorResource = ResourceRow & { english: TranslationRow | null };
+export type ResourceAccountHolder = { id: string; label: string };
+
+export async function getResourceAccountHolders(): Promise<ResourceAccountHolder[]> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data } = await supabase.rpc("list_resource_account_holders");
+  return (data ?? []).map((account) => ({
+    id: account.user_id,
+    label: [account.first_name, account.last_name].filter(Boolean).join(" ") || "Account holder",
+  }));
+}
 
 function mapEnglish(resources: ResourceRow[], translations: TranslationRow[]): ResourceCard[] {
   const englishByResource = new Map(

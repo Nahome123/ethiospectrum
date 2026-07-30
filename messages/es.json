@@ -10,6 +10,8 @@
     "category": "Categoría",
     "summary": "Resumen",
     "body": "Contenido del recurso",
+    "availableTo": "Disponible para titulares de cuentas",
+    "availableToHint": "Seleccione una o más cuentas individuales de Ethiospectrum. Solo las cuentas seleccionadas podrán leer este recurso después de la publicación.",
     "create": "Crear borrador",
     "save": "Guardar borrador",
     "saving": "Guardando…",

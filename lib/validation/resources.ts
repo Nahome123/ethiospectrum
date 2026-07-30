@@ -19,6 +19,7 @@ export const resourceDraftSchema = z.object({
   body: trimmed(50, 50000),
 });
 export const resourceCreateSchema = resourceDraftSchema.extend({ idempotencyKey: z.uuid() });
+export const resourceAccountIdsSchema = z.array(z.uuid()).min(1);
 export const resourceUpdateSchema = resourceDraftSchema.extend({ expectedVersion: resourceVersionSchema });
 export const resourceTransitionSchema = z.object({
   resourceId: resourceIdSchema,

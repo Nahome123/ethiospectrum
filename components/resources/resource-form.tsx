@@ -12,17 +12,20 @@ import { resourceCategoryValues, type ResourceCategory } from "@/lib/resources/c
 import { createResource, updateResource } from "@/lib/resources/actions";
 
 type Values = { slug: string; category: ResourceCategory; title: string; summary: string; body: string };
+type AccountHolder = { id: string; label: string };
 
 export function ResourceForm({
   locale,
   resourceId,
   expectedVersion,
   initial,
+  accountHolders = [],
 }: {
   locale: AppLocale;
   resourceId?: string;
   expectedVersion?: number;
   initial?: Partial<Values>;
+  accountHolders?: AccountHolder[];
 }) {
   const t = useTranslations("resourceWorkflow");
   const [idempotencyKey] = useState(() => crypto.randomUUID());
@@ -82,6 +85,25 @@ export function ResourceForm({
           rows={16}
         />
       </div>
+      {!resourceId ? (
+        <div className="space-y-1.5">
+          <Label htmlFor="resource-accounts">{t("availableTo")}</Label>
+          <select
+            className="min-h-32 w-full rounded-md border border-input bg-background p-3"
+            id="resource-accounts"
+            multiple
+            name="accountIds"
+            required
+          >
+            {accountHolders.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.label}
+              </option>
+            ))}
+          </select>
+          <p className="text-sm text-muted-foreground">{t("availableToHint")}</p>
+        </div>
+      ) : null}
       {state.status === "error" ? (
         <p className="text-sm text-destructive" role="alert">
           {state.message}

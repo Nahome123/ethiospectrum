@@ -8,6 +8,7 @@ import { getAuthenticatedUser } from "@/lib/auth/guards";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import {
   resourceCreateSchema,
+  resourceAccountIdsSchema,
   resourceRejectionSchema,
   resourceTransitionSchema,
   resourceUpdateSchema,
@@ -47,7 +48,9 @@ export async function createResource(
     body: value(formData, "body"),
     idempotencyKey: value(formData, "idempotencyKey"),
   });
-  if (!input.success || !(await canManage())) return { status: "error", message: t("validationError") };
+  const accountIds = resourceAccountIdsSchema.safeParse(formData.getAll("accountIds"));
+  if (!input.success || !accountIds.success || !(await canManage()))
+    return { status: "error", message: t("validationError") };
   const supabase = await createServerActionSupabaseClient();
   const { data, error } = await supabase.rpc("create_resource_draft", {
     input_slug: input.data.slug,
@@ -59,6 +62,12 @@ export async function createResource(
   });
   const id = data?.[0]?.resource_id;
   if (error || !id) return { status: "error", message: t("saveError") };
+  const { error: accessError } = await supabase.rpc("set_resource_account_access", {
+    target_resource_id: id,
+    expected_version: data[0].resource_version,
+    input_user_ids: accountIds.data,
+  });
+  if (accessError) return { status: "error", message: t("saveError") };
   paths(locale, id);
   redirect(`/${locale}/admin/resources/${id}`);
 }

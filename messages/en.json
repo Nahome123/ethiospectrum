@@ -10,6 +10,8 @@
     "category": "Category",
     "summary": "Summary",
     "body": "Resource content",
+    "availableTo": "Available to account holders",
+    "availableToHint": "Choose one or more individual Ethiospectrum accounts. Only selected accounts can read this resource after publication.",
     "create": "Create draft",
     "save": "Save draft",
     "saving": "Saving…",

@@ -1521,6 +1521,49 @@ export type Database = {
           },
         ];
       };
+      resource_account_access: {
+        Row: {
+          assigned_by: string;
+          created_at: string;
+          resource_id: string;
+          user_id: string;
+        };
+        Insert: {
+          assigned_by: string;
+          created_at?: string;
+          resource_id: string;
+          user_id: string;
+        };
+        Update: {
+          assigned_by?: string;
+          created_at?: string;
+          resource_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "resource_account_access_assigned_by_fkey";
+            columns: ["assigned_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_account_access_resource_id_fkey";
+            columns: ["resource_id"];
+            isOneToOne: false;
+            referencedRelation: "resources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_account_access_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       resource_audit_events: {
         Row: {
           action: string;
@@ -2443,6 +2486,14 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
+      list_resource_account_holders: {
+        Args: never;
+        Returns: {
+          first_name: string;
+          last_name: string;
+          user_id: string;
+        }[];
+      };
       list_roadmap_assignable_members: {
         Args: never;
         Returns: {
@@ -2602,6 +2653,17 @@ export type Database = {
         Returns: {
           already_exists: boolean;
           assistant_message_id: string;
+        }[];
+      };
+      set_resource_account_access: {
+        Args: {
+          expected_version: number;
+          input_user_ids: string[];
+          target_resource_id: string;
+        };
+        Returns: {
+          resource_id: string;
+          resource_version: number;
         }[];
       };
       submit_resource_for_review: {
