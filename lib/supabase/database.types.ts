@@ -1563,7 +1563,7 @@ export type Database = {
           locked_by: string | null;
           next_attempt_at: string | null;
           offset_days: number | null;
-          remind_at: string;
+          remind_at: string | null;
           roadmap_item_id: string;
           schedule_version: number;
           scheduled_for_utc: string | null;
@@ -1593,7 +1593,7 @@ export type Database = {
           locked_by?: string | null;
           next_attempt_at?: string | null;
           offset_days?: number | null;
-          remind_at: string;
+          remind_at?: string | null;
           roadmap_item_id: string;
           schedule_version?: number;
           scheduled_for_utc?: string | null;
@@ -1623,7 +1623,7 @@ export type Database = {
           locked_by?: string | null;
           next_attempt_at?: string | null;
           offset_days?: number | null;
-          remind_at?: string;
+          remind_at?: string | null;
           roadmap_item_id?: string;
           schedule_version?: number;
           scheduled_for_utc?: string | null;
@@ -2339,6 +2339,10 @@ export type Database = {
           summary_id: string;
         }[];
       };
+      classify_reminder_delivery: {
+        Args: { target_reminder_id: string; worker_run_id: string };
+        Returns: string;
+      };
       complete_document_chat_message: {
         Args: {
           completed_citations: Json;
@@ -2422,10 +2426,6 @@ export type Database = {
         Args: { target_reminder_id: string; worker_run_id: string };
         Returns: boolean;
       };
-      classify_reminder_delivery: {
-        Args: { target_reminder_id: string; worker_run_id: string };
-        Returns: string;
-      };
       create_document_chat_conversation: {
         Args: {
           initial_message_content: string;
@@ -2456,6 +2456,20 @@ export type Database = {
           updated_at: string;
         }[];
       };
+      create_resource_draft: {
+        Args: {
+          input_body: string;
+          input_category: string;
+          input_idempotency_key: string;
+          input_slug: string;
+          input_summary: string;
+          input_title: string;
+        };
+        Returns: {
+          resource_id: string;
+          resource_version: number;
+        }[];
+      };
       create_roadmap_item: {
         Args: {
           input_assigned_to?: string;
@@ -2484,10 +2498,6 @@ export type Database = {
           target_message_id: string;
         };
         Returns: boolean;
-      };
-      fail_reminder_delivery: {
-        Args: { safe_error_code: string; target_reminder_id: string; worker_run_id: string };
-        Returns: string;
       };
       fail_document_ocr_job: {
         Args: {
@@ -2520,6 +2530,14 @@ export type Database = {
           target_summary_id: string;
         };
         Returns: boolean;
+      };
+      fail_reminder_delivery: {
+        Args: {
+          safe_error_code: string;
+          target_reminder_id: string;
+          worker_run_id: string;
+        };
+        Returns: string;
       };
       get_document_chat_conversation: {
         Args: { target_conversation_id: string; target_document_id: string };
@@ -2715,6 +2733,14 @@ export type Database = {
         Args: { target_reminder_id: string };
         Returns: boolean;
       };
+      publish_resource: {
+        Args: { expected_version: number; target_resource_id: string };
+        Returns: {
+          resource_id: string;
+          resource_status: Database["public"]["Enums"]["resource_status"];
+          resource_version: number;
+        }[];
+      };
       queue_document_ocr: {
         Args: { target_document_id: string };
         Returns: {
@@ -2801,10 +2827,6 @@ export type Database = {
           updated_at: string;
         }[];
       };
-      skip_reminder_delivery: {
-        Args: { safe_skip_code: string; target_reminder_id: string; worker_run_id: string };
-        Returns: boolean;
-      };
       retry_document_chat_response: {
         Args: {
           target_conversation_id: string;
@@ -2836,6 +2858,14 @@ export type Database = {
           resource_version: number;
         }[];
       };
+      skip_reminder_delivery: {
+        Args: {
+          safe_skip_code: string;
+          target_reminder_id: string;
+          worker_run_id: string;
+        };
+        Returns: boolean;
+      };
       submit_resource_for_review: {
         Args: { expected_version: number; target_resource_id: string };
         Returns: {
@@ -2863,6 +2893,23 @@ export type Database = {
           resource_id: string;
           resource_status: Database["public"]["Enums"]["resource_status"];
           resource_version: number;
+        }[];
+      };
+      update_personal_reminder: {
+        Args: {
+          expected_schedule_version: number;
+          input_local_time: string;
+          input_offset_days: number;
+          input_scheduled_for_utc: string;
+          input_scheduled_local_date: string;
+          input_timezone: string;
+          input_timezone_offset_minutes: number;
+          target_reminder_id: string;
+        };
+        Returns: {
+          id: string;
+          schedule_version: number;
+          updated_at: string;
         }[];
       };
       update_resource_draft: {
@@ -2898,34 +2945,24 @@ export type Database = {
           updated_at: string;
         }[];
       };
-      update_personal_reminder: {
-        Args: {
-          expected_schedule_version: number;
-          input_local_time: string;
-          input_offset_days: number;
-          input_scheduled_for_utc: string;
-          input_scheduled_local_date: string;
-          input_timezone: string;
-          input_timezone_offset_minutes: number;
-          target_reminder_id: string;
-        };
-        Returns: { id: string; schedule_version: number; updated_at: string }[];
-      };
       update_roadmap_item_and_reschedule_reminders: {
         Args: {
           expected_updated_at: string;
-          input_assigned_to: string | null;
-          input_category: string;
-          input_dependent_id: string | null;
-          input_description: string | null;
-          input_due_date: string | null;
-          input_priority: string;
-          input_reminder_schedules: Json;
-          input_status: string;
+          input_assigned_to?: string;
+          input_category?: string;
+          input_dependent_id?: string;
+          input_description?: string;
+          input_due_date?: string;
+          input_priority?: string;
+          input_reminder_schedules?: Json;
+          input_status?: string;
           input_title: string;
           target_item_id: string;
         };
-        Returns: { id: string; updated_at: string }[];
+        Returns: {
+          id: string;
+          updated_at: string;
+        }[];
       };
       upsert_document_summary_review: {
         Args: {

@@ -90,7 +90,7 @@ create table if not exists public.reminder_delivery_logs (
   worker_run_id text,
   safe_error_code text,
   roadmap_title_snapshot text not null check (char_length(roadmap_title_snapshot) between 1 and 160),
-  created_at timestamptz not null default now(),
+  created_at timestamptz not null default now()
 );
 create unique index if not exists reminder_delivery_logs_one_success_idx
   on public.reminder_delivery_logs (reminder_id) where status = 'delivered';
