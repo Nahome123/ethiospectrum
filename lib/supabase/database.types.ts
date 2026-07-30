@@ -2662,6 +2662,22 @@ export type Database = {
         };
         Returns: { id: string; schedule_version: number; updated_at: string }[];
       };
+      update_roadmap_item_and_reschedule_reminders: {
+        Args: {
+          expected_updated_at: string;
+          input_assigned_to: string | null;
+          input_category: string;
+          input_dependent_id: string | null;
+          input_description: string | null;
+          input_due_date: string | null;
+          input_priority: string;
+          input_reminder_schedules: Json;
+          input_status: string;
+          input_title: string;
+          target_item_id: string;
+        };
+        Returns: { id: string; updated_at: string }[];
+      };
       upsert_document_summary_review: {
         Args: {
           requested_accuracy_rating: number;

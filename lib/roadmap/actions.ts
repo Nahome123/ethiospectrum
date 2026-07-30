@@ -13,6 +13,7 @@ import {
   roadmapItemIdSchema,
 } from "@/lib/validation/roadmap";
 import type { RoadmapActionState } from "./action-state";
+import { prepareReminderReschedule } from "@/lib/reminders/reschedule";
 
 function formValue(formData: FormData, name: string): string {
   return String(formData.get(name) ?? "");
@@ -95,7 +96,35 @@ export async function updateRoadmapItemAction(
     return { status: "error", message: t("validationError") };
 
   const supabase = await createServerActionSupabaseClient();
-  const { error } = await supabase.rpc("update_roadmap_item", {
+  const currentItem = await supabase.from("roadmap_items").select("due_date").eq("id", id.data).maybeSingle();
+  if (currentItem.error || !currentItem.data) return { status: "error", message: t("updateError") };
+  const dueDateChanged = currentItem.data.due_date !== result.data.dueDate;
+  const reminders = dueDateChanged
+    ? await supabase
+        .from("reminders")
+        .select("id, offset_days, scheduled_local_time, schedule_version, status, timezone")
+        .eq("roadmap_item_id", id.data)
+        .eq("status", "scheduled")
+    : { data: [], error: null };
+  if (reminders.error || !reminders.data) return { status: "error", message: t("updateError") };
+  const reminderSchedules = reminders.data.map((reminder) => {
+    if (
+      !result.data.dueDate ||
+      reminder.offset_days === null ||
+      !reminder.scheduled_local_time ||
+      !reminder.timezone
+    ) {
+      return { id: reminder.id, expectedScheduleVersion: reminder.schedule_version, kind: "cancelled" };
+    }
+    const prepared = prepareReminderReschedule({
+      dueDate: result.data.dueDate,
+      offsetDays: reminder.offset_days as 0 | 1 | 3 | 7,
+      localTime: reminder.scheduled_local_time.slice(0, 5),
+      timezone: reminder.timezone,
+    });
+    return { id: reminder.id, expectedScheduleVersion: reminder.schedule_version, ...prepared };
+  });
+  const updateArgs = {
     target_item_id: id.data,
     expected_updated_at: expected.data.expectedUpdatedAt,
     input_title: result.data.title,
@@ -106,7 +135,17 @@ export async function updateRoadmapItemAction(
     input_due_date: result.data.dueDate ?? undefined,
     input_dependent_id: result.data.dependentId ?? undefined,
     input_assigned_to: result.data.assignedTo ?? undefined,
-  });
+  };
+  const { error } = dueDateChanged
+    ? await supabase.rpc("update_roadmap_item_and_reschedule_reminders", {
+        ...updateArgs,
+        input_description: result.data.description,
+        input_due_date: result.data.dueDate,
+        input_dependent_id: result.data.dependentId,
+        input_assigned_to: result.data.assignedTo,
+        input_reminder_schedules: reminderSchedules,
+      })
+    : await supabase.rpc("update_roadmap_item", updateArgs);
   if (error) {
     return { status: "error", message: isStaleError(error) ? t("staleError") : t("updateError") };
   }
