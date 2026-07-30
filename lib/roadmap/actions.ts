@@ -13,6 +13,7 @@ import {
   roadmapItemIdSchema,
 } from "@/lib/validation/roadmap";
 import type { RoadmapActionState } from "./action-state";
+import { getRoadmapReschedulingContext } from "./scheduling";
 
 function formValue(formData: FormData, name: string): string {
   return String(formData.get(name) ?? "");
@@ -95,7 +96,9 @@ export async function updateRoadmapItemAction(
     return { status: "error", message: t("validationError") };
 
   const supabase = await createServerActionSupabaseClient();
-  const { error } = await supabase.rpc("update_roadmap_item", {
+  const rescheduling = await getRoadmapReschedulingContext(supabase, id.data, result.data.dueDate);
+  if (rescheduling.schedules === null) return { status: "error", message: t("updateError") };
+  const updateArgs = {
     target_item_id: id.data,
     expected_updated_at: expected.data.expectedUpdatedAt,
     input_title: result.data.title,
@@ -106,7 +109,17 @@ export async function updateRoadmapItemAction(
     input_due_date: result.data.dueDate ?? undefined,
     input_dependent_id: result.data.dependentId ?? undefined,
     input_assigned_to: result.data.assignedTo ?? undefined,
-  });
+  };
+  const { error } = rescheduling.dueDateChanged
+    ? await supabase.rpc("update_roadmap_item_and_reschedule_reminders", {
+        ...updateArgs,
+        input_description: result.data.description,
+        input_due_date: result.data.dueDate,
+        input_dependent_id: result.data.dependentId,
+        input_assigned_to: result.data.assignedTo,
+        input_reminder_schedules: rescheduling.schedules,
+      })
+    : await supabase.rpc("update_roadmap_item", updateArgs);
   if (error) {
     return { status: "error", message: isStaleError(error) ? t("staleError") : t("updateError") };
   }

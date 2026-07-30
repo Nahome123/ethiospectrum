@@ -1,5 +1,11 @@
 # Architecture
 
+## ETH-022 reminders
+
+Personal reminders are recipient-owned in-app records with forced RLS and immutable delivery logs. Reminder schedules use browser input only as a local-time, offset, and timezone request; server-side Temporal conversion produces the authoritative date, UTC instant, and offset. A protected worker claims reminders atomically, recovers stale locks after ten minutes, and returns aggregate counters only. Delivery retries occur after five then thirty minutes; permanent ineligibility is skipped. The member navigation runs a recipient-scoped server count for delivered-but-unseen reminders and caps the visible value at `99+`.
+
+The pending ETH-022 corrective migration also defines controlled schedule-edit primitives. Due-date rescheduling preparation is intentionally server-side and must be passed to an atomic controlled database operation; browser-calculated timestamps are never authoritative.
+
 ## ETH-021 roadmap
 
 ETH-021 adds a server-rendered household roadmap route group with client components only for form submission, archive confirmation, and keyboard-operable manual ordering. Data reads and every mutation use household-derived Supabase context; roadmap database functions derive the caller and current household from trusted session state. The implementation deliberately does not call, display, schedule, or mutate the existing reminder groundwork.
