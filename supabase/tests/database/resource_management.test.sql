@@ -8,8 +8,7 @@ values
   ('00000000-0000-0000-0000-000000000000','23000000-0000-0000-0000-000000000002','authenticated','authenticated','resource-reviewer@example.test','not-a-real-password',now(),'{}','{}',now(),now()),
   ('00000000-0000-0000-0000-000000000000','23000000-0000-0000-0000-000000000003','authenticated','authenticated','resource-member@example.test','not-a-real-password',now(),'{}','{}',now(),now()),
   ('00000000-0000-0000-0000-000000000000','23000000-0000-0000-0000-000000000004','authenticated','authenticated','resource-admin@example.test','not-a-real-password',now(),'{}','{}',now(),now());
-update public.user_roles set role='content_editor' where user_id in ('23000000-0000-0000-0000-000000000001','23000000-0000-0000-0000-000000000002');
-update public.user_roles set role='administrator' where user_id='23000000-0000-0000-0000-000000000004';
+update public.user_roles set role='administrator' where user_id in ('23000000-0000-0000-0000-000000000001','23000000-0000-0000-0000-000000000002','23000000-0000-0000-0000-000000000004');
 
 select has_table('public','resource_audit_events','resource audit table exists');
 select ok((select relrowsecurity and relforcerowsecurity from pg_class where oid='public.resource_audit_events'::regclass),'resource audit RLS is enabled and forced');

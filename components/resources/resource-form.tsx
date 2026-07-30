@@ -24,7 +24,7 @@ export function ResourceForm({
   expectedVersion?: number;
   initial?: Partial<Values>;
 }) {
-  const t = useTranslations("resources");
+  const t = useTranslations("resourceWorkflow");
   const [idempotencyKey] = useState(() => crypto.randomUUID());
   const action = resourceId
     ? updateResource.bind(null, locale, resourceId)

@@ -12,7 +12,7 @@ export default async function ResourceDetailPage({
 }) {
   const { locale, slug } = await params;
   const [t, resource] = await Promise.all([
-    getTranslations({ locale, namespace: "resources" }),
+    getTranslations({ locale, namespace: "resourceWorkflow" }),
     getPublishedResource(slug),
   ]);
   if (!resource) notFound();

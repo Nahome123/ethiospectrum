@@ -44,7 +44,7 @@ alter table public.resource_audit_events force row level security;
 
 create or replace function private.can_manage_resources()
 returns boolean language sql stable security definer set search_path='' as $$
-  select coalesce(private.current_app_role() in ('content_editor'::public.app_role,'administrator'::public.app_role), false);
+  select coalesce(private.current_app_role() = 'administrator'::public.app_role, false);
 $$;
 drop policy if exists published_resources_read on public.resources;
 drop policy if exists resource_editor_write on public.resources;
@@ -52,7 +52,7 @@ drop policy if exists resource_translations_read on public.resource_translations
 drop policy if exists resource_translations_editor_write on public.resource_translations;
 create policy resources_published_read on public.resources for select using ((status='published' and archived_at is null) or private.can_manage_resources());
 create policy resource_translations_read on public.resource_translations for select using (private.can_manage_resources() or (locale='en' and review_status='approved' and exists (select 1 from public.resources r where r.id=resource_id and r.status='published' and r.archived_at is null)));
-create policy resource_audit_events_editor_read on public.resource_audit_events for select using (private.can_manage_resources());
+create policy resource_audit_events_administrator_read on public.resource_audit_events for select using (private.can_manage_resources());
 revoke all on public.resources, public.resource_translations, public.resource_audit_events from anon, authenticated;
 grant select on public.resources, public.resource_translations to anon, authenticated;
 grant select on public.resource_audit_events to authenticated;

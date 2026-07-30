@@ -20,13 +20,13 @@ function value(data: FormData, name: string): string {
 
 async function canManage(): Promise<boolean> {
   const user = await getAuthenticatedUser();
-  return Boolean(user && (user.role === "content_editor" || user.role === "administrator"));
+  return user?.role === "administrator";
 }
 
 function paths(locale: AppLocale, id?: string) {
   revalidatePath(`/${locale}/resources`);
-  revalidatePath(`/${locale}/editor/resources`);
-  if (id) revalidatePath(`/${locale}/editor/resources/${id}`);
+  revalidatePath(`/${locale}/admin/resources`);
+  if (id) revalidatePath(`/${locale}/admin/resources/${id}`);
 }
 
 function stale(error: { code?: string } | null) {
@@ -38,7 +38,7 @@ export async function createResource(
   _state: ResourceActionState,
   formData: FormData,
 ): Promise<ResourceActionState> {
-  const t = await getTranslations({ locale, namespace: "resources" });
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const input = resourceCreateSchema.safeParse({
     slug: value(formData, "slug"),
     category: value(formData, "category"),
@@ -60,7 +60,7 @@ export async function createResource(
   const id = data?.[0]?.resource_id;
   if (error || !id) return { status: "error", message: t("saveError") };
   paths(locale, id);
-  redirect(`/${locale}/editor/resources/${id}`);
+  redirect(`/${locale}/admin/resources/${id}`);
 }
 
 export async function updateResource(
@@ -69,7 +69,7 @@ export async function updateResource(
   _state: ResourceActionState,
   formData: FormData,
 ): Promise<ResourceActionState> {
-  const t = await getTranslations({ locale, namespace: "resources" });
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const input = resourceUpdateSchema.safeParse({
     slug: value(formData, "slug"),
     category: value(formData, "category"),
@@ -91,7 +91,7 @@ export async function updateResource(
   });
   if (error) return { status: "error", message: stale(error) ? t("staleError") : t("saveError") };
   paths(locale, resourceId);
-  redirect(`/${locale}/editor/resources/${resourceId}`);
+  redirect(`/${locale}/admin/resources/${resourceId}`);
 }
 
 type TransitionName =
@@ -109,7 +109,7 @@ async function transition(
   state: ResourceActionState,
   formData: FormData,
 ): Promise<ResourceActionState> {
-  const t = await getTranslations({ locale, namespace: "resources" });
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const input = resourceTransitionSchema.safeParse({
     resourceId,
     expectedVersion: value(formData, "expectedVersion"),
@@ -187,7 +187,7 @@ export async function rejectResource(
   _state: ResourceActionState,
   formData: FormData,
 ): Promise<ResourceActionState> {
-  const t = await getTranslations({ locale, namespace: "resources" });
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const input = resourceRejectionSchema.safeParse({
     resourceId,
     expectedVersion: value(formData, "expectedVersion"),

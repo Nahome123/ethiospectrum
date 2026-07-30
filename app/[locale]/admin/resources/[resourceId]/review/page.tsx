@@ -12,7 +12,7 @@ export default async function ReviewResourcePage({
 }) {
   const { locale, resourceId } = await params;
   const [t, resource] = await Promise.all([
-    getTranslations({ locale, namespace: "resources" }),
+    getTranslations({ locale, namespace: "resourceWorkflow" }),
     getEditorResource(resourceId),
   ]);
   if (!resource?.english || !isReviewStatus(resource.english.review_status)) notFound();

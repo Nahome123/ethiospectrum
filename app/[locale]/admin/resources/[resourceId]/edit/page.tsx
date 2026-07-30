@@ -11,7 +11,7 @@ export default async function EditResourcePage({
 }) {
   const { locale, resourceId } = await params;
   const [t, resource] = await Promise.all([
-    getTranslations({ locale, namespace: "resources" }),
+    getTranslations({ locale, namespace: "resourceWorkflow" }),
     getEditorResource(resourceId),
   ]);
   if (!resource?.english || resource.status !== "draft") notFound();

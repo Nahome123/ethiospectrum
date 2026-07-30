@@ -38,12 +38,3 @@ export async function requireRole(
   }
   return user;
 }
-
-/** Content editors and administrators share the global, non-household resource workspace. */
-export async function requireResourceEditor(locale: AppLocale, returnTo: string): Promise<AuthenticatedUser> {
-  const user = await requireUser(locale, returnTo);
-  if (user.role !== "content_editor" && user.role !== "administrator") {
-    redirect(`/${locale}/auth-error?reason=access-denied`);
-  }
-  return user;
-}

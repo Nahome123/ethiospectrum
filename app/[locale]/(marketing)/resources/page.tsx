@@ -12,7 +12,7 @@ export default async function ResourcesPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const [{ locale }, search] = await Promise.all([params, searchParams]);
-  const t = await getTranslations({ locale, namespace: "resources" });
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const category = resourceCategoryValues.includes(search.category as ResourceCategory)
     ? (search.category as ResourceCategory)
     : undefined;

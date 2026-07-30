@@ -12,13 +12,13 @@ export default async function EditorResourcePage({
 }) {
   const { locale, resourceId } = await params;
   const [t, resource] = await Promise.all([
-    getTranslations({ locale, namespace: "resources" }),
+    getTranslations({ locale, namespace: "resourceWorkflow" }),
     getEditorResource(resourceId),
   ]);
   if (!resource || !resource.english || !isReviewStatus(resource.english.review_status)) notFound();
   return (
     <main className="max-w-4xl">
-      <Link className="text-sm underline" href="/editor/resources">
+      <Link className="text-sm underline" href="/admin/resources">
         {t("backToEditor")}
       </Link>
       <header className="mt-6 flex flex-wrap items-start justify-between gap-4">
@@ -31,7 +31,7 @@ export default async function EditorResourcePage({
         {resource.status === "draft" ? (
           <Link
             className="rounded-md border px-4 py-2 text-sm font-medium"
-            href={`/editor/resources/${resourceId}/edit`}
+            href={`/admin/resources/${resourceId}/edit`}
           >
             {t("edit")}
           </Link>

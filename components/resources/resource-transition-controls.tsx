@@ -57,7 +57,7 @@ export function ResourceTransitionControls({
   status: ResourceStatus;
   reviewStatus: ResourceReviewStatus;
 }) {
-  const t = useTranslations("resources");
+  const t = useTranslations("resourceWorkflow");
   const bind = (fn: typeof submitResourceForReview) => fn.bind(null, locale, resourceId);
   return (
     <div className="flex flex-wrap gap-2" aria-label={t("workflowActions")}>
@@ -103,7 +103,7 @@ function RejectControl({
   resourceId: string;
   version: number;
 }) {
-  const t = useTranslations("resources");
+  const t = useTranslations("resourceWorkflow");
   const [state, action, pending] = useActionState(
     rejectResource.bind(null, locale, resourceId),
     initialResourceActionState,

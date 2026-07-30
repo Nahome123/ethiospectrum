@@ -4,7 +4,7 @@ import { ResourceForm } from "@/components/resources/resource-form";
 
 export default async function NewResourcePage({ params }: { params: Promise<{ locale: AppLocale }> }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "resources" });
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   return (
     <main className="max-w-3xl">
       <h1 className="text-3xl font-bold">{t("new")}</h1>
