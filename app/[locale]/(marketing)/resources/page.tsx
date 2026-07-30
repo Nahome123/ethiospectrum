@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { resourceCategoryValues, type ResourceCategory } from "@/lib/resources/constants";
 import { getPublishedResources } from "@/lib/resources/server";
+import { requireUser } from "@/lib/auth/guards";
 
 export default async function ResourcesPage({
   params,
@@ -12,6 +13,7 @@ export default async function ResourcesPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const [{ locale }, search] = await Promise.all([params, searchParams]);
+  await requireUser(locale, `/${locale}/resources`);
   const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const category = resourceCategoryValues.includes(search.category as ResourceCategory)
     ? (search.category as ResourceCategory)

@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { SafeMarkdown } from "@/components/resources/safe-markdown";
 import { getPublishedResource } from "@/lib/resources/server";
+import { requireUser } from "@/lib/auth/guards";
 
 export default async function ResourceDetailPage({
   params,
@@ -11,6 +12,7 @@ export default async function ResourceDetailPage({
   params: Promise<{ locale: AppLocale; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  await requireUser(locale, `/${locale}/resources/${slug}`);
   const [t, resource] = await Promise.all([
     getTranslations({ locale, namespace: "resourceWorkflow" }),
     getPublishedResource(slug),
