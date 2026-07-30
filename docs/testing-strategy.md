@@ -1,5 +1,9 @@
 # Testing strategy
 
+## ETH-022 reminder verification
+
+Reminder unit tests cover offset scheduling, timezone and daylight-saving rejection, five-minute minimums, rescheduling preparation, and capped unseen-count presentation. Database coverage is defined for recipient isolation, worker grants, immutable logs, optimistic schedule edits, lifecycle cancellation, retry and skip transitions, and roadmap due-date rescheduling. These tests require a completed local Supabase reset. The current local Supabase CLI/container schema-initialization blocker occurs before application migrations and pgTAP execution, so no ETH-022 migration or pgTAP result is claimed until that environment is repaired.
+
 ## ETH-021 roadmap verification
 
 ETH-021 database tests use synthetic households and verify forced RLS, anonymous denial, owner/administrator/member/viewer boundaries, removed/unrelated denial, idempotent creation, member self-assignment restrictions, status transitions, completion/reopen behavior, stale writes, archive/restore, manual ordering, and no roadmap writes to reminders. Unit tests cover Unicode/whitespace/length/date validation, controlled query parsing, status rules, and the server-action/database-function boundary. Before rollout, run a local browser flow with synthetic accounts to verify all locales, keyboard ordering, read-only viewer behavior, archived-item visibility, narrow wrapping, and 200% zoom; do not use hosted data.

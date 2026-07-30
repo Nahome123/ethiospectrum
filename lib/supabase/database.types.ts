@@ -1473,38 +1473,178 @@ export type Database = {
         };
         Relationships: [];
       };
+      reminder_delivery_logs: {
+        Row: {
+          attempt_number: number;
+          completed_at: string | null;
+          created_at: string;
+          household_id: string;
+          id: string;
+          recipient_user_id: string;
+          reminder_id: string;
+          roadmap_item_id: string;
+          roadmap_title_snapshot: string;
+          safe_error_code: string | null;
+          scheduled_for_utc: string;
+          started_at: string | null;
+          status: string;
+          worker_run_id: string | null;
+        };
+        Insert: {
+          attempt_number: number;
+          completed_at?: string | null;
+          created_at?: string;
+          household_id: string;
+          id?: string;
+          recipient_user_id: string;
+          reminder_id: string;
+          roadmap_item_id: string;
+          roadmap_title_snapshot: string;
+          safe_error_code?: string | null;
+          scheduled_for_utc: string;
+          started_at?: string | null;
+          status: string;
+          worker_run_id?: string | null;
+        };
+        Update: {
+          attempt_number?: number;
+          completed_at?: string | null;
+          created_at?: string;
+          household_id?: string;
+          id?: string;
+          recipient_user_id?: string;
+          reminder_id?: string;
+          roadmap_item_id?: string;
+          roadmap_title_snapshot?: string;
+          safe_error_code?: string | null;
+          scheduled_for_utc?: string;
+          started_at?: string | null;
+          status?: string;
+          worker_run_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reminder_delivery_logs_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reminder_delivery_logs_reminder_id_fkey";
+            columns: ["reminder_id"];
+            isOneToOne: false;
+            referencedRelation: "reminders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reminder_delivery_logs_roadmap_item_id_fkey";
+            columns: ["roadmap_item_id"];
+            isOneToOne: false;
+            referencedRelation: "roadmap_items";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       reminders: {
         Row: {
+          attempt_count: number;
+          cancellation_reason: string | null;
+          cancelled_at: string | null;
           channel: string;
+          consent_version: string | null;
+          consented_at: string | null;
           created_at: string;
+          delivered_at: string | null;
+          household_id: string;
           id: string;
+          idempotency_key: string | null;
+          locked_at: string | null;
+          locked_by: string | null;
+          next_attempt_at: string | null;
+          offset_days: number | null;
           remind_at: string;
           roadmap_item_id: string;
+          schedule_version: number;
+          scheduled_for_utc: string | null;
+          scheduled_local_date: string | null;
+          scheduled_local_time: string | null;
+          seen_at: string | null;
           sent_at: string | null;
           status: string;
+          timezone: string | null;
+          timezone_offset_minutes: number | null;
+          updated_at: string;
           user_id: string;
         };
         Insert: {
-          channel: string;
+          attempt_count?: number;
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          channel?: string;
+          consent_version?: string | null;
+          consented_at?: string | null;
           created_at?: string;
+          delivered_at?: string | null;
+          household_id: string;
           id?: string;
+          idempotency_key?: string | null;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          next_attempt_at?: string | null;
+          offset_days?: number | null;
           remind_at: string;
           roadmap_item_id: string;
+          schedule_version?: number;
+          scheduled_for_utc?: string | null;
+          scheduled_local_date?: string | null;
+          scheduled_local_time?: string | null;
+          seen_at?: string | null;
           sent_at?: string | null;
           status?: string;
+          timezone?: string | null;
+          timezone_offset_minutes?: number | null;
+          updated_at?: string;
           user_id: string;
         };
         Update: {
+          attempt_count?: number;
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
           channel?: string;
+          consent_version?: string | null;
+          consented_at?: string | null;
           created_at?: string;
+          delivered_at?: string | null;
+          household_id?: string;
           id?: string;
+          idempotency_key?: string | null;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          next_attempt_at?: string | null;
+          offset_days?: number | null;
           remind_at?: string;
           roadmap_item_id?: string;
+          schedule_version?: number;
+          scheduled_for_utc?: string | null;
+          scheduled_local_date?: string | null;
+          scheduled_local_time?: string | null;
+          seen_at?: string | null;
           sent_at?: string | null;
           status?: string;
+          timezone?: string | null;
+          timezone_offset_minutes?: number | null;
+          updated_at?: string;
           user_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "reminders_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "reminders_roadmap_item_id_fkey";
             columns: ["roadmap_item_id"];
@@ -2114,6 +2254,22 @@ export type Database = {
         Args: { target_household: string };
         Returns: boolean;
       };
+      cancel_personal_reminder: {
+        Args: { expected_updated_at: string; target_reminder_id: string };
+        Returns: {
+          id: string;
+          updated_at: string;
+        }[];
+      };
+      claim_due_reminders: {
+        Args: { requested_limit?: number; worker_run_id: string };
+        Returns: {
+          attempt_number: number;
+          recipient_user_id: string;
+          reminder_id: string;
+          roadmap_item_id: string;
+        }[];
+      };
       claim_next_document_chat_message: {
         Args: { worker_identity: string };
         Returns: {
@@ -2262,6 +2418,14 @@ export type Database = {
         };
         Returns: string;
       };
+      complete_reminder_delivery: {
+        Args: { target_reminder_id: string; worker_run_id: string };
+        Returns: boolean;
+      };
+      classify_reminder_delivery: {
+        Args: { target_reminder_id: string; worker_run_id: string };
+        Returns: string;
+      };
       create_document_chat_conversation: {
         Args: {
           initial_message_content: string;
@@ -2276,18 +2440,20 @@ export type Database = {
         }[];
       };
       create_household: { Args: { raw_name: string }; Returns: string };
-      create_resource_draft: {
+      create_personal_reminder: {
         Args: {
-          input_body: string;
-          input_category: string;
           input_idempotency_key: string;
-          input_slug: string;
-          input_summary: string;
-          input_title: string;
+          input_local_time: string;
+          input_offset_days: number;
+          input_scheduled_for_utc: string;
+          input_scheduled_local_date: string;
+          input_timezone: string;
+          input_timezone_offset_minutes: number;
+          target_roadmap_item_id: string;
         };
         Returns: {
-          resource_id: string;
-          resource_version: number;
+          id: string;
+          updated_at: string;
         }[];
       };
       create_roadmap_item: {
@@ -2318,6 +2484,10 @@ export type Database = {
           target_message_id: string;
         };
         Returns: boolean;
+      };
+      fail_reminder_delivery: {
+        Args: { safe_error_code: string; target_reminder_id: string; worker_run_id: string };
+        Returns: string;
       };
       fail_document_ocr_job: {
         Args: {
@@ -2541,13 +2711,9 @@ export type Database = {
           updated_at: string;
         }[];
       };
-      publish_resource: {
-        Args: { expected_version: number; target_resource_id: string };
-        Returns: {
-          resource_id: string;
-          resource_status: Database["public"]["Enums"]["resource_status"];
-          resource_version: number;
-        }[];
+      mark_reminder_seen: {
+        Args: { target_reminder_id: string };
+        Returns: boolean;
       };
       queue_document_ocr: {
         Args: { target_document_id: string };
@@ -2634,6 +2800,10 @@ export type Database = {
           id: string;
           updated_at: string;
         }[];
+      };
+      skip_reminder_delivery: {
+        Args: { safe_skip_code: string; target_reminder_id: string; worker_run_id: string };
+        Returns: boolean;
       };
       retry_document_chat_response: {
         Args: {
@@ -2727,6 +2897,35 @@ export type Database = {
           id: string;
           updated_at: string;
         }[];
+      };
+      update_personal_reminder: {
+        Args: {
+          expected_schedule_version: number;
+          input_local_time: string;
+          input_offset_days: number;
+          input_scheduled_for_utc: string;
+          input_scheduled_local_date: string;
+          input_timezone: string;
+          input_timezone_offset_minutes: number;
+          target_reminder_id: string;
+        };
+        Returns: { id: string; schedule_version: number; updated_at: string }[];
+      };
+      update_roadmap_item_and_reschedule_reminders: {
+        Args: {
+          expected_updated_at: string;
+          input_assigned_to: string | null;
+          input_category: string;
+          input_dependent_id: string | null;
+          input_description: string | null;
+          input_due_date: string | null;
+          input_priority: string;
+          input_reminder_schedules: Json;
+          input_status: string;
+          input_title: string;
+          target_item_id: string;
+        };
+        Returns: { id: string; updated_at: string }[];
       };
       upsert_document_summary_review: {
         Args: {

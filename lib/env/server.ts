@@ -82,6 +82,11 @@ const optionalDocumentOcrSecret = z.preprocess(
   z.string().min(32).optional(),
 );
 
+const optionalReminderWorkerSecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(32).optional(),
+);
+
 export interface ServerSupabaseEnv extends PublicSupabaseEnv {
   secretKey?: string;
 }
@@ -306,4 +311,11 @@ export function requireDocumentOcrSecret(input?: EnvInput): string {
     );
   }
   return secret;
+}
+
+/** Separate internal-invocation secret for in-app reminder delivery. */
+export function getReminderWorkerSecret(input?: EnvInput): string | undefined {
+  return optionalReminderWorkerSecret.parse(
+    input?.REMINDER_WORKER_SECRET ?? process.env.REMINDER_WORKER_SECRET,
+  );
 }

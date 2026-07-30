@@ -8,10 +8,11 @@ const migrationSource = readFileSync(
 );
 
 describe("roadmap authorization boundaries", () => {
-  it("keeps mutations in server actions and avoids service-role or reminder access", () => {
+  it("keeps mutations in server actions and delegates schedule access to the atomic workflow", () => {
     expect(actionSource).toContain('"use server"');
     expect(actionSource).not.toMatch(/supabase\/admin|createAdminClient|SUPABASE_SECRET_KEY/u);
-    expect(actionSource).not.toContain("reminders");
+    expect(actionSource).not.toContain('.from("reminders")');
+    expect(actionSource).toContain("update_roadmap_item_and_reschedule_reminders");
     expect(actionSource).toContain("revalidatePath");
   });
 
