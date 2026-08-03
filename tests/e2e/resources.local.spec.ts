@@ -104,6 +104,8 @@ async function createResourceFixture({
   englishBody = "A synthetic canonical English body that is deliberately long enough for browser validation and safe rendering.",
   category = "education",
   status = "published",
+  resourceType = "article",
+  featuredRank = null,
   translations = [],
 }: {
   authorId: string;
@@ -113,6 +115,8 @@ async function createResourceFixture({
   englishBody?: string;
   category?: "education" | "healthcare";
   status?: "draft" | "in_review" | "published" | "archived";
+  resourceType?: "article" | "guide" | "video" | "template" | "event_recap";
+  featuredRank?: number | null;
   translations?: TranslationFixture[];
 }) {
   const resourceId = randomUUID();
@@ -120,14 +124,14 @@ async function createResourceFixture({
   const archived = status === "archived";
   runLocalSql(
     `insert into public.resources
-      (id,slug,category,status,author_id,updated_by,published_by,published_at,first_published_at,archived_by,archived_at,version)
+      (id,slug,category,status,author_id,updated_by,published_by,published_at,first_published_at,archived_by,archived_at,version,resource_type,featured_rank)
      values
       (:'resource_id',:'slug',:'category',:'status',:'author_id',:'author_id',
        case when :'published'='1' then :'author_id'::uuid else null end,
        case when :'published'='1' then now() else null end,
        case when :'published'='1' then now() else null end,
        case when :'archived'='1' then :'author_id'::uuid else null end,
-       case when :'archived'='1' then now() else null end,1)`,
+       case when :'archived'='1' then now() else null end,1,:'resource_type',nullif(:'featured_rank','')::smallint)`,
     {
       resource_id: resourceId,
       slug,
@@ -136,6 +140,8 @@ async function createResourceFixture({
       author_id: authorId,
       published: published ? "1" : "0",
       archived: archived ? "1" : "0",
+      resource_type: resourceType,
+      featured_rank: String(featuredRank ?? ""),
     },
   );
   createdResourceIds.push(resourceId);
@@ -484,6 +490,71 @@ test.describe("resource translations (local Supabase only)", () => {
       page.getByText(/review_status|source_translation_version|Synthetic internal review note/),
     ).toHaveCount(0);
     await expect(page.getByText(current.id)).toHaveCount(0);
+  });
+
+  test("supports member discovery, private bookmarks, roadmap links, and administrator curation", async ({
+    browser,
+  }) => {
+    const administrator = await createActor("administrator", "discovery-admin");
+    const member = await createActor("member", "discovery-member");
+    await createHouseholdFixture(member.id, `Discovery household ${randomUUID()}`);
+    const suffix = randomUUID().slice(0, 8);
+    const resource = await createResourceFixture({
+      authorId: administrator.id,
+      slug: `member-discovery-${suffix}`,
+      englishTitle: `Member discovery guide ${suffix}`,
+      englishSummary: "A synthetic reviewed guide for member discovery and roadmap browser testing.",
+      resourceType: "guide",
+      featuredRank: 9,
+    });
+    runLocalSql(
+      "insert into public.resource_account_access(resource_id,user_id,assigned_by) values (:'resource_id',:'user_id',:'assigned_by')",
+      { assigned_by: administrator.id, resource_id: resource.id, user_id: member.id },
+    );
+
+    const memberContext = await browser.newContext();
+    const memberPage = await memberContext.newPage();
+    await login(memberPage, member.email);
+    await memberPage.goto("/en/member/resources");
+    await expect(
+      memberPage.getByRole("heading", { name: "Discover trusted guidance for your next step." }),
+    ).toBeVisible();
+    const forYou = memberPage.getByRole("region", { name: "Selected for you" });
+    await expect(forYou.getByRole("link", { name: `Member discovery guide ${suffix}` })).toBeVisible();
+    await expect(forYou.getByText("Guide", { exact: true }).first()).toBeVisible();
+
+    await Promise.all([
+      memberPage.waitForURL(new RegExp(`/en/member/resources/${resource.slug}$`)),
+      forYou.getByRole("link", { name: `Member discovery guide ${suffix}` }).click(),
+    ]);
+    await expect(memberPage.getByText("Selected for you", { exact: true })).toBeVisible();
+    await memberPage.getByRole("button", { name: "Save this resource", exact: true }).click();
+    await expect(memberPage.getByText("Resource saved.")).toBeVisible();
+    await memberPage.getByRole("button", { name: "Add to roadmap" }).click();
+    await expect(memberPage.getByText("Resource added to your roadmap.")).toBeVisible();
+
+    await memberPage.goto("/en/member/resources?bookmarked=1");
+    await expect(memberPage.getByRole("link", { name: `Member discovery guide ${suffix}` })).toBeVisible();
+    await memberPage.goto("/en/roadmap");
+    await expect(memberPage.getByText(`Member discovery guide ${suffix}`).first()).toBeVisible();
+
+    const adminContext = await browser.newContext();
+    const adminPage = await adminContext.newPage();
+    await login(adminPage, administrator.email);
+    await adminPage.goto(`/en/admin/resources/${resource.id}`);
+    await adminPage.getByLabel("Resource type").selectOption("video");
+    await adminPage.getByLabel("Featured position").fill("3");
+    await adminPage.getByRole("button", { name: "Save discovery settings" }).click();
+    await expect(adminPage.getByText("Saved.")).toBeVisible();
+
+    await memberPage.goto("/en/member/resources?featured=1");
+    const featuredCard = memberPage
+      .getByRole("article")
+      .filter({ has: memberPage.getByRole("link", { name: `Member discovery guide ${suffix}` }) });
+    await expect(featuredCard.getByText("Video", { exact: true })).toBeVisible();
+    await expect(featuredCard.getByRole("link", { name: `Member discovery guide ${suffix}` })).toBeVisible();
+    await adminContext.close();
+    await memberContext.close();
   });
 
   test("enforces global editor authorization and household isolation", async ({ browser, page }) => {

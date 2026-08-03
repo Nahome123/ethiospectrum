@@ -1,5 +1,9 @@
 # Security and privacy
 
+## Member resource discovery controls
+
+Discovery reads require `auth.uid()` and expose only reviewed published content through fixed-search-path security-definer functions. Search text, locale, category, type, page, and page size are bounded; drafts, archived resources, workflow metadata, and stale or unapproved translations fail closed. Bookmarks are private to the signed-in user and accept no browser user identifier. “Add to roadmap” derives the caller, first active household membership, household permission, localized resource content, assignment, status, ordering, and idempotency key in PostgreSQL; viewers and users without an active household are denied. Administrator discovery updates require the global administrator role, optimistic resource version, allowlisted type/rank values, and an immutable safe audit event. No external media, analytics, recommendation provider, or household data is used to render catalog cards.
+
 ## ETH-024 translation boundary
 
 Translation authorization is exclusively the global content-editor or administrator role. It grants no household, dependent, document, roadmap, reminder, or private-profile access, and translation routes/actions do not load household context. Controlled functions derive actor, validate parent/locale/content/version, enforce different-user review, and audit atomically. Public callers receive reader-safe selected content only; workflow status, review notes, identities, versions, and audits remain editor-only.

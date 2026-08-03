@@ -1,5 +1,9 @@
 # Multilingual strategy
 
+## Member resource discovery
+
+The learning hub, filters, topics, resource types, bookmark and roadmap actions, empty states, pagination, and administrator discovery controls have aligned English, Amharic, and Spanish message keys. Resource cards and details use the ETH-024 approved/current requested-locale selection and display the existing localized English-fallback notice when needed. Amharic remains left-to-right. New Amharic and Spanish interface wording requires native-speaker review before release.
+
 ## ETH-024 reviewed resources
 
 Resource translations support canonical English plus reviewed Amharic and Spanish. Reader selection is requested locale then English only: missing, stale, draft, and in-review translations display approved English with a localized accessible fallback notice. Amharic remains left-to-right. The added UI strings and published resource content require native Amharic and Spanish review before release.

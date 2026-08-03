@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import type { ResourceType } from "@/lib/resources/constants";
 import { getEditorResources } from "@/lib/resources/server";
 
 export const dynamic = "force-dynamic";
@@ -33,6 +34,7 @@ export default async function EditorResourcesPage({ params }: { params: Promise<
               <th className="p-4">{t("status")}</th>
               <th className="p-4">{t("reviewStatus")}</th>
               <th className="p-4">{t("category")}</th>
+              <th className="p-4">{t("resourceType")}</th>
             </tr>
           </thead>
           <tbody>
@@ -48,6 +50,7 @@ export default async function EditorResourcesPage({ params }: { params: Promise<
                   {resource.english ? t(`statuses.${resource.english.review_status as "draft"}`) : "—"}
                 </td>
                 <td className="p-4">{resource.category}</td>
+                <td className="p-4">{t(`types.${resource.resource_type as ResourceType}`)}</td>
               </tr>
             ))}
           </tbody>
