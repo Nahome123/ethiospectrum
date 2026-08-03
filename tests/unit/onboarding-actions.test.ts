@@ -3,6 +3,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   getUser: vi.fn(),
   rpc: vi.fn(),
+  from: vi.fn(),
+  update: vi.fn(),
+  eq: vi.fn(),
+  is: vi.fn(),
+  select: vi.fn(),
+  maybeSingle: vi.fn(),
+  getCurrentHouseholdContext: vi.fn(),
   redirect: vi.fn(),
   revalidatePath: vi.fn(),
 }));
@@ -11,13 +18,17 @@ vi.mock("@/lib/supabase/server-action", () => ({
   createServerActionSupabaseClient: vi.fn(async () => ({
     auth: { getUser: mocks.getUser },
     rpc: mocks.rpc,
+    from: mocks.from,
   })),
+}));
+vi.mock("@/lib/households/server", () => ({
+  getCurrentHouseholdContext: mocks.getCurrentHouseholdContext,
 }));
 vi.mock("next-intl/server", () => ({ getTranslations: vi.fn(async () => (key: string) => key) }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
 
-import { completeOnboardingAction } from "@/lib/onboarding/actions";
+import { completeOnboardingAction, updateHouseholdAction } from "@/lib/onboarding/actions";
 import { ONBOARDING_POLICY_VERSION } from "@/lib/onboarding/policy";
 
 const idle = { status: "idle" } as const;
@@ -44,6 +55,17 @@ describe("onboarding actions", () => {
       error: null,
     });
     mocks.rpc.mockResolvedValue({ data: "household-id", error: null });
+    mocks.getCurrentHouseholdContext.mockResolvedValue({
+      household: { id: "household-id", name: "Teshome family" },
+      permission: "owner",
+      canManage: true,
+    });
+    mocks.from.mockReturnValue({ update: mocks.update });
+    mocks.update.mockReturnValue({ eq: mocks.eq });
+    mocks.eq.mockReturnValue({ is: mocks.is });
+    mocks.is.mockReturnValue({ select: mocks.select });
+    mocks.select.mockReturnValue({ maybeSingle: mocks.maybeSingle });
+    mocks.maybeSingle.mockResolvedValue({ data: { id: "household-id" }, error: null });
   });
 
   it("persists the household with the current consent version and redirects to the locale dashboard", async () => {
@@ -117,5 +139,59 @@ describe("onboarding actions", () => {
       ),
     ).resolves.toEqual({ status: "error", message: "" });
     expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("updates the server-selected household for an owner and redirects to onboarding", async () => {
+    await updateHouseholdAction(
+      "es",
+      idle,
+      formData({ householdName: "  Familia Bekele  ", householdId: "forged-household-id" }),
+    );
+
+    expect(mocks.update).toHaveBeenCalledWith({ name: "Familia Bekele" });
+    expect(mocks.eq).toHaveBeenCalledWith("id", "household-id");
+    expect(mocks.is).toHaveBeenCalledWith("deleted_at", null);
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/", "layout");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/es/onboarding");
+    expect(mocks.redirect).toHaveBeenCalledWith("/es/onboarding");
+  });
+
+  it("denies household updates to members without management permission", async () => {
+    mocks.getCurrentHouseholdContext.mockResolvedValue({
+      household: { id: "household-id", name: "Teshome family" },
+      permission: "member",
+      canManage: false,
+    });
+
+    await expect(
+      updateHouseholdAction("en", idle, formData({ householdName: "New family name" })),
+    ).resolves.toEqual({
+      status: "error",
+      message: "updateAccessDenied",
+      householdName: "New family name",
+    });
+    expect(mocks.from).not.toHaveBeenCalled();
+  });
+
+  it("validates household updates before loading authorization context", async () => {
+    await expect(updateHouseholdAction("am", idle, formData({ householdName: "   " }))).resolves.toEqual({
+      status: "error",
+      message: "validationError",
+      householdName: "   ",
+    });
+    expect(mocks.getCurrentHouseholdContext).not.toHaveBeenCalled();
+  });
+
+  it("returns a safe localized error when the household update fails", async () => {
+    mocks.maybeSingle.mockResolvedValue({ data: null, error: new Error("private database detail") });
+
+    await expect(
+      updateHouseholdAction("en", idle, formData({ householdName: "New family name" })),
+    ).resolves.toEqual({
+      status: "error",
+      message: "updateError",
+      householdName: "New family name",
+    });
+    expect(mocks.redirect).not.toHaveBeenCalled();
   });
 });

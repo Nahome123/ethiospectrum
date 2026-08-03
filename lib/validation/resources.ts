@@ -20,7 +20,10 @@ export const resourceDraftSchema = z.object({
 });
 export const resourceCreateSchema = resourceDraftSchema.extend({ idempotencyKey: z.uuid() });
 export const resourceAccountIdsSchema = z.array(z.uuid()).min(1);
-export const resourceUpdateSchema = resourceDraftSchema.extend({ expectedVersion: resourceVersionSchema });
+export const resourceUpdateSchema = resourceDraftSchema.extend({
+  resourceId: resourceIdSchema,
+  expectedVersion: resourceVersionSchema,
+});
 export const resourceTransitionSchema = z.object({
   resourceId: resourceIdSchema,
   expectedVersion: resourceVersionSchema,

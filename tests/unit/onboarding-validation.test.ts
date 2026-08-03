@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createOnboardingSchema } from "@/lib/validation/onboarding";
+import { createHouseholdNameSchema, createOnboardingSchema } from "@/lib/validation/onboarding";
 
 const messages = { householdName: "household name", consent: "consent" };
 
@@ -45,4 +45,12 @@ describe("onboarding schema", () => {
         consentAccepted: false,
       }).success,
     ).toBe(false));
+
+  it("validates a household name update without requiring onboarding consent again", () => {
+    const parsed = createHouseholdNameSchema(messages.householdName).safeParse({
+      householdName: "  Updated family  ",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.householdName).toBe("Updated family");
+  });
 });

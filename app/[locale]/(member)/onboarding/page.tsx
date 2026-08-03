@@ -1,16 +1,18 @@
 import { HousePlus, UsersRound } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { HouseholdEditForm } from "@/components/onboarding/household-edit-form";
 import { OnboardingForm } from "@/components/onboarding/onboarding-form";
-import { getCurrentHousehold } from "@/lib/supabase/server";
+import { getCurrentHouseholdContext } from "@/lib/households/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 
 export default async function Page({ params }: Readonly<{ params: Promise<{ locale: string }> }>) {
   const { locale } = await params;
   const t = await getTranslations("onboarding");
-  const household = await getCurrentHousehold();
+  const context = await getCurrentHouseholdContext();
 
-  if (household) {
+  if (context) {
+    const { household } = context;
     return (
       <section className="max-w-3xl">
         <div className="rounded-xl border border-border bg-white p-8">
@@ -19,6 +21,15 @@ export default async function Page({ params }: Readonly<{ params: Promise<{ loca
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
             {t("completeDescription", { householdName: household.name })}
           </p>
+          {context.canManage ? (
+            <div className="mt-8 border-t border-border pt-8">
+              <h2 className="text-xl font-bold">{t("editTitle")}</h2>
+              <p className="mt-2 text-muted-foreground">{t("editDescription")}</p>
+              <div className="mt-5">
+                <HouseholdEditForm householdName={household.name} locale={locale as AppLocale} />
+              </div>
+            </div>
+          ) : null}
           <Link
             className="mt-6 inline-block rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
             href="/dashboard"

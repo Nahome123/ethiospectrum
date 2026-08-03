@@ -1,5 +1,9 @@
 # Data model
 
+## ETH-024 resource translations
+
+`resource_translations` remains one row per resource and locale. ETH-024 adds submitter timestamps, source English version, and creator/updater fields while retaining `draft`, `in_review`, and `approved` states. Non-English mutation is limited to `am` and `es`. `resource_translation_audit_events` is append-only and stores actor, safe transition metadata, and version numbers only. Public eligibility requires a published parent, approved English, approved requested translation, and matching source version.
+
 ## ETH-021 household roadmap
 
 `roadmaps` has one optional default row per household. `roadmap_items` belongs to that household and roadmap and records a bounded title/description, allowlisted category/priority/status, calendar due date, optional active dependent, optional household-member assignment, trusted creator, server-owned completion timestamp, archive timestamp, deterministic sort order, update timestamp, and creator-scoped idempotency key. Integrity triggers ensure parent household consistency, immutable ownership links, and valid dependent/member references while allowing historical archived records to remain readable. The existing `reminders` table and its foreign key are intentional future groundwork and ETH-021 neither reads nor changes them.

@@ -53,7 +53,39 @@
       "published": "Published",
       "archived": "Archived",
       "approved": "Approved"
-    }
+    },
+    "resourceTranslations": "Resource translations",
+    "manageTranslations": "Manage translations",
+    "translationLocale": "Translation locale",
+    "amharicTranslation": "Amharic translation",
+    "spanishTranslation": "Spanish translation",
+    "canonicalEnglishSource": "Canonical English source",
+    "englishSourceVersion": "English source version",
+    "translationSourceVersion": "Translation source version",
+    "parentResourceStatus": "Parent resource status",
+    "lastUpdated": "Last updated",
+    "translationStates": {
+      "notStarted": "Not started",
+      "draft": "Draft",
+      "in_review": "In review",
+      "approved": "Approved",
+      "stale": "Stale"
+    },
+    "createTranslation": "Create translation",
+    "editTranslation": "Edit translation",
+    "reviewTranslation": "Review translation",
+    "submitTranslation": "Submit translation",
+    "saveTranslation": "Save translation",
+    "translationMarkdownBody": "Translation Markdown body",
+    "translationPreview": "Markdown preview",
+    "translationUpdatedElsewhere": "This translation was updated by someone else. Refresh and try again.",
+    "englishSourceChanged": "The English source changed. Update this translation before submitting it again.",
+    "cannotReviewOwnTranslation": "You cannot review your own translation.",
+    "translationCurrent": "Translation is current",
+    "translationOutdated": "Translation is outdated",
+    "amharicFallbackNotice": "This resource is not yet available in Amharic. The English version is shown.",
+    "spanishFallbackNotice": "This resource is not yet available in Spanish. The English version is shown.",
+    "translationActionError": "We could not update this translation. Please try again."
   },
   "metadata": {
     "homeTitle": "Family guidance made clearer",
@@ -504,7 +536,13 @@
     "genericError": "We could not save your household right now. Please try again.",
     "completeTitle": "Your household is ready",
     "completeDescription": "\"{householdName}\" is set up. You can manage your family's information from your dashboard.",
-    "goToDashboard": "Go to dashboard"
+    "goToDashboard": "Go to dashboard",
+    "editTitle": "Edit household",
+    "editDescription": "Update the name shown throughout your family workspace.",
+    "update": "Update household",
+    "updating": "Updating…",
+    "updateAccessDenied": "Only a household owner or administrator can update the household.",
+    "updateError": "We could not update your household right now. Please try again."
   },
   "dependents": {
     "title": "Family members",

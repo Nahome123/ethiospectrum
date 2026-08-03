@@ -6,8 +6,9 @@ import { getTranslations } from "next-intl/server";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import type { AppLocale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
-import { createOnboardingSchema } from "@/lib/validation/onboarding";
+import { createHouseholdNameSchema, createOnboardingSchema } from "@/lib/validation/onboarding";
 import { getLocaleDashboardPath } from "@/lib/auth/redirects";
+import { getCurrentHouseholdContext } from "@/lib/households/server";
 import { ONBOARDING_POLICY_VERSION } from "./policy";
 import type { OnboardingActionState } from "./action-state";
 
@@ -67,4 +68,52 @@ export async function completeOnboardingAction(
   }
   revalidatePath("/", "layout");
   redirect(getLocaleDashboardPath(localeValue));
+}
+
+export async function updateHouseholdAction(
+  localeValue: string,
+  _previousState: OnboardingActionState,
+  formData: FormData,
+): Promise<OnboardingActionState> {
+  if (!isAppLocale(localeValue)) return { status: "error", message: "" };
+  const t = await getTranslations({ locale: localeValue, namespace: "onboarding" });
+  const parsed = createHouseholdNameSchema(t("householdNameError")).safeParse({
+    householdName: formData.get("householdName"),
+  });
+  if (!parsed.success) {
+    return {
+      status: "error",
+      message: t("validationError"),
+      householdName: String(formData.get("householdName") ?? ""),
+    };
+  }
+
+  const context = await getCurrentHouseholdContext();
+  if (!context?.canManage) {
+    return {
+      status: "error",
+      message: t("updateAccessDenied"),
+      householdName: parsed.data.householdName,
+    };
+  }
+
+  const supabase = await createServerActionSupabaseClient();
+  const { data, error } = await supabase
+    .from("households")
+    .update({ name: parsed.data.householdName })
+    .eq("id", context.household.id)
+    .is("deleted_at", null)
+    .select("id")
+    .maybeSingle();
+  if (error || !data) {
+    return {
+      status: "error",
+      message: t("updateError"),
+      householdName: parsed.data.householdName,
+    };
+  }
+
+  revalidatePath("/", "layout");
+  revalidatePath(`/${localeValue}/onboarding`);
+  redirect(`/${localeValue}/onboarding`);
 }

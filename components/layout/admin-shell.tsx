@@ -1,8 +1,11 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { brandConfig } from "@/config/brand";
 import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
+import { signOutAction } from "@/lib/auth/actions";
+import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
+import type { AppLocale } from "@/i18n/routing";
 
 const links = [
   "users",
@@ -15,6 +18,11 @@ const links = [
 ] as const;
 export async function AdminShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations();
+  const locale = (await getLocale()) as AppLocale;
+  const user = await getCurrentSupabaseUser();
+  const profile = user ? await getCurrentMemberProfile(user.id) : null;
+  const displayName = profile?.first_name || user?.email || t("member.profile");
+
   return (
     <div className="min-h-screen bg-slate-100 lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b border-slate-700 bg-slate-900 p-5 text-white lg:border-b-0 lg:border-r">
@@ -41,9 +49,22 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
         </nav>
       </aside>
       <div>
-        <header className="flex min-h-16 items-center justify-between border-b border-border bg-white px-4 sm:px-6">
+        <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
           <p className="text-sm font-bold text-primary">{t("common.developmentOnly")}</p>
-          <LanguageSelector />
+          <div className="flex items-center gap-3">
+            <LanguageSelector />
+            <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
+              {displayName}
+            </span>
+            <form action={signOutAction.bind(null, locale)}>
+              <button
+                type="submit"
+                className="min-h-10 rounded-md border border-border px-3 text-sm font-semibold"
+              >
+                {t("member.logout")}
+              </button>
+            </form>
+          </div>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
