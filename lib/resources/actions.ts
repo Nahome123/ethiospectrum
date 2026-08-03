@@ -25,9 +25,21 @@ async function canManage(): Promise<boolean> {
 }
 
 function paths(locale: AppLocale, id?: string) {
-  revalidatePath(`/${locale}/resources`);
+  for (const publicLocale of ["en", "am", "es"] as const) {
+    revalidatePath(`/${publicLocale}/resources`);
+    revalidatePath(`/${publicLocale}/resources/[slug]`, "page");
+  }
   revalidatePath(`/${locale}/admin/resources`);
-  if (id) revalidatePath(`/${locale}/admin/resources/${id}`);
+  if (id) {
+    revalidatePath(`/${locale}/admin/resources/${id}`);
+    revalidatePath(`/${locale}/admin/resources/${id}/edit`);
+    revalidatePath(`/${locale}/editor/resources/${id}/translations`);
+    for (const translationLocale of ["am", "es"] as const) {
+      revalidatePath(`/${locale}/editor/resources/${id}/translations/${translationLocale}`);
+      revalidatePath(`/${locale}/editor/resources/${id}/translations/${translationLocale}/edit`);
+      revalidatePath(`/${locale}/editor/resources/${id}/translations/${translationLocale}/review`);
+    }
+  }
 }
 
 function stale(error: { code?: string } | null) {
@@ -80,6 +92,7 @@ export async function updateResource(
 ): Promise<ResourceActionState> {
   const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
   const input = resourceUpdateSchema.safeParse({
+    resourceId,
     slug: value(formData, "slug"),
     category: value(formData, "category"),
     title: value(formData, "title"),
@@ -90,7 +103,7 @@ export async function updateResource(
   if (!input.success || !(await canManage())) return { status: "error", message: t("validationError") };
   const supabase = await createServerActionSupabaseClient();
   const { error } = await supabase.rpc("update_resource_draft", {
-    target_resource_id: resourceId,
+    target_resource_id: input.data.resourceId,
     expected_version: input.data.expectedVersion,
     input_slug: input.data.slug,
     input_category: input.data.category,
@@ -99,8 +112,8 @@ export async function updateResource(
     input_body: input.data.body,
   });
   if (error) return { status: "error", message: stale(error) ? t("staleError") : t("saveError") };
-  paths(locale, resourceId);
-  redirect(`/${locale}/admin/resources/${resourceId}`);
+  paths(locale, input.data.resourceId);
+  redirect(`/${locale}/admin/resources/${input.data.resourceId}`);
 }
 
 type TransitionName =

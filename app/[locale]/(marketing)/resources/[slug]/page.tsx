@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { SafeMarkdown } from "@/components/resources/safe-markdown";
+import { getResourceFallbackNoticeKey } from "@/lib/resources/public-selection";
 import { getPublishedResource } from "@/lib/resources/server";
-import { requireUser } from "@/lib/auth/guards";
 
 export default async function ResourceDetailPage({
   params,
@@ -12,10 +12,9 @@ export default async function ResourceDetailPage({
   params: Promise<{ locale: AppLocale; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  await requireUser(locale, `/${locale}/resources/${slug}`);
   const [t, resource] = await Promise.all([
     getTranslations({ locale, namespace: "resourceWorkflow" }),
-    getPublishedResource(slug),
+    getPublishedResource(slug, locale),
   ]);
   if (!resource) notFound();
   return (
@@ -25,10 +24,15 @@ export default async function ResourceDetailPage({
       </Link>
       <article className="mt-6">
         <p className="text-sm text-muted-foreground">{t(`categories.${resource.category as "general"}`)}</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight">{resource.english.title}</h1>
-        <p className="mt-4 text-lg leading-7 text-muted-foreground">{resource.english.summary}</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight">{resource.title}</h1>
+        <p className="mt-4 text-lg leading-7 text-muted-foreground">{resource.summary}</p>
+        {getResourceFallbackNoticeKey(locale, resource.usingEnglishFallback) ? (
+          <p className="mt-4 rounded-md border p-3 text-sm" role="status">
+            {t(getResourceFallbackNoticeKey(locale, resource.usingEnglishFallback)!)}
+          </p>
+        ) : null}
         <div className="mt-8 border-t pt-8">
-          <SafeMarkdown body={resource.english.body} />
+          <SafeMarkdown body={resource.body} />
         </div>
       </article>
     </main>

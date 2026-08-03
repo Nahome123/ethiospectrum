@@ -1,11 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5";
-  };
   graphql_public: {
     Tables: {
       [_ in never]: never;
@@ -1755,10 +1750,78 @@ export type Database = {
           },
         ];
       };
+      resource_translation_audit_events: {
+        Row: {
+          action: string;
+          actor_user_id: string;
+          created_at: string;
+          from_review_status: string | null;
+          id: string;
+          locale: string;
+          resource_id: string;
+          safe_metadata: Json;
+          source_translation_version: number;
+          to_review_status: string | null;
+          translation_id: string;
+          translation_version: number;
+        };
+        Insert: {
+          action: string;
+          actor_user_id: string;
+          created_at?: string;
+          from_review_status?: string | null;
+          id?: string;
+          locale: string;
+          resource_id: string;
+          safe_metadata?: Json;
+          source_translation_version: number;
+          to_review_status?: string | null;
+          translation_id: string;
+          translation_version: number;
+        };
+        Update: {
+          action?: string;
+          actor_user_id?: string;
+          created_at?: string;
+          from_review_status?: string | null;
+          id?: string;
+          locale?: string;
+          resource_id?: string;
+          safe_metadata?: Json;
+          source_translation_version?: number;
+          to_review_status?: string | null;
+          translation_id?: string;
+          translation_version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "resource_translation_audit_events_actor_user_id_fkey";
+            columns: ["actor_user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_translation_audit_events_resource_id_fkey";
+            columns: ["resource_id"];
+            isOneToOne: false;
+            referencedRelation: "resources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_translation_audit_events_translation_id_fkey";
+            columns: ["translation_id"];
+            isOneToOne: false;
+            referencedRelation: "resource_translations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       resource_translations: {
         Row: {
           body: string;
           created_at: string;
+          created_by: string | null;
           id: string;
           locale: string;
           resource_id: string;
@@ -1766,14 +1829,19 @@ export type Database = {
           review_status: string;
           reviewed_at: string | null;
           reviewed_by: string | null;
+          source_translation_version: number | null;
+          submitted_at: string | null;
+          submitted_by: string | null;
           summary: string;
           title: string;
           updated_at: string;
+          updated_by: string | null;
           version: number;
         };
         Insert: {
           body: string;
           created_at?: string;
+          created_by?: string | null;
           id?: string;
           locale: string;
           resource_id: string;
@@ -1781,14 +1849,19 @@ export type Database = {
           review_status?: string;
           reviewed_at?: string | null;
           reviewed_by?: string | null;
+          source_translation_version?: number | null;
+          submitted_at?: string | null;
+          submitted_by?: string | null;
           summary: string;
           title: string;
           updated_at?: string;
+          updated_by?: string | null;
           version?: number;
         };
         Update: {
           body?: string;
           created_at?: string;
+          created_by?: string | null;
           id?: string;
           locale?: string;
           resource_id?: string;
@@ -1796,12 +1869,23 @@ export type Database = {
           review_status?: string;
           reviewed_at?: string | null;
           reviewed_by?: string | null;
+          source_translation_version?: number | null;
+          submitted_at?: string | null;
+          submitted_by?: string | null;
           summary?: string;
           title?: string;
           updated_at?: string;
+          updated_by?: string | null;
           version?: number;
         };
         Relationships: [
+          {
+            foreignKeyName: "resource_translations_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "resource_translations_resource_id_fkey";
             columns: ["resource_id"];
@@ -1812,6 +1896,20 @@ export type Database = {
           {
             foreignKeyName: "resource_translations_reviewed_by_fkey";
             columns: ["reviewed_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_translations_submitted_by_fkey";
+            columns: ["submitted_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_translations_updated_by_fkey";
+            columns: ["updated_by"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
@@ -2235,6 +2333,13 @@ export type Database = {
           resource_version: number;
         }[];
       };
+      approve_resource_translation: {
+        Args: { expected_version: number; target_translation_id: string };
+        Returns: {
+          translation_id: string;
+          translation_version: number;
+        }[];
+      };
       archive_resource: {
         Args: { expected_version: number; target_resource_id: string };
         Returns: {
@@ -2470,6 +2575,20 @@ export type Database = {
           resource_version: number;
         }[];
       };
+      create_resource_translation_draft: {
+        Args: {
+          input_body: string;
+          input_locale: string;
+          input_summary: string;
+          input_title: string;
+          target_resource_id: string;
+        };
+        Returns: {
+          source_version: number;
+          translation_id: string;
+          translation_version: number;
+        }[];
+      };
       create_roadmap_item: {
         Args: {
           input_assigned_to?: string;
@@ -2665,6 +2784,19 @@ export type Database = {
           summary_id: string;
         }[];
       };
+      get_published_resource: {
+        Args: { input_locale: string; input_slug: string };
+        Returns: {
+          body: string;
+          category: string;
+          published_at: string;
+          selected_locale: string;
+          slug: string;
+          summary: string;
+          title: string;
+          using_english_fallback: boolean;
+        }[];
+      };
       is_active_household_member: {
         Args: { target_household: string };
         Returns: boolean;
@@ -2673,6 +2805,18 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      list_published_resources: {
+        Args: { input_category?: string; input_locale: string };
+        Returns: {
+          category: string;
+          published_at: string;
+          selected_locale: string;
+          slug: string;
+          summary: string;
+          title: string;
+          using_english_fallback: boolean;
+        }[];
       };
       list_resource_account_holders: {
         Args: never;
@@ -2779,6 +2923,17 @@ export type Database = {
           resource_version: number;
         }[];
       };
+      reject_resource_translation: {
+        Args: {
+          expected_version: number;
+          input_rejection_note: string;
+          target_translation_id: string;
+        };
+        Returns: {
+          translation_id: string;
+          translation_version: number;
+        }[];
+      };
       reorder_roadmap_items: {
         Args: {
           expected_updated_at: string;
@@ -2874,6 +3029,13 @@ export type Database = {
           resource_version: number;
         }[];
       };
+      submit_resource_translation: {
+        Args: { expected_version: number; target_translation_id: string };
+        Returns: {
+          translation_id: string;
+          translation_version: number;
+        }[];
+      };
       transition_resource: {
         Args: {
           expected_version: number;
@@ -2925,6 +3087,20 @@ export type Database = {
         Returns: {
           resource_id: string;
           resource_version: number;
+        }[];
+      };
+      update_resource_translation_draft: {
+        Args: {
+          expected_version: number;
+          input_body: string;
+          input_summary: string;
+          input_title: string;
+          target_translation_id: string;
+        };
+        Returns: {
+          source_version: number;
+          translation_id: string;
+          translation_version: number;
         }[];
       };
       update_roadmap_item: {
@@ -2985,6 +3161,13 @@ export type Database = {
           resource_id: string;
           resource_status: Database["public"]["Enums"]["resource_status"];
           resource_version: number;
+        }[];
+      };
+      withdraw_resource_translation: {
+        Args: { expected_version: number; target_translation_id: string };
+        Returns: {
+          translation_id: string;
+          translation_version: number;
         }[];
       };
     };

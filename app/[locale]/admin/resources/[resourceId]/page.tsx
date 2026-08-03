@@ -38,6 +38,12 @@ export default async function EditorResourcePage({
             {t("edit")}
           </Link>
         ) : null}
+        <Link
+          className="rounded-md border px-4 py-2 text-sm font-medium"
+          href={`/editor/resources/${resourceId}/translations`}
+        >
+          {t("manageTranslations")}
+        </Link>
       </header>
       <section className="mt-7 rounded-xl border bg-card p-5">
         <ResourceTransitionControls

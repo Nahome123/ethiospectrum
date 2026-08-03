@@ -1,5 +1,9 @@
 # Deployment
 
+## ETH-024 translation rollout
+
+ETH-024 needs no provider, scheduler, external translation API, or new environment variable. Review its additive migration only in a local or non-production Supabase environment, complete a successful reset before generating types, then run synthetic database and localized browser checks. Do not apply a hosted migration, deploy, or introduce machine translation without separate approval. Verify stale English-source fallback and obtain native Amharic and Spanish review before release.
+
 ## ETH-021 roadmap rollout
 
 ETH-021 requires no environment variable, scheduler, worker, provider credential, or reminder configuration. Before rollout, review the additive roadmap migration in a local or non-production Supabase environment, regenerate types, run local pgTAP and application checks with synthetic data, and perform the localized household-role check. A hosted `pnpm db:push:dry-run` may review the migration, but do not apply it without explicit approval. This documentation does not assert that a hosted migration or deployment has occurred.

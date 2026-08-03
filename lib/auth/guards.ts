@@ -38,3 +38,12 @@ export async function requireRole(
   }
   return user;
 }
+
+/** Global editorial roles; this intentionally does not inspect household membership. */
+export async function requireContentEditor(locale: AppLocale, returnTo: string): Promise<AuthenticatedUser> {
+  const user = await requireUser(locale, returnTo);
+  if (user.role !== "administrator" && user.role !== "content_editor") {
+    redirect(`/${locale}/auth-error?reason=access-denied`);
+  }
+  return user;
+}

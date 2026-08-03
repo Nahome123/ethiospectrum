@@ -1,5 +1,9 @@
 # Testing strategy
 
+## ETH-024 translation verification
+
+ETH-024 unit coverage validates mutation locales, Unicode content, trimming, bounds, rejection notes, and reader locales. Database validation must exercise the translation lifecycle, stale source versions, different-user review, RLS/public-payload boundaries, audit immutability, and household isolation with synthetic users. Browser validation must cover approved localized selection, English fallback notices, stale hiding, editor authorization, keyboard workflow, and safe Markdown. A local Supabase failure before migrations is an infrastructure blocker, not a passing or failing database result.
+
 ## ETH-022 reminder verification
 
 Reminder unit tests cover offset scheduling, timezone and daylight-saving rejection, five-minute minimums, rescheduling preparation, and capped unseen-count presentation. Database coverage is defined for recipient isolation, worker grants, immutable logs, optimistic schedule edits, lifecycle cancellation, retry and skip transitions, and roadmap due-date rescheduling. These tests require a completed local Supabase reset. The current local Supabase CLI/container schema-initialization blocker occurs before application migrations and pgTAP execution, so no ETH-022 migration or pgTAP result is claimed until that environment is repaired.

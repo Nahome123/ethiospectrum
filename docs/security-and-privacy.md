@@ -1,5 +1,9 @@
 # Security and privacy
 
+## ETH-024 translation boundary
+
+Translation authorization is exclusively the global content-editor or administrator role. It grants no household, dependent, document, roadmap, reminder, or private-profile access, and translation routes/actions do not load household context. Controlled functions derive actor, validate parent/locale/content/version, enforce different-user review, and audit atomically. Public callers receive reader-safe selected content only; workflow status, review notes, identities, versions, and audits remain editor-only.
+
 ## ETH-021 roadmap controls
 
 Roadmap reads require an active household membership. Database functions derive `auth.uid()` and the active household, force RLS, revoke direct browser writes, and use a fixed empty search path. Owners and administrators can archive, restore, and reorder; members can create and update only their own or assigned active items and cannot assign another person; viewers read active items only. Mutations use an expected update timestamp to reject stale edits and an idempotency key to avoid duplicate creates. The roadmap does not access reminders, notifications, workers, provider credentials, or private document content.

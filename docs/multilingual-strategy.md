@@ -1,5 +1,9 @@
 # Multilingual strategy
 
+## ETH-024 reviewed resources
+
+Resource translations support canonical English plus reviewed Amharic and Spanish. Reader selection is requested locale then English only: missing, stale, draft, and in-review translations display approved English with a localized accessible fallback notice. Amharic remains left-to-right. The added UI strings and published resource content require native Amharic and Spanish review before release.
+
 ## ETH-021 roadmap wording
 
 ETH-021 adds aligned English, Amharic, and Spanish roadmap labels, categories, priorities, statuses, validation errors, archive/restore messaging, and read-only states. Long titles, names, descriptions, and translated labels use wrapping layouts; Amharic remains left-to-right. The Amharic and Spanish wording is an implementation draft and requires native-speaker review before release.

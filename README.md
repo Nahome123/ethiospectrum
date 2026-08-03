@@ -16,6 +16,10 @@ ETH-022 adds opt-in, personal, in-app-only roadmap reminders. Active household u
 
 Next.js 16 App Router, React 19, TypeScript, Tailwind 4, shadcn Luma, next-intl, Zod, React Hook Form, Vitest, Playwright, and axe. Public routes live in `app/[locale]/(marketing)`. `proxy.ts` supports `/en`, `/am`, and `/es`; `/` redirects to `/en`. Household and document data belongs in Supabase behind row-level security.
 
+## ETH-024 resource translations
+
+ETH-024 adds reviewed Amharic (`am`) and Spanish (`es`) translations to ETH-023 resources. English is canonical; editors can draft, submit, withdraw, approve, or reject translations, with different-user review. Source versions are database-derived, and English content changes invalidate dependent translations atomically. Public routes choose current approved requested-locale content, then English with a localized fallback notice. Translation access is global-role-only and never loads household data. No machine translation, external translation API, assignment workflow, or ETH-025 support request functionality is included. Native Amharic and Spanish review remains required before release.
+
 ## Prerequisites and installation
 
 Use Node.js 20+ and pnpm. Copy `.env.example` to `.env.local` if integration work needs values; the marketing foundation does not require credentials.
