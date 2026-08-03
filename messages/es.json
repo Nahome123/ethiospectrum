@@ -536,7 +536,13 @@
     "genericError": "No pudimos guardar tu hogar en este momento. Inténtalo de nuevo.",
     "completeTitle": "Tu hogar está listo",
     "completeDescription": "\"{householdName}\" está configurado. Puedes gestionar la información de tu familia desde tu panel.",
-    "goToDashboard": "Ir al panel"
+    "goToDashboard": "Ir al panel",
+    "editTitle": "Editar hogar",
+    "editDescription": "Actualiza el nombre que aparece en todo el espacio de trabajo de tu familia.",
+    "update": "Actualizar hogar",
+    "updating": "Actualizando…",
+    "updateAccessDenied": "Solo el propietario o un administrador del hogar puede actualizarlo.",
+    "updateError": "No pudimos actualizar tu hogar en este momento. Inténtalo de nuevo."
   },
   "dependents": {
     "title": "Miembros de la familia",

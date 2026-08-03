@@ -536,7 +536,13 @@
     "genericError": "We could not save your household right now. Please try again.",
     "completeTitle": "Your household is ready",
     "completeDescription": "\"{householdName}\" is set up. You can manage your family's information from your dashboard.",
-    "goToDashboard": "Go to dashboard"
+    "goToDashboard": "Go to dashboard",
+    "editTitle": "Edit household",
+    "editDescription": "Update the name shown throughout your family workspace.",
+    "update": "Update household",
+    "updating": "Updating…",
+    "updateAccessDenied": "Only a household owner or administrator can update the household.",
+    "updateError": "We could not update your household right now. Please try again."
   },
   "dependents": {
     "title": "Family members",

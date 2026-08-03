@@ -536,7 +536,13 @@
     "genericError": "ቤተሰብዎን አሁን ማስቀመጥ አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
     "completeTitle": "ቤተሰብዎ ዝግጁ ነው",
     "completeDescription": "\"{householdName}\" ተዘጋጅቷል። የቤተሰብዎን መረጃ ከዳሽቦርድዎ ማስተዳደር ይችላሉ።",
-    "goToDashboard": "ወደ ዳሽቦርድ ይሂዱ"
+    "goToDashboard": "ወደ ዳሽቦርድ ይሂዱ",
+    "editTitle": "ቤተሰብን ያርትዑ",
+    "editDescription": "በቤተሰብዎ የሥራ ቦታ ውስጥ የሚታየውን ስም ያዘምኑ።",
+    "update": "ቤተሰብን ያዘምኑ",
+    "updating": "በማዘመን ላይ…",
+    "updateAccessDenied": "ቤተሰቡን ማዘመን የሚችለው የቤተሰብ ባለቤት ወይም አስተዳዳሪ ብቻ ነው።",
+    "updateError": "ቤተሰብዎን አሁን ማዘመን አልቻልንም። እባክዎ እንደገና ይሞክሩ።"
   },
   "dependents": {
     "title": "የቤተሰብ አባላት",
