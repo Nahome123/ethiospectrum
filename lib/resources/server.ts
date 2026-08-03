@@ -1,9 +1,16 @@
 import "server-only";
 import type { Database } from "@/lib/supabase/database.types";
 import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
-import type { ResourceCategory, ResourceReviewStatus, ResourceStatus } from "./constants";
+import {
+  MEMBER_RESOURCE_PAGE_SIZE,
+  type ResourceCategory,
+  type ResourceReviewStatus,
+  type ResourceStatus,
+  type ResourceType,
+} from "./constants";
 import type { AppLocale } from "@/i18n/routing";
 import { resourceTranslationPaginationSchema } from "@/lib/validation/resource-translations";
+import type { MemberResourceQuery } from "@/lib/validation/resources";
 
 type ResourceRow = Database["public"]["Tables"]["resources"]["Row"];
 type TranslationRow = Database["public"]["Tables"]["resource_translations"]["Row"];
@@ -13,6 +20,113 @@ export type ResourceCard = Pick<ResourceRow, "slug" | "category" | "published_at
   Pick<TranslationRow, "title" | "summary"> & { selectedLocale: AppLocale; usingEnglishFallback: boolean };
 export type EditorResource = ResourceRow & { english: TranslationRow | null };
 export type ResourceAccountHolder = { id: string; label: string };
+
+export type MemberResourceCard = {
+  slug: string;
+  category: ResourceCategory;
+  resourceType: ResourceType;
+  publishedAt: string;
+  title: string;
+  summary: string;
+  selectedLocale: AppLocale;
+  usingEnglishFallback: boolean;
+  isBookmarked: boolean;
+  isAssigned: boolean;
+  isFeatured: boolean;
+};
+
+export type MemberResourcePage = {
+  items: MemberResourceCard[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};
+
+export type MemberResourceDetail = Omit<MemberResourceCard, "isFeatured"> & {
+  body: string;
+  isOnRoadmap: boolean;
+};
+
+function mapMemberResource(
+  resource: Database["public"]["Functions"]["list_member_resources"]["Returns"][number],
+): MemberResourceCard {
+  return {
+    slug: resource.slug,
+    category: resource.category as ResourceCategory,
+    resourceType: resource.resource_type as ResourceType,
+    publishedAt: resource.published_at,
+    title: resource.title,
+    summary: resource.summary,
+    selectedLocale: resource.selected_locale as AppLocale,
+    usingEnglishFallback: resource.using_english_fallback,
+    isBookmarked: resource.is_bookmarked,
+    isAssigned: resource.is_assigned,
+    isFeatured: resource.is_featured,
+  };
+}
+
+export async function getMemberResources(
+  locale: AppLocale,
+  query: Partial<MemberResourceQuery> & {
+    assignedOnly?: boolean;
+    featuredOnly?: boolean;
+    pageSize?: number;
+  } = {},
+): Promise<MemberResourcePage> {
+  const page = query.page ?? 1;
+  const pageSize = query.pageSize ?? MEMBER_RESOURCE_PAGE_SIZE;
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("list_member_resources", {
+    input_locale: locale,
+    input_query: query.q || undefined,
+    input_category: query.category,
+    input_resource_type: query.type,
+    input_bookmarked_only: query.bookmarked ?? false,
+    input_assigned_only: query.assignedOnly ?? query.assigned ?? false,
+    input_featured_only: query.featuredOnly ?? query.featured ?? false,
+    input_page: page,
+    input_page_size: pageSize,
+  });
+  if (error) throw new Error("Unable to load member resources.");
+  const total = data?.[0]?.total_count ?? 0;
+  return {
+    items: (data ?? []).map(mapMemberResource),
+    page,
+    pageSize,
+    total,
+    totalPages: Math.max(1, Math.ceil(total / pageSize)),
+  };
+}
+
+export async function getMemberResource(
+  slug: string,
+  locale: AppLocale,
+): Promise<MemberResourceDetail | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_member_resource", {
+    input_slug: slug,
+    input_locale: locale,
+  });
+  if (error) throw new Error("Unable to load the member resource.");
+  const resource = data?.[0];
+  return resource
+    ? {
+        slug: resource.slug,
+        category: resource.category as ResourceCategory,
+        resourceType: resource.resource_type as ResourceType,
+        publishedAt: resource.published_at,
+        title: resource.title,
+        summary: resource.summary,
+        body: resource.body,
+        selectedLocale: resource.selected_locale as AppLocale,
+        usingEnglishFallback: resource.using_english_fallback,
+        isBookmarked: resource.is_bookmarked,
+        isAssigned: resource.is_assigned,
+        isOnRoadmap: resource.is_on_roadmap,
+      }
+    : null;
+}
 
 export async function getResourceAccountHolders(): Promise<ResourceAccountHolder[]> {
   const supabase = await createServerComponentSupabaseClient();

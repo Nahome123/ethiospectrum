@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { resourceCategoryValues } from "@/lib/resources/constants";
+import { resourceCategoryValues, resourceTypeValues } from "@/lib/resources/constants";
 
 const trimmed = (minimum: number, maximum: number) => z.string().trim().min(minimum).max(maximum);
 
@@ -29,3 +29,45 @@ export const resourceTransitionSchema = z.object({
   expectedVersion: resourceVersionSchema,
 });
 export const resourceRejectionSchema = resourceTransitionSchema.extend({ rejectionNote: trimmed(10, 1000) });
+
+const optionalQueryText = z.preprocess(
+  (value) => (typeof value === "string" ? value : ""),
+  z.string().trim().max(100).catch(""),
+);
+const optionalCategory = z.preprocess(
+  (value) => (typeof value === "string" && value !== "" ? value : undefined),
+  z.enum(resourceCategoryValues).optional().catch(undefined),
+);
+const optionalResourceType = z.preprocess(
+  (value) => (typeof value === "string" && value !== "" ? value : undefined),
+  z.enum(resourceTypeValues).optional().catch(undefined),
+);
+
+export const memberResourceQuerySchema = z.object({
+  q: optionalQueryText,
+  category: optionalCategory,
+  type: optionalResourceType,
+  bookmarked: z.preprocess((value) => value === "1", z.boolean()),
+  assigned: z.preprocess((value) => value === "1", z.boolean()),
+  featured: z.preprocess((value) => value === "1", z.boolean()),
+  catalog: z.preprocess((value) => value === "1", z.boolean()),
+  page: z.preprocess((value) => value ?? 1, z.coerce.number().int().positive().catch(1)),
+});
+
+export const resourceBookmarkIntentSchema = z.object({
+  slug: resourceSlugSchema,
+  bookmarked: z.enum(["true", "false"]).transform((value) => value === "true"),
+});
+
+export const resourceDiscoveryMetadataSchema = z.object({
+  resourceId: resourceIdSchema,
+  expectedVersion: resourceVersionSchema,
+  resourceType: z.enum(resourceTypeValues),
+  featuredRank: z
+    .string()
+    .trim()
+    .transform((value) => (value === "" ? null : Number(value)))
+    .pipe(z.number().int().min(1).max(1000).nullable()),
+});
+
+export type MemberResourceQuery = z.infer<typeof memberResourceQuerySchema>;

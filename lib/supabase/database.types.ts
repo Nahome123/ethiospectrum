@@ -1750,6 +1750,39 @@ export type Database = {
           },
         ];
       };
+      resource_bookmarks: {
+        Row: {
+          created_at: string;
+          resource_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          resource_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          resource_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "resource_bookmarks_resource_id_fkey";
+            columns: ["resource_id"];
+            isOneToOne: false;
+            referencedRelation: "resources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "resource_bookmarks_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       resource_translation_audit_events: {
         Row: {
           action: string;
@@ -1923,11 +1956,13 @@ export type Database = {
           author_id: string | null;
           category: string;
           created_at: string;
+          featured_rank: number | null;
           first_published_at: string | null;
           id: string;
           idempotency_key: string | null;
           published_at: string | null;
           published_by: string | null;
+          resource_type: string;
           reviewed_at: string | null;
           slug: string;
           status: Database["public"]["Enums"]["resource_status"];
@@ -1941,11 +1976,13 @@ export type Database = {
           author_id?: string | null;
           category: string;
           created_at?: string;
+          featured_rank?: number | null;
           first_published_at?: string | null;
           id?: string;
           idempotency_key?: string | null;
           published_at?: string | null;
           published_by?: string | null;
+          resource_type?: string;
           reviewed_at?: string | null;
           slug: string;
           status?: Database["public"]["Enums"]["resource_status"];
@@ -1959,11 +1996,13 @@ export type Database = {
           author_id?: string | null;
           category?: string;
           created_at?: string;
+          featured_rank?: number | null;
           first_published_at?: string | null;
           id?: string;
           idempotency_key?: string | null;
           published_at?: string | null;
           published_by?: string | null;
+          resource_type?: string;
           reviewed_at?: string | null;
           slug?: string;
           status?: Database["public"]["Enums"]["resource_status"];
@@ -2325,6 +2364,13 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      add_resource_to_roadmap: {
+        Args: { input_locale: string; input_slug: string };
+        Returns: {
+          already_exists: boolean;
+          item_id: string;
+        }[];
+      };
       approve_resource: {
         Args: { expected_version: number; target_resource_id: string };
         Returns: {
@@ -2784,6 +2830,23 @@ export type Database = {
           summary_id: string;
         }[];
       };
+      get_member_resource: {
+        Args: { input_locale: string; input_slug: string };
+        Returns: {
+          body: string;
+          category: string;
+          is_assigned: boolean;
+          is_bookmarked: boolean;
+          is_on_roadmap: boolean;
+          published_at: string;
+          resource_type: string;
+          selected_locale: string;
+          slug: string;
+          summary: string;
+          title: string;
+          using_english_fallback: boolean;
+        }[];
+      };
       get_published_resource: {
         Args: { input_locale: string; input_slug: string };
         Returns: {
@@ -2805,6 +2868,33 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      list_member_resources: {
+        Args: {
+          input_assigned_only?: boolean;
+          input_bookmarked_only?: boolean;
+          input_category?: string;
+          input_featured_only?: boolean;
+          input_locale: string;
+          input_page?: number;
+          input_page_size?: number;
+          input_query?: string;
+          input_resource_type?: string;
+        };
+        Returns: {
+          category: string;
+          is_assigned: boolean;
+          is_bookmarked: boolean;
+          is_featured: boolean;
+          published_at: string;
+          resource_type: string;
+          selected_locale: string;
+          slug: string;
+          summary: string;
+          title: string;
+          total_count: number;
+          using_english_fallback: boolean;
+        }[];
       };
       list_published_resources: {
         Args: { input_category?: string; input_locale: string };
@@ -3013,6 +3103,10 @@ export type Database = {
           resource_version: number;
         }[];
       };
+      set_resource_bookmark: {
+        Args: { input_bookmarked: boolean; input_slug: string };
+        Returns: boolean;
+      };
       skip_reminder_delivery: {
         Args: {
           safe_skip_code: string;
@@ -3072,6 +3166,18 @@ export type Database = {
           id: string;
           schedule_version: number;
           updated_at: string;
+        }[];
+      };
+      update_resource_discovery_metadata: {
+        Args: {
+          expected_version: number;
+          input_featured_rank?: number;
+          input_resource_type: string;
+          target_resource_id: string;
+        };
+        Returns: {
+          resource_id: string;
+          resource_version: number;
         }[];
       };
       update_resource_draft: {

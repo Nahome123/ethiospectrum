@@ -1,5 +1,11 @@
 # Data model
 
+## Member resource discovery
+
+`resources.resource_type` is an allowlisted discovery classification (`article`, `guide`, `video`, `template`, or `event_recap`), and nullable `featured_rank` controls deterministic administrator curation. Both changes share the resource optimistic version and append a safe `discovery_metadata_updated` audit event. `resource_bookmarks` has a composite user/resource key, forced RLS, and an own-row read policy; browser writes are revoked and occur only through the identity-derived bookmark function.
+
+Catalog and detail functions return only published, unarchived resources with approved canonical English, selecting a current approved Amharic or Spanish translation before localized English fallback. Account access records decorate results as “For You” assignments. Roadmap links use existing `roadmap_items.source_type='resource'` and `source_id`, are creator/resource idempotent, and copy only the selected reviewed title, summary, and category into the caller’s active household roadmap.
+
 ## ETH-024 resource translations
 
 `resource_translations` remains one row per resource and locale. ETH-024 adds submitter timestamps, source English version, and creator/updater fields while retaining `draft`, `in_review`, and `approved` states. Non-English mutation is limited to `am` and `es`. `resource_translation_audit_events` is append-only and stores actor, safe transition metadata, and version numbers only. Public eligibility requires a published parent, approved English, approved requested translation, and matching source version.

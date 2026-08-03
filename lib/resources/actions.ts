@@ -9,6 +9,7 @@ import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import {
   resourceCreateSchema,
   resourceAccountIdsSchema,
+  resourceDiscoveryMetadataSchema,
   resourceRejectionSchema,
   resourceTransitionSchema,
   resourceUpdateSchema,
@@ -28,6 +29,8 @@ function paths(locale: AppLocale, id?: string) {
   for (const publicLocale of ["en", "am", "es"] as const) {
     revalidatePath(`/${publicLocale}/resources`);
     revalidatePath(`/${publicLocale}/resources/[slug]`, "page");
+    revalidatePath(`/${publicLocale}/member/resources`);
+    revalidatePath(`/${publicLocale}/member/resources/[slug]`, "page");
   }
   revalidatePath(`/${locale}/admin/resources`);
   if (id) {
@@ -224,5 +227,34 @@ export async function rejectResource(
   });
   if (error) return { status: "error", message: stale(error) ? t("staleError") : t("transitionError") };
   paths(locale, resourceId);
+  return { status: "success", message: t("saved") };
+}
+
+export async function updateResourceDiscoveryMetadata(
+  locale: AppLocale,
+  resourceId: string,
+  _state: ResourceActionState,
+  formData: FormData,
+): Promise<ResourceActionState> {
+  const t = await getTranslations({ locale, namespace: "resourceWorkflow" });
+  const input = resourceDiscoveryMetadataSchema.safeParse({
+    resourceId,
+    expectedVersion: value(formData, "expectedVersion"),
+    resourceType: value(formData, "resourceType"),
+    featuredRank: value(formData, "featuredRank"),
+  });
+  if (!input.success || !(await canManage())) {
+    return { status: "error", message: t("validationError") };
+  }
+
+  const supabase = await createServerActionSupabaseClient();
+  const { error } = await supabase.rpc("update_resource_discovery_metadata", {
+    target_resource_id: input.data.resourceId,
+    expected_version: input.data.expectedVersion,
+    input_resource_type: input.data.resourceType,
+    input_featured_rank: input.data.featuredRank ?? undefined,
+  });
+  if (error) return { status: "error", message: stale(error) ? t("staleError") : t("saveError") };
+  paths(locale, input.data.resourceId);
   return { status: "success", message: t("saved") };
 }

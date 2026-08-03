@@ -1,5 +1,9 @@
 # Testing strategy
 
+## Member resource discovery verification
+
+Synthetic pgTAP coverage verifies additive metadata constraints, forced bookmark RLS, authenticated catalog/detail access, approved locale selection and English fallback, bounded filters, private bookmark isolation, published-only mutations, assigned and featured selection, idempotent roadmap creation/restoration, viewer denial, administrator-only curation, optimistic conflicts, and anonymous denial. Unit tests cover query normalization, controlled Server Action arguments, safe error mapping, cache invalidation, and truthful hub navigation. Local Playwright coverage should verify searching/filtering, bookmark persistence, localized detail fallback, idempotent roadmap linking, administrator curation, keyboard operation, narrow layouts, and 200% zoom before release; it must use synthetic local Supabase data only.
+
 ## ETH-024 translation verification
 
 ETH-024 unit coverage validates mutation locales, Unicode content, trimming, bounds, rejection notes, and reader locales. Database validation must exercise the translation lifecycle, stale source versions, different-user review, RLS/public-payload boundaries, audit immutability, and household isolation with synthetic users. Browser validation must cover approved localized selection, English fallback notices, stale hiding, editor authorization, keyboard workflow, and safe Markdown. A local Supabase failure before migrations is an infrastructure blocker, not a passing or failing database result.

@@ -1,5 +1,11 @@
 # Architecture
 
+## Member resource discovery
+
+The protected `/[locale]/member/resources` experience is a database-backed learning hub rather than a static placeholder. Server Components request bounded, paginated catalog results through narrow authenticated functions; the browser never receives editorial states, review notes, audit identities, or unpublished content. The hub groups assigned “For You,” administrator-featured, privately bookmarked, and latest resources, with topic/type/search filters and locale-aware English fallback. Resource detail pages reuse the reviewed safe-Markdown renderer. Interactive Client Components are limited to bookmark and “Add to roadmap” forms, whose Server Actions pass only validated slug, locale, and bookmark intent to identity-derived database functions.
+
+Administrators curate a resource type and optional featured rank in the existing global resource workflow. Existing account assignments now drive “For You” discovery and do not make a published resource private; the complete published catalog remains available to every authenticated member. Category artwork is generated from the existing icon and color system and does not depend on external image hosts.
+
 ## ETH-024 resource translations
 
 ETH-024 extends ETH-023's existing `resources` and `resource_translations` records. English is canonical, while only Amharic and Spanish are mutable through controlled functions. The editor route group requires the global content-editor or administrator role and deliberately does not resolve an active household. A dedicated immutable audit table stores safe workflow metadata only. Public readers use narrow locale-selecting functions, selecting the requested approved/current locale then English; English content updates invalidate dependent translations atomically through source-version mismatch.

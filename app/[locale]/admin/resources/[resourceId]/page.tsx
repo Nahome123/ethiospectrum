@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { ResourceTransitionControls } from "@/components/resources/resource-transition-controls";
+import { ResourceDiscoveryForm } from "@/components/resources/resource-discovery-form";
+import type { ResourceType } from "@/lib/resources/constants";
 import { isReviewStatus, getEditorResource } from "@/lib/resources/server";
 
 export const dynamic = "force-dynamic";
@@ -45,6 +47,19 @@ export default async function EditorResourcePage({
           {t("manageTranslations")}
         </Link>
       </header>
+      <section className="mt-7 rounded-xl border bg-card p-5">
+        <h2 className="text-xl font-semibold">{t("discoveryTitle")}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t("discoveryDescription")}</p>
+        <div className="mt-5">
+          <ResourceDiscoveryForm
+            expectedVersion={resource.version}
+            featuredRank={resource.featured_rank}
+            locale={locale}
+            resourceId={resourceId}
+            resourceType={resource.resource_type as ResourceType}
+          />
+        </div>
+      </section>
       <section className="mt-7 rounded-xl border bg-card p-5">
         <ResourceTransitionControls
           locale={locale}
