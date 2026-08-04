@@ -5,6 +5,8 @@ import type { AppLocale } from "@/i18n/routing";
 import { supportRequestIdSchema } from "@/lib/validation/support";
 import { getAdminSupportRequest, getSupportRequestMessages } from "@/lib/support/server";
 
+export const dynamic = "force-dynamic";
+
 function formatDateTime(value: string, locale: AppLocale): string {
   return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
 }

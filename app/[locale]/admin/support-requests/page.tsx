@@ -6,6 +6,8 @@ import { SUPPORT_PAGE_SIZE } from "@/lib/support/constants";
 import { parseSupportQuery, supportQueryString } from "@/lib/support/query-state";
 import { listAdminSupportRequests } from "@/lib/support/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminSupportRequestsPage({
   params,
   searchParams,
