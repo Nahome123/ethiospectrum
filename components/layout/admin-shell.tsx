@@ -12,10 +12,15 @@ const links = [
   "resources",
   "translations",
   "documents",
+  "supportRequests",
   "specialists",
   "prompts",
   "auditLogs",
 ] as const;
+const linkPaths: Partial<Record<(typeof links)[number], string>> = {
+  auditLogs: "audit-logs",
+  supportRequests: "support-requests",
+};
 export async function AdminShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations();
   const locale = (await getLocale()) as AppLocale;
@@ -40,7 +45,7 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
           {links.map((link) => (
             <Link
               className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-800"
-              href={`/admin/${link === "auditLogs" ? "audit-logs" : link}`}
+              href={`/admin/${linkPaths[link] ?? link}`}
               key={link}
             >
               {t(`navigation.${link}`)}

@@ -2225,25 +2225,38 @@ export type Database = {
         Row: {
           content: string;
           created_at: string;
+          household_id: string;
           id: string;
+          idempotency_key: string | null;
           sender_id: string;
           support_thread_id: string;
         };
         Insert: {
           content: string;
           created_at?: string;
+          household_id: string;
           id?: string;
+          idempotency_key?: string | null;
           sender_id: string;
           support_thread_id: string;
         };
         Update: {
           content?: string;
           created_at?: string;
+          household_id?: string;
           id?: string;
+          idempotency_key?: string | null;
           sender_id?: string;
           support_thread_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "support_messages_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "support_messages_sender_id_fkey";
             columns: ["sender_id"];
@@ -2260,30 +2273,120 @@ export type Database = {
           },
         ];
       };
-      support_threads: {
+      support_request_events: {
         Row: {
+          action: string;
+          actor_user_id: string;
           created_at: string;
+          from_status: string | null;
           household_id: string;
           id: string;
-          specialist_id: string | null;
-          status: string;
-          updated_at: string;
+          request_version: number;
+          safe_metadata: Json | null;
+          thread_id: string;
+          to_status: string | null;
         };
         Insert: {
+          action: string;
+          actor_user_id: string;
           created_at?: string;
+          from_status?: string | null;
           household_id: string;
           id?: string;
-          specialist_id?: string | null;
-          status?: string;
-          updated_at?: string;
+          request_version: number;
+          safe_metadata?: Json | null;
+          thread_id: string;
+          to_status?: string | null;
         };
         Update: {
+          action?: string;
+          actor_user_id?: string;
           created_at?: string;
+          from_status?: string | null;
           household_id?: string;
           id?: string;
+          request_version?: number;
+          safe_metadata?: Json | null;
+          thread_id?: string;
+          to_status?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "support_request_events_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "support_request_events_thread_id_fkey";
+            columns: ["thread_id"];
+            isOneToOne: false;
+            referencedRelation: "support_threads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      support_threads: {
+        Row: {
+          cancelled_at: string | null;
+          cancelled_by: string | null;
+          category: string;
+          closed_at: string | null;
+          closed_by: string | null;
+          created_at: string;
+          created_by: string;
+          expectations_acknowledged_at: string;
+          expectations_copy_version: string;
+          household_id: string;
+          id: string;
+          idempotency_key: string | null;
+          preferred_language: string;
+          specialist_id: string | null;
+          status: string;
+          subject: string;
+          updated_at: string;
+          version: number;
+        };
+        Insert: {
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          category?: string;
+          closed_at?: string | null;
+          closed_by?: string | null;
+          created_at?: string;
+          created_by: string;
+          expectations_acknowledged_at: string;
+          expectations_copy_version: string;
+          household_id: string;
+          id?: string;
+          idempotency_key?: string | null;
+          preferred_language?: string;
           specialist_id?: string | null;
           status?: string;
+          subject: string;
           updated_at?: string;
+          version?: number;
+        };
+        Update: {
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          category?: string;
+          closed_at?: string | null;
+          closed_by?: string | null;
+          created_at?: string;
+          created_by?: string;
+          expectations_acknowledged_at?: string;
+          expectations_copy_version?: string;
+          household_id?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          preferred_language?: string;
+          specialist_id?: string | null;
+          status?: string;
+          subject?: string;
+          updated_at?: string;
+          version?: number;
         };
         Relationships: [
           {
@@ -2371,6 +2474,17 @@ export type Database = {
           item_id: string;
         }[];
       };
+      add_support_request_message: {
+        Args: {
+          input_body: string;
+          input_idempotency_key: string;
+          target_thread_id: string;
+        };
+        Returns: {
+          id: string;
+          version: number;
+        }[];
+      };
       approve_resource: {
         Args: { expected_version: number; target_resource_id: string };
         Returns: {
@@ -2410,6 +2524,13 @@ export type Database = {
         Returns: {
           id: string;
           updated_at: string;
+        }[];
+      };
+      cancel_support_request: {
+        Args: { expected_version: number; target_thread_id: string };
+        Returns: {
+          id: string;
+          version: number;
         }[];
       };
       claim_due_reminders: {
@@ -2493,6 +2614,13 @@ export type Database = {
       classify_reminder_delivery: {
         Args: { target_reminder_id: string; worker_run_id: string };
         Returns: string;
+      };
+      close_support_request: {
+        Args: { expected_version: number; target_thread_id: string };
+        Returns: {
+          id: string;
+          version: number;
+        }[];
       };
       complete_document_chat_message: {
         Args: {
@@ -2650,6 +2778,20 @@ export type Database = {
         Returns: {
           id: string;
           updated_at: string;
+        }[];
+      };
+      create_support_request: {
+        Args: {
+          input_acknowledged: boolean;
+          input_category: string;
+          input_description: string;
+          input_idempotency_key: string;
+          input_preferred_language: string;
+          input_subject: string;
+        };
+        Returns: {
+          id: string;
+          version: number;
         }[];
       };
       evaluate_document_summary: {
@@ -2860,6 +3002,17 @@ export type Database = {
           using_english_fallback: boolean;
         }[];
       };
+      get_support_request_messages: {
+        Args: { target_thread_id: string };
+        Returns: {
+          author_is_former: boolean;
+          author_is_self: boolean;
+          author_name: string;
+          body: string;
+          created_at: string;
+          id: string;
+        }[];
+      };
       is_active_household_member: {
         Args: { target_household: string };
         Returns: boolean;
@@ -2961,6 +3114,51 @@ export type Database = {
           title: string;
           total_count: number;
           updated_at: string;
+        }[];
+      };
+      list_support_requests: {
+        Args: {
+          input_category?: string;
+          input_page?: number;
+          input_request_id?: string;
+          input_status?: string;
+        };
+        Returns: {
+          can_cancel: boolean;
+          can_close: boolean;
+          can_message: boolean;
+          category: string;
+          created_at: string;
+          id: string;
+          last_activity_at: string;
+          message_count: number;
+          preferred_language: string;
+          requester_is_self: boolean;
+          requester_name: string;
+          status: string;
+          subject: string;
+          total_count: number;
+          version: number;
+        }[];
+      };
+      list_support_requests_admin: {
+        Args: {
+          input_category?: string;
+          input_page?: number;
+          input_request_id?: string;
+          input_status?: string;
+        };
+        Returns: {
+          category: string;
+          created_at: string;
+          household_label: string;
+          id: string;
+          last_activity_at: string;
+          message_count: number;
+          preferred_language: string;
+          status: string;
+          subject: string;
+          total_count: number;
         }[];
       };
       mark_reminder_seen: {
