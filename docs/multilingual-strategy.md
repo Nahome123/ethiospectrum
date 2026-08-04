@@ -1,5 +1,9 @@
 # Multilingual strategy
 
+## ETH-025 support requests
+
+ETH-025 adds aligned English, Amharic, and Spanish keys for the support list, filters, request form, categories, preferred languages, statuses, follow-up messaging, close/cancel confirmations, conflict and cap errors, empty/read-only/denied states, the administrator triage queue, and the "specialist assignment is not available yet" notice. The non-emergency disclaimer, expectations copy, household-visibility notice, and acknowledgment label are safety-sensitive: English is canonical and versioned through a controlled copy-version identifier, and the Amharic and Spanish wording is an implementation draft that requires native-speaker review before release — especially the emergency-services sentence. A caregiver's request stores a preferred language for future human support, but user-authored request and message text is never machine-translated. Amharic remains left-to-right, and the request, message, and triage layouts wrap long localized strings rather than fixing dimensions.
+
 ## Member resource discovery
 
 The learning hub, filters, topics, resource types, bookmark and roadmap actions, empty states, pagination, and administrator discovery controls have aligned English, Amharic, and Spanish message keys. Resource cards and details use the ETH-024 approved/current requested-locale selection and display the existing localized English-fallback notice when needed. Amharic remains left-to-right. New Amharic and Spanish interface wording requires native-speaker review before release.

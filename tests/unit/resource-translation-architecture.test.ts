@@ -55,11 +55,27 @@ describe("resource translation architecture", () => {
     expect(actions).not.toMatch(/machine.?translation|google.?translate|deepl|openai/i);
   });
 
-  it("contains no ETH-025 implementation in application or database source", () => {
-    const files = ["app", "components", "lib", "supabase/migrations"].flatMap(sourceFiles);
-    const matches = files.filter(
-      (file) => /eth[-_ ]?025/i.test(file) || /eth-025/i.test(readFileSync(file, "utf8")),
-    );
-    expect(matches).toEqual([]);
+  it("keeps ETH-024 translation modules free of ETH-025 support-request behavior", () => {
+    for (const source of [actions, schema, read("lib/resources/translations-server.ts")]) {
+      expect(source).not.toMatch(/support_thread|support_message|support_request/iu);
+    }
+  });
+
+  it("keeps ETH-025 support requests free of ETH-026 specialist assignment behavior", () => {
+    const files = [
+      "lib/support",
+      "components/support",
+      "app/[locale]/(member)/support",
+      "app/[locale]/admin/support-requests",
+    ].flatMap(sourceFiles);
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of files) {
+      const source = readFileSync(file, "utf8");
+      expect(source).not.toMatch(/household_specialists|is_assigned_specialist|assign_specialist/u);
+      expect(source).not.toMatch(/\.from\("specialists"\)/u);
+    }
+    const migration = read("supabase/migrations/20260804000000_specialist_support_requests.sql");
+    expect(migration).not.toMatch(/function\s+(public|private)\.[a-z_]*assign[a-z_]*\(/u);
+    expect(migration).not.toContain("insert into public.household_specialists");
   });
 });

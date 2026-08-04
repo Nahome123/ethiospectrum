@@ -1,5 +1,9 @@
 # Deployment
 
+## ETH-025 support request rollout
+
+ETH-025 requires no new environment variable, secret, worker, scheduler, provider credential, email/SMS integration, or external rate-limiting service. Its single timestamped migration alters the existing dormant `support_threads` and `support_messages` tables, adds `support_request_events`, and deliberately replaces the foundation's specialist-inclusive support read policies, so review it only in a local or non-production Supabase environment: complete a successful reset, regenerate types with `pnpm db:types`, run the pgTAP suite and database lint, and exercise the localized member and administrator flows with synthetic accounts. Any hosted environment with real rows in the dormant support tables must inventory them first — the migration backfills legacy rows fail-safe (`pre-eth-025` copy version, derived creator) rather than treating them as acknowledged requests. A hosted `pnpm db:push:dry-run` may review the change; do not apply it, deploy, or announce the feature without explicit approval and completed native Amharic and Spanish review of the non-emergency wording. This documentation does not assert that a hosted migration or deployment has occurred.
+
 ## ETH-024 translation rollout
 
 ETH-024 needs no provider, scheduler, external translation API, or new environment variable. Review its additive migration only in a local or non-production Supabase environment, complete a successful reset before generating types, then run synthetic database and localized browser checks. Do not apply a hosted migration, deploy, or introduce machine translation without separate approval. Verify stale English-source fallback and obtain native Amharic and Spanish review before release.
