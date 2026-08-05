@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { AppointmentPanel } from "@/components/appointments/appointment-panel";
 import { SupportMessageList } from "@/components/support/support-message-list";
 import { SpecialistAssignmentControls } from "@/components/specialists/specialist-assignment-controls";
 import { supportRequestIdSchema } from "@/lib/validation/support";
@@ -11,6 +12,11 @@ import {
   listAssignableSpecialists,
   listSupportRequestAssignmentEvents,
 } from "@/lib/specialists/server";
+import {
+  findDisplayAppointment,
+  getSupportAppointments,
+  listAppointmentEvents,
+} from "@/lib/appointments/server";
 
 export const dynamic = "force-dynamic";
 
@@ -30,12 +36,18 @@ export default async function AdminSupportRequestPage({
     getAdminSupportRequest(requestId),
   ]);
   if (!request) notFound();
-  const [messages, assignment, assignmentEvents, specialists] = await Promise.all([
-    getSupportRequestMessages(requestId),
-    getSupportRequestAssignment(requestId),
-    listSupportRequestAssignmentEvents(requestId),
-    listAssignableSpecialists(),
-  ]);
+  const [messages, assignment, assignmentEvents, specialists, appointments, appointmentTranslations] =
+    await Promise.all([
+      getSupportRequestMessages(requestId),
+      getSupportRequestAssignment(requestId),
+      listSupportRequestAssignmentEvents(requestId),
+      listAssignableSpecialists(),
+      getSupportAppointments(requestId),
+      getTranslations({ locale, namespace: "appointments" }),
+    ]);
+  const displayAppointment = findDisplayAppointment(appointments);
+  // Administrators observe the appointment and its history but never act on it.
+  const appointmentEvents = displayAppointment ? await listAppointmentEvents(displayAppointment.id) : [];
 
   return (
     <section className="max-w-3xl space-y-6">
@@ -138,6 +150,21 @@ export default async function AdminSupportRequestPage({
           </ol>
         )}
       </section>
+
+      {displayAppointment ? (
+        <AppointmentPanel
+          appointment={displayAppointment}
+          audience="administrator"
+          events={appointmentEvents}
+          locale={locale}
+          requestId={request.id}
+          showHistory
+        />
+      ) : (
+        <p className="rounded-xl border border-border bg-secondary/40 p-4 text-sm leading-6">
+          {appointmentTranslations("noAppointmentProposed")}
+        </p>
+      )}
 
       <section aria-label={t("messagesTitle")}>
         <h2 className="text-xl font-bold">{t("messagesTitle")}</h2>

@@ -6,8 +6,11 @@ import { SupportMessageForm } from "@/components/support/support-message-form";
 import { SupportMessageList } from "@/components/support/support-message-list";
 import { SupportRequestActions } from "@/components/support/support-request-actions";
 import { SupportStatusBadge } from "@/components/support/support-request-card";
+import { AppointmentPanel } from "@/components/appointments/appointment-panel";
 import { supportRequestIdSchema } from "@/lib/validation/support";
 import { getSupportContext, getSupportRequest, getSupportRequestMessages } from "@/lib/support/server";
+import { findDisplayAppointment, getSupportAppointments } from "@/lib/appointments/server";
+import { getCurrentMemberProfile, getCurrentSupabaseClaims } from "@/lib/supabase/server";
 
 function formatDateTime(value: string, locale: AppLocale): string {
   return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
@@ -19,14 +22,22 @@ export default async function SupportRequestPage({
   const { locale: localeParam, requestId } = await params;
   const locale = localeParam as AppLocale;
   if (!supportRequestIdSchema.safeParse(requestId).success) notFound();
-  const [t, specialistTranslations, context, request] = await Promise.all([
+  const [t, specialistTranslations, appointmentTranslations, context, request] = await Promise.all([
     getTranslations({ locale, namespace: "support" }),
     getTranslations({ locale, namespace: "specialists" }),
+    getTranslations({ locale, namespace: "appointments" }),
     getSupportContext(),
     getSupportRequest(requestId),
   ]);
   if (!context || !request) notFound();
-  const messages = await getSupportRequestMessages(requestId);
+  const [messages, appointments, claims] = await Promise.all([
+    getSupportRequestMessages(requestId),
+    getSupportAppointments(requestId),
+    getCurrentSupabaseClaims(),
+  ]);
+  const displayAppointment = findDisplayAppointment(appointments);
+  const viewerProfile =
+    claims && typeof claims.sub === "string" ? await getCurrentMemberProfile(claims.sub) : null;
 
   return (
     <section className="mx-auto max-w-3xl space-y-6">
@@ -87,6 +98,20 @@ export default async function SupportRequestPage({
           requestId={request.id}
           version={request.version}
         />
+      ) : null}
+
+      {displayAppointment ? (
+        <AppointmentPanel
+          appointment={displayAppointment}
+          audience="household"
+          locale={locale}
+          requestId={request.id}
+          viewerTimezone={viewerProfile?.timezone ?? null}
+        />
+      ) : request.status === "open" && request.assigned_specialist_name ? (
+        <p className="rounded-xl border border-border bg-secondary/40 p-4 text-sm leading-6">
+          {appointmentTranslations("noAppointmentProposed")}
+        </p>
       ) : null}
 
       <section aria-label={t("messagesTitle")}>

@@ -73,42 +73,160 @@ export type Database = {
           },
         ];
       };
+      appointment_events: {
+        Row: {
+          action: string;
+          actor_user_id: string | null;
+          appointment_id: string;
+          appointment_version: number;
+          created_at: string;
+          household_id: string;
+          id: string;
+          reason: string | null;
+          safe_metadata: Json | null;
+          support_thread_id: string;
+        };
+        Insert: {
+          action: string;
+          actor_user_id?: string | null;
+          appointment_id: string;
+          appointment_version: number;
+          created_at?: string;
+          household_id: string;
+          id?: string;
+          reason?: string | null;
+          safe_metadata?: Json | null;
+          support_thread_id: string;
+        };
+        Update: {
+          action?: string;
+          actor_user_id?: string | null;
+          appointment_id?: string;
+          appointment_version?: number;
+          created_at?: string;
+          household_id?: string;
+          id?: string;
+          reason?: string | null;
+          safe_metadata?: Json | null;
+          support_thread_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "appointment_events_appointment_id_fkey";
+            columns: ["appointment_id"];
+            isOneToOne: false;
+            referencedRelation: "appointments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointment_events_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointment_events_support_thread_id_fkey";
+            columns: ["support_thread_id"];
+            isOneToOne: false;
+            referencedRelation: "support_threads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       appointments: {
         Row: {
+          cancellation_reason: string | null;
+          cancelled_at: string | null;
+          cancelled_by: string | null;
+          completed_at: string | null;
+          completed_by: string | null;
+          consent_copy_version: string | null;
+          consented_at: string | null;
+          consented_by: string | null;
           created_at: string;
+          declined_at: string | null;
+          declined_by: string | null;
+          duration_minutes: number | null;
           end_time: string;
           household_id: string;
           id: string;
+          idempotency_key: string | null;
           meeting_url: string | null;
+          modality: string | null;
           notes: string | null;
+          proposed_by: string | null;
+          proposed_local_datetime: string | null;
           specialist_id: string | null;
           start_time: string;
           status: string;
+          supersedes_appointment_id: string | null;
+          support_thread_id: string | null;
+          timezone: string | null;
           updated_at: string;
+          version: number;
         };
         Insert: {
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          consent_copy_version?: string | null;
+          consented_at?: string | null;
+          consented_by?: string | null;
           created_at?: string;
+          declined_at?: string | null;
+          declined_by?: string | null;
+          duration_minutes?: number | null;
           end_time: string;
           household_id: string;
           id?: string;
+          idempotency_key?: string | null;
           meeting_url?: string | null;
+          modality?: string | null;
           notes?: string | null;
+          proposed_by?: string | null;
+          proposed_local_datetime?: string | null;
           specialist_id?: string | null;
           start_time: string;
           status?: string;
+          supersedes_appointment_id?: string | null;
+          support_thread_id?: string | null;
+          timezone?: string | null;
           updated_at?: string;
+          version?: number;
         };
         Update: {
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          consent_copy_version?: string | null;
+          consented_at?: string | null;
+          consented_by?: string | null;
           created_at?: string;
+          declined_at?: string | null;
+          declined_by?: string | null;
+          duration_minutes?: number | null;
           end_time?: string;
           household_id?: string;
           id?: string;
+          idempotency_key?: string | null;
           meeting_url?: string | null;
+          modality?: string | null;
           notes?: string | null;
+          proposed_by?: string | null;
+          proposed_local_datetime?: string | null;
           specialist_id?: string | null;
           start_time?: string;
           status?: string;
+          supersedes_appointment_id?: string | null;
+          support_thread_id?: string | null;
+          timezone?: string | null;
           updated_at?: string;
+          version?: number;
         };
         Relationships: [
           {
@@ -123,6 +241,20 @@ export type Database = {
             columns: ["specialist_id"];
             isOneToOne: false;
             referencedRelation: "specialists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_supersedes_appointment_id_fkey";
+            columns: ["supersedes_appointment_id"];
+            isOneToOne: false;
+            referencedRelation: "appointments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "appointments_support_thread_id_fkey";
+            columns: ["support_thread_id"];
+            isOneToOne: false;
+            referencedRelation: "support_threads";
             referencedColumns: ["id"];
           },
         ];
@@ -2543,6 +2675,18 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      accept_support_appointment: {
+        Args: {
+          expected_version: number;
+          input_acknowledged: boolean;
+          input_consent_copy_version: string;
+          target_appointment_id: string;
+        };
+        Returns: {
+          id: string;
+          version: number;
+        }[];
+      };
       add_resource_to_roadmap: {
         Args: { input_locale: string; input_slug: string };
         Returns: {
@@ -2622,6 +2766,17 @@ export type Database = {
         Returns: {
           id: string;
           updated_at: string;
+        }[];
+      };
+      cancel_support_appointment: {
+        Args: {
+          expected_version: number;
+          input_reschedule_requested?: boolean;
+          target_appointment_id: string;
+        };
+        Returns: {
+          id: string;
+          version: number;
         }[];
       };
       cancel_support_request: {
@@ -2803,6 +2958,13 @@ export type Database = {
         Args: { target_reminder_id: string; worker_run_id: string };
         Returns: boolean;
       };
+      complete_support_appointment: {
+        Args: { expected_version: number; target_appointment_id: string };
+        Returns: {
+          id: string;
+          version: number;
+        }[];
+      };
       create_document_chat_conversation: {
         Args: {
           initial_message_content: string;
@@ -2887,6 +3049,13 @@ export type Database = {
           input_preferred_language: string;
           input_subject: string;
         };
+        Returns: {
+          id: string;
+          version: number;
+        }[];
+      };
+      decline_support_appointment: {
+        Args: { expected_version: number; target_appointment_id: string };
         Returns: {
           id: string;
           version: number;
@@ -3114,6 +3283,27 @@ export type Database = {
           subject: string;
         }[];
       };
+      get_support_appointment: {
+        Args: { target_thread_id: string };
+        Returns: {
+          can_accept: boolean;
+          can_cancel: boolean;
+          can_complete: boolean;
+          can_decline: boolean;
+          can_propose: boolean;
+          cancellation_reason: string;
+          consented_at: string;
+          duration_minutes: number;
+          id: string;
+          meeting_url: string;
+          modality: string;
+          specialist_name: string;
+          start_time: string;
+          status: string;
+          timezone: string;
+          version: number;
+        }[];
+      };
       get_support_request_assignment: {
         Args: { target_thread_id: string };
         Returns: {
@@ -3147,6 +3337,16 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      list_appointment_events: {
+        Args: { target_appointment_id: string };
+        Returns: {
+          action: string;
+          appointment_version: number;
+          created_at: string;
+          id: string;
+          reason: string;
+        }[];
       };
       list_assignable_specialists: {
         Args: never;
@@ -3330,6 +3530,22 @@ export type Database = {
       mark_reminder_seen: {
         Args: { target_reminder_id: string };
         Returns: boolean;
+      };
+      propose_support_appointment: {
+        Args: {
+          input_duration_minutes: number;
+          input_idempotency_key: string;
+          input_local_datetime: string;
+          input_meeting_url: string;
+          input_modality: string;
+          input_supersedes_appointment_id?: string;
+          input_timezone: string;
+          target_thread_id: string;
+        };
+        Returns: {
+          id: string;
+          version: number;
+        }[];
       };
       publish_resource: {
         Args: { expected_version: number; target_resource_id: string };
