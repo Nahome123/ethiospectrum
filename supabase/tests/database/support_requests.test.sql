@@ -1,6 +1,6 @@
 begin;
 
-select plan(114);
+select plan(116);
 
 -- Synthetic fixtures only. Household A: owner, household administrator, two
 -- members, viewer, and a removed member. Household B: an unrelated owner.
@@ -459,11 +459,33 @@ select ok((
 select ok(not has_function_privilege('anon', 'public.create_support_request(text, text, text, text, boolean, uuid)', 'execute'), 'anonymous users cannot execute request creation');
 select ok(has_function_privilege('authenticated', 'public.create_support_request(text, text, text, text, boolean, uuid)', 'execute'), 'authenticated users can execute request creation');
 select ok(not has_function_privilege('authenticated', 'private.transition_support_request(uuid, integer, text)', 'execute'), 'the private transition helper is not browser-executable');
+-- ETH-026 adds assignment as a separate, request-level grant. These guards keep
+-- that boundary honest: ETH-025's own functions never grant specialist access,
+-- assignment is request-level rather than household-wide, and ETH-027
+-- appointment scheduling remains absent.
+select ok(
+  (select count(*) from pg_proc as routine
+   join pg_namespace as schema on schema.oid = routine.pronamespace
+   where schema.nspname in ('public', 'private')
+     and routine.proname in (
+       'create_support_request', 'add_support_request_message',
+       'close_support_request', 'cancel_support_request'
+     )
+     and pg_get_functiondef(routine.oid) like '%specialist_id%') = 0,
+  'ETH-025 caregiver functions never grant specialist access themselves');
+-- The household payload may name the assigned specialist but never exposes an
+-- internal specialist identifier.
+select ok(
+  (select count(*) from information_schema.columns
+   where table_schema = 'public'
+     and table_name = 'support_threads'
+     and column_name = 'specialist_id') = 1,
+  'ETH-026 assignment is request-level on support_threads');
 select ok(not exists (
   select 1 from pg_proc as routine
   join pg_namespace as schema on schema.oid = routine.pronamespace
-  where schema.nspname in ('public', 'private') and routine.proname like 'assign%'
-), 'no ETH-026 assignment function exists');
+  where schema.nspname in ('public', 'private') and routine.proname like '%appointment%'
+), 'no ETH-027 appointment function exists');
 select is((select count(*) from public.support_threads where specialist_id is not null), 0::bigint, 'ETH-025 never populates the dormant specialist field');
 
 -- ETH-008 and ETH-009 regression checks.

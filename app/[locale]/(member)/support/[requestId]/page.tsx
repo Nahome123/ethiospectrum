@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { SupportMessageForm } from "@/components/support/support-message-form";
+import { SupportMessageList } from "@/components/support/support-message-list";
 import { SupportRequestActions } from "@/components/support/support-request-actions";
 import { SupportStatusBadge } from "@/components/support/support-request-card";
 import { supportRequestIdSchema } from "@/lib/validation/support";
@@ -18,8 +19,9 @@ export default async function SupportRequestPage({
   const { locale: localeParam, requestId } = await params;
   const locale = localeParam as AppLocale;
   if (!supportRequestIdSchema.safeParse(requestId).success) notFound();
-  const [t, context, request] = await Promise.all([
+  const [t, specialistTranslations, context, request] = await Promise.all([
     getTranslations({ locale, namespace: "support" }),
+    getTranslations({ locale, namespace: "specialists" }),
     getSupportContext(),
     getSupportRequest(requestId),
   ]);
@@ -65,6 +67,12 @@ export default async function SupportRequestPage({
           <dt className="font-semibold">{t("created")}:</dt>
           <dd>{formatDateTime(request.created_at, locale)}</dd>
         </div>
+        <div className="flex flex-wrap gap-1.5">
+          <dt className="font-semibold">{specialistTranslations("assignedSpecialist")}:</dt>
+          <dd className="break-words [overflow-wrap:anywhere]">
+            {request.assigned_specialist_name ?? specialistTranslations("noSpecialistAssigned")}
+          </dd>
+        </div>
       </dl>
 
       <p className="rounded-xl border border-border bg-secondary/40 p-4 text-sm leading-6">
@@ -83,26 +91,7 @@ export default async function SupportRequestPage({
 
       <section aria-label={t("messagesTitle")}>
         <h2 className="text-xl font-bold">{t("messagesTitle")}</h2>
-        {messages.length === 0 ? (
-          <p className="mt-3 text-muted-foreground">{t("noMessages")}</p>
-        ) : (
-          <ol className="mt-3 grid gap-3">
-            {messages.map((message) => (
-              <li className="rounded-xl border border-border bg-white p-4" key={message.id}>
-                <p className="flex flex-wrap gap-x-2 text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">
-                    {message.author_is_self ? t("you") : message.author_name}
-                    {message.author_is_former ? ` (${t("formerMember")})` : ""}
-                  </span>
-                  <span>{formatDateTime(message.created_at, locale)}</span>
-                </p>
-                <p className="mt-2 whitespace-pre-wrap break-words leading-6 [overflow-wrap:anywhere]">
-                  {message.body}
-                </p>
-              </li>
-            ))}
-          </ol>
-        )}
+        <SupportMessageList locale={locale} messages={messages} />
       </section>
 
       {request.status === "open" && request.can_message ? (
