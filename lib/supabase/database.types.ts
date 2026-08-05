@@ -2223,6 +2223,7 @@ export type Database = {
       };
       support_messages: {
         Row: {
+          author_kind: string;
           content: string;
           created_at: string;
           household_id: string;
@@ -2232,6 +2233,7 @@ export type Database = {
           support_thread_id: string;
         };
         Insert: {
+          author_kind?: string;
           content: string;
           created_at?: string;
           household_id: string;
@@ -2241,6 +2243,7 @@ export type Database = {
           support_thread_id: string;
         };
         Update: {
+          author_kind?: string;
           content?: string;
           created_at?: string;
           household_id?: string;
@@ -2267,6 +2270,67 @@ export type Database = {
           {
             foreignKeyName: "support_messages_support_thread_id_fkey";
             columns: ["support_thread_id"];
+            isOneToOne: false;
+            referencedRelation: "support_threads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      support_request_assignment_events: {
+        Row: {
+          action: string;
+          actor_user_id: string;
+          assignment_version: number;
+          created_at: string;
+          household_id: string;
+          id: string;
+          reason: string | null;
+          safe_metadata: Json | null;
+          specialist_id: string;
+          thread_id: string;
+        };
+        Insert: {
+          action: string;
+          actor_user_id: string;
+          assignment_version: number;
+          created_at?: string;
+          household_id: string;
+          id?: string;
+          reason?: string | null;
+          safe_metadata?: Json | null;
+          specialist_id: string;
+          thread_id: string;
+        };
+        Update: {
+          action?: string;
+          actor_user_id?: string;
+          assignment_version?: number;
+          created_at?: string;
+          household_id?: string;
+          id?: string;
+          reason?: string | null;
+          safe_metadata?: Json | null;
+          specialist_id?: string;
+          thread_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "support_request_assignment_events_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "support_request_assignment_events_specialist_id_fkey";
+            columns: ["specialist_id"];
+            isOneToOne: false;
+            referencedRelation: "specialists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "support_request_assignment_events_thread_id_fkey";
+            columns: ["thread_id"];
             isOneToOne: false;
             referencedRelation: "support_threads";
             referencedColumns: ["id"];
@@ -2329,6 +2393,8 @@ export type Database = {
       };
       support_threads: {
         Row: {
+          assignment_updated_at: string | null;
+          assignment_version: number;
           cancelled_at: string | null;
           cancelled_by: string | null;
           category: string;
@@ -2342,6 +2408,8 @@ export type Database = {
           id: string;
           idempotency_key: string | null;
           preferred_language: string;
+          specialist_assigned_at: string | null;
+          specialist_assigned_by: string | null;
           specialist_id: string | null;
           status: string;
           subject: string;
@@ -2349,6 +2417,8 @@ export type Database = {
           version: number;
         };
         Insert: {
+          assignment_updated_at?: string | null;
+          assignment_version?: number;
           cancelled_at?: string | null;
           cancelled_by?: string | null;
           category?: string;
@@ -2362,6 +2432,8 @@ export type Database = {
           id?: string;
           idempotency_key?: string | null;
           preferred_language?: string;
+          specialist_assigned_at?: string | null;
+          specialist_assigned_by?: string | null;
           specialist_id?: string | null;
           status?: string;
           subject: string;
@@ -2369,6 +2441,8 @@ export type Database = {
           version?: number;
         };
         Update: {
+          assignment_updated_at?: string | null;
+          assignment_version?: number;
           cancelled_at?: string | null;
           cancelled_by?: string | null;
           category?: string;
@@ -2382,6 +2456,8 @@ export type Database = {
           id?: string;
           idempotency_key?: string | null;
           preferred_language?: string;
+          specialist_assigned_at?: string | null;
+          specialist_assigned_by?: string | null;
           specialist_id?: string | null;
           status?: string;
           subject?: string;
@@ -2474,6 +2550,17 @@ export type Database = {
           item_id: string;
         }[];
       };
+      add_specialist_support_message: {
+        Args: {
+          input_body: string;
+          input_idempotency_key: string;
+          target_thread_id: string;
+        };
+        Returns: {
+          assignment_version: number;
+          id: string;
+        }[];
+      };
       add_support_request_message: {
         Args: {
           input_body: string;
@@ -2513,6 +2600,17 @@ export type Database = {
         Returns: {
           id: string;
           updated_at: string;
+        }[];
+      };
+      assign_specialist_to_support_request: {
+        Args: {
+          expected_assignment_version: number;
+          target_specialist_id: string;
+          target_thread_id: string;
+        };
+        Returns: {
+          assignment_version: number;
+          id: string;
         }[];
       };
       can_access_household: {
@@ -3002,11 +3100,39 @@ export type Database = {
           using_english_fallback: boolean;
         }[];
       };
+      get_specialist_support_request: {
+        Args: { target_thread_id: string };
+        Returns: {
+          category: string;
+          created_at: string;
+          id: string;
+          last_activity_at: string;
+          message_count: number;
+          preferred_language: string;
+          requester_name: string;
+          status: string;
+          subject: string;
+        }[];
+      };
+      get_support_request_assignment: {
+        Args: { target_thread_id: string };
+        Returns: {
+          assignment_version: number;
+          can_assign: boolean;
+          can_revoke: boolean;
+          specialist_assigned_at: string;
+          specialist_id: string;
+          specialist_name: string;
+          status: string;
+          thread_id: string;
+        }[];
+      };
       get_support_request_messages: {
         Args: { target_thread_id: string };
         Returns: {
           author_is_former: boolean;
           author_is_self: boolean;
+          author_kind: string;
           author_name: string;
           body: string;
           created_at: string;
@@ -3021,6 +3147,18 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      list_assignable_specialists: {
+        Args: never;
+        Returns: {
+          active_assignment_count: number;
+          availability_status: string;
+          display_name: string;
+          id: string;
+          is_eligible: boolean;
+          languages: string[];
+          specialties: string[];
+        }[];
       };
       list_member_resources: {
         Args: {
@@ -3116,6 +3254,31 @@ export type Database = {
           updated_at: string;
         }[];
       };
+      list_specialist_support_requests: {
+        Args: { input_page?: number };
+        Returns: {
+          category: string;
+          created_at: string;
+          id: string;
+          last_activity_at: string;
+          message_count: number;
+          preferred_language: string;
+          status: string;
+          subject: string;
+          total_count: number;
+        }[];
+      };
+      list_support_request_assignment_events: {
+        Args: { target_thread_id: string };
+        Returns: {
+          action: string;
+          assignment_version: number;
+          created_at: string;
+          id: string;
+          reason: string;
+          specialist_name: string;
+        }[];
+      };
       list_support_requests: {
         Args: {
           input_category?: string;
@@ -3124,6 +3287,7 @@ export type Database = {
           input_status?: string;
         };
         Returns: {
+          assigned_specialist_name: string;
           can_cancel: boolean;
           can_close: boolean;
           can_message: boolean;
@@ -3149,6 +3313,8 @@ export type Database = {
           input_status?: string;
         };
         Returns: {
+          assigned_specialist_name: string;
+          assignment_version: number;
           category: string;
           created_at: string;
           household_label: string;
@@ -3277,6 +3443,13 @@ export type Database = {
           target_message_id: string;
         };
         Returns: boolean;
+      };
+      revoke_specialist_from_support_request: {
+        Args: { expected_assignment_version: number; target_thread_id: string };
+        Returns: {
+          assignment_version: number;
+          id: string;
+        }[];
       };
       send_document_chat_message: {
         Args: {

@@ -61,21 +61,43 @@ describe("resource translation architecture", () => {
     }
   });
 
-  it("keeps ETH-025 support requests free of ETH-026 specialist assignment behavior", () => {
+  it("keeps ETH-025 support-request modules from granting specialist access themselves", () => {
     const files = [
       "lib/support",
-      "components/support",
       "app/[locale]/(member)/support",
       "app/[locale]/admin/support-requests",
     ].flatMap(sourceFiles);
     expect(files.length).toBeGreaterThan(0);
     for (const file of files) {
       const source = readFileSync(file, "utf8");
-      expect(source).not.toMatch(/household_specialists|is_assigned_specialist|assign_specialist/u);
+      // ETH-026 owns every assignment mutation; ETH-025 surfaces may only read
+      // the safe assigned-specialist name the database already resolved.
+      expect(source).not.toMatch(/household_specialists|is_assigned_specialist/u);
+      expect(source).not.toMatch(/\.rpc\("assign_specialist|\.rpc\("revoke_specialist/u);
       expect(source).not.toMatch(/\.from\("specialists"\)/u);
     }
-    const migration = read("supabase/migrations/20260804000000_specialist_support_requests.sql");
-    expect(migration).not.toMatch(/function\s+(public|private)\.[a-z_]*assign[a-z_]*\(/u);
-    expect(migration).not.toContain("insert into public.household_specialists");
+    const eth025Migration = read("supabase/migrations/20260804000000_specialist_support_requests.sql");
+    expect(eth025Migration).not.toMatch(/function\s+(public|private)\.[a-z_]*assign[a-z_]*\(/u);
+    expect(eth025Migration).not.toContain("insert into public.household_specialists");
+  });
+
+  it("keeps ETH-026 assignment request-level and free of ETH-027 appointment behavior", () => {
+    const eth026Migration = read("supabase/migrations/20260805000000_specialist_assignment.sql");
+    // Request-level: the assignment lives on support_threads, never on a
+    // household-wide record.
+    expect(eth026Migration).toContain("public.support_threads");
+    expect(eth026Migration).toContain("specialist_assigned_at");
+    expect(eth026Migration).not.toContain("insert into public.household_specialists");
+    expect(eth026Migration).not.toContain("update public.household_specialists");
+
+    const files = ["lib/specialists", "components/specialists", "app/[locale]/specialist"].flatMap(
+      sourceFiles,
+    );
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of [...files, "supabase/migrations/20260805000000_specialist_assignment.sql"]) {
+      const source = readFileSync(file, "utf8");
+      expect(source).not.toMatch(/appointment|booking|scheduling/iu);
+      expect(source).not.toMatch(/notification|notify/iu);
+    }
   });
 });

@@ -31,6 +31,7 @@ export type SupportRequest = {
   can_message: boolean;
   can_close: boolean;
   can_cancel: boolean;
+  assigned_specialist_name: string | null;
   total_count: number;
 };
 
@@ -39,6 +40,7 @@ export type SupportRequestMessage = {
   body: string;
   created_at: string;
   author_name: string;
+  author_kind: string;
   author_is_self: boolean;
   author_is_former: boolean;
 };
@@ -53,6 +55,8 @@ export type AdminSupportRequest = {
   created_at: string;
   last_activity_at: string;
   message_count: number;
+  assigned_specialist_name: string | null;
+  assignment_version: number;
   total_count: number;
 };
 

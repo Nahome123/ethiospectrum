@@ -50,7 +50,7 @@ export default async function AdminSupportRequestsPage({
         <p className="mt-2 max-w-3xl text-muted-foreground">{t("adminDescription")}</p>
       </div>
       <p className="rounded-xl border border-border bg-secondary/40 p-4 text-sm leading-6" role="note">
-        {t("adminReadOnlyNotice")} {t("specialistAssignmentUnavailable")}
+        {t("adminReadOnlyNotice")} {t("specialistAssignmentNotice")}
       </p>
       <SupportFilters basePath="/admin/support-requests" locale={locale} query={query} />
       {requests.length === 0 ? (
