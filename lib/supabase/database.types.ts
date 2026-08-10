@@ -3283,6 +3283,27 @@ export type Database = {
           subject: string;
         }[];
       };
+      get_support_appointment: {
+        Args: { target_thread_id: string };
+        Returns: {
+          can_accept: boolean;
+          can_cancel: boolean;
+          can_complete: boolean;
+          can_decline: boolean;
+          can_propose: boolean;
+          cancellation_reason: string;
+          consented_at: string;
+          duration_minutes: number;
+          id: string;
+          meeting_url: string;
+          modality: string;
+          specialist_name: string;
+          start_time: string;
+          status: string;
+          timezone: string;
+          version: number;
+        }[];
+      };
       get_support_request_assignment: {
         Args: { target_thread_id: string };
         Returns: {
@@ -3316,6 +3337,16 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      list_appointment_events: {
+        Args: { target_appointment_id: string };
+        Returns: {
+          action: string;
+          appointment_version: number;
+          created_at: string;
+          id: string;
+          reason: string;
+        }[];
       };
       list_assignable_specialists: {
         Args: never;
