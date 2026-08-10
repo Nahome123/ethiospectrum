@@ -2,18 +2,10 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { AppointmentPanel } from "@/components/appointments/appointment-panel";
-import { AppointmentProposalForm } from "@/components/appointments/appointment-proposal-form";
 import { SpecialistResponseForm } from "@/components/specialists/specialist-response-form";
 import { SupportMessageList } from "@/components/support/support-message-list";
 import { getSpecialistSupportRequest } from "@/lib/specialists/server";
 import { getSupportRequestMessages } from "@/lib/support/server";
-import {
-  findDisplayAppointment,
-  findLiveAppointment,
-  getSupportAppointments,
-} from "@/lib/appointments/server";
-import { getCurrentMemberProfile, getCurrentSupabaseClaims } from "@/lib/supabase/server";
 import { specialistRequestIdSchema } from "@/lib/validation/specialists";
 
 export const dynamic = "force-dynamic";
@@ -50,17 +42,7 @@ export default async function SpecialistSupportRequestPage({
     );
   }
 
-  const [messages, appointments, appointmentTranslations, claims] = await Promise.all([
-    getSupportRequestMessages(requestId),
-    getSupportAppointments(requestId),
-    getTranslations({ locale, namespace: "appointments" }),
-    getCurrentSupabaseClaims(),
-  ]);
-  const liveAppointment = findLiveAppointment(appointments);
-  const displayAppointment = findDisplayAppointment(appointments);
-  const specialistProfile =
-    claims && typeof claims.sub === "string" ? await getCurrentMemberProfile(claims.sub) : null;
-  const proposalTimezone = specialistProfile?.timezone || "UTC";
+  const messages = await getSupportRequestMessages(requestId);
 
   return (
     <section className="mx-auto max-w-3xl space-y-6">
@@ -100,32 +82,6 @@ export default async function SpecialistSupportRequestPage({
           <dd>{formatDateTime(request.created_at, locale)}</dd>
         </div>
       </dl>
-
-      {displayAppointment ? (
-        <AppointmentPanel
-          appointment={displayAppointment}
-          audience="specialist"
-          locale={locale}
-          requestId={request.id}
-          viewerTimezone={specialistProfile?.timezone ?? null}
-        />
-      ) : null}
-
-      {liveAppointment ? null : (
-        <section
-          aria-label={appointmentTranslations("proposeAppointment")}
-          className="space-y-4 rounded-2xl border border-border bg-white p-5"
-        >
-          <h2 className="text-xl font-bold">{appointmentTranslations("proposeAppointment")}</h2>
-          <p className="text-sm text-muted-foreground">{appointmentTranslations("proposalHelp")}</p>
-          <AppointmentProposalForm
-            defaultTimezone={proposalTimezone}
-            locale={locale}
-            requestId={request.id}
-            supersedesAppointmentId={displayAppointment?.id}
-          />
-        </section>
-      )}
 
       <section aria-label={supportTranslations("messagesTitle")}>
         <h2 className="text-xl font-bold">{supportTranslations("messagesTitle")}</h2>

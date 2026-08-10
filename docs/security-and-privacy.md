@@ -1,13 +1,5 @@
 # Security and privacy
 
-## ETH-027 appointment controls
-
-ETH-027 begins by removing an unsafe inherited policy. The dormant `appointments` table allowed reads through `can_access_household()`, which honours dormant household-wide `household_specialists` rows. That policy is dropped, RLS is forced, and access is re-derived per query from the appointment's parent request: active household membership, the request's current specialist assignment, or the isolated platform-administrator role. An active household-wide specialist row grants nothing, and a pgTAP case proves it.
-
-Consent is a caregiver act the server owns end to end. The browser sends only an acknowledgment and the expected appointment version; the consenting user, consent timestamp, and consent-copy version are all derived server-side, and the version binding means a changed proposal cannot be silently accepted. Viewers cannot consent, specialists cannot accept their own proposals, and platform administrators cannot propose, accept, decline, reschedule, cancel, or complete. Agreed terms are immutable: rescheduling cancels and supersedes rather than editing, and the integrity trigger blocks in-place changes to a scheduled appointment's time, timezone, duration, or modality.
-
-Meeting links are treated as sensitive. Only HTTPS is accepted, so `javascript:`, `data:`, `file:`, and plain HTTP are rejected rather than sanitized, the value is bounded, phone appointments must carry none, and the link is released only to the household and the assigned specialist and only once the appointment is scheduled. It never appears in audit metadata, administrator queues, list payloads, logs, or unsafe HTML. Daylight-saving handling refuses to guess: nonexistent and ambiguous local times are rejected instead of resolved to an arbitrary offset, and a scheduled UTC instant never moves afterwards. Ending the grant or the request cancels any live appointment in the same transaction while preserving history.
-
 ## ETH-026 specialist assignment controls
 
 ETH-026 is a least-privilege grant scoped to one support request. Only the isolated platform-administrator role may assign or revoke; household owners, household administrators, members, viewers, content editors, specialists, and anonymous callers are all denied at the database. A specialist cannot assign themselves, choose a household, reassign, revoke, close, cancel, or edit anything, and browser-supplied actor, specialist, household, role, status, timestamp, audit action, and author-kind values are ignored because no function argument or write grant accepts them. Eligibility is re-derived server-side from the global specialist role, an existing specialist profile, and `available` status.

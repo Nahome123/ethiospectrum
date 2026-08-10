@@ -1,6 +1,6 @@
 begin;
 
-select plan(119);
+select plan(118);
 
 -- Synthetic fixtures only. Household A: owner, member, viewer. Household B: an
 -- unrelated owner. Global roles: one platform administrator, two specialists,
@@ -487,26 +487,13 @@ set local role authenticated;
 set local request.jwt.claim.sub = 'a1000000-0000-4000-8000-000000000004';
 select is((select count(*) from public.support_threads where household_id = 'a2000000-0000-4000-8000-000000000001'), 0::bigint, 'ETH-025 cross-household isolation still holds');
 reset role;
--- ETH-027 now owns appointments. Assignment itself must still never schedule:
--- ETH-026's own functions stay free of appointment behavior, and ETH-028
--- billing remains absent.
-select ok(
-  (select count(*) from pg_proc as routine
-   join pg_namespace as schema on schema.oid = routine.pronamespace
-   where schema.nspname in ('public', 'private')
-     and routine.proname in (
-       'assign_specialist_to_support_request', 'revoke_specialist_from_support_request',
-       'add_specialist_support_message'
-     )
-     and pg_get_functiondef(routine.oid) like '%public.appointments%'
-     and routine.proname <> 'revoke_specialist_from_support_request') = 0,
-  'ETH-026 assignment functions do not schedule appointments themselves');
+-- ETH-022 owns reminder rescheduling and ETH-020 owns extraction availability;
+-- ETH-027 appointment scheduling must remain absent.
 select ok(not exists (
   select 1 from pg_proc as routine
   join pg_namespace as schema on schema.oid = routine.pronamespace
-  where schema.nspname in ('public', 'private')
-    and (routine.proname like '%stripe%' or routine.proname like '%subscription%')
-), 'no ETH-028 billing function exists');
+  where schema.nspname in ('public', 'private') and routine.proname like '%appointment%'
+), 'no ETH-027 appointment function exists');
 select is((select count(*) from public.appointments), 0::bigint, 'no ETH-027 appointment rows are created');
 
 select * from finish();

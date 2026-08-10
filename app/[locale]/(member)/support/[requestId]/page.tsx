@@ -22,10 +22,9 @@ export default async function SupportRequestPage({
   const { locale: localeParam, requestId } = await params;
   const locale = localeParam as AppLocale;
   if (!supportRequestIdSchema.safeParse(requestId).success) notFound();
-  const [t, specialistTranslations, appointmentTranslations, context, request] = await Promise.all([
+  const [t, specialistTranslations, context, request] = await Promise.all([
     getTranslations({ locale, namespace: "support" }),
     getTranslations({ locale, namespace: "specialists" }),
-    getTranslations({ locale, namespace: "appointments" }),
     getSupportContext(),
     getSupportRequest(requestId),
   ]);

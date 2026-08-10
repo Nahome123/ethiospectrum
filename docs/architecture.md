@@ -1,13 +1,5 @@
 # Architecture
 
-## ETH-027 appointment scheduling
-
-ETH-027 keeps the ETH-026 boundary and narrows it further. `private.appointment_household_reader` and `private.appointment_assigned_specialist` resolve access from the appointment's parent support request, and the specialist branch delegates to `private.is_assigned_open_request_specialist`, so a revoked assignment or a closed request removes appointment access on the next query. The foundation's `appointments_access` policy is dropped because `can_access_household()` would re-admit dormant household-wide specialist rows.
-
-Timezone resolution is authoritative in PostgreSQL: `private.resolve_appointment_instant` validates the zone against `pg_timezone_names`, detects spring-forward nonexistent times by round-tripping the local value, and detects fall-back ambiguity by checking whether a neighbouring instant renders identically. `lib/appointments/scheduling.ts` mirrors that logic with Temporal purely to give the browser an early localized error; the stored instant always comes from the database. A private transaction-marker table makes appointment rows unwritable outside the reviewed functions, and the integrity trigger additionally refuses to change an accepted appointment's agreed time, timezone, duration, or modality in place.
-
-One shared `AppointmentPanel` server component serves the household, specialist, and administrator views, driven by server-derived capability flags, so no audience-specific authorization runs in the browser. Client components are limited to the proposal form, the consent form, and confirmed lifecycle controls. Automatic cancellation is wired into the existing ETH-026 revocation helper and the ETH-025 close and cancel transition, so ending a grant or a request ends its appointment in the same statement.
-
 ## ETH-026 specialist assignment
 
 ETH-026 grants specialist access as a request-level relationship rather than a household one. The authoritative record is the existing `support_threads.specialist_id` column plus server-controlled assignment metadata and an `assignment_version` used for optimistic concurrency. `private.is_assigned_open_request_specialist(thread_id)` is the entire authorization boundary: it resolves `auth.uid()` to a specialist profile holding the global specialist role and confirms that profile is the request's current specialist on an open request. Because the policies call that function on every query, revocation takes effect immediately for an existing session or unexpired JWT — no session table, token claim, or application-only helper caches the decision. `household_specialists` and `can_access_household()` are deliberately excluded, since both would widen access beyond one request.
