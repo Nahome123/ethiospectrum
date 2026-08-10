@@ -323,7 +323,9 @@ test.describe("specialist support requests (local Supabase only)", () => {
     await expect(page.getByRole("heading", { name: "Support request triage" })).toBeVisible();
     await expect(page.getByText("Read-only triage")).toBeVisible();
     await expect(
-      page.getByText("Specialist assignment and specialist responses are not available yet."),
+      page.getByText(
+        "Open a request to assign or revoke a specialist. Administrators do not send messages or close requests.",
+      ),
     ).toBeVisible();
     await expect(page.getByText(subject, { exact: true })).toBeVisible();
     await expect(page.getByText(`Triage household ${suffix}`)).toBeVisible();
@@ -333,7 +335,10 @@ test.describe("specialist support requests (local Supabase only)", () => {
     await expect(page.getByRole("button", { name: "Close request" })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Cancel request" })).toHaveCount(0);
     await expect(page.getByLabel("Follow-up message")).toHaveCount(0);
-    await expect(page.locator("main select")).toHaveCount(0);
+    // The request is open and unassigned, so the assignment section renders, but
+    // the synthetic specialist above is left unavailable, so it stays ineligible.
+    await expect(page.getByText("Assign specialist", { exact: true })).toBeVisible();
+    await expect(page.getByText("No eligible specialist is available to assign right now.")).toBeVisible();
     await page.goto("/en/admin/support-requests");
     await expect(page.locator("main select")).toHaveCount(2);
     await logOut(page);

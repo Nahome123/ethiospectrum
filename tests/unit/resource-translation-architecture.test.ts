@@ -90,14 +90,27 @@ describe("resource translation architecture", () => {
     expect(eth026Migration).not.toContain("insert into public.household_specialists");
     expect(eth026Migration).not.toContain("update public.household_specialists");
 
-    const files = ["lib/specialists", "components/specialists", "app/[locale]/specialist"].flatMap(
-      sourceFiles,
-    );
-    expect(files.length).toBeGreaterThan(0);
-    for (const file of [...files, "supabase/migrations/20260805000000_specialist_assignment.sql"]) {
-      const source = readFileSync(file, "utf8");
-      expect(source).not.toMatch(/appointment|booking|scheduling/iu);
+    // ETH-027 owns appointments, so the ETH-026 sources themselves must stay
+    // free of scheduling; the specialist route composes ETH-027 components
+    // rather than implementing them.
+    expect(read("lib/specialists/actions.ts")).not.toMatch(/appointment|booking|scheduling/iu);
+    expect(read("lib/specialists/server.ts")).not.toMatch(/appointment|booking|scheduling/iu);
+    expect(eth026Migration).not.toMatch(/appointment|booking|scheduling/iu);
+    for (const source of [eth026Migration, read("lib/specialists/actions.ts")]) {
       expect(source).not.toMatch(/notification|notify/iu);
+    }
+  });
+
+  it("keeps ETH-027 appointments request-level and free of ETH-028 billing", () => {
+    const eth027Migration = read("supabase/migrations/20260806000000_appointment_scheduling.sql");
+    expect(eth027Migration).toContain("support_thread_id");
+    expect(eth027Migration).toContain("drop policy if exists appointments_access");
+    const files = ["lib/appointments", "components/appointments"].flatMap(sourceFiles);
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of [...files, "supabase/migrations/20260806000000_appointment_scheduling.sql"]) {
+      const source = readFileSync(file, "utf8");
+      expect(source).not.toMatch(/stripe|subscription|invoice|checkout/iu);
+      expect(source).not.toMatch(/recurring|rrule|google.?calendar/iu);
     }
   });
 });

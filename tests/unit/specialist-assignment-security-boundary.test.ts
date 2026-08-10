@@ -106,12 +106,12 @@ describe("specialist assignment security boundaries", () => {
     }
   });
 
-  it("keeps ETH-027 appointment and scheduling behavior absent", () => {
-    for (const source of [actionSource, serverSource, migrationSource]) {
+  it("keeps ETH-026 assignment sources free of ETH-027 scheduling behavior", () => {
+    // ETH-027 owns appointments; the assignment layer must not schedule. The
+    // shared revoke helper may end a live appointment, which is ETH-027 calling
+    // in rather than ETH-026 scheduling.
+    for (const source of [actionSource, serverSource]) {
       expect(source).not.toMatch(/appointment|booking|availability_slot|timezone_match/iu);
-    }
-    for (const file of specialistRoutes) {
-      expect(readFileSync(file, "utf8")).not.toMatch(/appointment|schedule|booking/iu);
     }
   });
 

@@ -481,11 +481,17 @@ select ok(
      and table_name = 'support_threads'
      and column_name = 'specialist_id') = 1,
   'ETH-026 assignment is request-level on support_threads');
-select ok(not exists (
-  select 1 from pg_proc as routine
-  join pg_namespace as schema on schema.oid = routine.pronamespace
-  where schema.nspname in ('public', 'private') and routine.proname like '%appointment%'
-), 'no ETH-027 appointment function exists');
+-- ETH-027 owns appointments; ETH-025's caregiver functions must not schedule.
+select ok(
+  (select count(*) from pg_proc as routine
+   join pg_namespace as schema on schema.oid = routine.pronamespace
+   where schema.nspname in ('public', 'private')
+     and routine.proname in (
+       'create_support_request', 'add_support_request_message', 'close_support_request',
+       'cancel_support_request'
+     )
+     and pg_get_functiondef(routine.oid) like '%public.appointments%') = 0,
+  'ETH-025 caregiver functions do not schedule appointments themselves');
 select is((select count(*) from public.support_threads where specialist_id is not null), 0::bigint, 'ETH-025 never populates the dormant specialist field');
 
 -- ETH-008 and ETH-009 regression checks.
