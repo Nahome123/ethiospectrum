@@ -20,6 +20,7 @@ const links = [
   "reminders",
   "resources",
   "support",
+  "billing",
   "settings",
 ] as const;
 export async function MemberShell({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -14,6 +14,7 @@ const links = [
   "documents",
   "supportRequests",
   "specialists",
+  "billing",
   "prompts",
   "auditLogs",
 ] as const;

@@ -1,5 +1,13 @@
 # Architecture
 
+## ETH-028 household subscriptions
+
+ETH-028 isolates Stripe behind server-only modules. The localized household route is server-rendered from narrow PostgreSQL projections; only small interactive forms are Client Components. Owner Checkout and Portal Server Actions derive identity, active household, permission, customer, configured Price, and fixed return origin on the server. The browser supplies only `month` or `year`. Stripe's hosted pages retain the payment-card boundary, while `/api/stripe/webhook` runs in the Node runtime, reads the raw body, verifies `Stripe-Signature`, accepts an explicit event allowlist, and refetches the authoritative subscription or invoice before synchronizing.
+
+`stripe_webhook_events` is the idempotency and bounded retry boundary. A processed ID is acknowledged without replay, concurrent processing returns a retryable response, and provider timestamps prevent older subscription deliveries from overwriting newer state. Synchronization functions compute entitlement rather than accepting it; only `active` maps to `family_plus`. No browser role can write billing state. The platform administrator can run one controlled reconciliation for a local household ID; the server resolves its customer and fetches current subscriptions and recent invoices. There is no external queue, dead-letter service, cron, bulk reconciliation worker, or email delivery.
+
+The household owner alone launches Stripe. A household administrator receives subscription and safe invoice projections, while member/viewer projections null all management and lifecycle fields except logical plan and entitlement. Specialists and content editors fail the route and database boundaries. `/[locale]/admin/billing` exposes safe operational state and error codes without raw event bodies, provider payloads, card data, or household-private content. The reusable `hasHouseholdEntitlement("family_plus")` helper reads only trusted synchronized state and is infrastructure for later issues; ETH-028 does not paywall existing functionality.
+
 ## ETH-027 appointment scheduling
 
 ETH-027 keeps the ETH-026 boundary and narrows it further. `private.appointment_household_reader` and `private.appointment_assigned_specialist` resolve access from the appointment's parent support request, and the specialist branch delegates to `private.is_assigned_open_request_specialist`, so a revoked assignment or a closed request removes appointment access on the next query. The foundation's `appointments_access` policy is dropped because `can_access_household()` would re-admit dormant household-wide specialist rows.

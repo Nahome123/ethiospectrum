@@ -1,5 +1,13 @@
 # Security and privacy
 
+## ETH-028 Stripe and PCI/privacy boundary
+
+Payment entry, payment-method updates, invoice hosting, and cancellation UI stay on Stripe-hosted Checkout and Customer Portal pages. Ethiospectrum never receives or persists PAN, CVC, raw card or bank tokens, PaymentMethod objects, billing addresses, full invoice JSON, or raw webhook bodies. Stripe metadata is limited to opaque household UUIDs needed for reconciliation; dependent, diagnosis, document, support, appointment, roadmap, reminder, and private-note content is prohibited. This architecture reduces PCI exposure but does not claim formal PCI compliance or certification.
+
+All Stripe credentials and Price IDs are server-only validated environment values. Checkout accepts an allowlisted interval, not a Price, customer, household, entitlement, return URL, or provider status from the browser. Success redirects are informational and never grant access. The webhook verifies the raw signed body before reading event data, ignores signed unneeded types, records minimal processing metadata, deduplicates IDs, refetches provider objects, and fails retryably without logging payloads. Only the explicitly approved `active` provider state grants entitlement; payment failure and ended states revoke it without an application-defined grace period. Newer provider timestamps win over out-of-order delivery.
+
+Forced RLS and safe projections enforce owner management, household-administrator read-only access, member/viewer plan-and-entitlement-only access, specialist/content-editor and cross-household denial, and safe platform-administrator observation. No authenticated browser role can mutate synchronization or audit tables, and no manual entitlement-grant function exists. Reconciliation accepts only a local household UUID and resolves Stripe identifiers server-side. Billing audit metadata contains bounded category values only. ETH-028 sends no email, SMS, or push and exposes no appointment or support-request billing relationship; transactional email remains ETH-029.
+
 ## ETH-027 appointment controls
 
 ETH-027 begins by removing an unsafe inherited policy. The dormant `appointments` table allowed reads through `can_access_household()`, which honours dormant household-wide `household_specialists` rows. That policy is dropped, RLS is forced, and access is re-derived per query from the appointment's parent request: active household membership, the request's current specialist assignment, or the isolated platform-administrator role. An active household-wide specialist row grants nothing, and a pgTAP case proves it.

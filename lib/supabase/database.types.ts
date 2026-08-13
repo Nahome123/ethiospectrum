@@ -307,6 +307,222 @@ export type Database = {
           },
         ];
       };
+      billing_customers: {
+        Row: {
+          created_at: string;
+          household_id: string;
+          id: string;
+          stripe_customer_id: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          household_id: string;
+          id?: string;
+          stripe_customer_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          household_id?: string;
+          id?: string;
+          stripe_customer_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "billing_customers_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: true;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      billing_events: {
+        Row: {
+          action: string;
+          actor_user_id: string | null;
+          created_at: string;
+          household_id: string | null;
+          id: string;
+          safe_metadata: Json;
+        };
+        Insert: {
+          action: string;
+          actor_user_id?: string | null;
+          created_at?: string;
+          household_id?: string | null;
+          id?: string;
+          safe_metadata?: Json;
+        };
+        Update: {
+          action?: string;
+          actor_user_id?: string | null;
+          created_at?: string;
+          household_id?: string | null;
+          id?: string;
+          safe_metadata?: Json;
+        };
+        Relationships: [];
+      };
+      billing_invoices: {
+        Row: {
+          amount_due: number;
+          amount_paid: number;
+          created_at: string;
+          currency: string;
+          hosted_invoice_url: string | null;
+          household_id: string;
+          id: string;
+          invoice_number: string | null;
+          invoice_pdf_url: string | null;
+          period_end: string | null;
+          period_start: string | null;
+          provider_created_at: string;
+          provider_updated_at: string;
+          status: string;
+          stripe_invoice_id: string;
+          stripe_subscription_id: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          amount_due: number;
+          amount_paid: number;
+          created_at?: string;
+          currency: string;
+          hosted_invoice_url?: string | null;
+          household_id: string;
+          id?: string;
+          invoice_number?: string | null;
+          invoice_pdf_url?: string | null;
+          period_end?: string | null;
+          period_start?: string | null;
+          provider_created_at: string;
+          provider_updated_at: string;
+          status: string;
+          stripe_invoice_id: string;
+          stripe_subscription_id?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          amount_due?: number;
+          amount_paid?: number;
+          created_at?: string;
+          currency?: string;
+          hosted_invoice_url?: string | null;
+          household_id?: string;
+          id?: string;
+          invoice_number?: string | null;
+          invoice_pdf_url?: string | null;
+          period_end?: string | null;
+          period_start?: string | null;
+          provider_created_at?: string;
+          provider_updated_at?: string;
+          status?: string;
+          stripe_invoice_id?: string;
+          stripe_subscription_id?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "billing_invoices_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "billing_invoices_stripe_subscription_id_fkey";
+            columns: ["stripe_subscription_id"];
+            isOneToOne: false;
+            referencedRelation: "billing_subscriptions";
+            referencedColumns: ["stripe_subscription_id"];
+          },
+        ];
+      };
+      billing_subscriptions: {
+        Row: {
+          billing_interval: string;
+          cancel_at_period_end: boolean;
+          cancelled_at: string | null;
+          created_at: string;
+          current_period_end: string | null;
+          current_period_start: string | null;
+          entitlement_status: string;
+          household_id: string;
+          id: string;
+          plan_key: string;
+          provider_updated_at: string;
+          stripe_customer_id: string;
+          stripe_price_id: string;
+          stripe_status: string;
+          stripe_subscription_id: string;
+          updated_at: string;
+          version: number;
+        };
+        Insert: {
+          billing_interval: string;
+          cancel_at_period_end?: boolean;
+          cancelled_at?: string | null;
+          created_at?: string;
+          current_period_end?: string | null;
+          current_period_start?: string | null;
+          entitlement_status: string;
+          household_id: string;
+          id?: string;
+          plan_key: string;
+          provider_updated_at: string;
+          stripe_customer_id: string;
+          stripe_price_id: string;
+          stripe_status: string;
+          stripe_subscription_id: string;
+          updated_at?: string;
+          version?: number;
+        };
+        Update: {
+          billing_interval?: string;
+          cancel_at_period_end?: boolean;
+          cancelled_at?: string | null;
+          created_at?: string;
+          current_period_end?: string | null;
+          current_period_start?: string | null;
+          entitlement_status?: string;
+          household_id?: string;
+          id?: string;
+          plan_key?: string;
+          provider_updated_at?: string;
+          stripe_customer_id?: string;
+          stripe_price_id?: string;
+          stripe_status?: string;
+          stripe_subscription_id?: string;
+          updated_at?: string;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "billing_subscription_customer_household_fk";
+            columns: ["household_id", "stripe_customer_id"];
+            isOneToOne: false;
+            referencedRelation: "billing_customers";
+            referencedColumns: ["household_id", "stripe_customer_id"];
+          },
+          {
+            foreignKeyName: "billing_subscriptions_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: true;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "billing_subscriptions_stripe_customer_id_fkey";
+            columns: ["stripe_customer_id"];
+            isOneToOne: false;
+            referencedRelation: "billing_customers";
+            referencedColumns: ["stripe_customer_id"];
+          },
+        ];
+      };
       consents: {
         Row: {
           accepted_at: string;
@@ -2353,6 +2569,45 @@ export type Database = {
           },
         ];
       };
+      stripe_webhook_events: {
+        Row: {
+          api_version: string | null;
+          attempt_count: number;
+          created_at: string;
+          event_type: string;
+          last_error_code: string | null;
+          processed_at: string | null;
+          processing_status: string;
+          provider_created_at: string;
+          stripe_event_id: string;
+          updated_at: string;
+        };
+        Insert: {
+          api_version?: string | null;
+          attempt_count?: number;
+          created_at?: string;
+          event_type: string;
+          last_error_code?: string | null;
+          processed_at?: string | null;
+          processing_status: string;
+          provider_created_at: string;
+          stripe_event_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          api_version?: string | null;
+          attempt_count?: number;
+          created_at?: string;
+          event_type?: string;
+          last_error_code?: string | null;
+          processed_at?: string | null;
+          processing_status?: string;
+          provider_created_at?: string;
+          stripe_event_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       support_messages: {
         Row: {
           author_kind: string;
@@ -2757,6 +3012,15 @@ export type Database = {
           id: string;
         }[];
       };
+      begin_stripe_webhook_event: {
+        Args: {
+          input_api_version: string;
+          input_event_type: string;
+          input_provider_created_at: string;
+          input_stripe_event_id: string;
+        };
+        Returns: string;
+      };
       can_access_household: {
         Args: { target_household: string };
         Returns: boolean;
@@ -2958,6 +3222,10 @@ export type Database = {
         Args: { target_reminder_id: string; worker_run_id: string };
         Returns: boolean;
       };
+      complete_stripe_webhook_event: {
+        Args: { input_stripe_event_id: string };
+        Returns: undefined;
+      };
       complete_support_appointment: {
         Args: { expected_version: number; target_appointment_id: string };
         Returns: {
@@ -3113,6 +3381,14 @@ export type Database = {
         };
         Returns: string;
       };
+      fail_stripe_webhook_event: {
+        Args: {
+          input_error_code: string;
+          input_stripe_event_id: string;
+          target_household_id?: string;
+        };
+        Returns: undefined;
+      };
       get_document_chat_conversation: {
         Args: { target_conversation_id: string; target_document_id: string };
         Returns: {
@@ -3239,6 +3515,26 @@ export type Database = {
           summary_id: string;
         }[];
       };
+      get_household_billing_summary: {
+        Args: never;
+        Returns: {
+          billing_interval: string;
+          can_manage_billing: boolean;
+          can_view_invoices: boolean;
+          cancel_at_period_end: boolean;
+          cancelled_at: string;
+          current_period_end: string;
+          current_period_start: string;
+          entitlement_status: string;
+          has_stripe_customer: boolean;
+          household_id: string;
+          household_name: string;
+          household_permission: Database["public"]["Enums"]["household_permission"];
+          plan_key: string;
+          provider_updated_at: string;
+          stripe_status: string;
+        }[];
+      };
       get_member_resource: {
         Args: { input_locale: string; input_slug: string };
         Returns: {
@@ -3329,6 +3625,10 @@ export type Database = {
           id: string;
         }[];
       };
+      has_household_entitlement: {
+        Args: { input_entitlement: string };
+        Returns: boolean;
+      };
       is_active_household_member: {
         Args: { target_household: string };
         Returns: boolean;
@@ -3337,6 +3637,46 @@ export type Database = {
       is_assigned_specialist: {
         Args: { target_household: string };
         Returns: boolean;
+      };
+      link_household_billing_customer: {
+        Args: {
+          input_stripe_customer_id: string;
+          target_actor_id: string;
+          target_household_id: string;
+        };
+        Returns: undefined;
+      };
+      list_admin_billing_invoices: {
+        Args: { target_household_id?: string };
+        Returns: {
+          amount_due: number;
+          amount_paid: number;
+          currency: string;
+          hosted_invoice_url: string;
+          household_id: string;
+          household_name: string;
+          invoice_id: string;
+          invoice_number: string;
+          period_end: string;
+          period_start: string;
+          provider_created_at: string;
+          status: string;
+        }[];
+      };
+      list_admin_billing_summaries: {
+        Args: never;
+        Returns: {
+          billing_interval: string;
+          cancel_at_period_end: boolean;
+          current_period_end: string;
+          entitlement_status: string;
+          household_id: string;
+          household_name: string;
+          invoice_count: number;
+          plan_key: string;
+          provider_updated_at: string;
+          stripe_status: string;
+        }[];
       };
       list_appointment_events: {
         Args: { target_appointment_id: string };
@@ -3358,6 +3698,32 @@ export type Database = {
           is_eligible: boolean;
           languages: string[];
           specialties: string[];
+        }[];
+      };
+      list_failed_stripe_webhook_events: {
+        Args: never;
+        Returns: {
+          attempt_count: number;
+          event_type: string;
+          last_error_code: string;
+          provider_created_at: string;
+          stripe_event_id: string;
+          updated_at: string;
+        }[];
+      };
+      list_household_billing_invoices: {
+        Args: never;
+        Returns: {
+          amount_due: number;
+          amount_paid: number;
+          currency: string;
+          hosted_invoice_url: string;
+          invoice_id: string;
+          invoice_number: string;
+          period_end: string;
+          period_start: string;
+          provider_created_at: string;
+          status: string;
         }[];
       };
       list_member_resources: {
@@ -3573,6 +3939,18 @@ export type Database = {
           processing_status: string;
         }[];
       };
+      record_billing_checkout_started: {
+        Args: {
+          input_billing_interval: string;
+          target_actor_id: string;
+          target_household_id: string;
+        };
+        Returns: undefined;
+      };
+      record_billing_reconciliation: {
+        Args: { target_actor_id: string; target_household_id: string };
+        Returns: undefined;
+      };
       record_training_progress: {
         Args: { mark_completed?: boolean; target_section: string };
         Returns: {
@@ -3716,6 +4094,40 @@ export type Database = {
           translation_id: string;
           translation_version: number;
         }[];
+      };
+      sync_billing_invoice: {
+        Args: {
+          input_amount_due: number;
+          input_amount_paid: number;
+          input_currency: string;
+          input_hosted_invoice_url?: string;
+          input_invoice_number?: string;
+          input_period_end: string;
+          input_period_start: string;
+          input_provider_created_at: string;
+          input_provider_updated_at: string;
+          input_status: string;
+          input_stripe_invoice_id: string;
+          input_stripe_subscription_id: string;
+          target_household_id: string;
+        };
+        Returns: boolean;
+      };
+      sync_billing_subscription: {
+        Args: {
+          input_billing_interval: string;
+          input_cancel_at_period_end: boolean;
+          input_cancelled_at?: string;
+          input_current_period_end: string;
+          input_current_period_start: string;
+          input_provider_updated_at: string;
+          input_stripe_customer_id: string;
+          input_stripe_price_id: string;
+          input_stripe_status: string;
+          input_stripe_subscription_id: string;
+          target_household_id: string;
+        };
+        Returns: boolean;
       };
       transition_resource: {
         Args: {

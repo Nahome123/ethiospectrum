@@ -133,6 +133,7 @@
     "translations": "Translations",
     "specialists": "Specialists",
     "supportRequests": "Support requests",
+    "billing": "Billing",
     "prompts": "Prompts",
     "auditLogs": "Audit logs"
   },
@@ -1454,6 +1455,81 @@
     "specialistAssignmentNotice": "Open a request to assign or revoke a specialist. Administrators do not send messages or close requests.",
     "backToTriage": "Back to triage",
     "household": "Household"
+  },
+  "billing": {
+    "eyebrow": "Household subscription",
+    "title": "Billing",
+    "description": "Review your household plan, Family Plus access, and safe invoice history.",
+    "currentPlan": "Current plan",
+    "plan": "Plan",
+    "entitlement": "Family Plus access",
+    "billingInterval": "Billing interval",
+    "currentPeriod": "Current paid period ends",
+    "accessThrough": "Access through",
+    "choosePlan": "Choose Family Plus billing",
+    "amountManagedByStripe": "The current USD amount is displayed and collected securely by Stripe.",
+    "subscribe": "Subscribe with Stripe",
+    "manageBilling": "Manage billing",
+    "secureTitle": "Billing is managed securely by Stripe",
+    "secureDescription": "Payment-card details are entered only on Stripe-hosted pages. Ethiospectrum does not receive or store card numbers or CVCs.",
+    "opensStripe": "Opens a secure Stripe page in a new tab.",
+    "plans": { "free": "Free", "familyPlus": "Family Plus" },
+    "intervals": { "monthly": "Monthly", "annual": "Annual" },
+    "statuses": {
+      "active": "Subscription active",
+      "inactive": "Subscription inactive",
+      "cancellationScheduled": "Cancellation scheduled",
+      "paid": "Paid",
+      "paymentFailed": "Payment failed",
+      "processing": "Processing payment"
+    },
+    "checkout": {
+      "starting": "Opening secure Checkout…",
+      "redirecting": "Opening secure Stripe Checkout…",
+      "confirmingTitle": "Confirming subscription",
+      "confirmingDescription": "Checkout returned successfully. Family Plus activates only after Stripe confirms the subscription through a verified webhook.",
+      "cancelledTitle": "Checkout cancelled",
+      "cancelledDescription": "No plan change was made. You can try again when you are ready."
+    },
+    "portal": {
+      "open": "Open Stripe Customer Portal",
+      "opening": "Opening billing portal…",
+      "redirecting": "Opening the Stripe Customer Portal…",
+      "description": "Update a payment method, review Stripe invoices, or schedule cancellation at the end of the paid period."
+    },
+    "history": {
+      "title": "Billing history",
+      "description": "Safe invoice and receipt details synchronized from Stripe.",
+      "empty": "No invoices are available yet.",
+      "invoice": "Invoice",
+      "invoiceNumber": "Invoice {number}",
+      "openReceipt": "Open Stripe receipt"
+    },
+    "admin": {
+      "eyebrow": "Administrator billing",
+      "title": "Subscription operations",
+      "description": "Read safe household billing state, inspect failed webhook processing, and reconcile with Stripe. Administrators cannot grant access or alter payment methods.",
+      "subscriptionState": "Provider subscription state",
+      "reconcile": "Reconcile with Stripe",
+      "reconciling": "Reconciling…",
+      "reconciled": "Billing state reconciled.",
+      "webhookFailures": "Webhook processing failures",
+      "webhookFailuresDescription": "Safe event metadata only; payment and household-private payloads are never displayed.",
+      "noWebhookFailures": "No failed billing events.",
+      "failureSummary": "{attempts, plural, one {# attempt} other {# attempts}} · Error {code}"
+    },
+    "errors": {
+      "validation": "Check the billing selection and try again.",
+      "ownerRequired": "Only the household owner can manage billing.",
+      "adminRequired": "Administrator access is required.",
+      "checkout": "Unable to start checkout. Try again.",
+      "portal": "Unable to open the billing portal. Try again.",
+      "noCustomer": "Billing is not set up for this household yet.",
+      "reconciliation": "Unable to reconcile billing right now.",
+      "updatedElsewhere": "Billing was updated elsewhere. Refresh before trying again.",
+      "load": "Unable to load billing",
+      "tryAgain": "Refresh the page and try again."
+    }
   },
   "admin": {
     "title": "Administration workspace",

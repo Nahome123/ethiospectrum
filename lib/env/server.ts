@@ -87,6 +87,33 @@ const optionalReminderWorkerSecret = z.preprocess(
   z.string().min(32).optional(),
 );
 
+const optionalStripeSecretKey = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z
+    .string()
+    .trim()
+    .regex(/^sk_(?:test|live)_[A-Za-z0-9]+$/)
+    .optional(),
+);
+
+const optionalStripeWebhookSecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z
+    .string()
+    .trim()
+    .regex(/^whsec_[A-Za-z0-9]+$/)
+    .optional(),
+);
+
+const optionalStripePriceId = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z
+    .string()
+    .trim()
+    .regex(/^price_[A-Za-z0-9]+$/)
+    .optional(),
+);
+
 export interface ServerSupabaseEnv extends PublicSupabaseEnv {
   secretKey?: string;
 }
@@ -109,6 +136,13 @@ export interface OcrProviderEnv {
   provider: "openai";
   apiKey: string;
   model: string;
+}
+
+export interface StripeBillingEnv {
+  secretKey: string;
+  webhookSecret: string;
+  familyPlusMonthlyPriceId: string;
+  familyPlusAnnualPriceId: string;
 }
 
 export function parseServerSupabaseEnv(input: EnvInput): ServerSupabaseEnv | undefined {
@@ -318,4 +352,41 @@ export function getReminderWorkerSecret(input?: EnvInput): string | undefined {
   return optionalReminderWorkerSecret.parse(
     input?.REMINDER_WORKER_SECRET ?? process.env.REMINDER_WORKER_SECRET,
   );
+}
+
+/** Server-only Stripe configuration. All values are required together. */
+export function getStripeBillingEnv(input?: EnvInput): StripeBillingEnv | undefined {
+  const secretKey = optionalStripeSecretKey.parse(input?.STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY);
+  const webhookSecret = optionalStripeWebhookSecret.parse(
+    input?.STRIPE_WEBHOOK_SECRET ?? process.env.STRIPE_WEBHOOK_SECRET,
+  );
+  const familyPlusMonthlyPriceId = optionalStripePriceId.parse(
+    input?.STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID ?? process.env.STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID,
+  );
+  const familyPlusAnnualPriceId = optionalStripePriceId.parse(
+    input?.STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID ?? process.env.STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID,
+  );
+
+  if (!secretKey && !webhookSecret && !familyPlusMonthlyPriceId && !familyPlusAnnualPriceId) {
+    return undefined;
+  }
+  if (!secretKey || !webhookSecret || !familyPlusMonthlyPriceId || !familyPlusAnnualPriceId) {
+    throw new SupabaseConfigurationError(
+      "STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID, and STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID must be configured together.",
+    );
+  }
+  if (familyPlusMonthlyPriceId === familyPlusAnnualPriceId) {
+    throw new SupabaseConfigurationError("Monthly and annual Stripe Price IDs must be different.");
+  }
+  return { secretKey, webhookSecret, familyPlusMonthlyPriceId, familyPlusAnnualPriceId };
+}
+
+export function requireStripeBillingEnv(input?: EnvInput): StripeBillingEnv {
+  const env = getStripeBillingEnv(input);
+  if (!env) {
+    throw new SupabaseConfigurationError(
+      "Stripe billing configuration is required for controlled subscription operations.",
+    );
+  }
+  return env;
 }

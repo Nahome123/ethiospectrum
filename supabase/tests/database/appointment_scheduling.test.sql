@@ -322,8 +322,9 @@ select ok(not exists (
   select 1 from pg_proc as routine
   join pg_namespace as schema on schema.oid = routine.pronamespace
   where schema.nspname in ('public', 'private')
-    and (routine.proname like '%stripe%' or routine.proname like '%subscription%' or routine.proname like '%invoice%')
-), 'no ETH-028 billing function exists');
+    and routine.proname like '%appointment%'
+    and pg_get_functiondef(routine.oid) ~* '(stripe|subscription|invoice|checkout)'
+), 'ETH-027 appointment functions remain free of ETH-028 billing');
 
 -- ETH-026 regression.
 set local role authenticated;

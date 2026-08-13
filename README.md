@@ -4,9 +4,9 @@ Ethiospectrum is a multilingual family-support platform foundation for organizin
 
 ## Current status
 
-Implemented: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, private document upload/download/archive flows, a household-scoped digital document binder, controlled document processing, source-grounded document summaries with deterministic quality evaluation and household review, household-shared specialist support requests with read-only administrator triage, and a protected bilingual RBT Errorless Teaching study resource with user-only progress.
+Implemented locally: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, private document upload/download/archive flows, a household-scoped digital document binder, controlled document processing, source-grounded document summaries with deterministic quality evaluation and household review, household-shared specialist support requests with read-only administrator triage, household-level Stripe subscription infrastructure, and a protected bilingual RBT Errorless Teaching study resource with user-only progress.
 
-Planned: profile and household synchronization, document OCR, general-purpose AI answers, messaging, scheduling, billing, analytics, and monitoring. These integrations are not functional in this repository.
+Planned or awaiting later work: profile and household synchronization, general-purpose AI answers, messaging, transactional email, analytics, and monitoring. No hosted Stripe configuration or deployment is implied by the local ETH-028 implementation.
 
 ## ETH-022 personal reminders
 
@@ -19,6 +19,14 @@ Next.js 16 App Router, React 19, TypeScript, Tailwind 4, shadcn Luma, next-intl,
 ## ETH-024 resource translations
 
 ETH-024 adds reviewed Amharic (`am`) and Spanish (`es`) translations to ETH-023 resources. English is canonical; editors can draft, submit, withdraw, approve, or reject translations, with different-user review. Source versions are database-derived, and English content changes invalidate dependent translations atomically. Public routes choose current approved requested-locale content, then English with a localized fallback notice. Translation access is global-role-only and never loads household data. No machine translation, external translation API, assignment workflow, or ETH-025 support request functionality is included. Native Amharic and Spanish review remains required before release.
+
+## ETH-028 Stripe subscriptions
+
+ETH-028 adds a household-level `free`/`family_plus` subscription boundary at `/[locale]/billing`. The household owner chooses only monthly or annual billing; the server maps that choice to configured USD Stripe Price IDs and creates Stripe-hosted Checkout and Customer Portal sessions. Household administrators may read subscription and invoice state, members and viewers receive only plan and entitlement projections, and specialists and content editors are denied. The platform-administrator billing surface is read-only except for controlled reconciliation. Support requests, specialists, appointments, documents, roadmap items, and reminders are never billable units.
+
+Stripe-signed webhooks are authoritative. The raw-body route verifies `Stripe-Signature`, accepts only the required subscription and invoice event types, deduplicates event IDs, refetches provider state, and protects newer local state from older deliveries. Only Stripe `active` grants `family_plus`; incomplete, past-due, unpaid, paused, expired, or ended states fail closed with no custom grace period. Cancellation is scheduled in Stripe's portal for period end, with access retained only while the authoritative state remains eligible. An administrator may reconcile one known local household, but ETH-028 adds no queue, cron job, bulk worker, manual entitlement grant, refunds, or payment-method editing.
+
+Card and bank details remain exclusively on Stripe-hosted pages. Ethiospectrum stores only provider identifiers needed for reconciliation, subscription state, safe invoice metadata and hosted receipt links, minimal webhook processing state, and immutable safe audit actions—never PAN, CVC, raw PaymentMethod or invoice payloads, billing addresses, or household-sensitive Stripe metadata. Configure server-only `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID`, and `STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID`; never expose them through `NEXT_PUBLIC_*`. Test and production Stripe resources and webhook secrets must remain separate. ETH-029 owns email; ETH-028 sends no email, SMS, or push. Amharic and Spanish billing terminology remains an implementation draft pending native-speaker review.
 
 ## ETH-027 appointment scheduling
 

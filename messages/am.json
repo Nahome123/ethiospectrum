@@ -133,6 +133,7 @@
     "translations": "ትርጉሞች",
     "specialists": "ባለሙያዎች",
     "supportRequests": "የድጋፍ ጥያቄዎች",
+    "billing": "ክፍያ",
     "prompts": "መመሪያዎች",
     "auditLogs": "የኦዲት መዝገብ"
   },
@@ -1450,6 +1451,81 @@
     "specialistAssignmentNotice": "ባለሙያ ለመመደብ ወይም ምደባ ለመሰረዝ ጥያቄውን ይክፈቱ። አስተዳዳሪዎች መልእክት አይልኩም ወይም ጥያቄ አይዘጉም።",
     "backToTriage": "ወደ ማጣሪያው ተመለስ",
     "household": "ቤተሰብ"
+  },
+  "billing": {
+    "eyebrow": "የቤተሰብ ምዝገባ",
+    "title": "ክፍያ",
+    "description": "የቤተሰብዎን እቅድ፣ የFamily Plus መዳረሻ እና ደህንነቱ የተጠበቀ የደረሰኝ ታሪክ ይመልከቱ።",
+    "currentPlan": "የአሁኑ እቅድ",
+    "plan": "እቅድ",
+    "entitlement": "የFamily Plus መዳረሻ",
+    "billingInterval": "የክፍያ ጊዜ",
+    "currentPeriod": "የአሁኑ የተከፈለበት ጊዜ የሚያበቃው",
+    "accessThrough": "መዳረሻ እስከ",
+    "choosePlan": "የFamily Plus ክፍያ ይምረጡ",
+    "amountManagedByStripe": "የአሁኑ የUSD መጠን በStripe ይታያል እና በደህንነት ይሰበሰባል።",
+    "subscribe": "በStripe ይመዝገቡ",
+    "manageBilling": "ክፍያን ያስተዳድሩ",
+    "secureTitle": "ክፍያ በStripe በደህንነት ይተዳደራል",
+    "secureDescription": "የክፍያ ካርድ መረጃ በStripe ገጾች ላይ ብቻ ይገባል። Ethiospectrum የካርድ ቁጥር ወይም CVC አይቀበልም እና አያከማችም።",
+    "opensStripe": "ደህንነቱ የተጠበቀ የStripe ገጽ በአዲስ ትር ይከፈታል።",
+    "plans": { "free": "ነፃ", "familyPlus": "Family Plus" },
+    "intervals": { "monthly": "ወርሃዊ", "annual": "ዓመታዊ" },
+    "statuses": {
+      "active": "ምዝገባው ንቁ ነው",
+      "inactive": "ምዝገባው ንቁ አይደለም",
+      "cancellationScheduled": "ስረዛ ታቅዷል",
+      "paid": "ተከፍሏል",
+      "paymentFailed": "ክፍያው አልተሳካም",
+      "processing": "ክፍያ በሂደት ላይ"
+    },
+    "checkout": {
+      "starting": "ደህንነቱ የተጠበቀ Checkout በመክፈት ላይ…",
+      "redirecting": "የStripe Checkout በመክፈት ላይ…",
+      "confirmingTitle": "ምዝገባን በማረጋገጥ ላይ",
+      "confirmingDescription": "Checkout በተሳካ ሁኔታ ተመልሷል። Family Plus የሚነቃው Stripe ምዝገባውን በተረጋገጠ webhook ካረጋገጠ በኋላ ብቻ ነው።",
+      "cancelledTitle": "Checkout ተሰርዟል",
+      "cancelledDescription": "የእቅድ ለውጥ አልተደረገም። ዝግጁ ሲሆኑ እንደገና ይሞክሩ።"
+    },
+    "portal": {
+      "open": "የStripe Customer Portal ክፈት",
+      "opening": "የክፍያ ፖርታል በመክፈት ላይ…",
+      "redirecting": "የStripe Customer Portal በመክፈት ላይ…",
+      "description": "የክፍያ ዘዴን ያዘምኑ፣ የStripe ደረሰኞችን ይመልከቱ ወይም በተከፈለበት ጊዜ መጨረሻ ስረዛ ያቅዱ።"
+    },
+    "history": {
+      "title": "የክፍያ ታሪክ",
+      "description": "ከStripe የተመሳሰለ ደህንነቱ የተጠበቀ የክፍያ መረጃ።",
+      "empty": "እስካሁን ምንም ደረሰኝ የለም።",
+      "invoice": "ደረሰኝ",
+      "invoiceNumber": "ደረሰኝ {number}",
+      "openReceipt": "የStripe ደረሰኝ ክፈት"
+    },
+    "admin": {
+      "eyebrow": "የአስተዳዳሪ ክፍያ",
+      "title": "የምዝገባ ስራዎች",
+      "description": "ደህንነቱ የተጠበቀ የቤተሰብ ክፍያ ሁኔታን ይመልከቱ፣ ያልተሳኩ webhook ሂደቶችን ይመርምሩ እና ከStripe ጋር ያስታርቁ።",
+      "subscriptionState": "የአቅራቢ ምዝገባ ሁኔታ",
+      "reconcile": "ከStripe ጋር አስታርቅ",
+      "reconciling": "በማስታረቅ ላይ…",
+      "reconciled": "የክፍያ ሁኔታ ታርቋል።",
+      "webhookFailures": "የWebhook ሂደት ስህተቶች",
+      "webhookFailuresDescription": "ደህንነቱ የተጠበቀ የክስተት መረጃ ብቻ ይታያል።",
+      "noWebhookFailures": "ያልተሳካ የክፍያ ክስተት የለም።",
+      "failureSummary": "{attempts} ሙከራ · ስህተት {code}"
+    },
+    "errors": {
+      "validation": "የክፍያ ምርጫውን ያረጋግጡ እና እንደገና ይሞክሩ።",
+      "ownerRequired": "ክፍያን ማስተዳደር የሚችለው የቤተሰብ ባለቤት ብቻ ነው።",
+      "adminRequired": "የአስተዳዳሪ መዳረሻ ያስፈልጋል።",
+      "checkout": "Checkout መጀመር አልተቻለም። እንደገና ይሞክሩ።",
+      "portal": "የክፍያ ፖርታል መክፈት አልተቻለም።",
+      "noCustomer": "ለዚህ ቤተሰብ ክፍያ ገና አልተዘጋጀም።",
+      "reconciliation": "ክፍያን አሁን ማስታረቅ አልተቻለም።",
+      "updatedElsewhere": "ክፍያ በሌላ ቦታ ተዘምኗል። እንደገና ከመሞከርዎ በፊት ገጹን ያድሱ።",
+      "load": "ክፍያን መጫን አልተቻለም",
+      "tryAgain": "ገጹን ያድሱ እና እንደገና ይሞክሩ።"
+    }
   },
   "admin": {
     "title": "የአስተዳደር የሥራ ቦታ",

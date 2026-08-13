@@ -133,6 +133,7 @@
     "translations": "Traducciones",
     "specialists": "Especialistas",
     "supportRequests": "Solicitudes de apoyo",
+    "billing": "Facturación",
     "prompts": "Indicaciones",
     "auditLogs": "Registro de auditoría"
   },
@@ -1450,6 +1451,81 @@
     "specialistAssignmentNotice": "Abra una solicitud para asignar o revocar un especialista. Los administradores no envían mensajes ni cierran solicitudes.",
     "backToTriage": "Volver a la clasificación",
     "household": "Hogar"
+  },
+  "billing": {
+    "eyebrow": "Suscripción del hogar",
+    "title": "Facturación",
+    "description": "Consulta el plan del hogar, el acceso a Family Plus y el historial seguro de facturas.",
+    "currentPlan": "Plan actual",
+    "plan": "Plan",
+    "entitlement": "Acceso a Family Plus",
+    "billingInterval": "Periodo de facturación",
+    "currentPeriod": "El periodo pagado actual termina",
+    "accessThrough": "Acceso hasta",
+    "choosePlan": "Elige la facturación de Family Plus",
+    "amountManagedByStripe": "Stripe muestra y cobra de forma segura el importe actual en USD.",
+    "subscribe": "Suscribirse con Stripe",
+    "manageBilling": "Administrar facturación",
+    "secureTitle": "Stripe administra la facturación de forma segura",
+    "secureDescription": "Los datos de la tarjeta se ingresan únicamente en páginas alojadas por Stripe. Ethiospectrum no recibe ni almacena números de tarjeta ni CVC.",
+    "opensStripe": "Abre una página segura de Stripe en una pestaña nueva.",
+    "plans": { "free": "Gratis", "familyPlus": "Family Plus" },
+    "intervals": { "monthly": "Mensual", "annual": "Anual" },
+    "statuses": {
+      "active": "Suscripción activa",
+      "inactive": "Suscripción inactiva",
+      "cancellationScheduled": "Cancelación programada",
+      "paid": "Pagada",
+      "paymentFailed": "Pago fallido",
+      "processing": "Procesando el pago"
+    },
+    "checkout": {
+      "starting": "Abriendo el pago seguro…",
+      "redirecting": "Abriendo Stripe Checkout…",
+      "confirmingTitle": "Confirmando la suscripción",
+      "confirmingDescription": "Checkout regresó correctamente. Family Plus se activa solo después de que Stripe confirme la suscripción mediante un webhook verificado.",
+      "cancelledTitle": "Checkout cancelado",
+      "cancelledDescription": "No se cambió el plan. Puedes volver a intentarlo cuando quieras."
+    },
+    "portal": {
+      "open": "Abrir el portal de Stripe",
+      "opening": "Abriendo el portal de facturación…",
+      "redirecting": "Abriendo el portal de Stripe…",
+      "description": "Actualiza el método de pago, consulta facturas de Stripe o programa la cancelación al final del periodo pagado."
+    },
+    "history": {
+      "title": "Historial de facturación",
+      "description": "Datos seguros de facturas y recibos sincronizados desde Stripe.",
+      "empty": "Todavía no hay facturas disponibles.",
+      "invoice": "Factura",
+      "invoiceNumber": "Factura {number}",
+      "openReceipt": "Abrir recibo de Stripe"
+    },
+    "admin": {
+      "eyebrow": "Facturación administrativa",
+      "title": "Operaciones de suscripción",
+      "description": "Consulta el estado seguro de facturación, revisa fallos de webhooks y reconcilia con Stripe. Los administradores no pueden conceder acceso ni cambiar métodos de pago.",
+      "subscriptionState": "Estado de suscripción del proveedor",
+      "reconcile": "Reconciliar con Stripe",
+      "reconciling": "Reconciliando…",
+      "reconciled": "Estado de facturación reconciliado.",
+      "webhookFailures": "Fallos de procesamiento de webhooks",
+      "webhookFailuresDescription": "Solo se muestran metadatos seguros; nunca se muestran cargas de pago ni datos privados del hogar.",
+      "noWebhookFailures": "No hay eventos de facturación fallidos.",
+      "failureSummary": "{attempts, plural, one {# intento} other {# intentos}} · Error {code}"
+    },
+    "errors": {
+      "validation": "Revisa la selección de facturación e inténtalo de nuevo.",
+      "ownerRequired": "Solo el propietario del hogar puede administrar la facturación.",
+      "adminRequired": "Se requiere acceso de administrador.",
+      "checkout": "No se pudo iniciar Checkout. Inténtalo de nuevo.",
+      "portal": "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
+      "noCustomer": "La facturación todavía no está configurada para este hogar.",
+      "reconciliation": "No se puede reconciliar la facturación ahora.",
+      "updatedElsewhere": "La facturación se actualizó en otro lugar. Actualiza antes de intentarlo de nuevo.",
+      "load": "No se pudo cargar la facturación",
+      "tryAgain": "Actualiza la página e inténtalo de nuevo."
+    }
   },
   "admin": {
     "title": "Espacio de administración",

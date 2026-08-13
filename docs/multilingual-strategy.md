@@ -1,5 +1,9 @@
 # Multilingual strategy
 
+## ETH-028 billing
+
+ETH-028 adds one aligned `billing` namespace in English, Amharic, and Spanish for plans, monthly/annual selection, entitlement and provider states, scheduled cancellation, the asynchronous Checkout return, Customer Portal, invoice history, safe errors, and administrator reconciliation. Currency and dates use locale-aware `Intl` formatting while provider identifiers stay hidden. Status is always present in text rather than colour alone, external Stripe navigation is announced, forms expose pending and error messages through live regions, and layouts wrap long strings at narrow widths. Amharic remains left-to-right. English is canonical; all Amharic and Spanish billing terminology is an implementation draft requiring native-speaker review before release, and no native review is claimed.
+
 ## ETH-027 appointment scheduling
 
 ETH-027 adds an aligned English, Amharic, and Spanish `appointments` namespace covering the proposal form, date, time, timezone, duration and modality labels, statuses and audit actions, controlled cancellation reasons, the consent title, copy, reschedule notice and checkbox label, meeting-link guidance, the administrator read-only notice, the access-removed state, and every scheduling error including the daylight-saving and conflict cases. Appointment status is conveyed as text rather than colour, and the confirmed timezone is always shown in words next to the localized date and time. The consent copy is safety-sensitive: English is canonical and versioned through a controlled copy-version identifier, and the Amharic and Spanish wording is an implementation draft requiring native-speaker review before release, especially the non-guarantee sentence. Amharic remains left-to-right, and appointment panels wrap long localized strings rather than fixing dimensions.

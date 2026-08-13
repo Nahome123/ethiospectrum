@@ -489,7 +489,7 @@ select is((select count(*) from public.support_threads where household_id = 'a20
 reset role;
 -- ETH-027 now owns appointments. Assignment itself must still never schedule:
 -- ETH-026's own functions stay free of appointment behavior, and ETH-028
--- billing remains absent.
+-- billing remains outside the ETH-026 functions.
 select ok(
   (select count(*) from pg_proc as routine
    join pg_namespace as schema on schema.oid = routine.pronamespace
@@ -505,8 +505,12 @@ select ok(not exists (
   select 1 from pg_proc as routine
   join pg_namespace as schema on schema.oid = routine.pronamespace
   where schema.nspname in ('public', 'private')
-    and (routine.proname like '%stripe%' or routine.proname like '%subscription%')
-), 'no ETH-028 billing function exists');
+    and routine.proname in (
+      'assign_specialist_to_support_request', 'revoke_specialist_from_support_request',
+      'add_specialist_support_message'
+    )
+    and pg_get_functiondef(routine.oid) ~* '(stripe|subscription|invoice|checkout)'
+), 'ETH-026 specialist-assignment functions remain free of ETH-028 billing');
 select is((select count(*) from public.appointments), 0::bigint, 'no ETH-027 appointment rows are created');
 
 select * from finish();

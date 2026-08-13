@@ -74,16 +74,16 @@ Object.assign(process.env, localEnvironment);
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch:
-    /(?:documents|roadmap|reminders|training|resources|support|specialists|appointments)\.local\.spec\.ts/,
+    /(?:documents|roadmap|reminders|training|resources|support|specialists|appointments|billing)\.local\.spec\.ts/,
   fullyParallel: false,
   workers: 1,
   timeout: 180_000,
-  use: { baseURL: "http://127.0.0.1:3101", trace: "on-first-retry" },
+  use: { baseURL: "http://127.0.0.1:3000", trace: "on-first-retry" },
   webServer: {
-    command: "node node_modules/next/dist/bin/next dev --port 3101",
+    command: "node node_modules/next/dist/bin/next dev --port 3000",
     env: { ...process.env, ...localEnvironment },
-    reuseExistingServer: false,
-    url: "http://127.0.0.1:3101",
+    reuseExistingServer: true,
+    url: "http://127.0.0.1:3000",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });
