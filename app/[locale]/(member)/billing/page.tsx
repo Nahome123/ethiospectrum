@@ -5,7 +5,7 @@ import { BillingActionForm } from "@/components/billing/billing-action-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { requireRole } from "@/lib/auth/guards";
+import { requireHouseholdBillingAccess } from "@/lib/billing/access";
 import { createBillingCheckoutSessionAction, createBillingPortalSessionAction } from "@/lib/billing/actions";
 import { getHouseholdBillingSummary, listHouseholdBillingInvoices } from "@/lib/billing/server";
 
@@ -33,7 +33,7 @@ export default async function BillingPage({
 }) {
   const { locale: localeParam } = await params;
   const locale = localeParam as AppLocale;
-  await requireRole(locale, `/${locale}/billing`, "member");
+  await requireHouseholdBillingAccess(locale, `/${locale}/billing`);
   const [{ checkout }, t, summary] = await Promise.all([
     searchParams,
     getTranslations({ locale, namespace: "billing" }),

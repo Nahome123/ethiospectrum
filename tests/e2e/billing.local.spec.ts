@@ -309,6 +309,20 @@ test.describe("Stripe subscriptions (local Supabase and safe provider fixtures o
     }
   });
 
+  test("allows a platform administrator to manage only a household they actively own", async ({
+    browser,
+  }) => {
+    const administratorOwner = await createActor("administrator", "administrator-owner");
+    const householdName = `Administrator-owned household ${randomUUID().slice(0, 8)}`;
+    createHousehold(administratorOwner.id, householdName);
+
+    const session = await openAuthenticatedPage(browser, administratorOwner.email, "/en/billing");
+    await expect(session.page.getByRole("heading", { name: "Billing", exact: true })).toBeVisible();
+    await expect(session.page.getByText(householdName)).toBeVisible();
+    await expect(session.page.getByRole("button", { name: "Subscribe with Stripe" })).toHaveCount(2);
+    await session.context.close();
+  });
+
   test("enforces household role projections, cross-household isolation, and safe platform administration", async ({
     browser,
   }) => {

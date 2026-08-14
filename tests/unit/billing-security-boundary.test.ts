@@ -84,7 +84,11 @@ describe("ETH-028 security architecture", () => {
 
   it("does not grant entitlement from the Checkout return URL", () => {
     const page = read("app/[locale]/(member)/billing/page.tsx");
-    expect(page).toContain('requireRole(locale, `/${locale}/billing`, "member")');
+    const access = read("lib/billing/access.ts");
+    expect(page).toContain("requireHouseholdBillingAccess");
+    expect(access).toContain('user.role === "administrator"');
+    expect(access).toContain('context?.permission === "owner"');
+    expect(access).not.toMatch(/createSupabaseAdminClient|supabase\/admin/u);
     expect(page).toContain('t("checkout.confirmingDescription")');
     expect(page).not.toMatch(/update.*entitlement|grant.*entitlement/iu);
   });
