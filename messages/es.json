@@ -273,6 +273,9 @@
     "latestTitle": "Recursos recientes",
     "latestDescription": "Orientación publicada recientemente en la biblioteca revisada.",
     "trainingTitle": "Practica con la guía de capacitación RBT",
+    "iepAccommodationsTitle": "Explora adaptaciones para IEP y planes 504",
+    "iepAccommodationsDescription": "Revisa 187 ejemplos en inglés y amárico, organizados en 18 categorías, para preparar conversaciones con el equipo escolar de tu hijo.",
+    "iepAccommodationsAction": "Abrir guía de adaptaciones",
     "backToHub": "Volver a la biblioteca de aprendizaje",
     "selectedForYou": "Seleccionado para ti",
     "educationalNotice": "Este recurso contiene información educativa. No sustituye el asesoramiento legal, médico, educativo ni de otro profesional.",
@@ -288,6 +291,21 @@
     "roadmapError": "No pudimos agregar este recurso a tu hoja de ruta. Los observadores del hogar no pueden agregar elementos.",
     "alreadyOnRoadmap": "Este recurso ya está en tu hoja de ruta.",
     "addedToRoadmap": "Recurso agregado a tu hoja de ruta."
+  },
+  "iepAccommodations": {
+    "backToResources": "Volver a la biblioteca de aprendizaje",
+    "eyebrow": "IEP y 504 · Inglés / Amárico",
+    "readingProgress": "Progreso de lectura",
+    "backToTop": "Volver arriba",
+    "contents": "Contenido",
+    "contentsDescription": "Salta a una categoría. La barra superior muestra cuánto has avanzado en la guía.",
+    "contentsStatus": "Contenido",
+    "english": "Inglés",
+    "amharic": "Amárico",
+    "sectionStatus": "Sección {section} de {total}",
+    "sectionSummary": "Sección {section} · {count} adaptaciones",
+    "educationalUseOnly": "Solo información educativa",
+    "educationalNotice": "Estos ejemplos son un punto de partida para conversar; no garantizan la elegibilidad ni sustituyen la orientación del equipo escolar de tu hijo, de un defensor educativo o de un profesional cualificado. Un IEP o plan 504 debe reflejar las necesidades individuales del niño."
   },
   "educationSupport": {
     "eyebrow": "Apoyo educativo",

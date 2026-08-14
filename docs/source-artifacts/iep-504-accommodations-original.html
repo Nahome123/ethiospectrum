@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example Accommodations for IEPs and 504s · ለ IEP እና ለ504 ናሙና ማመቻቻዎች</title>
+<meta name="description" content="A bilingual guide for Ethiopian families navigating special education — 18 categories, 187 example accommodations in English and Amharic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;600;700&family=Noto+Sans+Ethiopic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141C18; --ink-soft:#4B5A51; --ink-faint:#7C8A82;
+  --paper:#FFFFFF; --page:#EFF2EE; --band:#F7F9F6;
+  --green:#1E4B3B; --green-lt:#2F6A55;
+  --amber:#C57F2E; --amber-lt:#EBC98F;
+  --rule:#D9E1DA; --rule-soft:#E9EEE9;
+  --shadow:0 1px 2px rgba(20,28,24,.05), 0 8px 24px -12px rgba(20,28,24,.18);
+  --serif:"Source Serif 4",Charter,"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --eth:"Noto Sans Ethiopic","Noto Serif Ethiopic","Abyssinica SIL",Nyala,"Kefa",var(--sans);
+  --wrap:1120px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+body{margin:0;background:var(--page);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.55;
+  font-feature-settings:"kern","liga";-webkit-font-smoothing:antialiased}
+[lang="am"]{font-family:var(--eth);line-height:1.8}
+
+/* ---------- progress bar + sticky wayfinder ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(1.6) blur(10px);border-bottom:1px solid var(--rule)}
+.progress{height:4px;background:var(--rule-soft)}
+.progress__fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green) 0%,var(--green-lt) 55%,var(--amber) 100%);
+  transition:width .08s linear}
+.topbar__inner{max-width:var(--wrap);margin:0 auto;padding:9px 24px;
+  display:flex;align-items:center;gap:16px}
+.crumb{min-width:0;display:flex;align-items:baseline;gap:10px;flex:1}
+.crumb__idx{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--amber);white-space:nowrap}
+.crumb__title{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pct{font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;color:var(--ink-faint);
+  white-space:nowrap}
+.totop{border:1px solid var(--rule);background:var(--paper);color:var(--ink-soft);
+  border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.totop:hover{border-color:var(--green);color:var(--green)}
+.totop:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px}
+
+/* ---------- masthead ---------- */
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.masthead{background:var(--green);color:#EAF1EC;padding:56px 0 44px;
+  background-image:radial-gradient(120% 90% at 8% 0%,#2A6350 0%,#1E4B3B 58%,#173C2F 100%)}
+.eyebrow{margin:0 0 20px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--amber-lt)}
+.masthead h1{margin:0;font-family:var(--serif);font-weight:600;letter-spacing:-.015em;
+  font-size:clamp(30px,5vw,50px);line-height:1.1;color:#fff}
+.masthead .h1-am{margin:10px 0 0;font-size:clamp(19px,3vw,28px);font-weight:600;color:#CFE0D5}
+.rule{height:1px;background:rgba(235,201,143,.35);margin:26px 0 22px;max-width:640px}
+.masthead .tag{margin:0;font-family:var(--serif);font-style:italic;font-size:18px;color:#C7DACD}
+.masthead .tag-am{margin:4px 0 0;font-style:normal;font-size:16px;color:#B7CDBF}
+.lede{max-width:640px;margin:26px 0 0;font-size:15.5px;color:#D6E4DA}
+.lede-am{margin:12px 0 0;font-size:15px;color:#BFD3C6}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 0;padding:0;list-style:none}
+.stats li{border:1px solid rgba(235,201,143,.35);border-radius:999px;padding:6px 14px;
+  font-size:12.5px;font-weight:600;letter-spacing:.02em;color:#EBC98F}
+
+/* ---------- table of contents ---------- */
+.toc{background:var(--band);border-bottom:1px solid var(--rule);padding:40px 0 44px}
+.toc h2{margin:0 0 4px;font-family:var(--serif);font-size:13px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.toc p{margin:0 0 22px;font-size:13.5px;color:var(--ink-faint)}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:2px;
+  grid-template-columns:repeat(auto-fill,minmax(310px,1fr))}
+.toc a{display:grid;grid-template-columns:38px 1fr;align-items:baseline;gap:4px 6px;
+  text-decoration:none;color:var(--ink);padding:9px 12px;border-radius:8px;
+  border-bottom:1px solid transparent;transition:background .15s,color .15s}
+.toc a:hover{background:var(--paper);box-shadow:var(--shadow)}
+.toc a.is-here{background:var(--paper);box-shadow:var(--shadow)}
+.toc a.is-here .toc-en{color:var(--green)}
+.toc-num{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em;
+  font-variant-numeric:tabular-nums}
+.toc-en{font-family:var(--serif);font-size:15.5px;font-weight:600;line-height:1.3}
+.toc-am{grid-column:2;font-size:13.5px;color:var(--ink-faint)}
+
+/* ---------- sections ---------- */
+main{padding:8px 0 40px}
+.sec{padding:44px 0 4px;scroll-margin-top:76px}
+.sec-head{border-top:2px solid var(--green);padding-top:16px;margin-bottom:20px}
+.sec-num{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amber)}
+.sec-num .dot{color:var(--ink-faint);margin:0 4px}
+.sec h2{margin:0;font-family:var(--serif);font-weight:600;letter-spacing:-.01em;
+  font-size:clamp(23px,3.2vw,31px);line-height:1.18;color:var(--ink)}
+.sec-am{margin:6px 0 0;font-size:17px;font-weight:600;color:var(--green-lt)}
+
+table.acc{width:100%;border-collapse:separate;border-spacing:0;background:var(--paper);
+  border:1px solid var(--rule);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+table.acc th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);background:var(--band);
+  padding:11px 20px;border-bottom:1px solid var(--rule)}
+table.acc th[lang="am"]{letter-spacing:0;text-transform:none;font-size:13px}
+table.acc td{padding:14px 20px;vertical-align:top;border-bottom:1px solid var(--rule-soft);
+  width:50%}
+table.acc td.en{border-right:1px solid var(--rule-soft);font-size:15.5px}
+table.acc td.am{font-size:15.5px;color:var(--ink-soft)}
+table.acc tbody tr:last-child td{border-bottom:0}
+table.acc tbody tr:nth-child(even){background:#FCFDFB}
+table.acc tbody tr:hover{background:#F3F8F3}
+
+/* ---------- colophon ---------- */
+.colophon{margin:52px 0 0;padding:24px 0 8px;border-top:1px solid var(--rule)}
+.colophon p{margin:0;font-family:var(--serif);font-style:italic;font-size:14px;
+  color:var(--ink-faint);max-width:660px}
+
+/* ---------- responsive ---------- */
+@media (max-width:720px){
+  .sec{scroll-margin-top:60px}
+  .wrap{padding:0 16px}
+  .topbar__inner{padding:8px 16px;gap:10px}
+  .crumb__title{font-size:14px}
+  .totop{display:none}
+  .masthead{padding:38px 0 34px}
+  .toc ol{grid-template-columns:1fr}
+  table.acc{border-radius:10px}
+  table.acc thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  table.acc td{display:block;width:auto;border-right:0;padding:12px 16px 4px}
+  table.acc td.am{padding:0 16px 14px;border-bottom:1px solid var(--rule-soft)}
+  table.acc tbody tr:last-child td.am{border-bottom:0}
+  table.acc td::before{content:attr(data-label);display:block;font-size:10px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+  table.acc td.am::before{letter-spacing:0;text-transform:none;font-size:11px}
+}
+
+/* ---------- print ---------- */
+@media print{
+  body{background:#fff;font-size:11pt}
+  .topbar,.totop{display:none!important}
+  .masthead{background:#fff!important;color:#000;padding:0 0 16pt;border-bottom:2pt solid #1E4B3B}
+  .masthead h1,.masthead .h1-am{color:#000}
+  .masthead .tag,.masthead .tag-am,.lede,.lede-am{color:#333}
+  .eyebrow{color:#1E4B3B}
+  .stats li{border-color:#999;color:#333}
+  .toc{background:#fff;page-break-after:always}
+  .sec{page-break-inside:auto;padding-top:18pt}
+  .sec-head{page-break-after:avoid}
+  table.acc{box-shadow:none;border-color:#999}
+  table.acc tr{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="progress" id="progressBar" role="progressbar" aria-label="Reading progress"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="progress__fill" id="progressFill"></div>
+  </div>
+  <div class="topbar__inner">
+    <div class="crumb">
+      <span class="crumb__idx" id="crumbIdx">Contents</span>
+      <span class="crumb__title" id="crumbTitle">Example Accommodations for IEPs and 504s</span>
+    </div>
+    <span class="pct" id="pct">0%</span>
+    <button class="totop" id="toTop" type="button">Back to top</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">IEP &amp; 504 · English / አማርኛ</p>
+    <h1>Example Accommodations for IEPs and 504s</h1>
+    <p class="h1-am" lang="am">ለ IEP እና ለ504 ናሙና ማመቻቻዎች</p>
+    <div class="rule"></div>
+    <p class="tag">A bilingual guide for Ethiopian families navigating special education</p>
+    <p class="tag tag-am" lang="am">ልዩ ፍላጎት ላላቸው ልጆቻቸው ትምህርት የሚያመቻቹ የኢትዮጵያ ቤተሰቦች የሁለት ቋንቋ መመሪያ</p>
+    <p class="lede">This list offers examples of accommodations that may be included in a child&#x27;s IEP (Individualized Education Program) or 504 Plan. Every child is different — use this as a starting point for conversations with your child&#x27;s school team.</p>
+    <p class="lede lede-am" lang="am">ይህ ዝርዝር በልጅዎ IEP (የግለሰብ የትምህርት ፕሮግራም) ወይም በ504 ዕቅድ ውስጥ ሊካተቱ የሚችሉ የማመቻቻ ምሳሌዎችን ያቀርባል። እያንዳንዱ ልጅ የተለየ ነው — ይህንን ከልጅዎ ትምህርት ቤት ቡድን ጋር ለሚደረግ ውይይት እንደ መነሻ ይጠቀሙበት።</p>
+    <ul class="stats">
+      <li>18 categories</li>
+      <li>187 example accommodations</li>
+      <li>Side-by-side translation</li>
+    </ul>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="wrap">
+    <h2>Contents</h2>
+    <p>Jump to a category. The bar at the top tracks how far through the guide you are.</p>
+    <ol>
+      <li><a href="#classroom-learning-environment"><span class="toc-num">01</span><span class="toc-en">Classroom / Learning Environment</span><span class="toc-am" lang="am">የክፍል ውስጥ / የመማሪያ አካባቢ</span></a></li>
+      <li><a href="#curriculum-directions"><span class="toc-num">02</span><span class="toc-en">Curriculum — Directions</span><span class="toc-am" lang="am">ስርዓተ ትምህርት — መመሪያዎች</span></a></li>
+      <li><a href="#curriculum-textbooks"><span class="toc-num">03</span><span class="toc-en">Curriculum — Textbooks</span><span class="toc-am" lang="am">ስርዓተ ትምህርት — የመማሪያ መጽሐፍት</span></a></li>
+      <li><a href="#curriculum-assignments"><span class="toc-num">04</span><span class="toc-en">Curriculum — Assignments</span><span class="toc-am" lang="am">ስርዓተ ትምህርት — የቤት/የክፍል ስራዎች</span></a></li>
+      <li><a href="#curriculum-math"><span class="toc-num">05</span><span class="toc-en">Curriculum — Math</span><span class="toc-am" lang="am">ስርዓተ ትምህርት — ሂሳብ</span></a></li>
+      <li><a href="#curriculum-time"><span class="toc-num">06</span><span class="toc-en">Curriculum — Time</span><span class="toc-am" lang="am">ስርዓተ ትምህርት — ጊዜ</span></a></li>
+
+      <li><a href="#test-taking-and-grading-tests"><span class="toc-num">07</span><span class="toc-en">Test-Taking and Grading — Tests</span><span class="toc-am" lang="am">ፈተና መውሰድ እና ውጤት አሰጣጥ — ፈተናዎች</span></a></li>
+      <li><a href="#test-taking-and-grading-grading"><span class="toc-num">08</span><span class="toc-en">Test-Taking and Grading — Grading</span><span class="toc-am" lang="am">ፈተና መውሰድ እና ውጤት አሰጣጥ — ውጤት አሰጣጥ</span></a></li>
+      <li><a href="#writing-handwriting"><span class="toc-num">09</span><span class="toc-en">Writing &amp; Handwriting</span><span class="toc-am" lang="am">ጽሑፍ እና በእጅ መጻፍ</span></a></li>
+      <li><a href="#behavioral-accommodations"><span class="toc-num">10</span><span class="toc-en">Behavioral Accommodations</span><span class="toc-am" lang="am">የባህሪ ማመቻቻዎች</span></a></li>
+      <li><a href="#health-accommodations-eating-orally"><span class="toc-num">11</span><span class="toc-en">Health Accommodations — Eating Orally</span><span class="toc-am" lang="am">የጤና ማመቻቻዎች — በአፍ መመገብ</span></a></li>
+      <li><a href="#health-accommodations-eating-using-a-g-tube"><span class="toc-num">12</span><span class="toc-en">Health Accommodations — Eating Using a G-Tube</span><span class="toc-am" lang="am">የጤና ማመቻቻዎች — በጂ-ቱቦ መመገብ</span></a></li>
+      <li><a href="#health-accommodations-toileting"><span class="toc-num">13</span><span class="toc-en">Health Accommodations — Toileting</span><span class="toc-am" lang="am">የጤና ማመቻቻዎች — የመጸዳጃ ቤት አጠቃቀም</span></a></li>
+      <li><a href="#health-accommodations-additional-health-considerations"><span class="toc-num">14</span><span class="toc-en">Health Accommodations — Additional Health Considerations</span><span class="toc-am" lang="am">የጤና ማመቻቻዎች — ተጨማሪ የጤና ጉዳዮች</span></a></li>
+      <li><a href="#low-incidence-accommodations-visual-processing"><span class="toc-num">15</span><span class="toc-en">Low-Incidence Accommodations — Visual Processing</span><span class="toc-am" lang="am">ብርቅዬ ማመቻቻዎች — የእይታ ሂደት</span></a></li>
+      <li><a href="#low-incidence-accommodations-auditory-processing"><span class="toc-num">16</span><span class="toc-en">Low-Incidence Accommodations — Auditory Processing</span><span class="toc-am" lang="am">ብርቅዬ ማመቻቻዎች — የመስማት ሂደት</span></a></li>
+      <li><a href="#low-incidence-accommodations-mobility-orthopedic"><span class="toc-num">17</span><span class="toc-en">Low-Incidence Accommodations — Mobility/Orthopedic</span><span class="toc-am" lang="am">ብርቅዬ ማመቻቻዎች — የእንቅስቃሴ/የአጥንት ችግር</span></a></li>
+      <li><a href="#additional-accommodations"><span class="toc-num">18</span><span class="toc-en">Additional Accommodations</span><span class="toc-am" lang="am">ተጨማሪ ማመቻቻዎች</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="sec" id="classroom-learning-environment" data-title="Classroom / Learning Environment" data-index="1">
+    <header class="sec-head">
+      <p class="sec-num">Section 01 <span class="dot">·</span> 21 accommodations</p>
+      <h2>Classroom / Learning Environment</h2>
+      <p class="sec-am" lang="am">የክፍል ውስጥ / የመማሪያ አካባቢ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Keep the workspace clean and clear of unrelated materials</td>
+          <td class="am" lang="am" data-label="አማርኛ">የስራ ቦታውን ንፁህ እና ካልተዛመዱ ቁሳቁሶች ነፃ ያድርጉት</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide additional personal space between desks</td>
+          <td class="am" lang="am" data-label="አማርኛ">በዴስኮች መካከል ተጨማሪ የግል ቦታ ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Keep the classroom or learning area quiet during intense learning times</td>
+          <td class="am" lang="am" data-label="አማርኛ">በጥልቅ የመማሪያ ጊዜያት ክፍሉን ወይም የመማሪያ ቦታውን ጸጥ ያድርጉት</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Post a visual schedule on the student&#x27;s desk</td>
+          <td class="am" lang="am" data-label="አማርኛ">በተማሪው ዴስክ ላይ የእይታ መርሃ ግብር ይለጥፉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Reduce visual distractions in the classroom/learning environment</td>
+          <td class="am" lang="am" data-label="አማርኛ">በክፍል/በመማሪያ አካባቢ ውስጥ ትኩረት የሚከፋፍሉ ነገሮችን ይቀንሱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use a pass system for students needing frequent movement breaks</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተደጋጋሚ የእንቅስቃሴ እረፍት ለሚያስፈልጋቸው ተማሪዎች የፍቃድ ስርዓት ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a computer for written work</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለጽሑፍ ስራ ኮምፒዩተር ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide headsets to block noise</td>
+          <td class="am" lang="am" data-label="አማርኛ">ድምጽን ለመከልከል ሄድሴት ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Seat the student close to the teacher or a positive role model</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪውን ከመምህሩ ወይም ጥሩ አርአያ ከሆነ ተማሪ አጠገብ ያስቀምጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide FM or a sound-field amplification system for listening</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለማዳመጥ የFM ወይም የድምጽ ማጉያ ስርዓት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use a study carrel (in a classroom environment, provide extra carrels so the student will not feel singled out)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የጥናት ካሬል ይጠቀሙ (በክፍል ውስጥ ተማሪው እንዳይለይ ተጨማሪ ካሬሎችን ያቅርቡ)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide accessible classroom locations and accessible furniture (such as desks, tables, wobble chairs, etc.)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተደራሽ የመማሪያ ክፍል ቦታዎችን እና ተደራሽ የቤት እቃዎችን ያቅርቡ (እንደ ዴስኮች፣ ጠረጴዛዎች፣ የሚነቃነቁ ወንበሮች፣ ወዘተ)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Seat the student away from windows, doorways, and radiators</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪውን ከመስኮቶች፣ ከበሮች እና ከማሞቂያዎች ርቆ ያስቀምጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide organizers for lockers/desk</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለሎከሮች/ዴስክ አደራጆችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a clear view of the board, teacher, and screen</td>
+          <td class="am" lang="am" data-label="አማርኛ">ወደ ሰሌዳው፣ መምህሩ እና ስክሪኑ ግልጽ እይታ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide assistance when moving between classrooms or around the building</td>
+          <td class="am" lang="am" data-label="አማርኛ">በክፍሎች መካከል ወይም በሕንፃው ውስጥ ሲንቀሳቀሱ እርዳታ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Keep extra materials (pencils, paper, erasers, rulers) on hand</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተጨማሪ ቁሳቁሶችን (እርሳሶች፣ ወረቀት፣ ማጥፊያዎች፣ መስመሮች) በእጅ ይኑሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the student to leave the classroom 2-3 minutes early to avoid crowded hallways</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው የተጨናነቁ ኮሪደሮችን ለማስወገድ ከክፍል 2-3 ደቂቃ ቀደም ብሎ እንዲወጣ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide preferential seating for visual, auditory, or behavioral needs</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለእይታ፣ ለመስማት ወይም ለባህሪ ፍላጎቶች ተመራጭ መቀመጫ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow for small group and/or individual administration</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለትንሽ ቡድን እና/ወይም ለግለሰብ አስተዳደር ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the use of assistive technology</td>
+          <td class="am" lang="am" data-label="አማርኛ">የድጋፍ ቴክኖሎጂ አጠቃቀምን ይፍቀዱ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="curriculum-directions" data-title="Curriculum — Directions" data-index="2">
+    <header class="sec-head">
+      <p class="sec-num">Section 02 <span class="dot">·</span> 10 accommodations</p>
+      <h2>Curriculum — Directions</h2>
+      <p class="sec-am" lang="am">ስርዓተ ትምህርት — መመሪያዎች</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Use both oral and printed directions</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቃል እና የተጻፉ መመሪያዎችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Highlight key words in directions</td>
+          <td class="am" lang="am" data-label="አማርኛ">በመመሪያዎች ውስጥ ቁልፍ ቃላትን ያደምቁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Give directions in small steps using as few words as possible</td>
+          <td class="am" lang="am" data-label="አማርኛ">በተቻለ መጠን ጥቂት ቃላትን በመጠቀም መመሪያዎችን በትንንሽ ደረጃዎች ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Show a model of the end product (such as a completed math problem or finished quiz)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የመጨረሻውን ውጤት ናሙና ያሳዩ (እንደ የተጠናቀቀ የሂሳብ ችግር ወይም የተጠናቀቀ ፈተና)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Number and sequence steps in a task</td>
+          <td class="am" lang="am" data-label="አማርኛ">በአንድ ስራ ውስጥ ያሉትን ደረጃዎች ቁጥር እና ቅደም ተከተል ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide visual aids</td>
+          <td class="am" lang="am" data-label="አማርኛ">የእይታ እርዳታዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the use of a tape recorder or assistive technology device to record directions</td>
+          <td class="am" lang="am" data-label="አማርኛ">መመሪያዎችን ለመቅዳት የቴፕ መቅረጫ ወይም የድጋፍ ቴክኖሎጂ መሳሪያ አጠቃቀምን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Stand near the student when giving directions and cue the student that it&#x27;s time to pay attention</td>
+          <td class="am" lang="am" data-label="አማርኛ">መመሪያ ሲሰጡ ከተማሪው አጠገብ ይቁሙ እና ትኩረት የመስጠት ጊዜ መሆኑን ምልክት ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Have the student repeat the directions to check for comprehension</td>
+          <td class="am" lang="am" data-label="አማርኛ">ግንዛቤን ለማረጋገጥ ተማሪው መመሪያዎቹን እንዲደግም ያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Clarify/simplify/repeat directions</td>
+          <td class="am" lang="am" data-label="አማርኛ">መመሪያዎችን ግልጽ ያድርጉ/ያቅልሉ/ይድገሙ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="curriculum-textbooks" data-title="Curriculum — Textbooks" data-index="3">
+    <header class="sec-head">
+      <p class="sec-num">Section 03 <span class="dot">·</span> 13 accommodations</p>
+      <h2>Curriculum — Textbooks</h2>
+      <p class="sec-am" lang="am">ስርዓተ ትምህርት — የመማሪያ መጽሐፍት</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Provide a summary of each chapter</td>
+          <td class="am" lang="am" data-label="አማርኛ">የእያንዳንዱን ምዕራፍ ማጠቃለያ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Explore the use of assistive technology</td>
+          <td class="am" lang="am" data-label="አማርኛ">የድጋፍ ቴክኖሎጂ አጠቃቀምን ያስሱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Ask peer readers to read questions or passages aloud</td>
+          <td class="am" lang="am" data-label="አማርኛ">የክፍል ጓደኞች ጥያቄዎችን ወይም ምንባቦችን ጮክ ብለው እንዲያነቡ ይጠይቁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide audiotapes of textbooks — have the student follow the text while listening</td>
+          <td class="am" lang="am" data-label="አማርኛ">የመማሪያ መጽሐፍት ኦዲዮ ቴፖችን ያቅርቡ — ተማሪው እያዳመጠ ጽሑፉን እንዲከታተል ያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use a marker to highlight important information in textbook sections</td>
+          <td class="am" lang="am" data-label="አማርኛ">በመማሪያ መጽሐፍ ክፍሎች ውስጥ ጠቃሚ መረጃን ለማድመቅ ማርከር ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide interesting reading material at or slightly above the student&#x27;s comfortable reading level</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ምቾት በሚሰማው የንባብ ደረጃ ወይም በትንሹ ከዚያ በላይ አስደሳች የንባብ ቁሳቁስ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide two sets of classroom curriculum materials: one for home and one for school</td>
+
+          <td class="am" lang="am" data-label="አማርኛ">ሁለት ስብስቦች የክፍል ውስጥ ስርዓተ ትምህርት ቁሳቁሶችን ያቅርቡ፡ አንዱ ለቤት አንዱ ለትምህርት ቤት</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use word-for-word sentence fill-ins</td>
+          <td class="am" lang="am" data-label="አማርኛ">ቃል በቃል የዓረፍተ ነገር ሙሌቶችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide the student with a list of discussion questions before reading the material</td>
+          <td class="am" lang="am" data-label="አማርኛ">ቁሳቁሱን ከማንበብ በፊት ለተማሪው የውይይት ጥያቄዎች ዝርዝር ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use index cards to record major themes</td>
+          <td class="am" lang="am" data-label="አማርኛ">ዋና ዋና ጭብጦችን ለመመዝገብ የመረጃ ካርዶችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide books and other written materials in alternate formats such as Braille, large print, audio formats, and digital text</td>
+          <td class="am" lang="am" data-label="አማርኛ">መጽሐፍትን እና ሌሎች የተጻፉ ቁሳቁሶችን በአማራጭ ቅርጸቶች ያቅርቡ እንደ ብሬይል፣ ትልቅ ህትመት፣ የኦዲዮ ቅርጸቶች እና ዲጂታል ጽሑፍ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Give page numbers to help the student find answers</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው መልሶችን እንዲያገኝ ለመርዳት የገጽ ቁጥሮችን ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide alternative books with similar concepts, but at an easier reading level</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተመሳሳይ ፅንሰ-ሀሳቦች ያላቸው ግን በቀላል የንባብ ደረጃ ያሉ አማራጭ መጽሐፍትን ያቅርቡ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="curriculum-assignments" data-title="Curriculum — Assignments" data-index="4">
+    <header class="sec-head">
+      <p class="sec-num">Section 04 <span class="dot">·</span> 8 accommodations</p>
+      <h2>Curriculum — Assignments</h2>
+      <p class="sec-am" lang="am">ስርዓተ ትምህርት — የቤት/የክፍል ስራዎች</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Provide a vocabulary list</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቃላት ዝርዝር ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Shorten assignments to focus on mastery of key concepts</td>
+          <td class="am" lang="am" data-label="አማርኛ">ቁልፍ ፅንሰ-ሀሳቦችን በደንብ ለመቆጣጠር ትኩረት ለመስጠት ስራዎችን ያሳጥሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Substitute alternatives for long writing assignments (such as clay models, posters, panoramas, collections, electronic presentations, or oral presentations)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለረጅም የጽሑፍ ስራዎች አማራጮችን ይተኩ (እንደ የሸክላ ሞዴሎች፣ ፖስተሮች፣ ፓኖራማዎች፣ ስብስቦች፣ ኤሌክትሮኒክ ማቅረቢያዎች ወይም የቃል ማቅረቢያዎች)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Give alternatives to long written reports (for example, write several short reports, preview new audio-visual materials and write a short review, or give an oral report on an assigned topic)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለረጅም የጽሑፍ ሪፖርቶች አማራጮችን ይስጡ (ለምሳሌ፣ ብዙ አጫጭር ሪፖርቶችን መጻፍ፣ አዲስ የኦዲዮ-ቪዥዋል ቁሳቁሶችን አስቀድሞ መመልከት እና አጭር ግምገማ መጻፍ፣ ወይም በተመደበ ርዕስ ላይ የቃል ሪፖርት መስጠት)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide alternatives to reading aloud in front of the class</td>
+          <td class="am" lang="am" data-label="አማርኛ">በክፍል ፊት ጮክ ብሎ ከማንበብ ይልቅ አማራጮችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Shorten spelling tests to focus on mastering the most functional words</td>
+          <td class="am" lang="am" data-label="አማርኛ">በጣም ጠቃሚ የሆኑ ቃላትን በደንብ ለመቆጣጠር ትኩረት ለመስጠት የፊደል አጻጻፍ ፈተናዎችን ያሳጥሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Specify and list exactly what the student will need to learn; review this frequently</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው በትክክል መማር ያለበትን ነገር ይግለጹ እና ዘርዝሩ፤ ይህንን በተደጋጋሚ ይገምግሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Mask (block or white out) unnecessary content (such as navigational buttons, menu, additional questions, etc.) so students can focus on the assignment one step at a time</td>
+          <td class="am" lang="am" data-label="አማርኛ">አላስፈላጊ ይዘትን ይሸፍኑ (እንደ የአሰሳ አዝራሮች፣ ምናሌ፣ ተጨማሪ ጥያቄዎች፣ ወዘተ) ተማሪዎች በአንድ ጊዜ በአንድ ደረጃ ላይ ትኩረት እንዲያደርጉ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="curriculum-math" data-title="Curriculum — Math" data-index="5">
+    <header class="sec-head">
+      <p class="sec-num">Section 05 <span class="dot">·</span> 10 accommodations</p>
+      <h2>Curriculum — Math</h2>
+      <p class="sec-am" lang="am">ስርዓተ ትምህርት — ሂሳብ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Allow the student to use a calculator without penalty if needed</td>
+          <td class="am" lang="am" data-label="አማርኛ">አስፈላጊ ከሆነ ተማሪው ያለቅጣት ካልኩሌተር እንዲጠቀም ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Read and explain story problems or break problems into smaller steps</td>
+          <td class="am" lang="am" data-label="አማርኛ">የታሪክ ችግሮችን ያንብቡ እና ያብራሩ ወይም ችግሮችን ወደ ትናንሽ ደረጃዎች ይክፈሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Group similar problems together (such as addition in one section, unless testing to see if the student can determine which function to use)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተመሳሳይ ችግሮችን አንድ ላይ ያድርጉ (እንደ መደመር በአንድ ክፍል ውስጥ፣ ተማሪው የትኛውን ተግባር መጠቀም እንዳለበት መወሰን ይችል እንደሆነ ለመፈተሽ ካልሆነ በስተቀር)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide fewer problems on a worksheet (for example, 4 to 6 problems per page rather than 20 or 30, but keep the same total number of problems)</td>
+          <td class="am" lang="am" data-label="አማርኛ">በስራ ወረቀት ላይ ያነሱ ችግሮችን ያቅርቡ (ለምሳሌ፣ በገጽ ከ20 ወይም 30 ይልቅ ከ4 እስከ 6 ችግሮች፣ ነገር ግን ተመሳሳይ ጠቅላላ የችግሮች ብዛት ይኑር)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Tape a number line to the student&#x27;s desk</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቁጥር መስመርን በተማሪው ዴስክ ላይ ይለጥፉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use pictures or graphics</td>
+          <td class="am" lang="am" data-label="አማርኛ">ስዕሎችን ወይም ግራፊክስን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use enlarged graph paper to help the student keep numbers in columns</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ቁጥሮችን በአምዶች ውስጥ እንዲያስቀምጥ ለመርዳት የተስፋፋ የግራፍ ወረቀት ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Circle math computation signs</td>
+          <td class="am" lang="am" data-label="አማርኛ">የሂሳብ ስሌት ምልክቶችን ያክብቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a table or chart of math facts for reference (unless testing math facts)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለማጣቀሻ የሂሳብ እውነታዎች ሠንጠረዥ ወይም ገበታ ያቅርቡ (የሂሳብ እውነታዎችን የሚፈትኑ ካልሆነ በስተቀር)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Require the student to solve fewer problems to focus on mastery of concepts</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ፅንሰ-ሀሳቦችን በደንብ ለመቆጣጠር ትኩረት እንዲያደርግ ያነሱ ችግሮችን እንዲፈታ ይጠይቁ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="curriculum-time" data-title="Curriculum — Time" data-index="6">
+    <header class="sec-head">
+      <p class="sec-num">Section 06 <span class="dot">·</span> 5 accommodations</p>
+      <h2>Curriculum — Time</h2>
+      <p class="sec-am" lang="am">ስርዓተ ትምህርት — ጊዜ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Alert the student several minutes before a transition from one activity to another</td>
+          <td class="am" lang="am" data-label="አማርኛ">ከአንድ እንቅስቃሴ ወደ ሌላ ከመሸጋገሩ ጥቂት ደቂቃዎች በፊት ተማሪውን ያስጠንቅቁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow a specified amount of extra time to turn in homework without penalty</td>
+          <td class="am" lang="am" data-label="አማርኛ">ያለቅጣት የቤት ስራን ለማስረከብ የተወሰነ ተጨማሪ ጊዜ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide additional time to complete a task</td>
+          <td class="am" lang="am" data-label="አማርኛ">አንድን ስራ ለማጠናቀቅ ተጨማሪ ጊዜ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a visual timer</td>
+          <td class="am" lang="am" data-label="አማርኛ">የእይታ ሰዓት ቆጣሪ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Increase wait time for responses</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለምላሾች የመጠበቅ ጊዜን ይጨምሩ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="test-taking-and-grading-tests" data-title="Test-Taking and Grading — Tests" data-index="7">
+    <header class="sec-head">
+      <p class="sec-num">Section 07 <span class="dot">·</span> 22 accommodations</p>
+      <h2>Test-Taking and Grading — Tests</h2>
+      <p class="sec-am" lang="am">ፈተና መውሰድ እና ውጤት አሰጣጥ — ፈተናዎች</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Allow for extended time to take the test</td>
+          <td class="am" lang="am" data-label="አማርኛ">ፈተናውን ለመውሰድ ተጨማሪ ጊዜ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Go over directions orally</td>
+          <td class="am" lang="am" data-label="አማርኛ">መመሪያዎችን በቃል ይገምግሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the student to bring and take necessary medications such as an inhaler during the exam</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው በፈተና ወቅት አስፈላጊ መድሃኒቶችን እንደ ኢንሄለር ይዞ እንዲመጣ እና እንዲወስድ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Have someone transfer answers to Scantron bubble sheets or record dictated notes and essays</td>
+          <td class="am" lang="am" data-label="አማርኛ">አንድ ሰው መልሶችን ወደ ስካንትሮን የአረፋ ወረቀቶች እንዲያዛውር ወይም የተነገሩ ማስታወሻዎችን እና ድርሰቶችን እንዲመዘግብ ያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide wheelchair-accessible testing stations</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለተሽከርካሪ ወንበር ተደራሽ የፈተና ጣቢያዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Offer the student study guides and questions that directly relate to the test</td>
+          <td class="am" lang="am" data-label="አማርኛ">ከፈተናው ጋር በቀጥታ የሚዛመዱ የጥናት መመሪያዎችን እና ጥያቄዎችን ለተማሪው ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a distraction-free room</td>
+          <td class="am" lang="am" data-label="አማርኛ">ትኩረት የማይከፋፍል ክፍል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide sample or practice tests ahead of time</td>
+          <td class="am" lang="am" data-label="አማርኛ">አስቀድሞ ናሙና ወይም የልምምድ ፈተናዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide Braille or large-print exam booklets</td>
+
+          <td class="am" lang="am" data-label="አማርኛ">የብሬይል ወይም ትልቅ-ህትመት የፈተና ደብተሮችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow screen-reading technology</td>
+          <td class="am" lang="am" data-label="አማርኛ">የስክሪን-አንባቢ ቴክኖሎጂን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Have a scribe read materials to the student and take notes for the student</td>
+          <td class="am" lang="am" data-label="አማርኛ">ጸሐፊ ቁሳቁሶችን ለተማሪው እንዲያነብ እና ለተማሪው ማስታወሻ እንዲይዝ ያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Divide tests into small sections of similar questions and problems</td>
+          <td class="am" lang="am" data-label="አማርኛ">ፈተናዎችን ወደ ተመሳሳይ ጥያቄዎች እና ችግሮች ትናንሽ ክፍሎች ይከፋፍሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow oral responses, access to speech-to-text support, and a scribe for dictation of written responses</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቃል ምላሾችን፣ ንግግር-ወደ-ጽሑፍ ድጋፍ ተደራሽነትን፣ እና ለተጻፉ ምላሾች ማነብነብ ጸሐፊ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Permit the student to do an independent project as an alternative to a test</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው እንደ ፈተና አማራጭ ገለልተኛ ፕሮጀክት እንዲሰራ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow for testing over multiple days</td>
+          <td class="am" lang="am" data-label="አማርኛ">በብዙ ቀናት ውስጥ ፈተናን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide test breaks</td>
+          <td class="am" lang="am" data-label="አማርኛ">የፈተና እረፍቶችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use a familiar proctor/test administrator</td>
+          <td class="am" lang="am" data-label="አማርኛ">የታወቀ ተቆጣጣሪ/የፈተና አስተዳዳሪ ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow signed administration for students who are Deaf or hard of hearing</td>
+          <td class="am" lang="am" data-label="አማርኛ">መስማት ለተሳናቸው ወይም ለከባድ የመስማት ችግር ላለባቸው ተማሪዎች በምልክት ቋንቋ አስተዳደርን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow student to read aloud to self before selecting answers</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው መልሶችን ከመምረጡ በፊት ለራሱ ጮክ ብሎ እንዲያነብ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide paper format of test otherwise administered digitally</td>
+          <td class="am" lang="am" data-label="አማርኛ">በዲጂታል መንገድ ከሚሰጥ ፈተና ይልቅ የወረቀት ቅርጸት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide pre-recorded audio delivery for assessments, such as audiocassette tapes, CD-ROMs, audio DVDs, screen reader, etc.</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለምዘናዎች አስቀድሞ የተቀዳ የኦዲዮ አቅርቦት ያቅርቡ፣ እንደ የኦዲዮ ካሴት ቴፖች፣ ሲዲ-ሮሞች፣ የኦዲዮ ዲቪዲዎች፣ የስክሪን አንባቢ፣ ወዘተ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Mask (block or white out) unnecessary content so students can focus on one question at a time</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪዎች በአንድ ጊዜ በአንድ ጥያቄ ላይ እንዲያተኩሩ አላስፈላጊ ይዘትን ይሸፍኑ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="test-taking-and-grading-grading" data-title="Test-Taking and Grading — Grading" data-index="8">
+    <header class="sec-head">
+      <p class="sec-num">Section 08 <span class="dot">·</span> 3 accommodations</p>
+      <h2>Test-Taking and Grading — Grading</h2>
+      <p class="sec-am" lang="am">ፈተና መውሰድ እና ውጤት አሰጣጥ — ውጤት አሰጣጥ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Use daily or frequent grading and average into a grade for the quarter</td>
+          <td class="am" lang="am" data-label="አማርኛ">ዕለታዊ ወይም ተደጋጋሚ ውጤት አሰጣጥን ይጠቀሙ እና ለሩብ ዓመቱ አማካይ ውጤት ያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Mark the correct answers rather than incorrect ones</td>
+          <td class="am" lang="am" data-label="አማርኛ">ትክክለኛ መልሶችን ይምረጡ እንጂ የተሳሳቱትን ምልክት አያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Weigh daily work more heavily than tests for a student who performs poorly on tests due to their disability</td>
+          <td class="am" lang="am" data-label="አማርኛ">በአካል ጉዳት ምክንያት በፈተናዎች ደካማ አፈጻጸም ላለው ተማሪ ዕለታዊ ስራን ከፈተናዎች የበለጠ ክብደት ይስጡ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="writing-handwriting" data-title="Writing &amp; Handwriting" data-index="9">
+    <header class="sec-head">
+      <p class="sec-num">Section 09 <span class="dot">·</span> 17 accommodations</p>
+      <h2>Writing &amp; Handwriting</h2>
+      <p class="sec-am" lang="am">ጽሑፍ እና በእጅ መጻፍ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Use worksheets that require minimal writing</td>
+          <td class="am" lang="am" data-label="አማርኛ">አነስተኛ ጽሑፍ የሚያስፈልጋቸውን የስራ ወረቀቶች ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a computer for written work</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለጽሑፍ ስራ ኮምፒዩተር ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use fill-in questions with space for a brief response rather than a short essay</td>
+          <td class="am" lang="am" data-label="አማርኛ">ከአጭር ድርሰት ይልቅ ለአጭር ምላሽ ቦታ ያላቸውን የሙሌት ጥያቄዎችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide access to word processing applications or software, a portable note taker, a tablet, or similar device</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቃላት ማቀናበሪያ መተግበሪያዎችን ወይም ሶፍትዌርን፣ ተንቀሳቃሽ ማስታወሻ ያዥን፣ ታብሌት ወይም ተመሳሳይ መሳሪያ ተደራሽነት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a designated note-taker or photocopy of another student&#x27;s or teacher&#x27;s notes (do not expect the student to arrange with another student for notes)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የተመደበ ማስታወሻ ያዥ ወይም የሌላ ተማሪ ወይም የመምህር ማስታወሻ ፎቶ ኮፒ ያቅርቡ (ተማሪው ከሌላ ተማሪ ጋር ማስታወሻ እንዲያዘጋጅ አይጠብቁ)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide photocopy materials rather than requiring the student to copy from the board or textbook</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ከሰሌዳው ወይም ከመማሪያ መጽሐፍ እንዲገለብጥ ከመጠየቅ ይልቅ የፎቶ ኮፒ ቁሳቁሶችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide outlines for videos</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለቪዲዮዎች ማጠቃለያ ንድፎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Access to technology or a scribe, as needed, to record or dictate answers</td>
+          <td class="am" lang="am" data-label="አማርኛ">አስፈላጊ ሲሆን መልሶችን ለመመዝገብ ወይም ለማነብነብ ቴክኖሎጂ ወይም ጸሐፊ ተደራሽነት</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide adaptive writing tools, pencil grips, and a slant board or slanted surface</td>
+          <td class="am" lang="am" data-label="አማርኛ">የተስተካከሉ የመጻፊያ መሳሪያዎችን፣ የእርሳስ መያዣዎችን እና የተዘቀዘቀ ሰሌዳ ወይም ወለል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Access to speech-to-text software and other technology for written assignments</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለጽሑፍ ስራዎች ንግግር-ወደ-ጽሑፍ ሶፍትዌር እና ሌላ ቴክኖሎጂ ተደራሽነት</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the student to dictate a writing assignment for a scribe (teacher or aide) to transcribe</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው የጽሑፍ ስራን ለጸሐፊ (መምህር ወይም ረዳት) እንዲናገር ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide partially completed outlines of lectures for students to fill in the blanks</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪዎች ባዶ ቦታዎችን እንዲሞሉ በከፊል የተጠናቀቁ የትምህርት ማጠቃለያ ንድፎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Explore the use of alternate keyboard options and writing software</td>
+          <td class="am" lang="am" data-label="አማርኛ">አማራጭ የኪቦርድ አማራጮችን እና የመጻፊያ ሶፍትዌርን አጠቃቀም ያስሱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide specialized, lined paper with raised lines</td>
+          <td class="am" lang="am" data-label="አማርኛ">ልዩ የተነሱ መስመሮች ያሉት የተስመረ ወረቀት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide word models and/or tracing opportunities</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቃል ናሙናዎችን እና/ወይም የመከታተያ እድሎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow spell check software</td>
+          <td class="am" lang="am" data-label="አማርኛ">የፊደል አጻጻፍ ማረም ሶፍትዌርን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow word prediction software</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቃል ትንበያ ሶፍትዌርን ይፍቀዱ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="behavioral-accommodations" data-title="Behavioral Accommodations" data-index="10">
+    <header class="sec-head">
+      <p class="sec-num">Section 10 <span class="dot">·</span> 12 accommodations</p>
+      <h2>Behavioral Accommodations</h2>
+      <p class="sec-am" lang="am">የባህሪ ማመቻቻዎች</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Pair the student with those who are modeling good behavior for classwork, projects, and mentoring</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪውን ጥሩ ባህሪ ከሚያሳዩ ተማሪዎች ጋር ለክፍል ስራ፣ ፕሮጀክቶች እና አማካሪነት ያጣምሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Develop an individualized behavior intervention plan that is positive and consistent with the student&#x27;s ability and skills</td>
+          <td class="am" lang="am" data-label="አማርኛ">ከተማሪው ችሎታ እና ክህሎት ጋር የሚስማማ አዎንታዊ የግለሰብ ባህሪ ጣልቃ ገብነት እቅድ ያዘጋጁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Reward positive behaviors; increase the frequency and immediacy of reinforcement</td>
+          <td class="am" lang="am" data-label="አማርኛ">አዎንታዊ ባህሪያትን ይሸልሙ፤ የማበረታቻ ድግግሞሽን እና ፈጣንነትን ይጨምሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Ignore behaviors that are not seriously disruptive</td>
+          <td class="am" lang="am" data-label="አማርኛ">በጣም አስቸጋሪ ያልሆኑ ባህሪያትን ችላ ይበሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Create a &quot;back pocket pass&quot; the student can use to leave the classroom without asking for permission</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ያለ ፍቃድ ክፍልን ለቅቆ መውጣት የሚችልበት &quot;የኋላ ኪስ ፍቃድ&quot; ይፍጠሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow sensory and/or fidget objects to help the student self-regulate</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ራሱን እንዲቆጣጠር ለመርዳት የስሜት ህዋሳት እና/ወይም ፊጅት ዕቃዎችን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Establish a plan to manage side effects of medication (such as providing a water bottle for thirst or allowing extra bathroom breaks)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የመድሃኒት የጎንዮሽ ጉዳቶችን ለማስተዳደር እቅድ ያውጡ (እንደ ለጥም የውሃ ጠርሙስ መስጠት ወይም ተጨማሪ የመጸዳጃ ቤት እረፍት መፍቀድ)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Develop a system or code word to let the student know when behavior is not appropriate</td>
+
+          <td class="am" lang="am" data-label="አማርኛ">ባህሪው ተገቢ ያልሆነ መሆኑን ተማሪው እንዲያውቅ ስርዓት ወይም የምስጢር ቃል ያዘጋጁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Arrange a &quot;check-in&quot; time to organize the day</td>
+          <td class="am" lang="am" data-label="አማርኛ">ቀኑን ለማደራጀት &quot;የመግቢያ ማረጋገጫ&quot; ጊዜ ያዘጋጁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Modify school rules that might discriminate against the student</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪውን ሊያገለሉ የሚችሉ የትምህርት ቤት ደንቦችን ያሻሽሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Minimize the use of punishment; amend consequences for rule violations (for example, reward a forgetful student for remembering to bring pencils to class, rather than punishing the failure to remember)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቅጣት አጠቃቀምን ይቀንሱ፤ ለደንብ ጥሰቶች ውጤቶችን ያሻሽሉ (ለምሳሌ፣ የመርሳት ችግር ያለበትን ተማሪ እርሳስ ወደ ክፍል በማምጣቱ ይሸልሙ እንጂ ባለማስታወሱ አይቅጡት)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Arrange for the student to leave the classroom/learning area voluntarily and go to a designated &quot;safe place&quot; when under high stress</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ከፍተኛ ጭንቀት ሲሰማው በፈቃደኝነት ክፍልን/የመማሪያ ቦታን ለቅቆ ወደ ተመደበ &quot;ደህንነቱ የተጠበቀ ቦታ&quot; እንዲሄድ ያዘጋጁ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="health-accommodations-eating-orally" data-title="Health Accommodations — Eating Orally" data-index="11">
+    <header class="sec-head">
+      <p class="sec-num">Section 11 <span class="dot">·</span> 8 accommodations</p>
+      <h2>Health Accommodations — Eating Orally</h2>
+      <p class="sec-am" lang="am">የጤና ማመቻቻዎች — በአፍ መመገብ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Provide 1:1 supervision during lunch and snack times for those with food allergies or who are at risk for aspiration or choking</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለምግብ አለርጂ ላለባቸው ወይም ለመተንፈሻ አካል ችግር ወይም ለመታነቅ ተጋላጭ ለሆኑት በምሳ እና በመክሰስ ጊዜ የ1:1 ክትትል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide the opportunity to snack during instruction or take short breaks from instruction for snacking (for students who may not be able to consume sufficient calories during a designated lunch period)</td>
+          <td class="am" lang="am" data-label="አማርኛ">በተወሰነው የምሳ ሰዓት በቂ ካሎሪ መመገብ ለማይችሉ ተማሪዎች በማስተማር ወቅት መክሰስ የመመገብ ወይም ለመክሰስ አጭር እረፍት የመውሰድ እድል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide verbal or visual cues to chew, swallow, and/or monitor the amount of food to prevent choking</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለመታነቅ መከላከል ለማኘክ፣ ለመዋጥ እና/ወይም የምግብ መጠንን ለመከታተል የቃል ወይም የእይታ ምልክቶችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide behavioral motivators for students who need positive encouragement to eat</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለመመገብ አዎንታዊ ማበረታቻ ለሚያስፈልጋቸው ተማሪዎች የባህሪ ማነሳሻዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a &quot;nut-free&quot; table or classroom for those with severe allergies</td>
+          <td class="am" lang="am" data-label="አማርኛ">ከባድ አለርጂ ላለባቸው &quot;ለውዝ-ነጻ&quot; ጠረጴዛ ወይም ክፍል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide specific chairs, utensils, cups, straws, or positioners</td>
+          <td class="am" lang="am" data-label="አማርኛ">የተወሰኑ ወንበሮችን፣ ማንኪያ ሹካዎችን፣ ኩባያዎችን፣ ገለባዎችን ወይም ማስተካከያዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow extra time during meals for students with reduced endurance for self-feeding</td>
+          <td class="am" lang="am" data-label="አማርኛ">ራስን በራስ ለመመገብ ትዕግስት ላነሳቸው ተማሪዎች በምግብ ወቅት ተጨማሪ ጊዜ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow an adult-supported peer group to provide modeling and socialization during meals and snacks</td>
+          <td class="am" lang="am" data-label="አማርኛ">በምግብ እና በመክሰስ ወቅት አርአያነትን እና ማህበራዊነትን ለማቅረብ በአዋቂ የሚደገፍ የእኩዮች ቡድን ይፍቀዱ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="health-accommodations-eating-using-a-g-tube" data-title="Health Accommodations — Eating Using a G-Tube" data-index="12">
+    <header class="sec-head">
+      <p class="sec-num">Section 12 <span class="dot">·</span> 6 accommodations</p>
+      <h2>Health Accommodations — Eating Using a G-Tube</h2>
+      <p class="sec-am" lang="am">የጤና ማመቻቻዎች — በጂ-ቱቦ መመገብ</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Administer tube feeds where the student is most comfortable (such as the nurse&#x27;s office, lunch room, or classroom)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው በጣም ምቾት በሚሰማው ቦታ (እንደ የነርስ ቢሮ፣ የምሳ ክፍል ወይም ክፍል) የቱቦ ምግብን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow use of specific chairs or positioners during and following tube feeds for students who need to be in an upright position to manage reflux or other medical issues</td>
+          <td class="am" lang="am" data-label="አማርኛ">ሪፍላክስ ወይም ሌሎች የህክምና ጉዳዮችን ለማስተዳደር ቀጥ ብለው መቀመጥ ለሚያስፈልጋቸው ተማሪዎች በቱቦ አመጋገብ ወቅት እና በኋላ የተወሰኑ ወንበሮች ወይም ማስተካከያዎች አጠቃቀምን ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide designated support staff (nurse or trained assistant) to administer tube feeds, as needed</td>
+          <td class="am" lang="am" data-label="አማርኛ">አስፈላጊ ሲሆን የቱቦ ምግብን ለማቅረብ የተመደበ የድጋፍ ሰራተኛ (ነርስ ወይም የሰለጠነ ረዳት) ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide stoma site management by school nurse, as needed</td>
+          <td class="am" lang="am" data-label="አማርኛ">አስፈላጊ ሲሆን በትምህርት ቤት ነርስ የስቶማ ቦታ አያያዝን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Monitor for safety during tube feedings</td>
+          <td class="am" lang="am" data-label="አማርኛ">በቱቦ አመጋገብ ወቅት ደህንነትን ይከታተሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide an emergency plan with school nurse if the tube becomes dislodged at school</td>
+          <td class="am" lang="am" data-label="አማርኛ">ቱቦው በትምህርት ቤት ውስጥ ከቦታው ቢወጣ ከትምህርት ቤት ነርስ ጋር የአደጋ ጊዜ እቅድ ያቅርቡ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="health-accommodations-toileting" data-title="Health Accommodations — Toileting" data-index="13">
+    <header class="sec-head">
+      <p class="sec-num">Section 13 <span class="dot">·</span> 5 accommodations</p>
+      <h2>Health Accommodations — Toileting</h2>
+      <p class="sec-am" lang="am">የጤና ማመቻቻዎች — የመጸዳጃ ቤት አጠቃቀም</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Allow the student to use the bathroom at the nurses&#x27; station</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው በነርስ ጣቢያ የመጸዳጃ ቤት እንዲጠቀም ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow extra time to get to and from the bathroom, and more time as needed while there</td>
+          <td class="am" lang="am" data-label="አማርኛ">ወደ መጸዳጃ ቤት ለመሄድ እና ለመመለስ ተጨማሪ ጊዜ ይፍቀዱ፣ እና እዚያ ውስጥ እንዳስፈላጊነቱ ተጨማሪ ጊዜ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide an adaptive toilet seat as needed, and access to a handicap-accessible stall</td>
+          <td class="am" lang="am" data-label="አማርኛ">እንደ አስፈላጊነቱ የተስተካከለ የመጸዳጃ ወንበር እና ለአካል ጉዳተኞች ተደራሽ ወደሆነ ክፍል ተደራሽነት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide nurse support for catheter care</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለካቴተር እንክብካቤ የነርስ ድጋፍ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">If a student wears diapers, provide access to a private, safe, and sanitary diaper-changing station out of sight of peers</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪ ዳይፐር የሚጠቀም ከሆነ ከእኩዮች እይታ ውጭ የግል፣ ደህንነቱ የተጠበቀ እና ንፁህ የዳይፐር መቀየሪያ ቦታ ተደራሽነት ያቅርቡ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="health-accommodations-additional-health-considerations" data-title="Health Accommodations — Additional Health Considerations" data-index="14">
+    <header class="sec-head">
+      <p class="sec-num">Section 14 <span class="dot">·</span> 4 accommodations</p>
+      <h2>Health Accommodations — Additional Health Considerations</h2>
+      <p class="sec-am" lang="am">የጤና ማመቻቻዎች — ተጨማሪ የጤና ጉዳዮች</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Allow a hat to be worn during recess for students with sun sensitivity due to a health condition</td>
+          <td class="am" lang="am" data-label="አማርኛ">በጤና ሁኔታ ምክንያት ለፀሐይ ብርሃን ስሜታዊ ለሆኑ ተማሪዎች በእረፍት ጊዜ ኮፍያ እንዲለብሱ ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the student to leave class to use the nurses&#x27; station as needed (for example, to take medicine)</td>
+          <td class="am" lang="am" data-label="አማርኛ">አስፈላጊ ሲሆን (ለምሳሌ መድሃኒት ለመውሰድ) ተማሪው ክፍልን ለቅቆ የነርስ ጣቢያን እንዲጠቀም ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide access to temperature-controlled spaces during outside activities in times of excessive heat or cold for students with medical sensitivities to extreme weather</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለከባድ የአየር ሁኔታ ስሜታዊ ለሆኑ ተማሪዎች ከፍተኛ ሙቀት ወይም ብርድ በሚኖርበት ጊዜ በውጭ እንቅስቃሴዎች ወቅት የሙቀት-ቁጥጥር ወዳላቸው ቦታዎች ተደራሽነት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a 1:1 aide during transportation for medical needs</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለህክምና ፍላጎቶች በትራንስፖርት ወቅት የ1:1 ረዳት ያቅርቡ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="low-incidence-accommodations-visual-processing" data-title="Low-Incidence Accommodations — Visual Processing" data-index="15">
+    <header class="sec-head">
+      <p class="sec-num">Section 15 <span class="dot">·</span> 16 accommodations</p>
+      <h2>Low-Incidence Accommodations — Visual Processing</h2>
+      <p class="sec-am" lang="am">ብርቅዬ ማመቻቻዎች — የእይታ ሂደት</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Provide all materials in enlarged font</td>
+          <td class="am" lang="am" data-label="አማርኛ">ሁሉንም ቁሳቁሶች በተስፋፋ ፊደል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide slant boards or slanted surface</td>
+          <td class="am" lang="am" data-label="አማርኛ">የተዘቀዘቀ ሰሌዳ ወይም ወለል ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use larger manipulatives</td>
+          <td class="am" lang="am" data-label="አማርኛ">ትልልቅ የመማሪያ/የመዳሰሻ እቃዎችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide verbal descriptions of visual aids</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለእይታ እርዳታዎች የቃል መግለጫዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Reduce clutter on the page</td>
+          <td class="am" lang="am" data-label="አማርኛ">በገጹ ላይ ያለውን ብጥብጥ ይቀንሱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use high-contrast materials</td>
+          <td class="am" lang="am" data-label="አማርኛ">ከፍተኛ ንፅፅር ያላቸውን ቁሳቁሶች ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide preferential seating</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተመራጭ መቀመጫ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a printed copy of what&#x27;s being presented on the board</td>
+
+          <td class="am" lang="am" data-label="አማርኛ">በሰሌዳው ላይ የሚቀርበውን የታተመ ቅጂ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use raised-line drawings and tactile models of graphic materials</td>
+          <td class="am" lang="am" data-label="አማርኛ">የተነሱ-መስመር ስዕሎችን እና የግራፊክ ቁሳቁሶች የመዳሰሻ ሞዴሎችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide Audiotaped, Brailled, or electronically formatted notes, handouts, and texts</td>
+          <td class="am" lang="am" data-label="አማርኛ">በኦዲዮ የተቀዱ፣ በብሬይል የተጻፉ ወይም በኤሌክትሮኒክ ቅርጸት የተዘጋጁ ማስታወሻዎችን፣ ማከፋፈያ ወረቀቶችን እና ጽሑፎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide Braille lab signs and equipment labels, as well as auditory lab warning signals</td>
+          <td class="am" lang="am" data-label="አማርኛ">የብሬይል ላብራቶሪ ምልክቶችን እና የመሳሪያ መለያዎችን እንዲሁም የመስማት ላብራቶሪ ማስጠንቀቂያ ምልክቶችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide adaptive lab equipment (talking thermometers and calculators, light probes, and tactile timers)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የተስተካከሉ የላብራቶሪ መሳሪያዎችን ያቅርቡ (የሚናገሩ ቴርሞሜትሮች እና ካልኩሌተሮች፣ የብርሃን መመርመሪያዎች እና የመዳሰሻ ሰዓት ቆጣሪዎች)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide access to computer with optical character reader, voice output, Braille screen display, and printer output</td>
+          <td class="am" lang="am" data-label="አማርኛ">የኦፕቲካል ካራክተር አንባቢ፣ የድምጽ ውጤት፣ የብሬይል ስክሪን ማሳያ እና የማተሚያ ውጤት ላለው ኮምፒዩተር ተደራሽነት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide magnification</td>
+          <td class="am" lang="am" data-label="አማርኛ">ማጉላትን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use color-contrast materials</td>
+          <td class="am" lang="am" data-label="አማርኛ">የቀለም-ንፅፅር ቁሳቁሶችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide a 1:1 aide during transportation for medical needs</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለህክምና ፍላጎቶች በትራንስፖርት ወቅት የ1:1 ረዳት ያቅርቡ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="low-incidence-accommodations-auditory-processing" data-title="Low-Incidence Accommodations — Auditory Processing" data-index="16">
+    <header class="sec-head">
+      <p class="sec-num">Section 16 <span class="dot">·</span> 6 accommodations</p>
+      <h2>Low-Incidence Accommodations — Auditory Processing</h2>
+      <p class="sec-am" lang="am">ብርቅዬ ማመቻቻዎች — የመስማት ሂደት</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Provide preferential seating</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተመራጭ መቀመጫ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Reduce background noise</td>
+          <td class="am" lang="am" data-label="አማርኛ">የበስተጀርባ ድምጽን ይቀንሱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide additional written or visual material</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተጨማሪ የተጻፈ ወይም የእይታ ቁሳቁስ ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide an FM system to amplify the teacher</td>
+          <td class="am" lang="am" data-label="አማርኛ">የመምህሩን ድምጽ ለማጉላት የFM ስርዓት ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Simplify directions and verbal instruction</td>
+          <td class="am" lang="am" data-label="አማርኛ">መመሪያዎችን እና የቃል ትምህርትን ያቅልሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use a peer-pairing system to check notes and/or assignments</td>
+          <td class="am" lang="am" data-label="አማርኛ">ማስታወሻዎችን እና/ወይም ስራዎችን ለማረጋገጥ የእኩዮች ማጣመሪያ ስርዓት ይጠቀሙ</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="low-incidence-accommodations-mobility-orthopedic" data-title="Low-Incidence Accommodations — Mobility/Orthopedic" data-index="17">
+    <header class="sec-head">
+      <p class="sec-num">Section 17 <span class="dot">·</span> 7 accommodations</p>
+      <h2>Low-Incidence Accommodations — Mobility/Orthopedic</h2>
+      <p class="sec-am" lang="am">ብርቅዬ ማመቻቻዎች — የእንቅስቃሴ/የአጥንት ችግር</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Provide accessible play equipment or alternatives (e.g., a lighter/softer ball for sports activities; an adaptive tricycle if the playground and field are otherwise inaccessible)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተደራሽ የመጫወቻ መሳሪያዎችን ወይም አማራጮችን ያቅርቡ (ለምሳሌ፣ ለስፖርት እንቅስቃሴዎች ቀላል/ለስላሳ ኳስ፤ የመጫወቻ ስፍራው እና ሜዳው ተደራሽ ካልሆኑ የተስተካከለ ባለሶስት ጎማ ብስክሌት)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">If the school has an elevator, make sure the teacher and any classroom or 1:1 aides have a key so the student doesn&#x27;t have to wait to access it</td>
+          <td class="am" lang="am" data-label="አማርኛ">ትምህርት ቤቱ ሊፍት ካለው፣ ተማሪው ለመጠቀም መጠበቅ እንዳይኖርበት መምህሩ እና ማንኛውም የክፍል ወይም የ1:1 ረዳቶች ቁልፍ እንዳላቸው ያረጋግጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide appropriate seating in the classroom, at school-wide events, and during toileting (e.g., an adaptive toileting seat)</td>
+          <td class="am" lang="am" data-label="አማርኛ">በክፍል ውስጥ፣ በትምህርት ቤት አቀፍ ዝግጅቶች እና በመጸዳጃ ቤት ወቅት ተገቢ መቀመጫ ያቅርቡ (ለምሳሌ፣ የተስተካከለ የመጸዳጃ ወንበር)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide physical modifications to assignments for increased fine motor control (e.g., raised outlines to help a student stay within the lines on writing and coloring projects)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለተሻለ ጥቃቅን የጡንቻ ቁጥጥር ለስራዎች አካላዊ ማሻሻያዎችን ያቅርቡ (ለምሳሌ፣ ተማሪው በጽሑፍ እና በቀለም ስራዎች ውስጥ በመስመሮች ውስጥ እንዲቆይ ለመርዳት የተነሱ ንድፎች)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use appropriate workspace height and spacing in the classroom to allow for physical navigation where applicable, especially but not exclusively if the student is using a wheelchair or walker</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ተሽከርካሪ ወንበር ወይም ዎከር የሚጠቀም ከሆነ በተለይ ግን ብቻ ሳይሆን፣ አካላዊ እንቅስቃሴን ለማስቻል በክፍል ውስጥ ተገቢውን የስራ ቦታ ቁመት እና ክፍተት ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow extra time to get to the bathroom, from class to class, to and from lunch and recess, and more, especially on large campuses</td>
+          <td class="am" lang="am" data-label="አማርኛ">ወደ መጸዳጃ ቤት፣ ከክፍል ወደ ክፍል፣ ወደ ምሳ እና እረፍት እና ተጨማሪ ለመሄድ ተጨማሪ ጊዜ ይፍቀዱ፣ በተለይ በትልልቅ ግቢዎች ውስጥ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Establish clearly defined times when a student will use a piece of mobility equipment during the day (e.g., time in a stander or walker to ensure physical activity, particularly for students who use a wheelchair)</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው በቀኑ ውስጥ የተንቀሳቃሽነት መሳሪያን የሚጠቀምበትን ግልጽ ጊዜያት ያዘጋጁ (ለምሳሌ፣ ተሽከርካሪ ወንበር ለሚጠቀሙ ተማሪዎች በተለይ አካላዊ እንቅስቃሴን ለማረጋገጥ በስታንደር ወይም ዎከር ውስጥ ጊዜ)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="sec" id="additional-accommodations" data-title="Additional Accommodations" data-index="18">
+    <header class="sec-head">
+      <p class="sec-num">Section 18 <span class="dot">·</span> 14 accommodations</p>
+      <h2>Additional Accommodations</h2>
+      <p class="sec-am" lang="am">ተጨማሪ ማመቻቻዎች</p>
+    </header>
+    <table class="acc">
+      <thead><tr><th scope="col">English</th><th scope="col" lang="am">አማርኛ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="en" data-label="English">Check progress and provide feedback often in the first few minutes of each assignment</td>
+          <td class="am" lang="am" data-label="አማርኛ">በእያንዳንዱ ስራ የመጀመሪያዎቹ ጥቂት ደቂቃዎች ውስጥ እድገትን በተደጋጋሚ ያረጋግጡ እና ግብረመልስ ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Explore the use of memory organization aides (tablets, cell phone calendars, task lists, and visual schedules)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የማስታወሻ አደረጃጀት እርዳታዎችን አጠቃቀም ያስሱ (ታብሌቶች፣ የስልክ የቀን መቁጠሪያዎች፣ የስራ ዝርዝሮች እና የእይታ መርሃ ግብሮች)</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Introduce an overview of long-term assignments so the student knows what is expected and when it is due</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው የሚጠበቀውን እና መቼ እንደሚያስረክብ እንዲያውቅ የረጅም ጊዜ ስራዎችን አጠቃላይ እይታ ያስተዋውቁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Establish a regular form of communication between home and school</td>
+          <td class="am" lang="am" data-label="አማርኛ">በቤት እና በትምህርት ቤት መካከል መደበኛ የመግባቢያ መንገድ ያዘጋጁ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide structured assignments with lists for the student to cross off when finished</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ሲጨርስ ምልክት የሚያደርግባቸው ዝርዝሮች ያሏቸው የተደራጁ ስራዎችን ያቅርቡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Use color-coded materials for each class</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለእያንዳንዱ ክፍል በቀለም የተለዩ ቁሳቁሶችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Break long-term assignments into small, sequential steps with daily monitoring and frequent grading</td>
+          <td class="am" lang="am" data-label="አማርኛ">የረጅም ጊዜ ስራዎችን ከዕለታዊ ክትትል እና ተደጋጋሚ ውጤት አሰጣጥ ጋር ወደ ትናንሽ ተከታታይ ደረጃዎች ይክፈሉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Reward the student for recording assignments and due dates in a notebook</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪውን ስራዎችን እና የማስረከቢያ ቀናትን በማስታወሻ ደብተር ውስጥ በመመዝገቡ ይሸልሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Have the student practice presenting in a small group before presenting to the class</td>
+          <td class="am" lang="am" data-label="አማርኛ">ተማሪው ለክፍል ከማቅረቡ በፊት በትንሽ ቡድን ውስጥ ማቅረብን እንዲለማመድ ያድርጉ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Structure work so that the easiest parts come first</td>
+          <td class="am" lang="am" data-label="አማርኛ">በጣም ቀላል ክፍሎች መጀመሪያ እንዲመጡ ስራን ያዋቅሩ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Give the student worksheets one at a time</td>
+          <td class="am" lang="am" data-label="አማርኛ">ለተማሪው የስራ ወረቀቶችን በአንድ ጊዜ አንድ ይስጡ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Allow the use of sensory tools</td>
+          <td class="am" lang="am" data-label="አማርኛ">የስሜት ህዋሳት መሳሪያዎችን አጠቃቀም ይፍቀዱ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Draw arrows on worksheets or the board to show how ideas are related, or use other graphic organizers such as flow charts</td>
+          <td class="am" lang="am" data-label="አማርኛ">ሃሳቦች እንዴት እንደሚዛመዱ ለማሳየት በስራ ወረቀቶች ወይም በሰሌዳው ላይ ቀስቶችን ይሳሉ፣ ወይም እንደ የፍሰት ገበታዎች ያሉ ሌሎች የግራፊክ አደራጆችን ይጠቀሙ</td>
+        </tr>
+        <tr>
+          <td class="en" data-label="English">Provide locker accommodations (such as a key versus a combination lock)</td>
+          <td class="am" lang="am" data-label="አማርኛ">የሎከር ማመቻቻዎችን ያቅርቡ (እንደ ቁልፍ ከጥምር መቆለፊያ ይልቅ)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <div class="colophon">
+    <p>Amharic translation prepared for Ethiopian community families.</p>
+  </div>
+</main>
+
+<script>
+(function(){
+  var fill   = document.getElementById('progressFill');
+  var bar    = document.getElementById('progressBar');
+  var pct    = document.getElementById('pct');
+  var cIdx   = document.getElementById('crumbIdx');
+  var cTitle = document.getElementById('crumbTitle');
+  var secs   = Array.prototype.slice.call(document.querySelectorAll('.sec'));
+  var links  = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var total  = secs.length;
+  var ticking = false;
+
+  function update(){
+    ticking = false;
+
+    var h = document.documentElement;
+    var max = (h.scrollHeight - h.clientHeight) || 1;
+    var st = h.scrollTop || window.pageYOffset;
+    var p = Math.min(100, Math.max(0, st / max * 100));
+    if (max - st <= 2) p = 100;
+    fill.style.width = p.toFixed(2) + '%';
+    bar.setAttribute('aria-valuenow', Math.round(p));
+    pct.textContent = Math.round(p) + '%';
+
+    var line = st + 100, cur = null;
+    for (var i = 0; i < total; i++){ if (secs[i].offsetTop <= line) cur = secs[i]; }
+    if (cur){
+      cIdx.textContent = 'Section ' + cur.dataset.index + ' / ' + total;
+      cTitle.textContent = cur.dataset.title;
+    } else {
+      cIdx.textContent = 'Contents';
+      cTitle.textContent = 'Example Accommodations for IEPs and 504s';
+    }
+    var id = cur ? cur.id : null;
+    links.forEach(function(a){
+      a.classList.toggle('is-here', id !== null && a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  update();
+
+  document.getElementById('toTop').addEventListener('click', function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
+
+

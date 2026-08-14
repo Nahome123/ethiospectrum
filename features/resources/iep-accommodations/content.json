@@ -1,0 +1,922 @@
+{
+  "title": "Example Accommodations for IEPs and 504s",
+  "titleAm": "ለ IEP እና ለ504 ናሙና ማመቻቻዎች",
+  "tagline": "A bilingual guide for Ethiopian families navigating special education",
+  "taglineAm": "ልዩ ፍላጎት ላላቸው ልጆቻቸው ትምህርት የሚያመቻቹ የኢትዮጵያ ቤተሰቦች የሁለት ቋንቋ መመሪያ",
+  "introduction": "This list offers examples of accommodations that may be included in a child's IEP (Individualized Education Program) or 504 Plan. Every child is different — use this as a starting point for conversations with your child's school team.",
+  "introductionAm": "ይህ ዝርዝር በልጅዎ IEP (የግለሰብ የትምህርት ፕሮግራም) ወይም በ504 ዕቅድ ውስጥ ሊካተቱ የሚችሉ የማመቻቻ ምሳሌዎችን ያቀርባል። እያንዳንዱ ልጅ የተለየ ነው — ይህንን ከልጅዎ ትምህርት ቤት ቡድን ጋር ለሚደረግ ውይይት እንደ መነሻ ይጠቀሙበት።",
+  "stats": ["18 categories", "187 example accommodations", "Side-by-side translation"],
+  "colophon": "Amharic translation prepared for Ethiopian community families.",
+  "sections": [
+    {
+      "id": "classroom-learning-environment",
+      "index": 1,
+      "title": "Classroom / Learning Environment",
+      "titleAm": "የክፍል ውስጥ / የመማሪያ አካባቢ",
+      "declaredCount": 21,
+      "items": [
+        {
+          "en": "Keep the workspace clean and clear of unrelated materials",
+          "am": "የስራ ቦታውን ንፁህ እና ካልተዛመዱ ቁሳቁሶች ነፃ ያድርጉት"
+        },
+        {
+          "en": "Provide additional personal space between desks",
+          "am": "በዴስኮች መካከል ተጨማሪ የግል ቦታ ይስጡ"
+        },
+        {
+          "en": "Keep the classroom or learning area quiet during intense learning times",
+          "am": "በጥልቅ የመማሪያ ጊዜያት ክፍሉን ወይም የመማሪያ ቦታውን ጸጥ ያድርጉት"
+        },
+        {
+          "en": "Post a visual schedule on the student's desk",
+          "am": "በተማሪው ዴስክ ላይ የእይታ መርሃ ግብር ይለጥፉ"
+        },
+        {
+          "en": "Reduce visual distractions in the classroom/learning environment",
+          "am": "በክፍል/በመማሪያ አካባቢ ውስጥ ትኩረት የሚከፋፍሉ ነገሮችን ይቀንሱ"
+        },
+        {
+          "en": "Use a pass system for students needing frequent movement breaks",
+          "am": "ተደጋጋሚ የእንቅስቃሴ እረፍት ለሚያስፈልጋቸው ተማሪዎች የፍቃድ ስርዓት ይጠቀሙ"
+        },
+        {
+          "en": "Provide a computer for written work",
+          "am": "ለጽሑፍ ስራ ኮምፒዩተር ይስጡ"
+        },
+        {
+          "en": "Provide headsets to block noise",
+          "am": "ድምጽን ለመከልከል ሄድሴት ይስጡ"
+        },
+        {
+          "en": "Seat the student close to the teacher or a positive role model",
+          "am": "ተማሪውን ከመምህሩ ወይም ጥሩ አርአያ ከሆነ ተማሪ አጠገብ ያስቀምጡ"
+        },
+        {
+          "en": "Provide FM or a sound-field amplification system for listening",
+          "am": "ለማዳመጥ የFM ወይም የድምጽ ማጉያ ስርዓት ያቅርቡ"
+        },
+        {
+          "en": "Use a study carrel (in a classroom environment, provide extra carrels so the student will not feel singled out)",
+          "am": "የጥናት ካሬል ይጠቀሙ (በክፍል ውስጥ ተማሪው እንዳይለይ ተጨማሪ ካሬሎችን ያቅርቡ)"
+        },
+        {
+          "en": "Provide accessible classroom locations and accessible furniture (such as desks, tables, wobble chairs, etc.)",
+          "am": "ተደራሽ የመማሪያ ክፍል ቦታዎችን እና ተደራሽ የቤት እቃዎችን ያቅርቡ (እንደ ዴስኮች፣ ጠረጴዛዎች፣ የሚነቃነቁ ወንበሮች፣ ወዘተ)"
+        },
+        {
+          "en": "Seat the student away from windows, doorways, and radiators",
+          "am": "ተማሪውን ከመስኮቶች፣ ከበሮች እና ከማሞቂያዎች ርቆ ያስቀምጡ"
+        },
+        {
+          "en": "Provide organizers for lockers/desk",
+          "am": "ለሎከሮች/ዴስክ አደራጆችን ያቅርቡ"
+        },
+        {
+          "en": "Provide a clear view of the board, teacher, and screen",
+          "am": "ወደ ሰሌዳው፣ መምህሩ እና ስክሪኑ ግልጽ እይታ ያቅርቡ"
+        },
+        {
+          "en": "Provide assistance when moving between classrooms or around the building",
+          "am": "በክፍሎች መካከል ወይም በሕንፃው ውስጥ ሲንቀሳቀሱ እርዳታ ያቅርቡ"
+        },
+        {
+          "en": "Keep extra materials (pencils, paper, erasers, rulers) on hand",
+          "am": "ተጨማሪ ቁሳቁሶችን (እርሳሶች፣ ወረቀት፣ ማጥፊያዎች፣ መስመሮች) በእጅ ይኑሩ"
+        },
+        {
+          "en": "Allow the student to leave the classroom 2-3 minutes early to avoid crowded hallways",
+          "am": "ተማሪው የተጨናነቁ ኮሪደሮችን ለማስወገድ ከክፍል 2-3 ደቂቃ ቀደም ብሎ እንዲወጣ ይፍቀዱ"
+        },
+        {
+          "en": "Provide preferential seating for visual, auditory, or behavioral needs",
+          "am": "ለእይታ፣ ለመስማት ወይም ለባህሪ ፍላጎቶች ተመራጭ መቀመጫ ያቅርቡ"
+        },
+        {
+          "en": "Allow for small group and/or individual administration",
+          "am": "ለትንሽ ቡድን እና/ወይም ለግለሰብ አስተዳደር ይፍቀዱ"
+        },
+        {
+          "en": "Allow the use of assistive technology",
+          "am": "የድጋፍ ቴክኖሎጂ አጠቃቀምን ይፍቀዱ"
+        }
+      ]
+    },
+    {
+      "id": "curriculum-directions",
+      "index": 2,
+      "title": "Curriculum — Directions",
+      "titleAm": "ስርዓተ ትምህርት — መመሪያዎች",
+      "declaredCount": 10,
+      "items": [
+        {
+          "en": "Use both oral and printed directions",
+          "am": "የቃል እና የተጻፉ መመሪያዎችን ይጠቀሙ"
+        },
+        {
+          "en": "Highlight key words in directions",
+          "am": "በመመሪያዎች ውስጥ ቁልፍ ቃላትን ያደምቁ"
+        },
+        {
+          "en": "Give directions in small steps using as few words as possible",
+          "am": "በተቻለ መጠን ጥቂት ቃላትን በመጠቀም መመሪያዎችን በትንንሽ ደረጃዎች ይስጡ"
+        },
+        {
+          "en": "Show a model of the end product (such as a completed math problem or finished quiz)",
+          "am": "የመጨረሻውን ውጤት ናሙና ያሳዩ (እንደ የተጠናቀቀ የሂሳብ ችግር ወይም የተጠናቀቀ ፈተና)"
+        },
+        {
+          "en": "Number and sequence steps in a task",
+          "am": "በአንድ ስራ ውስጥ ያሉትን ደረጃዎች ቁጥር እና ቅደም ተከተል ይስጡ"
+        },
+        {
+          "en": "Provide visual aids",
+          "am": "የእይታ እርዳታዎችን ያቅርቡ"
+        },
+        {
+          "en": "Allow the use of a tape recorder or assistive technology device to record directions",
+          "am": "መመሪያዎችን ለመቅዳት የቴፕ መቅረጫ ወይም የድጋፍ ቴክኖሎጂ መሳሪያ አጠቃቀምን ይፍቀዱ"
+        },
+        {
+          "en": "Stand near the student when giving directions and cue the student that it's time to pay attention",
+          "am": "መመሪያ ሲሰጡ ከተማሪው አጠገብ ይቁሙ እና ትኩረት የመስጠት ጊዜ መሆኑን ምልክት ይስጡ"
+        },
+        {
+          "en": "Have the student repeat the directions to check for comprehension",
+          "am": "ግንዛቤን ለማረጋገጥ ተማሪው መመሪያዎቹን እንዲደግም ያድርጉ"
+        },
+        {
+          "en": "Clarify/simplify/repeat directions",
+          "am": "መመሪያዎችን ግልጽ ያድርጉ/ያቅልሉ/ይድገሙ"
+        }
+      ]
+    },
+    {
+      "id": "curriculum-textbooks",
+      "index": 3,
+      "title": "Curriculum — Textbooks",
+      "titleAm": "ስርዓተ ትምህርት — የመማሪያ መጽሐፍት",
+      "declaredCount": 13,
+      "items": [
+        {
+          "en": "Provide a summary of each chapter",
+          "am": "የእያንዳንዱን ምዕራፍ ማጠቃለያ ያቅርቡ"
+        },
+        {
+          "en": "Explore the use of assistive technology",
+          "am": "የድጋፍ ቴክኖሎጂ አጠቃቀምን ያስሱ"
+        },
+        {
+          "en": "Ask peer readers to read questions or passages aloud",
+          "am": "የክፍል ጓደኞች ጥያቄዎችን ወይም ምንባቦችን ጮክ ብለው እንዲያነቡ ይጠይቁ"
+        },
+        {
+          "en": "Provide audiotapes of textbooks — have the student follow the text while listening",
+          "am": "የመማሪያ መጽሐፍት ኦዲዮ ቴፖችን ያቅርቡ — ተማሪው እያዳመጠ ጽሑፉን እንዲከታተል ያድርጉ"
+        },
+        {
+          "en": "Use a marker to highlight important information in textbook sections",
+          "am": "በመማሪያ መጽሐፍ ክፍሎች ውስጥ ጠቃሚ መረጃን ለማድመቅ ማርከር ይጠቀሙ"
+        },
+        {
+          "en": "Provide interesting reading material at or slightly above the student's comfortable reading level",
+          "am": "ተማሪው ምቾት በሚሰማው የንባብ ደረጃ ወይም በትንሹ ከዚያ በላይ አስደሳች የንባብ ቁሳቁስ ያቅርቡ"
+        },
+        {
+          "en": "Provide two sets of classroom curriculum materials: one for home and one for school",
+          "am": "ሁለት ስብስቦች የክፍል ውስጥ ስርዓተ ትምህርት ቁሳቁሶችን ያቅርቡ፡ አንዱ ለቤት አንዱ ለትምህርት ቤት"
+        },
+        {
+          "en": "Use word-for-word sentence fill-ins",
+          "am": "ቃል በቃል የዓረፍተ ነገር ሙሌቶችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide the student with a list of discussion questions before reading the material",
+          "am": "ቁሳቁሱን ከማንበብ በፊት ለተማሪው የውይይት ጥያቄዎች ዝርዝር ያቅርቡ"
+        },
+        {
+          "en": "Use index cards to record major themes",
+          "am": "ዋና ዋና ጭብጦችን ለመመዝገብ የመረጃ ካርዶችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide books and other written materials in alternate formats such as Braille, large print, audio formats, and digital text",
+          "am": "መጽሐፍትን እና ሌሎች የተጻፉ ቁሳቁሶችን በአማራጭ ቅርጸቶች ያቅርቡ እንደ ብሬይል፣ ትልቅ ህትመት፣ የኦዲዮ ቅርጸቶች እና ዲጂታል ጽሑፍ"
+        },
+        {
+          "en": "Give page numbers to help the student find answers",
+          "am": "ተማሪው መልሶችን እንዲያገኝ ለመርዳት የገጽ ቁጥሮችን ይስጡ"
+        },
+        {
+          "en": "Provide alternative books with similar concepts, but at an easier reading level",
+          "am": "ተመሳሳይ ፅንሰ-ሀሳቦች ያላቸው ግን በቀላል የንባብ ደረጃ ያሉ አማራጭ መጽሐፍትን ያቅርቡ"
+        }
+      ]
+    },
+    {
+      "id": "curriculum-assignments",
+      "index": 4,
+      "title": "Curriculum — Assignments",
+      "titleAm": "ስርዓተ ትምህርት — የቤት/የክፍል ስራዎች",
+      "declaredCount": 8,
+      "items": [
+        {
+          "en": "Provide a vocabulary list",
+          "am": "የቃላት ዝርዝር ያቅርቡ"
+        },
+        {
+          "en": "Shorten assignments to focus on mastery of key concepts",
+          "am": "ቁልፍ ፅንሰ-ሀሳቦችን በደንብ ለመቆጣጠር ትኩረት ለመስጠት ስራዎችን ያሳጥሩ"
+        },
+        {
+          "en": "Substitute alternatives for long writing assignments (such as clay models, posters, panoramas, collections, electronic presentations, or oral presentations)",
+          "am": "ለረጅም የጽሑፍ ስራዎች አማራጮችን ይተኩ (እንደ የሸክላ ሞዴሎች፣ ፖስተሮች፣ ፓኖራማዎች፣ ስብስቦች፣ ኤሌክትሮኒክ ማቅረቢያዎች ወይም የቃል ማቅረቢያዎች)"
+        },
+        {
+          "en": "Give alternatives to long written reports (for example, write several short reports, preview new audio-visual materials and write a short review, or give an oral report on an assigned topic)",
+          "am": "ለረጅም የጽሑፍ ሪፖርቶች አማራጮችን ይስጡ (ለምሳሌ፣ ብዙ አጫጭር ሪፖርቶችን መጻፍ፣ አዲስ የኦዲዮ-ቪዥዋል ቁሳቁሶችን አስቀድሞ መመልከት እና አጭር ግምገማ መጻፍ፣ ወይም በተመደበ ርዕስ ላይ የቃል ሪፖርት መስጠት)"
+        },
+        {
+          "en": "Provide alternatives to reading aloud in front of the class",
+          "am": "በክፍል ፊት ጮክ ብሎ ከማንበብ ይልቅ አማራጮችን ያቅርቡ"
+        },
+        {
+          "en": "Shorten spelling tests to focus on mastering the most functional words",
+          "am": "በጣም ጠቃሚ የሆኑ ቃላትን በደንብ ለመቆጣጠር ትኩረት ለመስጠት የፊደል አጻጻፍ ፈተናዎችን ያሳጥሩ"
+        },
+        {
+          "en": "Specify and list exactly what the student will need to learn; review this frequently",
+          "am": "ተማሪው በትክክል መማር ያለበትን ነገር ይግለጹ እና ዘርዝሩ፤ ይህንን በተደጋጋሚ ይገምግሙ"
+        },
+        {
+          "en": "Mask (block or white out) unnecessary content (such as navigational buttons, menu, additional questions, etc.) so students can focus on the assignment one step at a time",
+          "am": "አላስፈላጊ ይዘትን ይሸፍኑ (እንደ የአሰሳ አዝራሮች፣ ምናሌ፣ ተጨማሪ ጥያቄዎች፣ ወዘተ) ተማሪዎች በአንድ ጊዜ በአንድ ደረጃ ላይ ትኩረት እንዲያደርጉ"
+        }
+      ]
+    },
+    {
+      "id": "curriculum-math",
+      "index": 5,
+      "title": "Curriculum — Math",
+      "titleAm": "ስርዓተ ትምህርት — ሂሳብ",
+      "declaredCount": 10,
+      "items": [
+        {
+          "en": "Allow the student to use a calculator without penalty if needed",
+          "am": "አስፈላጊ ከሆነ ተማሪው ያለቅጣት ካልኩሌተር እንዲጠቀም ይፍቀዱ"
+        },
+        {
+          "en": "Read and explain story problems or break problems into smaller steps",
+          "am": "የታሪክ ችግሮችን ያንብቡ እና ያብራሩ ወይም ችግሮችን ወደ ትናንሽ ደረጃዎች ይክፈሉ"
+        },
+        {
+          "en": "Group similar problems together (such as addition in one section, unless testing to see if the student can determine which function to use)",
+          "am": "ተመሳሳይ ችግሮችን አንድ ላይ ያድርጉ (እንደ መደመር በአንድ ክፍል ውስጥ፣ ተማሪው የትኛውን ተግባር መጠቀም እንዳለበት መወሰን ይችል እንደሆነ ለመፈተሽ ካልሆነ በስተቀር)"
+        },
+        {
+          "en": "Provide fewer problems on a worksheet (for example, 4 to 6 problems per page rather than 20 or 30, but keep the same total number of problems)",
+          "am": "በስራ ወረቀት ላይ ያነሱ ችግሮችን ያቅርቡ (ለምሳሌ፣ በገጽ ከ20 ወይም 30 ይልቅ ከ4 እስከ 6 ችግሮች፣ ነገር ግን ተመሳሳይ ጠቅላላ የችግሮች ብዛት ይኑር)"
+        },
+        {
+          "en": "Tape a number line to the student's desk",
+          "am": "የቁጥር መስመርን በተማሪው ዴስክ ላይ ይለጥፉ"
+        },
+        {
+          "en": "Use pictures or graphics",
+          "am": "ስዕሎችን ወይም ግራፊክስን ይጠቀሙ"
+        },
+        {
+          "en": "Use enlarged graph paper to help the student keep numbers in columns",
+          "am": "ተማሪው ቁጥሮችን በአምዶች ውስጥ እንዲያስቀምጥ ለመርዳት የተስፋፋ የግራፍ ወረቀት ይጠቀሙ"
+        },
+        {
+          "en": "Circle math computation signs",
+          "am": "የሂሳብ ስሌት ምልክቶችን ያክብቡ"
+        },
+        {
+          "en": "Provide a table or chart of math facts for reference (unless testing math facts)",
+          "am": "ለማጣቀሻ የሂሳብ እውነታዎች ሠንጠረዥ ወይም ገበታ ያቅርቡ (የሂሳብ እውነታዎችን የሚፈትኑ ካልሆነ በስተቀር)"
+        },
+        {
+          "en": "Require the student to solve fewer problems to focus on mastery of concepts",
+          "am": "ተማሪው ፅንሰ-ሀሳቦችን በደንብ ለመቆጣጠር ትኩረት እንዲያደርግ ያነሱ ችግሮችን እንዲፈታ ይጠይቁ"
+        }
+      ]
+    },
+    {
+      "id": "curriculum-time",
+      "index": 6,
+      "title": "Curriculum — Time",
+      "titleAm": "ስርዓተ ትምህርት — ጊዜ",
+      "declaredCount": 5,
+      "items": [
+        {
+          "en": "Alert the student several minutes before a transition from one activity to another",
+          "am": "ከአንድ እንቅስቃሴ ወደ ሌላ ከመሸጋገሩ ጥቂት ደቂቃዎች በፊት ተማሪውን ያስጠንቅቁ"
+        },
+        {
+          "en": "Allow a specified amount of extra time to turn in homework without penalty",
+          "am": "ያለቅጣት የቤት ስራን ለማስረከብ የተወሰነ ተጨማሪ ጊዜ ይፍቀዱ"
+        },
+        {
+          "en": "Provide additional time to complete a task",
+          "am": "አንድን ስራ ለማጠናቀቅ ተጨማሪ ጊዜ ያቅርቡ"
+        },
+        {
+          "en": "Provide a visual timer",
+          "am": "የእይታ ሰዓት ቆጣሪ ያቅርቡ"
+        },
+        {
+          "en": "Increase wait time for responses",
+          "am": "ለምላሾች የመጠበቅ ጊዜን ይጨምሩ"
+        }
+      ]
+    },
+    {
+      "id": "test-taking-and-grading-tests",
+      "index": 7,
+      "title": "Test-Taking and Grading — Tests",
+      "titleAm": "ፈተና መውሰድ እና ውጤት አሰጣጥ — ፈተናዎች",
+      "declaredCount": 22,
+      "items": [
+        {
+          "en": "Allow for extended time to take the test",
+          "am": "ፈተናውን ለመውሰድ ተጨማሪ ጊዜ ይፍቀዱ"
+        },
+        {
+          "en": "Go over directions orally",
+          "am": "መመሪያዎችን በቃል ይገምግሙ"
+        },
+        {
+          "en": "Allow the student to bring and take necessary medications such as an inhaler during the exam",
+          "am": "ተማሪው በፈተና ወቅት አስፈላጊ መድሃኒቶችን እንደ ኢንሄለር ይዞ እንዲመጣ እና እንዲወስድ ይፍቀዱ"
+        },
+        {
+          "en": "Have someone transfer answers to Scantron bubble sheets or record dictated notes and essays",
+          "am": "አንድ ሰው መልሶችን ወደ ስካንትሮን የአረፋ ወረቀቶች እንዲያዛውር ወይም የተነገሩ ማስታወሻዎችን እና ድርሰቶችን እንዲመዘግብ ያድርጉ"
+        },
+        {
+          "en": "Provide wheelchair-accessible testing stations",
+          "am": "ለተሽከርካሪ ወንበር ተደራሽ የፈተና ጣቢያዎችን ያቅርቡ"
+        },
+        {
+          "en": "Offer the student study guides and questions that directly relate to the test",
+          "am": "ከፈተናው ጋር በቀጥታ የሚዛመዱ የጥናት መመሪያዎችን እና ጥያቄዎችን ለተማሪው ያቅርቡ"
+        },
+        {
+          "en": "Provide a distraction-free room",
+          "am": "ትኩረት የማይከፋፍል ክፍል ያቅርቡ"
+        },
+        {
+          "en": "Provide sample or practice tests ahead of time",
+          "am": "አስቀድሞ ናሙና ወይም የልምምድ ፈተናዎችን ያቅርቡ"
+        },
+        {
+          "en": "Provide Braille or large-print exam booklets",
+          "am": "የብሬይል ወይም ትልቅ-ህትመት የፈተና ደብተሮችን ያቅርቡ"
+        },
+        {
+          "en": "Allow screen-reading technology",
+          "am": "የስክሪን-አንባቢ ቴክኖሎጂን ይፍቀዱ"
+        },
+        {
+          "en": "Have a scribe read materials to the student and take notes for the student",
+          "am": "ጸሐፊ ቁሳቁሶችን ለተማሪው እንዲያነብ እና ለተማሪው ማስታወሻ እንዲይዝ ያድርጉ"
+        },
+        {
+          "en": "Divide tests into small sections of similar questions and problems",
+          "am": "ፈተናዎችን ወደ ተመሳሳይ ጥያቄዎች እና ችግሮች ትናንሽ ክፍሎች ይከፋፍሉ"
+        },
+        {
+          "en": "Allow oral responses, access to speech-to-text support, and a scribe for dictation of written responses",
+          "am": "የቃል ምላሾችን፣ ንግግር-ወደ-ጽሑፍ ድጋፍ ተደራሽነትን፣ እና ለተጻፉ ምላሾች ማነብነብ ጸሐፊ ይፍቀዱ"
+        },
+        {
+          "en": "Permit the student to do an independent project as an alternative to a test",
+          "am": "ተማሪው እንደ ፈተና አማራጭ ገለልተኛ ፕሮጀክት እንዲሰራ ይፍቀዱ"
+        },
+        {
+          "en": "Allow for testing over multiple days",
+          "am": "በብዙ ቀናት ውስጥ ፈተናን ይፍቀዱ"
+        },
+        {
+          "en": "Provide test breaks",
+          "am": "የፈተና እረፍቶችን ያቅርቡ"
+        },
+        {
+          "en": "Use a familiar proctor/test administrator",
+          "am": "የታወቀ ተቆጣጣሪ/የፈተና አስተዳዳሪ ይጠቀሙ"
+        },
+        {
+          "en": "Allow signed administration for students who are Deaf or hard of hearing",
+          "am": "መስማት ለተሳናቸው ወይም ለከባድ የመስማት ችግር ላለባቸው ተማሪዎች በምልክት ቋንቋ አስተዳደርን ይፍቀዱ"
+        },
+        {
+          "en": "Allow student to read aloud to self before selecting answers",
+          "am": "ተማሪው መልሶችን ከመምረጡ በፊት ለራሱ ጮክ ብሎ እንዲያነብ ይፍቀዱ"
+        },
+        {
+          "en": "Provide paper format of test otherwise administered digitally",
+          "am": "በዲጂታል መንገድ ከሚሰጥ ፈተና ይልቅ የወረቀት ቅርጸት ያቅርቡ"
+        },
+        {
+          "en": "Provide pre-recorded audio delivery for assessments, such as audiocassette tapes, CD-ROMs, audio DVDs, screen reader, etc.",
+          "am": "ለምዘናዎች አስቀድሞ የተቀዳ የኦዲዮ አቅርቦት ያቅርቡ፣ እንደ የኦዲዮ ካሴት ቴፖች፣ ሲዲ-ሮሞች፣ የኦዲዮ ዲቪዲዎች፣ የስክሪን አንባቢ፣ ወዘተ"
+        },
+        {
+          "en": "Mask (block or white out) unnecessary content so students can focus on one question at a time",
+          "am": "ተማሪዎች በአንድ ጊዜ በአንድ ጥያቄ ላይ እንዲያተኩሩ አላስፈላጊ ይዘትን ይሸፍኑ"
+        }
+      ]
+    },
+    {
+      "id": "test-taking-and-grading-grading",
+      "index": 8,
+      "title": "Test-Taking and Grading — Grading",
+      "titleAm": "ፈተና መውሰድ እና ውጤት አሰጣጥ — ውጤት አሰጣጥ",
+      "declaredCount": 3,
+      "items": [
+        {
+          "en": "Use daily or frequent grading and average into a grade for the quarter",
+          "am": "ዕለታዊ ወይም ተደጋጋሚ ውጤት አሰጣጥን ይጠቀሙ እና ለሩብ ዓመቱ አማካይ ውጤት ያድርጉ"
+        },
+        {
+          "en": "Mark the correct answers rather than incorrect ones",
+          "am": "ትክክለኛ መልሶችን ይምረጡ እንጂ የተሳሳቱትን ምልክት አያድርጉ"
+        },
+        {
+          "en": "Weigh daily work more heavily than tests for a student who performs poorly on tests due to their disability",
+          "am": "በአካል ጉዳት ምክንያት በፈተናዎች ደካማ አፈጻጸም ላለው ተማሪ ዕለታዊ ስራን ከፈተናዎች የበለጠ ክብደት ይስጡ"
+        }
+      ]
+    },
+    {
+      "id": "writing-handwriting",
+      "index": 9,
+      "title": "Writing & Handwriting",
+      "titleAm": "ጽሑፍ እና በእጅ መጻፍ",
+      "declaredCount": 17,
+      "items": [
+        {
+          "en": "Use worksheets that require minimal writing",
+          "am": "አነስተኛ ጽሑፍ የሚያስፈልጋቸውን የስራ ወረቀቶች ይጠቀሙ"
+        },
+        {
+          "en": "Provide a computer for written work",
+          "am": "ለጽሑፍ ስራ ኮምፒዩተር ያቅርቡ"
+        },
+        {
+          "en": "Use fill-in questions with space for a brief response rather than a short essay",
+          "am": "ከአጭር ድርሰት ይልቅ ለአጭር ምላሽ ቦታ ያላቸውን የሙሌት ጥያቄዎችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide access to word processing applications or software, a portable note taker, a tablet, or similar device",
+          "am": "የቃላት ማቀናበሪያ መተግበሪያዎችን ወይም ሶፍትዌርን፣ ተንቀሳቃሽ ማስታወሻ ያዥን፣ ታብሌት ወይም ተመሳሳይ መሳሪያ ተደራሽነት ያቅርቡ"
+        },
+        {
+          "en": "Provide a designated note-taker or photocopy of another student's or teacher's notes (do not expect the student to arrange with another student for notes)",
+          "am": "የተመደበ ማስታወሻ ያዥ ወይም የሌላ ተማሪ ወይም የመምህር ማስታወሻ ፎቶ ኮፒ ያቅርቡ (ተማሪው ከሌላ ተማሪ ጋር ማስታወሻ እንዲያዘጋጅ አይጠብቁ)"
+        },
+        {
+          "en": "Provide photocopy materials rather than requiring the student to copy from the board or textbook",
+          "am": "ተማሪው ከሰሌዳው ወይም ከመማሪያ መጽሐፍ እንዲገለብጥ ከመጠየቅ ይልቅ የፎቶ ኮፒ ቁሳቁሶችን ያቅርቡ"
+        },
+        {
+          "en": "Provide outlines for videos",
+          "am": "ለቪዲዮዎች ማጠቃለያ ንድፎችን ያቅርቡ"
+        },
+        {
+          "en": "Access to technology or a scribe, as needed, to record or dictate answers",
+          "am": "አስፈላጊ ሲሆን መልሶችን ለመመዝገብ ወይም ለማነብነብ ቴክኖሎጂ ወይም ጸሐፊ ተደራሽነት"
+        },
+        {
+          "en": "Provide adaptive writing tools, pencil grips, and a slant board or slanted surface",
+          "am": "የተስተካከሉ የመጻፊያ መሳሪያዎችን፣ የእርሳስ መያዣዎችን እና የተዘቀዘቀ ሰሌዳ ወይም ወለል ያቅርቡ"
+        },
+        {
+          "en": "Access to speech-to-text software and other technology for written assignments",
+          "am": "ለጽሑፍ ስራዎች ንግግር-ወደ-ጽሑፍ ሶፍትዌር እና ሌላ ቴክኖሎጂ ተደራሽነት"
+        },
+        {
+          "en": "Allow the student to dictate a writing assignment for a scribe (teacher or aide) to transcribe",
+          "am": "ተማሪው የጽሑፍ ስራን ለጸሐፊ (መምህር ወይም ረዳት) እንዲናገር ይፍቀዱ"
+        },
+        {
+          "en": "Provide partially completed outlines of lectures for students to fill in the blanks",
+          "am": "ተማሪዎች ባዶ ቦታዎችን እንዲሞሉ በከፊል የተጠናቀቁ የትምህርት ማጠቃለያ ንድፎችን ያቅርቡ"
+        },
+        {
+          "en": "Explore the use of alternate keyboard options and writing software",
+          "am": "አማራጭ የኪቦርድ አማራጮችን እና የመጻፊያ ሶፍትዌርን አጠቃቀም ያስሱ"
+        },
+        {
+          "en": "Provide specialized, lined paper with raised lines",
+          "am": "ልዩ የተነሱ መስመሮች ያሉት የተስመረ ወረቀት ያቅርቡ"
+        },
+        {
+          "en": "Provide word models and/or tracing opportunities",
+          "am": "የቃል ናሙናዎችን እና/ወይም የመከታተያ እድሎችን ያቅርቡ"
+        },
+        {
+          "en": "Allow spell check software",
+          "am": "የፊደል አጻጻፍ ማረም ሶፍትዌርን ይፍቀዱ"
+        },
+        {
+          "en": "Allow word prediction software",
+          "am": "የቃል ትንበያ ሶፍትዌርን ይፍቀዱ"
+        }
+      ]
+    },
+    {
+      "id": "behavioral-accommodations",
+      "index": 10,
+      "title": "Behavioral Accommodations",
+      "titleAm": "የባህሪ ማመቻቻዎች",
+      "declaredCount": 12,
+      "items": [
+        {
+          "en": "Pair the student with those who are modeling good behavior for classwork, projects, and mentoring",
+          "am": "ተማሪውን ጥሩ ባህሪ ከሚያሳዩ ተማሪዎች ጋር ለክፍል ስራ፣ ፕሮጀክቶች እና አማካሪነት ያጣምሩ"
+        },
+        {
+          "en": "Develop an individualized behavior intervention plan that is positive and consistent with the student's ability and skills",
+          "am": "ከተማሪው ችሎታ እና ክህሎት ጋር የሚስማማ አዎንታዊ የግለሰብ ባህሪ ጣልቃ ገብነት እቅድ ያዘጋጁ"
+        },
+        {
+          "en": "Reward positive behaviors; increase the frequency and immediacy of reinforcement",
+          "am": "አዎንታዊ ባህሪያትን ይሸልሙ፤ የማበረታቻ ድግግሞሽን እና ፈጣንነትን ይጨምሩ"
+        },
+        {
+          "en": "Ignore behaviors that are not seriously disruptive",
+          "am": "በጣም አስቸጋሪ ያልሆኑ ባህሪያትን ችላ ይበሉ"
+        },
+        {
+          "en": "Create a \"back pocket pass\" the student can use to leave the classroom without asking for permission",
+          "am": "ተማሪው ያለ ፍቃድ ክፍልን ለቅቆ መውጣት የሚችልበት \"የኋላ ኪስ ፍቃድ\" ይፍጠሩ"
+        },
+        {
+          "en": "Allow sensory and/or fidget objects to help the student self-regulate",
+          "am": "ተማሪው ራሱን እንዲቆጣጠር ለመርዳት የስሜት ህዋሳት እና/ወይም ፊጅት ዕቃዎችን ይፍቀዱ"
+        },
+        {
+          "en": "Establish a plan to manage side effects of medication (such as providing a water bottle for thirst or allowing extra bathroom breaks)",
+          "am": "የመድሃኒት የጎንዮሽ ጉዳቶችን ለማስተዳደር እቅድ ያውጡ (እንደ ለጥም የውሃ ጠርሙስ መስጠት ወይም ተጨማሪ የመጸዳጃ ቤት እረፍት መፍቀድ)"
+        },
+        {
+          "en": "Develop a system or code word to let the student know when behavior is not appropriate",
+          "am": "ባህሪው ተገቢ ያልሆነ መሆኑን ተማሪው እንዲያውቅ ስርዓት ወይም የምስጢር ቃል ያዘጋጁ"
+        },
+        {
+          "en": "Arrange a \"check-in\" time to organize the day",
+          "am": "ቀኑን ለማደራጀት \"የመግቢያ ማረጋገጫ\" ጊዜ ያዘጋጁ"
+        },
+        {
+          "en": "Modify school rules that might discriminate against the student",
+          "am": "ተማሪውን ሊያገለሉ የሚችሉ የትምህርት ቤት ደንቦችን ያሻሽሉ"
+        },
+        {
+          "en": "Minimize the use of punishment; amend consequences for rule violations (for example, reward a forgetful student for remembering to bring pencils to class, rather than punishing the failure to remember)",
+          "am": "የቅጣት አጠቃቀምን ይቀንሱ፤ ለደንብ ጥሰቶች ውጤቶችን ያሻሽሉ (ለምሳሌ፣ የመርሳት ችግር ያለበትን ተማሪ እርሳስ ወደ ክፍል በማምጣቱ ይሸልሙ እንጂ ባለማስታወሱ አይቅጡት)"
+        },
+        {
+          "en": "Arrange for the student to leave the classroom/learning area voluntarily and go to a designated \"safe place\" when under high stress",
+          "am": "ተማሪው ከፍተኛ ጭንቀት ሲሰማው በፈቃደኝነት ክፍልን/የመማሪያ ቦታን ለቅቆ ወደ ተመደበ \"ደህንነቱ የተጠበቀ ቦታ\" እንዲሄድ ያዘጋጁ"
+        }
+      ]
+    },
+    {
+      "id": "health-accommodations-eating-orally",
+      "index": 11,
+      "title": "Health Accommodations — Eating Orally",
+      "titleAm": "የጤና ማመቻቻዎች — በአፍ መመገብ",
+      "declaredCount": 8,
+      "items": [
+        {
+          "en": "Provide 1:1 supervision during lunch and snack times for those with food allergies or who are at risk for aspiration or choking",
+          "am": "ለምግብ አለርጂ ላለባቸው ወይም ለመተንፈሻ አካል ችግር ወይም ለመታነቅ ተጋላጭ ለሆኑት በምሳ እና በመክሰስ ጊዜ የ1:1 ክትትል ያቅርቡ"
+        },
+        {
+          "en": "Provide the opportunity to snack during instruction or take short breaks from instruction for snacking (for students who may not be able to consume sufficient calories during a designated lunch period)",
+          "am": "በተወሰነው የምሳ ሰዓት በቂ ካሎሪ መመገብ ለማይችሉ ተማሪዎች በማስተማር ወቅት መክሰስ የመመገብ ወይም ለመክሰስ አጭር እረፍት የመውሰድ እድል ያቅርቡ"
+        },
+        {
+          "en": "Provide verbal or visual cues to chew, swallow, and/or monitor the amount of food to prevent choking",
+          "am": "ለመታነቅ መከላከል ለማኘክ፣ ለመዋጥ እና/ወይም የምግብ መጠንን ለመከታተል የቃል ወይም የእይታ ምልክቶችን ያቅርቡ"
+        },
+        {
+          "en": "Provide behavioral motivators for students who need positive encouragement to eat",
+          "am": "ለመመገብ አዎንታዊ ማበረታቻ ለሚያስፈልጋቸው ተማሪዎች የባህሪ ማነሳሻዎችን ያቅርቡ"
+        },
+        {
+          "en": "Provide a \"nut-free\" table or classroom for those with severe allergies",
+          "am": "ከባድ አለርጂ ላለባቸው \"ለውዝ-ነጻ\" ጠረጴዛ ወይም ክፍል ያቅርቡ"
+        },
+        {
+          "en": "Provide specific chairs, utensils, cups, straws, or positioners",
+          "am": "የተወሰኑ ወንበሮችን፣ ማንኪያ ሹካዎችን፣ ኩባያዎችን፣ ገለባዎችን ወይም ማስተካከያዎችን ያቅርቡ"
+        },
+        {
+          "en": "Allow extra time during meals for students with reduced endurance for self-feeding",
+          "am": "ራስን በራስ ለመመገብ ትዕግስት ላነሳቸው ተማሪዎች በምግብ ወቅት ተጨማሪ ጊዜ ይፍቀዱ"
+        },
+        {
+          "en": "Allow an adult-supported peer group to provide modeling and socialization during meals and snacks",
+          "am": "በምግብ እና በመክሰስ ወቅት አርአያነትን እና ማህበራዊነትን ለማቅረብ በአዋቂ የሚደገፍ የእኩዮች ቡድን ይፍቀዱ"
+        }
+      ]
+    },
+    {
+      "id": "health-accommodations-eating-using-a-g-tube",
+      "index": 12,
+      "title": "Health Accommodations — Eating Using a G-Tube",
+      "titleAm": "የጤና ማመቻቻዎች — በጂ-ቱቦ መመገብ",
+      "declaredCount": 6,
+      "items": [
+        {
+          "en": "Administer tube feeds where the student is most comfortable (such as the nurse's office, lunch room, or classroom)",
+          "am": "ተማሪው በጣም ምቾት በሚሰማው ቦታ (እንደ የነርስ ቢሮ፣ የምሳ ክፍል ወይም ክፍል) የቱቦ ምግብን ያቅርቡ"
+        },
+        {
+          "en": "Allow use of specific chairs or positioners during and following tube feeds for students who need to be in an upright position to manage reflux or other medical issues",
+          "am": "ሪፍላክስ ወይም ሌሎች የህክምና ጉዳዮችን ለማስተዳደር ቀጥ ብለው መቀመጥ ለሚያስፈልጋቸው ተማሪዎች በቱቦ አመጋገብ ወቅት እና በኋላ የተወሰኑ ወንበሮች ወይም ማስተካከያዎች አጠቃቀምን ይፍቀዱ"
+        },
+        {
+          "en": "Provide designated support staff (nurse or trained assistant) to administer tube feeds, as needed",
+          "am": "አስፈላጊ ሲሆን የቱቦ ምግብን ለማቅረብ የተመደበ የድጋፍ ሰራተኛ (ነርስ ወይም የሰለጠነ ረዳት) ያቅርቡ"
+        },
+        {
+          "en": "Provide stoma site management by school nurse, as needed",
+          "am": "አስፈላጊ ሲሆን በትምህርት ቤት ነርስ የስቶማ ቦታ አያያዝን ያቅርቡ"
+        },
+        {
+          "en": "Monitor for safety during tube feedings",
+          "am": "በቱቦ አመጋገብ ወቅት ደህንነትን ይከታተሉ"
+        },
+        {
+          "en": "Provide an emergency plan with school nurse if the tube becomes dislodged at school",
+          "am": "ቱቦው በትምህርት ቤት ውስጥ ከቦታው ቢወጣ ከትምህርት ቤት ነርስ ጋር የአደጋ ጊዜ እቅድ ያቅርቡ"
+        }
+      ]
+    },
+    {
+      "id": "health-accommodations-toileting",
+      "index": 13,
+      "title": "Health Accommodations — Toileting",
+      "titleAm": "የጤና ማመቻቻዎች — የመጸዳጃ ቤት አጠቃቀም",
+      "declaredCount": 5,
+      "items": [
+        {
+          "en": "Allow the student to use the bathroom at the nurses' station",
+          "am": "ተማሪው በነርስ ጣቢያ የመጸዳጃ ቤት እንዲጠቀም ይፍቀዱ"
+        },
+        {
+          "en": "Allow extra time to get to and from the bathroom, and more time as needed while there",
+          "am": "ወደ መጸዳጃ ቤት ለመሄድ እና ለመመለስ ተጨማሪ ጊዜ ይፍቀዱ፣ እና እዚያ ውስጥ እንዳስፈላጊነቱ ተጨማሪ ጊዜ"
+        },
+        {
+          "en": "Provide an adaptive toilet seat as needed, and access to a handicap-accessible stall",
+          "am": "እንደ አስፈላጊነቱ የተስተካከለ የመጸዳጃ ወንበር እና ለአካል ጉዳተኞች ተደራሽ ወደሆነ ክፍል ተደራሽነት ያቅርቡ"
+        },
+        {
+          "en": "Provide nurse support for catheter care",
+          "am": "ለካቴተር እንክብካቤ የነርስ ድጋፍ ያቅርቡ"
+        },
+        {
+          "en": "If a student wears diapers, provide access to a private, safe, and sanitary diaper-changing station out of sight of peers",
+          "am": "ተማሪ ዳይፐር የሚጠቀም ከሆነ ከእኩዮች እይታ ውጭ የግል፣ ደህንነቱ የተጠበቀ እና ንፁህ የዳይፐር መቀየሪያ ቦታ ተደራሽነት ያቅርቡ"
+        }
+      ]
+    },
+    {
+      "id": "health-accommodations-additional-health-considerations",
+      "index": 14,
+      "title": "Health Accommodations — Additional Health Considerations",
+      "titleAm": "የጤና ማመቻቻዎች — ተጨማሪ የጤና ጉዳዮች",
+      "declaredCount": 4,
+      "items": [
+        {
+          "en": "Allow a hat to be worn during recess for students with sun sensitivity due to a health condition",
+          "am": "በጤና ሁኔታ ምክንያት ለፀሐይ ብርሃን ስሜታዊ ለሆኑ ተማሪዎች በእረፍት ጊዜ ኮፍያ እንዲለብሱ ይፍቀዱ"
+        },
+        {
+          "en": "Allow the student to leave class to use the nurses' station as needed (for example, to take medicine)",
+          "am": "አስፈላጊ ሲሆን (ለምሳሌ መድሃኒት ለመውሰድ) ተማሪው ክፍልን ለቅቆ የነርስ ጣቢያን እንዲጠቀም ይፍቀዱ"
+        },
+        {
+          "en": "Provide access to temperature-controlled spaces during outside activities in times of excessive heat or cold for students with medical sensitivities to extreme weather",
+          "am": "ለከባድ የአየር ሁኔታ ስሜታዊ ለሆኑ ተማሪዎች ከፍተኛ ሙቀት ወይም ብርድ በሚኖርበት ጊዜ በውጭ እንቅስቃሴዎች ወቅት የሙቀት-ቁጥጥር ወዳላቸው ቦታዎች ተደራሽነት ያቅርቡ"
+        },
+        {
+          "en": "Provide a 1:1 aide during transportation for medical needs",
+          "am": "ለህክምና ፍላጎቶች በትራንስፖርት ወቅት የ1:1 ረዳት ያቅርቡ"
+        }
+      ]
+    },
+    {
+      "id": "low-incidence-accommodations-visual-processing",
+      "index": 15,
+      "title": "Low-Incidence Accommodations — Visual Processing",
+      "titleAm": "ብርቅዬ ማመቻቻዎች — የእይታ ሂደት",
+      "declaredCount": 16,
+      "items": [
+        {
+          "en": "Provide all materials in enlarged font",
+          "am": "ሁሉንም ቁሳቁሶች በተስፋፋ ፊደል ያቅርቡ"
+        },
+        {
+          "en": "Provide slant boards or slanted surface",
+          "am": "የተዘቀዘቀ ሰሌዳ ወይም ወለል ያቅርቡ"
+        },
+        {
+          "en": "Use larger manipulatives",
+          "am": "ትልልቅ የመማሪያ/የመዳሰሻ እቃዎችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide verbal descriptions of visual aids",
+          "am": "ለእይታ እርዳታዎች የቃል መግለጫዎችን ያቅርቡ"
+        },
+        {
+          "en": "Reduce clutter on the page",
+          "am": "በገጹ ላይ ያለውን ብጥብጥ ይቀንሱ"
+        },
+        {
+          "en": "Use high-contrast materials",
+          "am": "ከፍተኛ ንፅፅር ያላቸውን ቁሳቁሶች ይጠቀሙ"
+        },
+        {
+          "en": "Provide preferential seating",
+          "am": "ተመራጭ መቀመጫ ያቅርቡ"
+        },
+        {
+          "en": "Provide a printed copy of what's being presented on the board",
+          "am": "በሰሌዳው ላይ የሚቀርበውን የታተመ ቅጂ ያቅርቡ"
+        },
+        {
+          "en": "Use raised-line drawings and tactile models of graphic materials",
+          "am": "የተነሱ-መስመር ስዕሎችን እና የግራፊክ ቁሳቁሶች የመዳሰሻ ሞዴሎችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide Audiotaped, Brailled, or electronically formatted notes, handouts, and texts",
+          "am": "በኦዲዮ የተቀዱ፣ በብሬይል የተጻፉ ወይም በኤሌክትሮኒክ ቅርጸት የተዘጋጁ ማስታወሻዎችን፣ ማከፋፈያ ወረቀቶችን እና ጽሑፎችን ያቅርቡ"
+        },
+        {
+          "en": "Provide Braille lab signs and equipment labels, as well as auditory lab warning signals",
+          "am": "የብሬይል ላብራቶሪ ምልክቶችን እና የመሳሪያ መለያዎችን እንዲሁም የመስማት ላብራቶሪ ማስጠንቀቂያ ምልክቶችን ያቅርቡ"
+        },
+        {
+          "en": "Provide adaptive lab equipment (talking thermometers and calculators, light probes, and tactile timers)",
+          "am": "የተስተካከሉ የላብራቶሪ መሳሪያዎችን ያቅርቡ (የሚናገሩ ቴርሞሜትሮች እና ካልኩሌተሮች፣ የብርሃን መመርመሪያዎች እና የመዳሰሻ ሰዓት ቆጣሪዎች)"
+        },
+        {
+          "en": "Provide access to computer with optical character reader, voice output, Braille screen display, and printer output",
+          "am": "የኦፕቲካል ካራክተር አንባቢ፣ የድምጽ ውጤት፣ የብሬይል ስክሪን ማሳያ እና የማተሚያ ውጤት ላለው ኮምፒዩተር ተደራሽነት ያቅርቡ"
+        },
+        {
+          "en": "Provide magnification",
+          "am": "ማጉላትን ያቅርቡ"
+        },
+        {
+          "en": "Use color-contrast materials",
+          "am": "የቀለም-ንፅፅር ቁሳቁሶችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide a 1:1 aide during transportation for medical needs",
+          "am": "ለህክምና ፍላጎቶች በትራንስፖርት ወቅት የ1:1 ረዳት ያቅርቡ"
+        }
+      ]
+    },
+    {
+      "id": "low-incidence-accommodations-auditory-processing",
+      "index": 16,
+      "title": "Low-Incidence Accommodations — Auditory Processing",
+      "titleAm": "ብርቅዬ ማመቻቻዎች — የመስማት ሂደት",
+      "declaredCount": 6,
+      "items": [
+        {
+          "en": "Provide preferential seating",
+          "am": "ተመራጭ መቀመጫ ያቅርቡ"
+        },
+        {
+          "en": "Reduce background noise",
+          "am": "የበስተጀርባ ድምጽን ይቀንሱ"
+        },
+        {
+          "en": "Provide additional written or visual material",
+          "am": "ተጨማሪ የተጻፈ ወይም የእይታ ቁሳቁስ ያቅርቡ"
+        },
+        {
+          "en": "Provide an FM system to amplify the teacher",
+          "am": "የመምህሩን ድምጽ ለማጉላት የFM ስርዓት ያቅርቡ"
+        },
+        {
+          "en": "Simplify directions and verbal instruction",
+          "am": "መመሪያዎችን እና የቃል ትምህርትን ያቅልሉ"
+        },
+        {
+          "en": "Use a peer-pairing system to check notes and/or assignments",
+          "am": "ማስታወሻዎችን እና/ወይም ስራዎችን ለማረጋገጥ የእኩዮች ማጣመሪያ ስርዓት ይጠቀሙ"
+        }
+      ]
+    },
+    {
+      "id": "low-incidence-accommodations-mobility-orthopedic",
+      "index": 17,
+      "title": "Low-Incidence Accommodations — Mobility/Orthopedic",
+      "titleAm": "ብርቅዬ ማመቻቻዎች — የእንቅስቃሴ/የአጥንት ችግር",
+      "declaredCount": 7,
+      "items": [
+        {
+          "en": "Provide accessible play equipment or alternatives (e.g., a lighter/softer ball for sports activities; an adaptive tricycle if the playground and field are otherwise inaccessible)",
+          "am": "ተደራሽ የመጫወቻ መሳሪያዎችን ወይም አማራጮችን ያቅርቡ (ለምሳሌ፣ ለስፖርት እንቅስቃሴዎች ቀላል/ለስላሳ ኳስ፤ የመጫወቻ ስፍራው እና ሜዳው ተደራሽ ካልሆኑ የተስተካከለ ባለሶስት ጎማ ብስክሌት)"
+        },
+        {
+          "en": "If the school has an elevator, make sure the teacher and any classroom or 1:1 aides have a key so the student doesn't have to wait to access it",
+          "am": "ትምህርት ቤቱ ሊፍት ካለው፣ ተማሪው ለመጠቀም መጠበቅ እንዳይኖርበት መምህሩ እና ማንኛውም የክፍል ወይም የ1:1 ረዳቶች ቁልፍ እንዳላቸው ያረጋግጡ"
+        },
+        {
+          "en": "Provide appropriate seating in the classroom, at school-wide events, and during toileting (e.g., an adaptive toileting seat)",
+          "am": "በክፍል ውስጥ፣ በትምህርት ቤት አቀፍ ዝግጅቶች እና በመጸዳጃ ቤት ወቅት ተገቢ መቀመጫ ያቅርቡ (ለምሳሌ፣ የተስተካከለ የመጸዳጃ ወንበር)"
+        },
+        {
+          "en": "Provide physical modifications to assignments for increased fine motor control (e.g., raised outlines to help a student stay within the lines on writing and coloring projects)",
+          "am": "ለተሻለ ጥቃቅን የጡንቻ ቁጥጥር ለስራዎች አካላዊ ማሻሻያዎችን ያቅርቡ (ለምሳሌ፣ ተማሪው በጽሑፍ እና በቀለም ስራዎች ውስጥ በመስመሮች ውስጥ እንዲቆይ ለመርዳት የተነሱ ንድፎች)"
+        },
+        {
+          "en": "Use appropriate workspace height and spacing in the classroom to allow for physical navigation where applicable, especially but not exclusively if the student is using a wheelchair or walker",
+          "am": "ተማሪው ተሽከርካሪ ወንበር ወይም ዎከር የሚጠቀም ከሆነ በተለይ ግን ብቻ ሳይሆን፣ አካላዊ እንቅስቃሴን ለማስቻል በክፍል ውስጥ ተገቢውን የስራ ቦታ ቁመት እና ክፍተት ይጠቀሙ"
+        },
+        {
+          "en": "Allow extra time to get to the bathroom, from class to class, to and from lunch and recess, and more, especially on large campuses",
+          "am": "ወደ መጸዳጃ ቤት፣ ከክፍል ወደ ክፍል፣ ወደ ምሳ እና እረፍት እና ተጨማሪ ለመሄድ ተጨማሪ ጊዜ ይፍቀዱ፣ በተለይ በትልልቅ ግቢዎች ውስጥ"
+        },
+        {
+          "en": "Establish clearly defined times when a student will use a piece of mobility equipment during the day (e.g., time in a stander or walker to ensure physical activity, particularly for students who use a wheelchair)",
+          "am": "ተማሪው በቀኑ ውስጥ የተንቀሳቃሽነት መሳሪያን የሚጠቀምበትን ግልጽ ጊዜያት ያዘጋጁ (ለምሳሌ፣ ተሽከርካሪ ወንበር ለሚጠቀሙ ተማሪዎች በተለይ አካላዊ እንቅስቃሴን ለማረጋገጥ በስታንደር ወይም ዎከር ውስጥ ጊዜ)"
+        }
+      ]
+    },
+    {
+      "id": "additional-accommodations",
+      "index": 18,
+      "title": "Additional Accommodations",
+      "titleAm": "ተጨማሪ ማመቻቻዎች",
+      "declaredCount": 14,
+      "items": [
+        {
+          "en": "Check progress and provide feedback often in the first few minutes of each assignment",
+          "am": "በእያንዳንዱ ስራ የመጀመሪያዎቹ ጥቂት ደቂቃዎች ውስጥ እድገትን በተደጋጋሚ ያረጋግጡ እና ግብረመልስ ይስጡ"
+        },
+        {
+          "en": "Explore the use of memory organization aides (tablets, cell phone calendars, task lists, and visual schedules)",
+          "am": "የማስታወሻ አደረጃጀት እርዳታዎችን አጠቃቀም ያስሱ (ታብሌቶች፣ የስልክ የቀን መቁጠሪያዎች፣ የስራ ዝርዝሮች እና የእይታ መርሃ ግብሮች)"
+        },
+        {
+          "en": "Introduce an overview of long-term assignments so the student knows what is expected and when it is due",
+          "am": "ተማሪው የሚጠበቀውን እና መቼ እንደሚያስረክብ እንዲያውቅ የረጅም ጊዜ ስራዎችን አጠቃላይ እይታ ያስተዋውቁ"
+        },
+        {
+          "en": "Establish a regular form of communication between home and school",
+          "am": "በቤት እና በትምህርት ቤት መካከል መደበኛ የመግባቢያ መንገድ ያዘጋጁ"
+        },
+        {
+          "en": "Provide structured assignments with lists for the student to cross off when finished",
+          "am": "ተማሪው ሲጨርስ ምልክት የሚያደርግባቸው ዝርዝሮች ያሏቸው የተደራጁ ስራዎችን ያቅርቡ"
+        },
+        {
+          "en": "Use color-coded materials for each class",
+          "am": "ለእያንዳንዱ ክፍል በቀለም የተለዩ ቁሳቁሶችን ይጠቀሙ"
+        },
+        {
+          "en": "Break long-term assignments into small, sequential steps with daily monitoring and frequent grading",
+          "am": "የረጅም ጊዜ ስራዎችን ከዕለታዊ ክትትል እና ተደጋጋሚ ውጤት አሰጣጥ ጋር ወደ ትናንሽ ተከታታይ ደረጃዎች ይክፈሉ"
+        },
+        {
+          "en": "Reward the student for recording assignments and due dates in a notebook",
+          "am": "ተማሪውን ስራዎችን እና የማስረከቢያ ቀናትን በማስታወሻ ደብተር ውስጥ በመመዝገቡ ይሸልሙ"
+        },
+        {
+          "en": "Have the student practice presenting in a small group before presenting to the class",
+          "am": "ተማሪው ለክፍል ከማቅረቡ በፊት በትንሽ ቡድን ውስጥ ማቅረብን እንዲለማመድ ያድርጉ"
+        },
+        {
+          "en": "Structure work so that the easiest parts come first",
+          "am": "በጣም ቀላል ክፍሎች መጀመሪያ እንዲመጡ ስራን ያዋቅሩ"
+        },
+        {
+          "en": "Give the student worksheets one at a time",
+          "am": "ለተማሪው የስራ ወረቀቶችን በአንድ ጊዜ አንድ ይስጡ"
+        },
+        {
+          "en": "Allow the use of sensory tools",
+          "am": "የስሜት ህዋሳት መሳሪያዎችን አጠቃቀም ይፍቀዱ"
+        },
+        {
+          "en": "Draw arrows on worksheets or the board to show how ideas are related, or use other graphic organizers such as flow charts",
+          "am": "ሃሳቦች እንዴት እንደሚዛመዱ ለማሳየት በስራ ወረቀቶች ወይም በሰሌዳው ላይ ቀስቶችን ይሳሉ፣ ወይም እንደ የፍሰት ገበታዎች ያሉ ሌሎች የግራፊክ አደራጆችን ይጠቀሙ"
+        },
+        {
+          "en": "Provide locker accommodations (such as a key versus a combination lock)",
+          "am": "የሎከር ማመቻቻዎችን ያቅርቡ (እንደ ቁልፍ ከጥምር መቆለፊያ ይልቅ)"
+        }
+      ]
+    }
+  ]
+}

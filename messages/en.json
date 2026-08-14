@@ -273,6 +273,9 @@
     "latestTitle": "Latest resources",
     "latestDescription": "Recently published guidance from the reviewed library.",
     "trainingTitle": "Practice with the RBT training guide",
+    "iepAccommodationsTitle": "Explore IEP and 504 accommodations",
+    "iepAccommodationsDescription": "Review 187 English and Amharic examples across 18 categories to prepare for conversations with your child's school team.",
+    "iepAccommodationsAction": "Open accommodations guide",
     "backToHub": "Back to the learning library",
     "selectedForYou": "Selected for you",
     "educationalNotice": "This resource is educational information. It does not replace legal, medical, educational, or other professional advice.",
@@ -288,6 +291,21 @@
     "roadmapError": "We could not add this resource to your roadmap. Household viewers cannot add roadmap items.",
     "alreadyOnRoadmap": "This resource is already on your roadmap.",
     "addedToRoadmap": "Resource added to your roadmap."
+  },
+  "iepAccommodations": {
+    "backToResources": "Back to the learning library",
+    "eyebrow": "IEP and 504 · English / Amharic",
+    "readingProgress": "Reading progress",
+    "backToTop": "Back to top",
+    "contents": "Contents",
+    "contentsDescription": "Jump to a category. The bar at the top tracks how far through the guide you are.",
+    "contentsStatus": "Contents",
+    "english": "English",
+    "amharic": "Amharic",
+    "sectionStatus": "Section {section} of {total}",
+    "sectionSummary": "Section {section} · {count} accommodations",
+    "educationalUseOnly": "Educational information only",
+    "educationalNotice": "These examples are a starting point for discussion and do not guarantee eligibility or replace advice from your child's school team, an education advocate, or a qualified professional. An IEP or 504 Plan should reflect the child's individual needs."
   },
   "educationSupport": {
     "eyebrow": "Education support",

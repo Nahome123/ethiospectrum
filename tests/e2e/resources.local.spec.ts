@@ -557,6 +557,34 @@ test.describe("resource translations (local Supabase only)", () => {
     await memberContext.close();
   });
 
+  test("offers the protected bilingual IEP and 504 accommodations guide from Resources", async ({ page }) => {
+    await page.goto("/en/member/resources/iep-504-accommodations");
+    await expect(page).toHaveURL(/\/en\/login\?next=/);
+
+    const member = await createActor("member", "iep-accommodations-reader");
+    await login(page, member.email);
+    await page.goto("/en/member/resources");
+    const guideLink = page.getByRole("link", { name: "Open accommodations guide" });
+    await expect(guideLink).toHaveAttribute("href", "/en/member/resources/iep-504-accommodations");
+    await guideLink.click();
+
+    await expect(
+      page.getByRole("heading", { name: "Example Accommodations for IEPs and 504s" }),
+    ).toBeVisible();
+    await expect(page.getByRole("progressbar", { name: "Reading progress" })).toBeVisible();
+    await expect(page.locator("#iep-accommodations-content > section")).toHaveCount(18);
+    await expect(page.locator("#iep-accommodations-content tbody tr")).toHaveCount(187);
+    await expect(page.locator('a[href="#classroom-learning-environment"]').first()).toBeVisible();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+
+    await page.goto("/am/member/resources/iep-504-accommodations");
+    await expect(page.getByRole("link", { name: "ወደ የትምህርት ቤተ-መጻሕፍት ተመለስ" })).toBeVisible();
+    await page.goto("/es/member/resources/iep-504-accommodations");
+    await expect(page.getByRole("link", { name: "Volver a la biblioteca de aprendizaje" })).toBeVisible();
+  });
+
   test("enforces global editor authorization and household isolation", async ({ browser, page }) => {
     const platformAdmin = await createActor("administrator", "platform-admin");
     const editor = await createActor("content_editor", "editor-isolated");

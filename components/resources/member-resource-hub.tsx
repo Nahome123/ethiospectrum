@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  ClipboardList,
   HeartPulse,
   Landmark,
   Scale,
@@ -404,17 +405,32 @@ export async function MemberResourceHub({
             viewAllHref="/member/resources?catalog=1"
           />
 
-          <section className="mt-12 rounded-xl border border-border bg-secondary/40 p-6 sm:p-8">
-            <BookOpen aria-hidden="true" className="size-9 text-primary" />
-            <h2 className="mt-4 text-2xl font-bold">{t("trainingTitle")}</h2>
-            <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">{t("rbtTrainingDescription")}</p>
-            <Link
-              className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-              href="/training/rbt"
-            >
-              {t("rbtTrainingAction")}
-            </Link>
-          </section>
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            <article className="rounded-xl border border-border bg-secondary/40 p-6 sm:p-8">
+              <BookOpen aria-hidden="true" className="size-9 text-primary" />
+              <h2 className="mt-4 text-2xl font-bold">{t("trainingTitle")}</h2>
+              <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">{t("rbtTrainingDescription")}</p>
+              <Link
+                className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                href="/training/rbt"
+              >
+                {t("rbtTrainingAction")}
+              </Link>
+            </article>
+            <article className="rounded-xl border border-border bg-secondary/40 p-6 sm:p-8">
+              <ClipboardList aria-hidden="true" className="size-9 text-primary" />
+              <h2 className="mt-4 text-2xl font-bold">{t("iepAccommodationsTitle")}</h2>
+              <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">
+                {t("iepAccommodationsDescription")}
+              </p>
+              <Link
+                className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                href="/member/resources/iep-504-accommodations"
+              >
+                {t("iepAccommodationsAction")}
+              </Link>
+            </article>
+          </div>
         </>
       ) : null}
     </section>

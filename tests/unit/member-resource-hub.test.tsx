@@ -70,6 +70,10 @@ describe("member resource hub", () => {
       "href",
       "/member/resources?category=education",
     );
+    expect(screen.getByRole("link", { name: "iepAccommodationsAction" })).toHaveAttribute(
+      "href",
+      "/member/resources/iep-504-accommodations",
+    );
   });
 
   it("passes normalized assigned catalog filters to the database-backed loader", async () => {

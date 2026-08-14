@@ -273,6 +273,9 @@
     "latestTitle": "አዳዲስ መረጃዎች",
     "latestDescription": "በቅርቡ ከታተመው የተገመገመ ቤተ-መጻሕፍት የተገኘ መመሪያ።",
     "trainingTitle": "በRBT የስልጠና መመሪያ ይለማመዱ",
+    "iepAccommodationsTitle": "የIEP እና 504 ማመቻቻ ምሳሌዎችን ያስሱ",
+    "iepAccommodationsDescription": "ከልጅዎ የትምህርት ቤት ቡድን ጋር ለሚያደርጉት ውይይት ለመዘጋጀት በ18 ምድቦች የተደራጁ 187 የእንግሊዝኛና የአማርኛ ምሳሌዎችን ይመልከቱ።",
+    "iepAccommodationsAction": "የማመቻቻ መመሪያውን ይክፈቱ",
     "backToHub": "ወደ የትምህርት ቤተ-መጻሕፍት ተመለስ",
     "selectedForYou": "ለእርስዎ የተመረጠ",
     "educationalNotice": "ይህ መረጃ የትምህርት መረጃ ነው። የሕግ፣ የሕክምና፣ የትምህርት ወይም ሌላ የባለሙያ ምክርን አይተካም።",
@@ -288,6 +291,21 @@
     "roadmapError": "ይህን መረጃ ወደ የመንገድ ካርታዎ ማከል አልቻልንም። የቤተሰብ ተመልካቾች ንጥሎችን ማከል አይችሉም።",
     "alreadyOnRoadmap": "ይህ መረጃ አስቀድሞ በመንገድ ካርታዎ ላይ ነው።",
     "addedToRoadmap": "መረጃው ወደ የመንገድ ካርታዎ ታክሏል።"
+  },
+  "iepAccommodations": {
+    "backToResources": "ወደ የትምህርት ቤተ-መጻሕፍት ተመለስ",
+    "eyebrow": "IEP እና 504 · እንግሊዝኛ / አማርኛ",
+    "readingProgress": "የንባብ እድገት",
+    "backToTop": "ወደ ላይ ተመለስ",
+    "contents": "ይዘቶች",
+    "contentsDescription": "ወደ ምድብ ይዝለሉ። ከላይ ያለው አሞሌ በመመሪያው ውስጥ ምን ያህል እንደተጓዙ ያሳያል።",
+    "contentsStatus": "ይዘቶች",
+    "english": "እንግሊዝኛ",
+    "amharic": "አማርኛ",
+    "sectionStatus": "ክፍል {section} ከ {total}",
+    "sectionSummary": "ክፍል {section} · {count} ማመቻቻዎች",
+    "educationalUseOnly": "ለትምህርታዊ መረጃ ብቻ",
+    "educationalNotice": "እነዚህ ምሳሌዎች ለውይይት መነሻ ናቸው፤ ብቁነትን አያረጋግጡም እና ከልጅዎ የትምህርት ቤት ቡድን፣ ከትምህርት ተሟጋች ወይም ከብቁ ባለሙያ የሚሰጥ ምክርን አይተኩም። IEP ወይም 504 ዕቅድ የልጁን የግል ፍላጎት ማንጸባረቅ አለበት።"
   },
   "educationSupport": {
     "eyebrow": "የትምህርት ድጋፍ",
