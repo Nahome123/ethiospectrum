@@ -14,4 +14,10 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm build
+      - name: Build
+        run: pnpm build
+        env:
+          # Protected pages initialize the request-scoped client while Next.js
+          # validates routes. CI needs public-shaped values, never production credentials.
+          NEXT_PUBLIC_SUPABASE_URL: https://supabase.invalid
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-publishable-key
