@@ -12,7 +12,6 @@ import { formatUnseenReminderCount, getUnseenReminderCount } from "@/lib/reminde
 
 const links = [
   "dashboard",
-  "onboarding",
   "dependents",
   "documents",
   "assistant",

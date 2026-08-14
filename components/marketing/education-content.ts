@@ -2,7 +2,7 @@ import { BookOpen, CalendarDays, FileText, MessageCircleQuestion, ShieldCheck, S
 
 export const educationFeatureItems = [
   { action: "openGuide", href: "/resources/education#iep-guide", icon: BookOpen, key: "iepGuide" },
-  { action: "startRoadmap", href: "/onboarding", icon: CalendarDays, key: "roadmap" },
+  { action: "startRoadmap", href: "/dashboard", icon: CalendarDays, key: "roadmap" },
   {
     action: "learnMore",
     href: "/resources/education#accommodations",

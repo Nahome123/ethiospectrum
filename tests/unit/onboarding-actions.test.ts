@@ -141,7 +141,7 @@ describe("onboarding actions", () => {
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
-  it("updates the server-selected household for an owner and redirects to onboarding", async () => {
+  it("updates the server-selected household for an owner and redirects to the dashboard", async () => {
     await updateHouseholdAction(
       "es",
       idle,
@@ -152,8 +152,8 @@ describe("onboarding actions", () => {
     expect(mocks.eq).toHaveBeenCalledWith("id", "household-id");
     expect(mocks.is).toHaveBeenCalledWith("deleted_at", null);
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/", "layout");
-    expect(mocks.revalidatePath).toHaveBeenCalledWith("/es/onboarding");
-    expect(mocks.redirect).toHaveBeenCalledWith("/es/onboarding");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/es/dashboard");
+    expect(mocks.redirect).toHaveBeenCalledWith("/es/dashboard");
   });
 
   it("denies household updates to members without management permission", async () => {

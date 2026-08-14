@@ -114,6 +114,6 @@ export async function updateHouseholdAction(
   }
 
   revalidatePath("/", "layout");
-  revalidatePath(`/${localeValue}/onboarding`);
-  redirect(`/${localeValue}/onboarding`);
+  revalidatePath(`/${localeValue}/dashboard`);
+  redirect(`/${localeValue}/dashboard`);
 }

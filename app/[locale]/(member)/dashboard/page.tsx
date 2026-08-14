@@ -3,22 +3,47 @@ import {
   ChevronRight,
   FileText,
   FolderOpen,
+  HousePlus,
   Sparkles,
   Upload,
   UsersRound,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { HouseholdEditForm } from "@/components/onboarding/household-edit-form";
+import { OnboardingForm } from "@/components/onboarding/onboarding-form";
 import { Link } from "@/i18n/navigation";
+import type { AppLocale } from "@/i18n/routing";
 import { getDependentContext } from "@/lib/dependents/server";
 import { getDocumentDashboardSummary } from "@/lib/documents/binder-query";
 import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
 
-export default async function DashboardPage() {
-  const t = await getTranslations("dashboard");
-  const common = await getTranslations("common");
-  const dependentsT = await getTranslations("dependents");
-  const documentsT = await getTranslations("documents");
+export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: localeValue } = await params;
+  const locale = localeValue as AppLocale;
+  const [t, common, dependentsT, documentsT, onboardingT] = await Promise.all([
+    getTranslations("dashboard"),
+    getTranslations("common"),
+    getTranslations("dependents"),
+    getTranslations("documents"),
+    getTranslations("onboarding"),
+  ]);
   const context = await getDependentContext();
+
+  if (!context) {
+    return (
+      <section className="mx-auto max-w-3xl">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <HousePlus aria-hidden="true" className="size-9 text-primary" />
+          <h1 className="mt-5 text-3xl font-bold tracking-tight">{onboardingT("title")}</h1>
+          <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{onboardingT("description")}</p>
+          <div className="mt-8">
+            <OnboardingForm locale={locale} />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   const supabase = await createServerComponentSupabaseClient();
   const documentSummary = await getDocumentDashboardSummary();
   const dependentResult = context
@@ -273,6 +298,26 @@ export default async function DashboardPage() {
           <p className="mt-2 text-sm leading-6 text-muted-foreground">{t("sampleResource")}</p>
         </section>
       </div>
+
+      {context.canManage ? (
+        <section
+          aria-labelledby="household-setup-title"
+          className="mt-6 rounded-3xl border border-border/80 bg-card p-5 shadow-sm sm:p-6"
+        >
+          <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <HousePlus aria-hidden="true" size={20} />
+          </div>
+          <h2 className="mt-4 font-heading text-lg font-semibold" id="household-setup-title">
+            {onboardingT("editTitle")}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+            {onboardingT("editDescription")}
+          </p>
+          <div className="mt-5 max-w-xl">
+            <HouseholdEditForm householdName={context.household.name} locale={locale} />
+          </div>
+        </section>
+      ) : null}
     </section>
   );
 }

@@ -8,7 +8,7 @@ import { SectionHeading } from "./section-heading";
 
 const landingActions: Record<EducationLandingState, { href: string; key: string }> = {
   visitor: { href: "/signup", key: "visitor" },
-  needs_household: { href: "/onboarding", key: "needsHousehold" },
+  needs_household: { href: "/dashboard", key: "needsHousehold" },
   ready: { href: "/dashboard", key: "ready" },
 };
 
