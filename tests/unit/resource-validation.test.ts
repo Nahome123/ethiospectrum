@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   resourceCreateSchema,
+  resourceAccountIdsSchema,
   resourceDraftSchema,
   resourceRejectionSchema,
   resourceSlugSchema,
@@ -34,5 +35,9 @@ describe("resource validation", () => {
         rejectionNote: "too short",
       }).success,
     ).toBe(false);
+  });
+  it("allows a resource to be published to the general library without For You assignments", () => {
+    expect(resourceAccountIdsSchema.safeParse([]).success).toBe(true);
+    expect(resourceAccountIdsSchema.safeParse(["not-a-user-id"]).success).toBe(false);
   });
 });

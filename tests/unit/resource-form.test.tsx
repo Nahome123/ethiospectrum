@@ -13,8 +13,21 @@ vi.mock("@/lib/resources/actions", () => ({
 vi.mock("next-intl", () => ({
   useTranslations: () => {
     const labels: Record<string, string> = {
+      availableTo: "Feature in For You (optional)",
+      availableToHint: "Optional. Check members who should see this resource in For You.",
+      body: "Resource content",
+      bodyHint: "Required: at least 50 characters.",
       category: "Category",
+      categoryHint: "Choose the topic that best fits this resource.",
       coverPreview: "Cover preview",
+      fieldTitle: "Title",
+      formRequirements: "Complete the fields marked Required before creating a draft.",
+      required: "Required",
+      slug: "URL slug",
+      slugHint: "Required: 3-120 lowercase letters, numbers, and hyphens.",
+      summary: "Summary",
+      summaryHint: "Required: 10-500 characters.",
+      titleHint: "Required: 3-160 characters.",
       "categories.benefits": "Benefits",
       "categories.education": "Education",
       "categories.family_support": "Family support",
@@ -45,5 +58,23 @@ describe("ResourceForm", () => {
     fireEvent.change(screen.getByLabelText("Category"), { target: { value: "healthcare" } });
 
     expect(screen.getByRole("img", { name: "Healthcare" })).toBeVisible();
+  });
+
+  it("shows field requirements and makes For You selection optional", () => {
+    render(
+      <ResourceForm
+        accountHolders={[{ id: "10000000-0000-4000-8000-000000000001", label: "Michael Bekele" }]}
+        locale="en"
+      />,
+    );
+
+    expect(screen.getByText("Complete the fields marked Required before creating a draft.")).toBeVisible();
+    expect(screen.getByText("Required: 3-160 characters.")).toBeVisible();
+    expect(screen.getByLabelText(/Title/u)).toBeRequired();
+    expect(screen.getByLabelText(/Resource content/u)).toHaveAttribute("minlength", "50");
+    expect(screen.getByRole("checkbox", { name: "Michael Bekele" })).not.toBeRequired();
+    expect(
+      screen.getByText("Optional. Check members who should see this resource in For You."),
+    ).toBeVisible();
   });
 });

@@ -77,12 +77,14 @@ export async function createResource(
   });
   const id = data?.[0]?.resource_id;
   if (error || !id) return { status: "error", message: t("saveError") };
-  const { error: accessError } = await supabase.rpc("set_resource_account_access", {
-    target_resource_id: id,
-    expected_version: data[0].resource_version,
-    input_user_ids: accountIds.data,
-  });
-  if (accessError) return { status: "error", message: t("saveError") };
+  if (accountIds.data.length) {
+    const { error: accessError } = await supabase.rpc("set_resource_account_access", {
+      target_resource_id: id,
+      expected_version: data[0].resource_version,
+      input_user_ids: accountIds.data,
+    });
+    if (accessError) return { status: "error", message: t("saveError") };
+  }
   paths(locale, id);
   redirect(`/${locale}/admin/resources/${id}`);
 }

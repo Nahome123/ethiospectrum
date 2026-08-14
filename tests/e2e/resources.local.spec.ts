@@ -681,7 +681,6 @@ test.describe("resource translations (local Supabase only)", () => {
       .fill(
         "# Initial English heading\n\nThis synthetic English regression body is long enough for workflow validation.",
       );
-    await pageA.getByLabel("Feature for members").selectOption({ label: "Synthetic regression-author" });
     await pageA.getByRole("button", { name: "Create draft" }).press("Enter");
     await pageA.waitForURL(/\/en\/admin\/resources\/[0-9a-f-]{36}$/i);
     const resourceId = pageA.url().split("/").at(-1);
