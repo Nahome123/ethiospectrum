@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ResourceCoverPlaceholder } from "@/components/resources/resource-cover-placeholder";
 import { initialResourceActionState } from "@/lib/resources/action-state";
 import { resourceCategoryValues, type ResourceCategory } from "@/lib/resources/constants";
 import { createResource, updateResource } from "@/lib/resources/actions";
@@ -34,6 +35,7 @@ export function ResourceForm({
     : createResource.bind(null, locale);
   const [state, formAction, pending] = useActionState(action, initialResourceActionState);
   const values: Values = { slug: "", category: "general", title: "", summary: "", body: "", ...initial };
+  const [category, setCategory] = useState<ResourceCategory>(values.category);
   return (
     <form action={formAction} className="space-y-5" noValidate>
       {!resourceId ? <input name="idempotencyKey" type="hidden" value={idempotencyKey} /> : null}
@@ -47,9 +49,10 @@ export function ResourceForm({
           <Label htmlFor="resource-category">{t("category")}</Label>
           <select
             className="h-10 w-full rounded-md border border-input bg-background px-3"
-            defaultValue={values.category}
             id="resource-category"
             name="category"
+            onChange={(event) => setCategory(event.currentTarget.value as ResourceCategory)}
+            value={category}
           >
             {resourceCategoryValues.map((category) => (
               <option key={category} value={category}>
@@ -58,6 +61,14 @@ export function ResourceForm({
             ))}
           </select>
         </div>
+      </div>
+      <div className="space-y-1.5">
+        <p className="text-sm font-medium">{t("coverPreview")}</p>
+        <ResourceCoverPlaceholder
+          category={category}
+          categoryLabel={t(`categories.${category}`)}
+          className="max-w-md rounded-xl border border-border"
+        />
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="resource-title">{t("fieldTitle")}</Label>

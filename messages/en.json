@@ -8,6 +8,7 @@
     "edit": "Edit resource",
     "slug": "URL slug",
     "category": "Category",
+    "coverPreview": "Cover preview",
     "summary": "Summary",
     "body": "Resource content",
     "resourceType": "Resource type",

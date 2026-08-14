@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { ResourceCoverPlaceholder } from "@/components/resources/resource-cover-placeholder";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { resourceCategoryValues, type ResourceCategory } from "@/lib/resources/constants";
@@ -38,24 +39,29 @@ export default async function ResourcesPage({
           </Link>
         ))}
       </nav>
-      <section className="mt-8 grid gap-4 sm:grid-cols-2">
+      <section className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {resources.length ? (
           resources.map((resource) => (
-            <article className="rounded-xl border bg-card p-5" key={resource.slug}>
-              <p className="text-sm text-muted-foreground">
-                {t(`categories.${resource.category as ResourceCategory}`)}
-              </p>
-              <h2 className="mt-2 text-xl font-semibold">
-                <Link className="hover:underline" href={`/resources/${resource.slug}`}>
-                  {resource.title}
-                </Link>
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">{resource.summary}</p>
-              {getResourceFallbackNoticeKey(locale, resource.usingEnglishFallback) ? (
-                <p className="mt-3 text-sm text-muted-foreground" role="status">
-                  {t(getResourceFallbackNoticeKey(locale, resource.usingEnglishFallback)!)}
-                </p>
-              ) : null}
+            <article className="flex overflow-hidden rounded-xl border bg-card shadow-sm" key={resource.slug}>
+              <div className="flex w-full flex-col">
+                <ResourceCoverPlaceholder
+                  category={resource.category as ResourceCategory}
+                  categoryLabel={t(`categories.${resource.category as ResourceCategory}`)}
+                />
+                <div className="flex flex-1 flex-col p-5">
+                  <h2 className="text-xl font-semibold">
+                    <Link className="hover:underline" href={`/resources/${resource.slug}`}>
+                      {resource.title}
+                    </Link>
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{resource.summary}</p>
+                  {getResourceFallbackNoticeKey(locale, resource.usingEnglishFallback) ? (
+                    <p className="mt-3 text-sm text-muted-foreground" role="status">
+                      {t(getResourceFallbackNoticeKey(locale, resource.usingEnglishFallback)!)}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
             </article>
           ))
         ) : (

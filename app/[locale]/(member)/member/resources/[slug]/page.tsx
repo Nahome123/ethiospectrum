@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { ResourceCardActions } from "@/components/resources/resource-card-actions";
+import { ResourceCoverPlaceholder } from "@/components/resources/resource-cover-placeholder";
 import { SafeMarkdown } from "@/components/resources/safe-markdown";
 import { getResourceFallbackNoticeKey } from "@/lib/resources/public-selection";
 import { getMemberResource } from "@/lib/resources/server";
@@ -59,7 +60,12 @@ export default async function MemberResourceDetailPage({
             />
           </div>
         </header>
-        <div className="p-6 sm:p-10">
+        <ResourceCoverPlaceholder
+          category={resource.category}
+          categoryLabel={workflow(`categories.${resource.category}`)}
+          className="aspect-[16/7] border-y border-border"
+        />
+        <div className="mx-auto max-w-3xl p-6 sm:p-10">
           <p className="mb-8 rounded-md bg-secondary px-4 py-3 text-sm text-secondary-foreground">
             {t("educationalNotice")}
           </p>
