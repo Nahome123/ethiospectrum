@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+// These tests cover the retired (feature-flagged) document AI implementation itself.
+vi.mock("@/config/features", () => ({ isFeatureEnabled: () => true, retiredFeatures: {} }));
+
 const mocks = vi.hoisted(() => ({ hasValidDocumentQuestionSecret: vi.fn(), runDocumentChatBatch: vi.fn() }));
 vi.mock("@/lib/documents/questions/internal-secret", () => ({
   hasValidDocumentQuestionSecret: mocks.hasValidDocumentQuestionSecret,

@@ -23,6 +23,11 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
             schoolDistrict: d.school_district ?? "",
             gradeLevel: d.grade_level ?? "",
             notes: d.notes ?? "",
+            preferredLanguage: (d.preferred_language ?? "") as "" | "en" | "am" | "es",
+            serviceNeeds: d.service_needs ?? "",
+            communicationConsiderations: d.communication_considerations ?? "",
+            educationalInformation: d.educational_information ?? "",
+            behavioralInformation: d.behavioral_information ?? "",
           }}
         />
       </div>

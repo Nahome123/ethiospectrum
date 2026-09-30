@@ -35,6 +35,9 @@ vi.mock("@/components/layout/brand-logo", () => ({ BrandLogo: () => <div>Ethiosp
 vi.mock("@/components/layout/language-selector", () => ({
   LanguageSelector: () => <div>Language selector</div>,
 }));
+vi.mock("@/components/layout/notification-bell", () => ({
+  NotificationBell: () => <span>Notifications</span>,
+}));
 
 import { AdminShell } from "@/components/layout/admin-shell";
 
@@ -50,6 +53,18 @@ describe("AdminShell", () => {
     render(await AdminShell({ children: <div>Admin content</div> }));
 
     expect(screen.getByText("Almaz")).toHaveAttribute("title", "Almaz");
+    for (const href of ["/admin/service-requests", "/admin/payments", "/admin/services", "/admin/training"]) {
+      expect(screen.getAllByRole("link").some((link) => link.getAttribute("href") === href)).toBe(true);
+    }
+    // Retired demo pages are no longer linked.
+    for (const href of [
+      "/admin/resources",
+      "/admin/prompts",
+      "/admin/audit-logs",
+      "/admin/support-requests",
+    ]) {
+      expect(screen.getAllByRole("link").some((link) => link.getAttribute("href") === href)).toBe(false);
+    }
     const logoutButton = screen.getByRole("button", { name: "Cerrar sesión" });
     fireEvent.submit(logoutButton.closest("form")!);
 

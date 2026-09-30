@@ -1,5 +1,42 @@
 # Deployment
 
+## PRD v1.0 rollout
+
+Nothing is deployed and no customer data exists, so there is nothing to migrate. Apply the four `20260929*` migrations only through a reviewed workflow: local reset, pgTAP suite, and database lint first.
+
+**Environment.** Replace the ETH-028 Stripe variables:
+
+- `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` are required together.
+- `STRIPE_RBT_MONTHLY_PRICE_ID` is the recurring monthly RBT Boot Camp Price.
+- `STRIPE_AUTOMATIC_TAX` should be `true` only after Stripe Tax registrations are configured.
+- Remove `STRIPE_FAMILY_PLUS_*`.
+
+Add:
+
+- `NOTIFICATION_WORKER_SECRET`, distinct and high-entropy.
+- Optionally `RESEND_API_KEY` plus `NOTIFICATION_EMAIL_FROM` on a verified sending domain.
+
+None of these may be prefixed with `NEXT_PUBLIC_`.
+
+**Stripe.** Subscribe the `/api/stripe/webhook` endpoint to:
+
+- `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`
+- `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`
+- `invoice.paid`, `invoice.payment_failed`
+- `payment_intent.payment_failed`
+- `refund.updated`
+
+Keep test and live Prices, endpoints, and secrets separate. Consultation and IEP prices come from the `services` table and are charged with inline `price_data`.
+
+**Scheduling.** `.github/workflows/notifications.yml` calls `POST /api/workers/notifications` every 10 minutes. It needs the `NOTIFICATION_WORKER_ORIGIN` repository variable and the `NOTIFICATION_WORKER_SECRET` secret. The route also accepts `Authorization: Bearer <secret>` for a platform cron. The document AI scheduler workflows now run only manually, because that feature is retired.
+
+**Operations.**
+
+- Promote the first administrator through a reviewed SQL change.
+- Create specialists from `/admin/users` and record their capabilities.
+- Publish training lessons in `/admin/training`.
+- Before release, complete native Amharic and Spanish review of all `services`, `bootcamp`, `household`, `notifications`, and `publicServices` copy, plus a WCAG 2.2 AA pass.
+
 ## ETH-028 Stripe rollout
 
 ETH-028 requires four server-only settings: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID`, and `STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID`. The two configured recurring Prices must be distinct, USD, and belong to the intended test or production Stripe account. `NEXT_PUBLIC_APP_URL` remains the validated canonical origin used to construct fixed Checkout success/cancel and Portal return URLs. Never create `NEXT_PUBLIC_STRIPE_SECRET_KEY` or `NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET`, copy test webhook secrets into production, commit Stripe CLI forwarding secrets, or use live credentials in local/automated tests.

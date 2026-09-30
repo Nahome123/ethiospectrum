@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { requireFeature } from "@/lib/features";
 import { notFound } from "next/navigation";
 import { ResourceCoverPlaceholder } from "@/components/resources/resource-cover-placeholder";
 import { Link } from "@/i18n/navigation";
@@ -13,6 +14,7 @@ export default async function ResourceDetailPage({
 }: {
   params: Promise<{ locale: AppLocale; slug: string }>;
 }) {
+  requireFeature("resourceHub");
   const { locale, slug } = await params;
   const [t, resource] = await Promise.all([
     getTranslations({ locale, namespace: "resourceWorkflow" }),

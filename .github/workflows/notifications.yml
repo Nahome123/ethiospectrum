@@ -1,0 +1,60 @@
+name: Deliver notifications and appointment reminders
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+# This scheduler only needs its configured endpoint and invocation secret.
+permissions: {}
+
+concurrency:
+  group: notifications
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    name: Invoke the protected notification worker
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      NOTIFICATION_WORKER_ORIGIN: ${{ vars.NOTIFICATION_WORKER_ORIGIN }}
+      NOTIFICATION_WORKER_SECRET: ${{ secrets.NOTIFICATION_WORKER_SECRET }}
+    steps:
+      - name: Validate scheduler configuration
+        shell: bash
+        run: |
+          if [ -z "$NOTIFICATION_WORKER_ORIGIN" ] || [ -z "$NOTIFICATION_WORKER_SECRET" ]; then
+            echo "The notification worker origin or secret is not configured."
+            exit 1
+          fi
+
+          node <<'NODE'
+          const value = process.env.NOTIFICATION_WORKER_ORIGIN;
+
+          try {
+            const url = new URL(value);
+            if (
+              url.protocol !== "https:" ||
+              url.username ||
+              url.password ||
+              url.pathname !== "/" ||
+              url.search ||
+              url.hash ||
+              value !== url.origin
+            ) {
+              throw new Error("invalid notification worker origin");
+            }
+          } catch {
+            console.error("The notification worker origin must be an exact HTTPS origin.");
+            process.exit(1);
+          }
+          NODE
+
+      - name: Queue reminders and deliver one bounded email batch
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --retry 2 --retry-connrefused \
+            --request POST "${NOTIFICATION_WORKER_ORIGIN}/api/workers/notifications" \
+            --header "x-notification-worker-secret: $NOTIFICATION_WORKER_SECRET" \
+            --header "Accept: application/json"

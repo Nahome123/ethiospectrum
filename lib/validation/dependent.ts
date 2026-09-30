@@ -7,6 +7,14 @@ const optionalText = (max: number) =>
     .max(max)
     .transform((value) => (value === "" ? null : value));
 
+/** Optional service-delivery fields; absent and blank inputs both become null. */
+const optionalServiceText = z
+  .string()
+  .trim()
+  .max(2000)
+  .optional()
+  .transform((value) => (value ? value : null));
+
 export function createDependentSchema(messages: { firstName: string; birthYear: string; text: string }) {
   const currentYear = new Date().getUTCFullYear();
   return z.object({
@@ -24,6 +32,15 @@ export function createDependentSchema(messages: { firstName: string; birthYear: 
     schoolDistrict: optionalText(160),
     gradeLevel: optionalText(80),
     notes: optionalText(2000),
+    // PRD section 17: only information needed for service delivery.
+    preferredLanguage: z
+      .union([z.enum(["en", "am", "es"]), z.literal("")])
+      .optional()
+      .transform((value) => (value ? value : null)),
+    serviceNeeds: optionalServiceText,
+    communicationConsiderations: optionalServiceText,
+    educationalInformation: optionalServiceText,
+    behavioralInformation: optionalServiceText,
   });
 }
 

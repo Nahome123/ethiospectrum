@@ -15,6 +15,7 @@ import { DocumentStatusRefresher } from "@/components/documents/document-status-
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { OcrDocumentButton } from "@/components/documents/ocr-document-button";
 import { ProcessDocumentButton } from "@/components/documents/process-document-button";
+import { isFeatureEnabled } from "@/config/features";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { formatDocumentFileSize, getDocumentFileType } from "@/lib/documents/constants";
@@ -70,6 +71,9 @@ export default async function DocumentDetailPage({
   const { context, document } = record;
   const isUploaded = document.upload_status === "uploaded" && !document.deleted_at;
   const isArchived = document.upload_status === "archived" || Boolean(document.deleted_at);
+  // AI processing, summaries, OCR, Q&A, and chat are retired for launch (config/features.ts).
+  const ai = isFeatureEnabled("documentAi");
+  const aiUploaded = isUploaded && ai;
   const [
     dependentName,
     processingDetails,
@@ -81,27 +85,27 @@ export default async function DocumentDetailPage({
     chatEligibility,
   ] = await Promise.all([
     getDocumentDependentName(document.dependent_id, context.household.id),
-    isUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
-    isUploaded ? getDocumentOcrDetails(document.id) : Promise.resolve(null),
-    isUploaded
+    aiUploaded ? getDocumentProcessingDetails(document.id) : Promise.resolve(null),
+    aiUploaded ? getDocumentOcrDetails(document.id) : Promise.resolve(null),
+    aiUploaded
       ? getDocumentSummaryEligibility(context, document)
       : Promise.resolve({ canRequest: false, reason: "unavailable" as const }),
-    isUploaded
+    aiUploaded
       ? getDocumentSummaryDetails(document.id, summaryLanguage, document.mime_type)
       : Promise.resolve(null),
-    isUploaded
+    aiUploaded
       ? getDocumentSummaryQualityDetails(document.id, summaryLanguage, context.userId)
       : Promise.resolve({ evaluation: null, reviewStatus: "unreviewed" as const, reviews: [] }),
-    isUploaded ? getDocumentQuestionDetails(document.id, document.mime_type) : Promise.resolve([]),
-    isUploaded
+    aiUploaded ? getDocumentQuestionDetails(document.id, document.mime_type) : Promise.resolve([]),
+    aiUploaded
       ? getDocumentChatEligibility(document)
       : Promise.resolve({ available: false, reason: "unavailable" as const }),
   ]);
   const canArchive =
     !document.deleted_at && document.upload_status !== "archived" && canArchiveDocument(context, document);
-  const canQueueProcessing = canQueueDocumentProcessing(context, document, processingDetails);
+  const canQueueProcessing = ai && canQueueDocumentProcessing(context, document, processingDetails);
   const retryProcessing = canQueueProcessing && document.processing_status === "failed";
-  const canQueueOcr = canQueueDocumentOcr(context, document, ocrDetails);
+  const canQueueOcr = ai && canQueueDocumentOcr(context, document, ocrDetails);
   const retryOcr = canQueueOcr && ocrDetails?.status === "failed";
   const canRequestSelectedSummary =
     !summaryDetails || (summaryDetails.status === "failed" && summaryDetails.retryable);
@@ -139,13 +143,14 @@ export default async function DocumentDetailPage({
             ? t("categoryOther")
             : t("noCategory");
   const hasPendingDocumentWork =
-    document.processing_status === "queued" ||
-    document.processing_status === "processing" ||
-    ocrDetails?.status === "queued" ||
-    ocrDetails?.status === "processing" ||
-    summaryDetails?.status === "queued" ||
-    summaryDetails?.status === "generating" ||
-    questionDetails.some((question) => question.status === "queued" || question.status === "answering");
+    ai &&
+    (document.processing_status === "queued" ||
+      document.processing_status === "processing" ||
+      ocrDetails?.status === "queued" ||
+      ocrDetails?.status === "processing" ||
+      summaryDetails?.status === "queued" ||
+      summaryDetails?.status === "generating" ||
+      questionDetails.some((question) => question.status === "queued" || question.status === "answering"));
   const chatAvailabilityMessage =
     chatEligibility.reason === "processing"
       ? chatT("availableAfterProcessing")
@@ -168,7 +173,9 @@ export default async function DocumentDetailPage({
         </div>
         <div className="flex flex-wrap gap-2">
           <DocumentStatusBadge kind="upload" status={document.upload_status} />
-          {!isArchived ? <DocumentStatusBadge kind="processing" status={document.processing_status} /> : null}
+          {ai && !isArchived ? (
+            <DocumentStatusBadge kind="processing" status={document.processing_status} />
+          ) : null}
         </div>
       </div>
 
@@ -215,7 +222,7 @@ export default async function DocumentDetailPage({
             <DocumentStatusBadge kind="upload" status={document.upload_status} />
           </dd>
         </div>
-        {!isArchived ? (
+        {ai && !isArchived ? (
           <>
             <div>
               <dt className="font-semibold">{t("processingStatus")}</dt>
@@ -263,17 +270,17 @@ export default async function DocumentDetailPage({
         {canQueueOcr ? <OcrDocumentButton documentId={document.id} locale={locale} retry={retryOcr} /> : null}
         {canArchive ? <ArchiveDocumentButton documentId={document.id} locale={locale} /> : null}
       </div>
-      {processingQueueFailed ? (
+      {ai && processingQueueFailed ? (
         <p className="mt-3 text-sm text-destructive" role="alert">
           {t("processingCouldNotStart")}
         </p>
       ) : null}
-      {isUploaded && !chatEligibility.available && chatAvailabilityMessage ? (
+      {aiUploaded && !chatEligibility.available && chatAvailabilityMessage ? (
         <p className="mt-3 text-sm text-muted-foreground" role="status">
           {chatAvailabilityMessage}
         </p>
       ) : null}
-      {document.processing_status === "needs_ocr" || ocrDetails ? (
+      {ai && (document.processing_status === "needs_ocr" || ocrDetails) ? (
         <section aria-labelledby="ocr-status-heading" className="mt-6 rounded-2xl border bg-card p-5">
           <h2 className="text-lg font-semibold" id="ocr-status-heading">
             {t("ocrStatus")}
@@ -302,22 +309,24 @@ export default async function DocumentDetailPage({
           ) : null}
         </section>
       ) : null}
-      <DocumentSummaryPanel
-        availability={summaryAvailability}
-        canRequest={canQueueSummary}
-        details={summaryDetails}
-        locale={locale}
-        requestControl={
-          <DocumentSummaryRequestForm
-            documentId={document.id}
-            existing={summaryDetails?.status === "completed"}
-            locale={locale}
-            retry={summaryDetails?.status === "failed" && summaryDetails.retryable}
-          />
-        }
-        summaryLanguage={summaryLanguage}
-      />
-      {summaryDetails?.status === "completed" ? (
+      {ai ? (
+        <DocumentSummaryPanel
+          availability={summaryAvailability}
+          canRequest={canQueueSummary}
+          details={summaryDetails}
+          locale={locale}
+          requestControl={
+            <DocumentSummaryRequestForm
+              documentId={document.id}
+              existing={summaryDetails?.status === "completed"}
+              locale={locale}
+              retry={summaryDetails?.status === "failed" && summaryDetails.retryable}
+            />
+          }
+          summaryLanguage={summaryLanguage}
+        />
+      ) : null}
+      {ai && summaryDetails?.status === "completed" ? (
         <DocumentSummaryQualityPanel
           canDecide={["owner", "administrator"].includes(context.permission)}
           canEvaluate={context.canProcess}
@@ -328,14 +337,16 @@ export default async function DocumentDetailPage({
           locale={locale}
         />
       ) : null}
-      <DocumentQuestionPanel
-        availability={questionAvailability}
-        canRequest={canQueueQuestion}
-        details={questionDetails}
-        locale={locale}
-        requestControl={<DocumentQuestionRequestForm documentId={document.id} locale={locale} />}
-      />
-      {document.processing_status === "needs_ocr" || document.processing_status === "unsupported" ? (
+      {ai ? (
+        <DocumentQuestionPanel
+          availability={questionAvailability}
+          canRequest={canQueueQuestion}
+          details={questionDetails}
+          locale={locale}
+          requestControl={<DocumentQuestionRequestForm documentId={document.id} locale={locale} />}
+        />
+      ) : null}
+      {ai && (document.processing_status === "needs_ocr" || document.processing_status === "unsupported") ? (
         <p className="mt-3 text-sm text-muted-foreground">{t("extractionUnavailable")}</p>
       ) : null}
     </section>

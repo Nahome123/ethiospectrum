@@ -137,7 +137,7 @@ values ('60000000-0000-0000-0000-000000000001', '80000000-0000-0000-0000-0000000
 reset role;
 select throws_ok(
   $$delete from public.dependents where id = '80000000-0000-0000-0000-000000000002'$$,
-  '23503', null, 'a dependent linked to a document cannot be hard-deleted'
+  '23001', null, 'a dependent linked to a document cannot be hard-deleted'
 );
 
 -- Create one synthetic Storage metadata row as the database owner. It represents

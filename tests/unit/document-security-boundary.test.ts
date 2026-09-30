@@ -65,15 +65,14 @@ describe("document upload application boundaries", () => {
     expect(route).not.toContain("lib/supabase/admin");
   });
 
-  it("counts and previews only active uploaded documents on the dashboard", () => {
+  it("keeps document summaries limited to active uploaded documents", () => {
     const dashboard = source("app/[locale]/(member)/dashboard/page.tsx");
     const binderQuery = source("lib/documents/binder-query.ts");
 
-    expect(dashboard).toContain("getDocumentDashboardSummary");
+    // The PRD dashboard (section 32) does not preview documents or query them directly.
+    expect(dashboard).not.toContain('from("documents")');
     expect(binderQuery).toContain('.eq("upload_status", "uploaded")');
     expect(binderQuery).toContain('.is("deleted_at", null)');
-    expect(dashboard).toContain("documentCount");
-    expect(dashboard).toContain("recentDocuments");
   });
 
   it("derives document authorization from active household membership on the server", () => {

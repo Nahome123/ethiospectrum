@@ -129,9 +129,9 @@
     "signup": "Get started",
     "dashboard": "Dashboard",
     "onboarding": "Getting started",
-    "dependents": "Family members",
+    "dependents": "Children",
     "documents": "Documents",
-    "training": "RBT Errorless Teaching Training Guide",
+    "training": "RBT Boot Camp",
     "assistant": "Document assistant",
     "roadmap": "Roadmap",
     "support": "Support",
@@ -143,7 +143,12 @@
     "supportRequests": "Support requests",
     "billing": "Billing",
     "prompts": "Prompts",
-    "auditLogs": "Audit logs"
+    "auditLogs": "Audit logs",
+    "services": "Services",
+    "requests": "Service requests",
+    "household": "Household",
+    "notifications": "Notifications",
+    "specialistWorkspace": "Specialist workspace"
   },
   "common": {
     "learnMore": "Learn more",
@@ -227,12 +232,97 @@
     "itemThree": "Benefit letters"
   },
   "roadmap": {
-    "eyebrow": "Roadmap",
-    "title": "Make the next step visible.",
-    "description": "A future roadmap will turn important dates and questions into a clear, flexible plan.",
-    "itemOne": "Prepare questions",
-    "itemTwo": "Review a letter",
-    "itemThree": "Add a reminder"
+    "householdRoadmap": "Household roadmap",
+    "description": "Description",
+    "actionItems": "Action items",
+    "newActionItem": "New action item",
+    "editActionItem": "Edit action item",
+    "itemDetails": "Action item details",
+    "newDescription": "Create a household action item. Assignment, a family member, and a due date are optional.",
+    "titleError": "Enter an action item title of 160 characters or fewer.",
+    "descriptionError": "Enter a description of 4,000 characters or fewer.",
+    "dueDateError": "Enter a valid calendar date.",
+    "validationError": "Please review the highlighted fields.",
+    "title": "Title",
+    "category": "Category",
+    "priority": "Priority",
+    "status": "Status",
+    "dueDate": "Due date",
+    "dependent": "Family member",
+    "assignee": "Assignee",
+    "unassigned": "Unassigned",
+    "noDependent": "No family member",
+    "assignToMe": "Assign to me",
+    "assignedHouseholdMember": "Assigned household member",
+    "formerHouseholdMember": "Former household member",
+    "archivedDependent": "Archived family member",
+    "categories": {
+      "general": "General",
+      "healthcare": "Healthcare",
+      "education": "Education",
+      "therapy": "Therapy",
+      "benefits": "Benefits",
+      "legal": "Legal",
+      "family_support": "Family support",
+      "other": "Other"
+    },
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "statuses": {
+      "not_started": "Not started",
+      "in_progress": "In progress",
+      "blocked": "Blocked",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "sorts": {
+      "manual": "Manual order",
+      "due_date": "Due date",
+      "priority": "Priority",
+      "updated": "Recently updated",
+      "created": "Recently created"
+    },
+    "overdue": "Overdue",
+    "completed": "Completed",
+    "archive": "Archive",
+    "restore": "Restore",
+    "archiveConfirm": "Archive this action item? It will be removed from the active roadmap.",
+    "archivedNotice": "This action item is archived. Restore it before editing.",
+    "save": "Save",
+    "saving": "Saving…",
+    "create": "Create action item",
+    "creating": "Creating…",
+    "noItems": "No roadmap items yet",
+    "noMatchingItems": "No matching roadmap items",
+    "emptyDescription": "Create an action item when your household is ready.",
+    "readOnly": "Read only",
+    "readOnlyDescription": "You can view active household action items, but you cannot make changes.",
+    "accessDenied": "You do not have permission to access this roadmap.",
+    "createError": "We could not create this action item. Please try again.",
+    "updateError": "We could not update this action item. Please try again.",
+    "archiveError": "We could not archive this action item. Please try again.",
+    "restoreError": "We could not restore this action item. Please try again.",
+    "reorderError": "We could not reorder action items. Please try again.",
+    "reorderSuccess": "Action item order updated.",
+    "staleError": "This item was updated by someone else. Refresh and try again.",
+    "filter": "Filter",
+    "sort": "Sort",
+    "all": "All",
+    "assignedToMe": "Assigned to me",
+    "clearFilters": "Clear filters",
+    "archivedItems": "Archived items",
+    "activeItems": "Active items",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page}",
+    "pagination": "Roadmap pagination",
+    "backToRoadmap": "Back to roadmap",
+    "backToItem": "Back to action item",
+    "moveUp": "Move action item up",
+    "moveDown": "Move action item down"
   },
   "resources": {
     "eyebrow": "Learning library",
@@ -468,8 +558,8 @@
   },
   "pricing": {
     "eyebrow": "Pricing",
-    "title": "Thoughtful support, with details to come.",
-    "description": "Pricing and paid support are not available in this foundation. We will share clear options before any subscription service launches.",
+    "title": "Simple, transparent pricing",
+    "description": "Subscribe to RBT Boot Camp monthly, or purchase a consultation or IEP language assistance on its own.",
     "planTitle": "Future support plans",
     "planDescription": "No charge or purchase is available today."
   },
@@ -536,7 +626,8 @@
     "pending": "Please wait…",
     "haveAccount": "Already have an account?",
     "needAccount": "Need an account?",
-    "backToLogin": "Back to sign in"
+    "backToLogin": "Back to sign in",
+    "signupCaregiverDescription": "Create your caregiver account with the email address the household owner invited. After confirming your email you'll join their household."
   },
   "dashboard": {
     "welcome": "Welcome to your family workspace",
@@ -668,101 +759,24 @@
     "permissionOwnerAdministrator": "Owners and household administrators can make changes.",
     "dashboardTitle": "Family members",
     "dashboardCount": "{count} active family members",
-    "manage": "Manage family members"
-  },
-  "roadmap": {
-    "householdRoadmap": "Household roadmap",
-    "description": "Organize shared action items and keep the next steps visible to your household.",
-    "actionItems": "Action items",
-    "newActionItem": "New action item",
-    "editActionItem": "Edit action item",
-    "itemDetails": "Action item details",
-    "newDescription": "Create a household action item. Assignment, a family member, and a due date are optional.",
-    "titleError": "Enter an action item title of 160 characters or fewer.",
-    "descriptionError": "Enter a description of 4,000 characters or fewer.",
-    "dueDateError": "Enter a valid calendar date.",
-    "validationError": "Please review the highlighted fields.",
-    "title": "Title",
-    "description": "Description",
-    "category": "Category",
-    "priority": "Priority",
-    "status": "Status",
-    "dueDate": "Due date",
-    "dependent": "Family member",
-    "assignee": "Assignee",
-    "unassigned": "Unassigned",
-    "noDependent": "No family member",
-    "assignToMe": "Assign to me",
-    "assignedHouseholdMember": "Assigned household member",
-    "formerHouseholdMember": "Former household member",
-    "archivedDependent": "Archived family member",
-    "categories": {
-      "general": "General",
-      "healthcare": "Healthcare",
-      "education": "Education",
-      "therapy": "Therapy",
-      "benefits": "Benefits",
-      "legal": "Legal",
-      "family_support": "Family support",
-      "other": "Other"
-    },
-    "priorities": {
-      "low": "Low",
-      "medium": "Medium",
-      "high": "High"
-    },
-    "statuses": {
-      "not_started": "Not started",
-      "in_progress": "In progress",
-      "blocked": "Blocked",
-      "completed": "Completed",
-      "cancelled": "Cancelled"
-    },
-    "sorts": {
-      "manual": "Manual order",
-      "due_date": "Due date",
-      "priority": "Priority",
-      "updated": "Recently updated",
-      "created": "Recently created"
-    },
-    "overdue": "Overdue",
-    "completed": "Completed",
-    "archive": "Archive",
-    "restore": "Restore",
-    "archiveConfirm": "Archive this action item? It will be removed from the active roadmap.",
-    "archivedNotice": "This action item is archived. Restore it before editing.",
-    "save": "Save",
-    "saving": "Saving…",
-    "create": "Create action item",
-    "creating": "Creating…",
-    "noItems": "No roadmap items yet",
-    "noMatchingItems": "No matching roadmap items",
-    "emptyDescription": "Create an action item when your household is ready.",
-    "readOnly": "Read only",
-    "readOnlyDescription": "You can view active household action items, but you cannot make changes.",
-    "accessDenied": "You do not have permission to access this roadmap.",
-    "createError": "We could not create this action item. Please try again.",
-    "updateError": "We could not update this action item. Please try again.",
-    "archiveError": "We could not archive this action item. Please try again.",
-    "restoreError": "We could not restore this action item. Please try again.",
-    "reorderError": "We could not reorder action items. Please try again.",
-    "reorderSuccess": "Action item order updated.",
-    "staleError": "This item was updated by someone else. Refresh and try again.",
-    "filter": "Filter",
-    "sort": "Sort",
-    "all": "All",
-    "assignedToMe": "Assigned to me",
-    "clearFilters": "Clear filters",
-    "archivedItems": "Archived items",
-    "activeItems": "Active items",
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {page}",
-    "pagination": "Roadmap pagination",
-    "backToRoadmap": "Back to roadmap",
-    "backToItem": "Back to action item",
-    "moveUp": "Move action item up",
-    "moveDown": "Move action item down"
+    "manage": "Manage family members",
+    "serviceInformation": "Service information",
+    "serviceInformationHelp": "Share only what a specialist needs to deliver services. You can update this anytime.",
+    "preferredLanguage": "Preferred language",
+    "noPreference": "No preference",
+    "serviceNeeds": "Service needs",
+    "serviceNeedsHelp": "For example: speech support, behavior support, or IEP services.",
+    "communicationConsiderations": "Communication considerations",
+    "communicationConsiderationsHelp": "How your child communicates best.",
+    "educationalInformation": "Educational information",
+    "educationalInformationHelp": "School, grade, or learning supports that matter for services.",
+    "behavioralInformation": "Behavioral / service information",
+    "behavioralInformationHelp": "Anything that helps a specialist support your child.",
+    "languageNames": {
+      "en": "English",
+      "am": "Amharic",
+      "es": "Spanish"
+    }
   },
   "reminders": {
     "title": "Reminders",
@@ -1485,22 +1499,29 @@
   "billing": {
     "eyebrow": "Household subscription",
     "title": "Billing",
-    "description": "Review your household plan, Family Plus access, and safe invoice history.",
+    "description": "Manage your RBT Boot Camp subscription and review payments for services.",
     "currentPlan": "Current plan",
     "plan": "Plan",
-    "entitlement": "Family Plus access",
+    "entitlement": "RBT Boot Camp access",
     "billingInterval": "Billing interval",
     "currentPeriod": "Current paid period ends",
     "accessThrough": "Access through",
-    "choosePlan": "Choose Family Plus billing",
+    "choosePlan": "Subscribe to RBT Boot Camp",
     "amountManagedByStripe": "The current USD amount is displayed and collected securely by Stripe.",
     "subscribe": "Subscribe with Stripe",
     "manageBilling": "Manage billing",
     "secureTitle": "Billing is managed securely by Stripe",
     "secureDescription": "Payment-card details are entered only on Stripe-hosted pages. Ethiospectrum does not receive or store card numbers or CVCs.",
     "opensStripe": "Opens a secure Stripe page in a new tab.",
-    "plans": { "free": "Free", "familyPlus": "Family Plus" },
-    "intervals": { "monthly": "Monthly", "annual": "Annual" },
+    "plans": {
+      "free": "No subscription",
+      "familyPlus": "RBT Boot Camp",
+      "rbtBootcamp": "RBT Boot Camp"
+    },
+    "intervals": {
+      "monthly": "Monthly",
+      "annual": "Annual"
+    },
     "statuses": {
       "active": "Subscription active",
       "inactive": "Subscription inactive",
@@ -1513,7 +1534,7 @@
       "starting": "Opening secure Checkout…",
       "redirecting": "Opening secure Stripe Checkout…",
       "confirmingTitle": "Confirming subscription",
-      "confirmingDescription": "Checkout returned successfully. Family Plus activates only after Stripe confirms the subscription through a verified webhook.",
+      "confirmingDescription": "Checkout returned successfully. RBT Boot Camp activates once Stripe confirms the subscription through a verified webhook.",
       "cancelledTitle": "Checkout cancelled",
       "cancelledDescription": "No plan change was made. You can try again when you are ready."
     },
@@ -1546,7 +1567,7 @@
     },
     "errors": {
       "validation": "Check the billing selection and try again.",
-      "ownerRequired": "Only the household owner can manage billing.",
+      "ownerRequired": "Only the household owner or an authorized caregiver can manage the subscription.",
       "adminRequired": "Administrator access is required.",
       "checkout": "Unable to start checkout. Try again.",
       "portal": "Unable to open the billing portal. Try again.",
@@ -1555,6 +1576,19 @@
       "updatedElsewhere": "Billing was updated elsewhere. Refresh before trying again.",
       "load": "Unable to load billing",
       "tryAgain": "Refresh the page and try again."
+    },
+    "monthlyPrice": "{price} per month",
+    "certificationDisclaimer": "Completing the course is not an RBT certification.",
+    "benefits": {
+      "videos": "All protected training videos",
+      "resources": "All supporting training resources",
+      "progress": "Progress tracking for you and each child"
+    },
+    "servicePayments": {
+      "title": "Service payments",
+      "description": "One-time payments for consultations and IEP language assistance.",
+      "empty": "No service payments yet.",
+      "refunded": "{amount} refunded"
     }
   },
   "admin": {
@@ -1575,5 +1609,1239 @@
     "returnTo": "Return to sign in",
     "developmentNotice": "Protected routes require a verified server-side session."
   },
-  "review": { "translation": "Translation requires native-speaker review before use for sensitive content." }
+  "review": {
+    "translation": "Translation requires native-speaker review before use for sensitive content."
+  },
+  "services": {
+    "types": {
+      "rbt_bootcamp": "RBT Boot Camp",
+      "consultation": "Consultation",
+      "iep_language_assistance": "IEP Language Assistance"
+    },
+    "status": {
+      "pending_review": "Pending review",
+      "assigned": "Specialist assigned",
+      "awaiting_availability": "Awaiting availability",
+      "awaiting_payment": "Awaiting payment",
+      "appointment_proposed": "Appointment times proposed",
+      "appointment_confirmed": "Appointment confirmed",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "payment_failed": "Payment failed",
+      "cancelled": "Cancelled",
+      "reschedule_requested": "Reschedule requested",
+      "declined": "Declined",
+      "no_show": "No-show"
+    },
+    "statusHelp": {
+      "pending_review": "An Ethiospectrum administrator is reviewing your request.",
+      "assigned": "A specialist has been assigned. Appointment times will be proposed soon.",
+      "awaiting_availability": "Your specialist is sharing their availability.",
+      "awaiting_payment": "Review the proposed times, then complete payment to confirm your appointment.",
+      "appointment_proposed": "Payment received. Choose one of the proposed times to confirm.",
+      "appointment_confirmed": "Your appointment is confirmed.",
+      "in_progress": "Your session took place. Any included follow-up or remaining work is being completed.",
+      "completed": "This service is complete.",
+      "payment_failed": "Your payment did not go through. Your request is saved — you can try again.",
+      "cancelled": "This request was cancelled.",
+      "reschedule_requested": "New appointment times will be proposed.",
+      "declined": "This request could not be accepted.",
+      "no_show": "The appointment was missed. Contact Ethiospectrum about rescheduling."
+    },
+    "paymentStatus": {
+      "unpaid": "Not paid",
+      "pending": "Payment pending",
+      "processing": "Processing",
+      "paid": "Paid",
+      "failed": "Failed",
+      "partially_refunded": "Partially refunded",
+      "refunded": "Refunded",
+      "requested": "Requested",
+      "succeeded": "Refunded",
+      "rejected": "Rejected"
+    },
+    "appointmentStatus": {
+      "none": "Not scheduled",
+      "proposed": "Proposed",
+      "confirmed": "Confirmed",
+      "declined": "Not selected",
+      "superseded": "Replaced",
+      "cancelled": "Cancelled",
+      "completed": "Held",
+      "no_show": "No-show"
+    },
+    "followUpStatus": {
+      "not_available": "Available after the session",
+      "available": "Available",
+      "requested": "Requested",
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "waived": "Not needed"
+    },
+    "activities": {
+      "consultation_session": "Consultation session",
+      "iep_explanation": "IEP explanation",
+      "meeting_language_assistance": "School meeting language assistance",
+      "written_translation": "Written translation"
+    },
+    "activityStatus": {
+      "pending": "Pending",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "not_needed": "Not needed"
+    },
+    "languages": {
+      "en": "English",
+      "am": "Amharic (አማርኛ)",
+      "es": "Spanish (Español)"
+    },
+    "iepLanguages": {
+      "am": "English ↔ Amharic",
+      "es": "English ↔ Spanish"
+    },
+    "deliveryMethods": {
+      "remote": "Remote",
+      "in_person": "In person"
+    },
+    "locations": {
+      "remote": "Remote (online)",
+      "ethiospectrum_location": "Ethiospectrum location",
+      "school_meeting": "School / IEP meeting",
+      "mutually_agreed": "Mutually agreed location"
+    },
+    "categories": {
+      "general_guidance": "General household and service guidance",
+      "behavioral_educational": "Behavioral or educational guidance"
+    },
+    "errors": {
+      "denied": "You don't have permission to do that.",
+      "stale": "This request changed while you were viewing it. Refresh the page and try again.",
+      "state": "That action isn't available at this stage of the request.",
+      "limit": "A limit was reached. Close an existing item before adding another.",
+      "paymentRequired": "Payment is required before the appointment can be confirmed.",
+      "conflict": "The specialist already has an appointment at that time. Choose another time.",
+      "rescheduleLimit": "This appointment has already been rescheduled once within 48 hours. Contact Ethiospectrum for help.",
+      "feesRequired": "Review and accept the listed fees before paying.",
+      "timezoneTime": "That local time doesn't exist or is ambiguous in the selected time zone (daylight saving change). Choose another time.",
+      "validation": "Some information is missing or invalid. Check the form and try again.",
+      "generic": "Something went wrong. Please try again.",
+      "paymentsUnavailable": "Online payments are not configured yet. Please contact Ethiospectrum.",
+      "checkout": "We couldn't start the secure payment page. Please try again.",
+      "refund": "The refund could not be processed by the payment provider. It is marked failed and can be retried."
+    },
+    "success": {
+      "appointmentConfirmed": "Your appointment is confirmed.",
+      "otherTimesRequested": "We'll propose different times.",
+      "rescheduleRequested": "Your reschedule request was sent.",
+      "requestCancelled": "The request was cancelled.",
+      "followUpRequested": "Your follow-up request was sent.",
+      "messageSent": "Message sent.",
+      "redirectingToPayment": "Opening the secure payment page…",
+      "refundProcessed": "The refund was submitted to the payment provider.",
+      "refundRejected": "The refund request was rejected.",
+      "refundRequested": "The refund exception was created. Process it from the refund list.",
+      "specialistAssigned": "Specialist assigned.",
+      "availabilityRequested": "The specialist was asked for availability.",
+      "timesProposed": "Appointment times were proposed.",
+      "appointmentScheduled": "The appointment was scheduled.",
+      "appointmentModified": "The appointment was updated.",
+      "appointmentCancelled": "The appointment was cancelled.",
+      "requestDeclined": "The request was declined.",
+      "statusUpdated": "The status was updated.",
+      "sessionRecorded": "The session was recorded.",
+      "noShowRecorded": "The no-show was recorded.",
+      "activityUpdated": "The activity was updated.",
+      "serviceCompleted": "The service was marked complete.",
+      "serviceUpdated": "The service was saved.",
+      "feeSaved": "The fee was saved.",
+      "topicSaved": "The topic was saved.",
+      "specialistUpdated": "The specialist was saved.",
+      "roleUpdated": "The role was updated."
+    },
+    "catalog": {
+      "eyebrow": "Services",
+      "title": "Choose a service",
+      "intro": "Ethiospectrum supports parents and families of children with special needs through self-paced RBT training, consultations, and IEP language assistance in English, Amharic, and Spanish.",
+      "independentNotice": "Consultation and IEP Language Assistance do not require an RBT Boot Camp subscription. You can request either service on its own.",
+      "householdRequired": "Finish setting up your household on the dashboard before requesting a service.",
+      "monthlySubscription": "Monthly subscription",
+      "monthlyPrice": "{price} / month",
+      "recurring": "Recurring monthly subscription",
+      "oneTime": "One-time payment · {minutes}-minute session",
+      "descriptions": {
+        "rbt_bootcamp": "A self-paced video library that helps parents understand neurodivergency, complete the Ethiospectrum curriculum, and prepare for an external RBT-related credential or exam. Completing the course is not an RBT certification.",
+        "consultation": "A 60-minute consultation for general household and service guidance or specific behavioral and educational guidance.",
+        "iep_language_assistance": "Help understanding an IEP, language assistance during a school meeting, and written translation."
+      },
+      "features": {
+        "rbt_bootcamp": [
+          "All protected training videos",
+          "All supporting resources",
+          "Progress tracking for you and each child",
+          "Cancel anytime from billing"
+        ],
+        "consultation": [
+          "60-minute session with a matched specialist",
+          "One follow-up included",
+          "Free cancellation more than 48 hours ahead",
+          "No subscription required"
+        ],
+        "iep_language_assistance": [
+          "English ↔ Amharic and English ↔ Spanish",
+          "IEP explanation and school-meeting assistance",
+          "Written translation included",
+          "Remote or in person · one follow-up included"
+        ]
+      },
+      "subscribe": "Subscribe",
+      "openTraining": "Open RBT Boot Camp",
+      "request": {
+        "consultation": "Request a consultation",
+        "iep_language_assistance": "Request IEP assistance"
+      },
+      "noRequestPermission": "Ask the household owner for permission to request services.",
+      "taxNotice": "Applicable taxes are calculated at checkout where required. Any additional fee is shown for your approval before you pay. No travel fee is charged."
+    },
+    "form": {
+      "backToServices": "Back to services",
+      "consultationTitle": "Request a consultation",
+      "consultationSummary": "{price} one-time payment · {minutes} minutes · one follow-up included",
+      "iepTitle": "Request IEP Language Assistance",
+      "iepSummary": "{price} one-time payment · {minutes}-minute session · one follow-up included",
+      "noSubscriptionNeeded": "No RBT Boot Camp subscription is required.",
+      "preparationNotice": "A separate preparation period is not included in the base price.",
+      "dependent": "Child",
+      "dependentError": "Choose a child from your household.",
+      "serviceCategory": "Service category",
+      "topic": "Topic",
+      "topicAny": "No specific topic",
+      "preferredLanguage": "Preferred language",
+      "needDescription": "Describe what you need help with",
+      "needDescriptionHelp": "A few sentences about your situation and goals (at least 10 characters).",
+      "descriptionError": "Please describe your need in 10 to 3,000 characters.",
+      "relevantInformation": "Relevant service information",
+      "relevantInformationHelp": "Optional: diagnoses, current services, or anything the specialist should know. Share only what is needed.",
+      "nextStepsConsultation": "What happens next: an administrator reviews your request and assigns a specialist. You'll receive proposed times, pay $9.99 securely, and then confirm the time that works for you.",
+      "submitConsultation": "Submit consultation request",
+      "submitting": "Submitting…",
+      "language": "Language",
+      "iepServices": "Services needed",
+      "iepServicesHelp": "Choose every part of the service you need.",
+      "iepServicesError": "Choose at least one service.",
+      "iepServiceHelp": {
+        "iep_explanation": "We walk you through the IEP and what it means for your child.",
+        "meeting_language_assistance": "Language assistance during a school or IEP meeting.",
+        "written_translation": "A written translation of the relevant IEP material."
+      },
+      "deliveryPreference": "Remote or in person",
+      "locationType": "Location",
+      "chooseLocation": "Choose a location",
+      "locationDetails": "Location details",
+      "locationDetailsPlaceholder": "School name, address, or meeting room",
+      "locationError": "Choose an approved location and add details for school or agreed locations.",
+      "travelNotice": "No travel fee is charged for in-person assistance.",
+      "meetingDate": "Requested meeting date",
+      "meetingDateHelp": "Optional: the date of the school or IEP meeting, if there is one.",
+      "meetingDateError": "Enter a valid date.",
+      "requestedService": "Requested service",
+      "requestedServiceHelp": "Tell us what you need, for example which parts of the IEP to explain or the meeting details.",
+      "relevantIepInformation": "Relevant IEP information",
+      "relevantIepInformationHelp": "Optional: school, grade, goals, accommodations, or deadlines. You can upload the IEP document after submitting.",
+      "nextStepsIep": "What happens next: an administrator reviews your request and assigns a specialist who speaks your language. You can upload IEP documents on the request page. You'll receive proposed times, pay $19.99 securely, and then confirm.",
+      "submitIep": "Submit IEP assistance request",
+      "guard": {
+        "household": {
+          "title": "Set up your household first",
+          "description": "Services are requested for a child in your household.",
+          "action": "Go to the dashboard"
+        },
+        "permission": {
+          "title": "Permission needed",
+          "description": "The household owner has not given you permission to request services."
+        },
+        "dependents": {
+          "title": "Add a child first",
+          "description": "Add the child this service is for, including any service needs.",
+          "action": "Add a child"
+        }
+      }
+    },
+    "requests": {
+      "title": "Service requests",
+      "description": "Track your consultations and IEP language assistance from request to completion.",
+      "newRequest": "Request a service",
+      "filterLabel": "Filter requests",
+      "filters": {
+        "active": "Active",
+        "closed": "Closed",
+        "all": "All"
+      },
+      "loadError": "Service requests could not be loaded. Please try again.",
+      "emptyTitle": "No service requests here",
+      "emptyDescription": "When you request a consultation or IEP language assistance, it will appear here.",
+      "nextAppointment": "Next appointment: {date}",
+      "updated": "Updated {date}",
+      "pagination": "Request pages",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "detail": {
+      "title": "{service} request",
+      "notFound": "This service request is unavailable.",
+      "backToRequests": "Back to service requests",
+      "backToQueue": "Back to the work queue",
+      "backToAssignments": "Back to assignments",
+      "progress": "Request progress",
+      "appointments": "Appointments",
+      "noAppointments": "No appointment times have been proposed yet.",
+      "duration": "{minutes} minutes",
+      "primarySession": "Session",
+      "followUpSession": "Follow-up",
+      "joinMeeting": "Join the online meeting",
+      "confirmedByHousehold": "Confirmed by household",
+      "scheduledByEthiospectrum": "Scheduled by Ethiospectrum",
+      "cancellationReason": "Cancellation reason",
+      "declinedReason": "Reason",
+      "sessionNotes": "Session notes",
+      "payToConfirm": "Complete payment above to confirm one of these times.",
+      "confirmThisTime": "Confirm this time",
+      "confirming": "Confirming…",
+      "reschedule": "Need to reschedule?",
+      "rescheduleConfirm": "Request to reschedule this appointment? The current time will be released.",
+      "requestReschedule": "Request a new time",
+      "reasonOptional": "Reason (optional)",
+      "reason": "Reason",
+      "sending": "Sending…",
+      "saving": "Saving…",
+      "recordOutcome": "Record the session",
+      "saveOutcome": "Save outcome",
+      "outcomeHeld": "Session held",
+      "outcomeNoShow": "No-show",
+      "outcomeAfterStart": "The outcome can be recorded once the appointment starts.",
+      "modifyAppointment": "Modify appointment",
+      "saveChanges": "Save changes",
+      "cancelAppointment": "Cancel appointment",
+      "adminCancelConfirm": "Cancel this appointment on behalf of Ethiospectrum? The household will be offered a full refund or a new time.",
+      "adminCancelHelp": "Use when Ethiospectrum must cancel. The customer becomes eligible for a 100% refund or may reschedule.",
+      "noneOfTheseWork": "None of these times work?",
+      "requestOtherTimes": "Ask for other times",
+      "availabilityNote": "Tell us when you are available (optional)",
+      "requestDetails": "Request details",
+      "child": "Child",
+      "requestedBy": "Requested by",
+      "submitted": "Submitted",
+      "specialist": "Specialist",
+      "notAssigned": "Not assigned yet",
+      "language": "Language",
+      "delivery": "Delivery",
+      "category": "Category",
+      "preferredLocation": "Preferred location",
+      "meetingDate": "Requested meeting date",
+      "followUp": "Included follow-up",
+      "description": "Description of need",
+      "relevantInformation": "Relevant information",
+      "completionNotes": "Completion notes",
+      "serviceDeliveryInformation": "Service delivery information",
+      "serviceNeeds": "Service needs",
+      "communication": "Communication considerations",
+      "childLanguage": "Child's preferred language",
+      "educationalInformation": "Educational information",
+      "behavioralInformation": "Behavioral / service information",
+      "householdPhone": "Household phone",
+      "householdEmail": "Household email",
+      "serviceActivities": "Service activities",
+      "activityStatus": "Activity status",
+      "activityNotes": "Notes",
+      "updateActivity": "Update",
+      "documents": "Documents",
+      "noDocuments": "No documents are attached to this request.",
+      "fromSpecialist": "From Ethiospectrum",
+      "fromHousehold": "From household",
+      "download": "Download",
+      "uploadDocument": "Upload an IEP or supporting document",
+      "uploadDeliverable": "Upload a deliverable (for example, the written translation)",
+      "payments": "Payments and refunds",
+      "taxIncluded": "includes {tax} tax",
+      "refundedAmount": "{amount} refunded",
+      "refund": "Refund",
+      "activityAndMessages": "Activity and messages",
+      "noActivity": "No activity yet.",
+      "sendMessage": "Send message",
+      "message": "Message",
+      "messageNotice": "Messages are visible to your household, the assigned specialist, and Ethiospectrum administrators. Do not use messages for emergencies.",
+      "authors": {
+        "household": "Household",
+        "specialist": "Specialist",
+        "administrator": "Ethiospectrum",
+        "system": "Ethiospectrum"
+      }
+    },
+    "household": {
+      "created": "Your request was received. An administrator will review it and assign a specialist.",
+      "createdIep": "Your request was received. You can upload the IEP and any supporting documents below.",
+      "paymentConfirmed": "Payment confirmed. Thank you!",
+      "paymentProcessing": "We're waiting for the payment provider to confirm your payment. This page will update once it does.",
+      "paymentFailedReturn": "The payment did not go through. You can try again below.",
+      "paymentCancelled": "Payment was cancelled. Your request is saved and you can pay when you're ready.",
+      "paymentTitle": "Complete payment",
+      "retryPaymentTitle": "Try the payment again",
+      "paymentFailedNotice": "Your last payment attempt failed. Your request and proposed times are saved.",
+      "subtotal": "Total before tax",
+      "taxAtCheckout": "Applicable taxes, if any, are calculated on the secure payment page. No travel fee is charged.",
+      "acceptFees": "I have reviewed and accept the additional fees above ({amount}).",
+      "securePayment": "You'll be taken to our payment provider's secure page. Ethiospectrum never sees or stores your card details.",
+      "payNow": "Pay {amount} securely",
+      "openingPayment": "Opening secure payment…",
+      "paymentInFlight": "A payment is in progress. If you left the payment page, it will expire and you can try again.",
+      "followUpTitle": "Your included follow-up",
+      "followUpDescription": "This service includes one follow-up. Request it when you're ready and we'll propose times.",
+      "followUpNote": "What would you like to follow up on? (optional)",
+      "requestFollowUp": "Request follow-up",
+      "sending": "Sending…",
+      "cancelTitle": "Cancel this request",
+      "refundPreview": "If you cancel now you will be eligible for a {percent}% refund ({tier}). Refunds are processed by Ethiospectrum.",
+      "cancelUnpaid": "No payment has been made, so no refund is needed.",
+      "rescheduleInstead": "Within 24 hours no cash refund is issued. You can reschedule once instead.",
+      "cancelConfirm": "Cancel this request? This cannot be undone.",
+      "cancelling": "Cancelling…",
+      "cancelRequest": "Cancel request",
+      "reasonOptional": "Reason (optional)"
+    },
+    "slots": {
+      "option": "Option {number}",
+      "dateTime": "Date and time",
+      "addOption": "Add another option",
+      "removeOption": "Remove last option",
+      "timezone": "Time zone",
+      "location": "Location",
+      "chooseLocation": "Choose a location",
+      "locationDetails": "Location details",
+      "meetingUrl": "Online meeting link",
+      "meetingUrlHelp": "HTTPS only. Shared with the household once the appointment is confirmed.",
+      "instructions": "Appointment-specific instructions",
+      "instructionsPlaceholder": "For example: Please check in at the school's main office upon arrival."
+    },
+    "documents": {
+      "title": "Document title",
+      "titlePlaceholder": "For example: 2026 IEP",
+      "file": "File (PDF, DOCX, or TXT, up to 20 MB)",
+      "privacy": "Documents are stored privately and shared only with your household, the assigned specialist, and Ethiospectrum administrators.",
+      "upload": "Upload",
+      "uploading": "Uploading…",
+      "uploaded": "The document was uploaded.",
+      "fileRequired": "Choose a file to upload."
+    },
+    "policy": {
+      "title": "Cancellation and refund policy",
+      "moreThan48": "More than 48 hours before: cancel for a 100% refund or reschedule at no charge.",
+      "between24And48": "24 to 48 hours before: cancel for a 50% refund or reschedule once at no charge.",
+      "lessThan24": "Less than 24 hours before: reschedule once without paying again; no cash refund unless an administrator approves an exception.",
+      "noShow": "No-show: no automatic refund; rescheduling may be approved case by case.",
+      "administrative": "If Ethiospectrum cancels, you receive a 100% refund or may reschedule.",
+      "rescheduleRule": "Rescheduling more than 48 hours ahead is free. Within 48 hours you may reschedule once."
+    },
+    "refundTiers": {
+      "more_than_48_hours": "more than 48 hours before",
+      "between_24_and_48_hours": "24 to 48 hours before",
+      "less_than_24_hours": "less than 24 hours before",
+      "no_show": "no-show",
+      "no_appointment": "before an appointment was confirmed",
+      "administrative_cancellation": "cancelled by Ethiospectrum",
+      "admin_exception": "administrator exception",
+      "duplicate_payment": "duplicate payment"
+    },
+    "events": {
+      "generic": "Request updated",
+      "request_created": "Request submitted",
+      "specialist_assigned": "Specialist assigned",
+      "availability_requested": "Specialist availability requested",
+      "appointment_proposed": "Appointment times proposed",
+      "follow_up_proposed": "Follow-up times proposed",
+      "appointment_confirmed": "Appointment confirmed",
+      "follow_up_confirmed": "Follow-up confirmed",
+      "other_times_requested": "Other times requested",
+      "reschedule_requested": "Reschedule requested",
+      "follow_up_reschedule_requested": "Follow-up reschedule requested",
+      "request_cancelled": "Request cancelled",
+      "follow_up_requested": "Follow-up requested",
+      "appointment_scheduled_directly": "Appointment scheduled by Ethiospectrum",
+      "follow_up_scheduled_directly": "Follow-up scheduled by Ethiospectrum",
+      "appointment_modified": "Appointment updated",
+      "appointment_cancelled_by_ethiospectrum": "Appointment cancelled by Ethiospectrum",
+      "follow_up_cancelled_by_ethiospectrum": "Follow-up cancelled by Ethiospectrum",
+      "proposal_withdrawn": "Proposed time withdrawn",
+      "request_cancelled_by_ethiospectrum": "Request cancelled by Ethiospectrum",
+      "request_declined": "Request declined",
+      "status_overridden": "Status updated by an administrator",
+      "session_completed": "Session held",
+      "no_show_recorded": "No-show recorded",
+      "follow_up_completed": "Follow-up held",
+      "follow_up_no_show": "Follow-up missed",
+      "activity_updated": "Service activity updated",
+      "service_completed": "Service completed",
+      "payment_started": "Payment started",
+      "payment_confirmed": "Payment confirmed",
+      "payment_failed": "Payment failed",
+      "refund_exception_created": "Refund exception created",
+      "refund_processed": "Refund processed"
+    },
+    "staff": {
+      "saving": "Saving…",
+      "processing": "Processing…",
+      "reason": "Reason",
+      "reasonShared": "Reason (shared with the household)",
+      "proposeTimes": "Propose appointment times",
+      "proposeHelp": "Offer one to three times. The household pays (if not yet paid) and then confirms one.",
+      "sendProposal": "Send proposed times",
+      "appointmentKind": "Appointment type",
+      "kinds": {
+        "primary": "Session",
+        "follow_up": "Included follow-up"
+      },
+      "completeService": "Complete the service",
+      "completeHelp": "Record completion once the session and any remaining work (such as written translation) are done.",
+      "completeBlockedByFollowUp": "Finish the scheduled follow-up before completing the service.",
+      "completeConfirm": "Mark this service as complete?",
+      "completionNotes": "Completion notes",
+      "waiveFollowUp": "The household does not need the included follow-up.",
+      "markComplete": "Mark complete",
+      "refundRequest": "Refund request: {amount}",
+      "refundConfirm": "Send this refund to the payment provider?",
+      "processRefund": "Process refund",
+      "refundAmountCents": "Refund amount (cents)",
+      "refundAmountHelp": "Cannot exceed the policy-eligible amount computed by the system.",
+      "rejectRefund": "Reject refund request",
+      "assignSpecialist": "Assign a specialist",
+      "reassignSpecialist": "Reassign the specialist",
+      "assignHelp": "Only specialists who offer this service, language, and delivery method can be assigned.",
+      "noSpecialists": "No specialists exist yet. Promote a user to specialist from the Users page.",
+      "specialist": "Specialist",
+      "matches": "Matches service, language, and delivery",
+      "noMatch": "Does not match this request",
+      "unavailable": "Unavailable",
+      "activeRequests": "{count, plural, =0 {no active requests} one {# active request} other {# active requests}}",
+      "current": "Current",
+      "assign": "Assign",
+      "reassign": "Reassign",
+      "requestAvailability": "Ask the specialist for availability",
+      "availabilityHelp": "The specialist will be able to propose times directly.",
+      "askSpecialist": "Request availability",
+      "scheduleDirectly": "Schedule directly",
+      "scheduleHelp": "Confirms an appointment without household confirmation. Payment is still required before the session.",
+      "schedule": "Schedule",
+      "refundException": "Refund exception",
+      "exceptionHelp": "Create a refund outside the automatic policy (for example, an approved exception within 24 hours).",
+      "createException": "Create refund request",
+      "moreActions": "More actions",
+      "overrideStatus": "Change the service status",
+      "newStatus": "New status",
+      "updateStatus": "Update status",
+      "declineRequest": "Decline request",
+      "declineConfirm": "Decline this request? The household will be notified.",
+      "cancelRequest": "Cancel request",
+      "cancelConfirm": "Cancel this request on behalf of Ethiospectrum?",
+      "fullRefund": "Create a 100% refund request for any payment",
+      "specialistWaiting": "No action is needed from you right now. You'll be notified when the administrator asks for your availability or a follow-up is requested.",
+      "specialistDone": "This service is complete. Thank you!"
+    }
+  },
+  "adminConsole": {
+    "roleLabel": "Ethiospectrum administration",
+    "nav": {
+      "overview": "Overview",
+      "serviceRequests": "Service work queue",
+      "payments": "Payments and refunds",
+      "billing": "Subscriptions",
+      "serviceConfiguration": "Service configuration",
+      "specialists": "Specialists",
+      "users": "Users and roles",
+      "trainingContent": "Training content"
+    },
+    "overviewTitle": "Operations overview",
+    "overviewDescription": "Every service request that needs attention, grouped into work queues.",
+    "queues": "Work queues",
+    "queue": {
+      "all": "All requests",
+      "new": "New requests",
+      "unassigned": "Awaiting assignment",
+      "assigned": "Assigned",
+      "awaiting_payment": "Awaiting payment",
+      "payment_failed": "Failed payments",
+      "proposed": "Appointment proposals",
+      "upcoming": "Upcoming appointments",
+      "in_progress": "In progress",
+      "follow_up": "Follow-ups requested",
+      "reschedule": "Rescheduling requests",
+      "cancelled": "Cancellations (30 days)",
+      "no_show": "No-shows",
+      "completed": "Completed services",
+      "refunds": "Refund requests",
+      "declined": "Declined"
+    },
+    "upcomingAppointments": "Upcoming appointments",
+    "noUpcoming": "No confirmed appointments are coming up.",
+    "shortcuts": "Management",
+    "shortcut": {
+      "payments": "Payments and refunds",
+      "services": "Prices, fees, and topics",
+      "specialists": "Specialist capabilities",
+      "training": "Training content"
+    },
+    "queueTitle": "Service work queue",
+    "queueDescription": "Review requests, assign specialists, propose or schedule appointments, and resolve payments and refunds.",
+    "serviceFilter": "Filter by service",
+    "allServices": "All services",
+    "loadError": "The queue could not be loaded.",
+    "emptyQueue": "Nothing is waiting in this queue.",
+    "columns": {
+      "request": "Request",
+      "household": "Household",
+      "specialist": "Specialist",
+      "status": "Status",
+      "next": "Next appointment",
+      "updated": "Updated"
+    },
+    "unassigned": "Unassigned",
+    "refundPending": "Refund pending",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "payments": {
+      "title": "Payments and refunds",
+      "description": "One-time service payments confirmed by the payment provider, and the refund record for each.",
+      "refunds": "Refunds",
+      "noRefunds": "No refunds have been requested.",
+      "payments": "Service payments",
+      "noPayments": "No payments match this filter.",
+      "filter": "Filter payments",
+      "filters": {
+        "all": "All",
+        "paid": "Paid",
+        "failed": "Failed",
+        "processing": "Processing",
+        "partially_refunded": "Partially refunded",
+        "refunded": "Refunded"
+      },
+      "columns": {
+        "customer": "Customer",
+        "original": "Original payment",
+        "refund": "Refund",
+        "reason": "Reason",
+        "status": "Status",
+        "processed": "Processed",
+        "service": "Service",
+        "amount": "Amount",
+        "date": "Date"
+      },
+      "tax": "{amount} tax",
+      "refunded": "{amount} refunded",
+      "subscriptionsNote": "RBT Boot Camp subscription invoices are listed separately.",
+      "subscriptionsLink": "View subscriptions"
+    },
+    "config": {
+      "title": "Service configuration",
+      "description": "Prices, descriptions, standard appointment instructions, disclosed fees, and consultation topics.",
+      "services": "Services",
+      "stripePrice": "price set in Stripe",
+      "month": "month",
+      "active": "Active",
+      "inactive": "Inactive",
+      "save": "Save",
+      "saving": "Saving…",
+      "name": "Name",
+      "price": "Price (USD)",
+      "displayPrice": "Displayed monthly price (USD, optional)",
+      "displayPriceHelp": "The amount charged is the configured Stripe Price. Keep this in sync or leave it blank.",
+      "englishDescription": "Description (English)",
+      "descriptionIn": {
+        "am": "Description (Amharic)",
+        "es": "Description (Spanish)"
+      },
+      "includedFollowUps": "Included follow-ups",
+      "standardInstructions": "Standard appointment instructions",
+      "instructionsIn": {
+        "en": "English instructions",
+        "am": "Amharic instructions",
+        "es": "Spanish instructions"
+      },
+      "activeLabel": "Available to customers",
+      "fees": "Additional fees",
+      "feesHelp": "Fees are never added automatically. Each active fee is shown to the customer and must be accepted before payment. No travel fee is charged at launch.",
+      "addFee": "Add a fee",
+      "service": "Service",
+      "amount": "Amount (USD)",
+      "feeDisclosure": "Disclosure shown to the customer",
+      "feeActive": "Active (shown and charged)",
+      "topics": "Consultation topics",
+      "addTopic": "Add a topic",
+      "topicKey": "Key",
+      "category": "Category",
+      "sortOrder": "Sort order",
+      "labelIn": {
+        "en": "Label (English)",
+        "am": "Label (Amharic)",
+        "es": "Label (Spanish)"
+      }
+    },
+    "specialistsPage": {
+      "title": "Specialists",
+      "description": "Record which services, languages, and delivery methods each specialist offers. Assignment is limited to matching specialists.",
+      "promoteHint": "To add a specialist, change a user's role on the",
+      "usersLink": "Users page",
+      "loadError": "Specialists could not be loaded.",
+      "empty": "No specialists yet.",
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "activeRequests": "{count, plural, =0 {no active requests} one {# active request} other {# active requests}}",
+      "capabilities": "Capabilities",
+      "availability": "Availability",
+      "bio": "Bio (internal)",
+      "save": "Save",
+      "saving": "Saving…"
+    },
+    "usersPage": {
+      "title": "Users and roles",
+      "description": "Household owners and caregivers register themselves. Promote staff to specialist or administrator here.",
+      "search": "Search",
+      "searchPlaceholder": "Name or email",
+      "searchAction": "Search",
+      "roleFilter": "Filter by role",
+      "roles": {
+        "all": "All",
+        "member": "Household member",
+        "specialist": "Specialist",
+        "administrator": "Administrator"
+      },
+      "householdRoles": {
+        "owner": "Household owner",
+        "member": "Caregiver",
+        "administrator": "Household administrator",
+        "viewer": "Viewer"
+      },
+      "loadError": "Users could not be loaded.",
+      "empty": "No users match.",
+      "columns": {
+        "user": "User",
+        "household": "Household",
+        "joined": "Joined",
+        "role": "Role"
+      },
+      "roleConfirm": "Change this user's role?",
+      "apply": "Apply",
+      "saving": "Saving…",
+      "pagination": "Pages",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "specialistConsole": {
+    "workspace": "Specialist workspace",
+    "nav": {
+      "dashboard": "Assigned services",
+      "closed": "Completed services",
+      "notifications": "Notifications",
+      "settings": "Settings"
+    },
+    "title": "Assigned services",
+    "closedTitle": "Completed services",
+    "description": "Only services assigned to you are shown, with the information needed to deliver them.",
+    "upcoming": "Upcoming appointments",
+    "noUpcoming": "No confirmed appointments are coming up.",
+    "assigned": "Your active services",
+    "closed": "Completed and cancelled services",
+    "loadError": "Your assignments could not be loaded.",
+    "empty": "Nothing is assigned to you right now.",
+    "availabilityNeeded": "Availability requested",
+    "followUpNeeded": "Follow-up requested",
+    "nextAppointment": "Next appointment: {date}"
+  },
+  "adminTraining": {
+    "title": "Training content",
+    "description": "Maintain the RBT Boot Camp library. Only published courses, modules, and lessons are visible to subscribers.",
+    "progressNotice": "Archiving or unpublishing never deletes learner progress.",
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "setStatus": {
+      "draft": "Unpublish",
+      "published": "Publish",
+      "archived": "Archive"
+    },
+    "statusLabel": "Status",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "translations": "Amharic and Spanish translations",
+    "translationField": {
+      "am": {
+        "title": "Title (Amharic)",
+        "description": "Summary (Amharic)",
+        "body": "Notes (Amharic)"
+      },
+      "es": {
+        "title": "Title (Spanish)",
+        "description": "Summary (Spanish)",
+        "body": "Notes (Spanish)"
+      }
+    },
+    "saving": "Saving…",
+    "saveLesson": "Save lesson",
+    "saveModule": "Save module",
+    "saveCourse": "Save course",
+    "lessonTitle": "Lesson title",
+    "moduleTitle": "Module title",
+    "courseTitle": "Course title",
+    "slug": "URL slug",
+    "summary": "Summary",
+    "lessonNotes": "Lesson notes (shown under the video)",
+    "videoUrl": "Video link (YouTube, Vimeo, or HTTPS video file)",
+    "uploadedVideoInUse": "An uploaded private video is in use. Adding a link replaces it.",
+    "durationMinutes": "Duration (minutes)",
+    "resourceUrl": "Resource link (HTTPS or an internal /training page)",
+    "uploadedResourceInUse": "An uploaded private resource is in use. Adding a link replaces it.",
+    "resourceLabel": "Resource label",
+    "editModule": "Edit module",
+    "editLesson": "Edit lesson",
+    "editCourse": "Edit course",
+    "addLesson": "Add a lesson",
+    "addModule": "Add a module",
+    "addCourse": "Add a course",
+    "hasVideo": "Video",
+    "hasResource": "Resource",
+    "textOnly": "Text only",
+    "minutes": "{count} min",
+    "privateMedia": "Upload private media",
+    "uploadVideo": "Upload video",
+    "uploadResource": "Upload resource",
+    "chooseFile": "Choose a file first.",
+    "uploading": "Uploading…",
+    "uploaded": "Uploaded.",
+    "uploadFailed": "The upload failed. Please try again.",
+    "courseSaved": "Course saved.",
+    "moduleSaved": "Module saved.",
+    "lessonSaved": "Lesson saved."
+  },
+  "customerDashboard": {
+    "welcome": "Welcome back",
+    "intro": "Your RBT Boot Camp progress, service requests, and upcoming appointments in one place.",
+    "caregiverHint": "Were you invited as a caregiver? Open the invitation link from your email to join that household instead.",
+    "requestService": "Request a service",
+    "joinedHousehold": "You joined {household}.",
+    "pendingPayments": "{count, plural, one {# request is} other {# requests are}} waiting for payment",
+    "payNow": "Pay now",
+    "retryPayment": "Retry payment",
+    "upcoming": "Upcoming appointments",
+    "noUpcoming": "No confirmed appointments yet.",
+    "allRequests": "All requests",
+    "rbtBootcamp": "RBT Boot Camp",
+    "openTraining": "Open training",
+    "viewSubscription": "Subscribe",
+    "subscriptionActive": "Subscription active",
+    "subscriptionInactive": "No active subscription",
+    "endsOn": "Access ends {date}",
+    "you": "You",
+    "lessonsDone": "{done} of {total} lessons",
+    "startTraining": "Start your first lesson.",
+    "trainingLocked": "Subscribe to unlock all training videos and resources.",
+    "activeRequests": "Service requests",
+    "noActiveRequests": "No active service requests.",
+    "dependents": "Children",
+    "manageDependents": "Manage",
+    "noDependents": "Add your child to request services and track their training progress.",
+    "addDependent": "Add a child",
+    "availableServices": "Available services",
+    "monthly": "Monthly subscription",
+    "oneTime": "one-time",
+    "independentNotice": "Consultation and IEP Language Assistance do not require an RBT Boot Camp subscription.",
+    "history": "Recent service history",
+    "noHistory": "Completed and cancelled services will appear here."
+  },
+  "bootcamp": {
+    "eyebrow": "RBT Boot Camp",
+    "title": "RBT Boot Camp library",
+    "intro": "Self-paced videos and resources to help you understand neurodivergency, complete the Ethiospectrum curriculum, and prepare for an external RBT-related credential or exam.",
+    "lockedTitle": "RBT Boot Camp requires a subscription",
+    "lockedDescription": "All RBT training videos and resources are available with an active monthly subscription. No training content is available without one.",
+    "benefitVideos": "Every training video",
+    "benefitResources": "All supporting resources, including the bilingual study guide",
+    "benefitProgress": "Progress tracking for you and each child",
+    "subscribe": "Subscribe to RBT Boot Camp",
+    "askOwnerToSubscribe": "Ask the household owner to subscribe, or to give you permission to manage the subscription.",
+    "askOwnerForAccess": "Your household is subscribed. Ask the household owner to give you training access.",
+    "certificationDisclaimer": "Completing the Ethiospectrum course is not an RBT certification. Ethiospectrum is not an accredited RBT credential provider; the course helps you prepare for an external credential or exam.",
+    "trackingFor": "Track progress for",
+    "me": "Me",
+    "switchLearner": "Switch",
+    "overallProgress": "Overall progress",
+    "lessonsCompleted": "{completed} of {total} lessons completed",
+    "noContent": "No lessons are published yet. Check back soon.",
+    "moduleNumber": "Module {number}",
+    "video": "Video",
+    "resource": "Resource",
+    "minutes": "{count} min",
+    "completed": "Completed",
+    "notStarted": "Not started",
+    "lessonUnavailable": "This lesson is unavailable.",
+    "backToLibrary": "Back to the library",
+    "trackingProgressFor": "Tracking progress for {name}",
+    "openResource": "Open resource",
+    "lessonCompleted": "Lesson completed",
+    "markIncomplete": "Mark as not completed",
+    "markComplete": "Mark lesson complete",
+    "lessonNavigation": "Lesson navigation"
+  },
+  "household": {
+    "title": "Household",
+    "description": "Your household has one owner and may add one caregiver. Children and service requests are shared by both.",
+    "noHousehold": "You are not part of a household yet.",
+    "details": "Household details",
+    "name": "Household name",
+    "contactPhone": "Contact phone",
+    "contactEmail": "Contact email",
+    "contactNotes": "Contact notes",
+    "contactHelp": "Shared with the assigned specialist and Ethiospectrum administrators to coordinate appointments.",
+    "yourRole": "Your role",
+    "save": "Save",
+    "saving": "Saving…",
+    "sending": "Sending…",
+    "people": "People",
+    "peopleHelp": "The owner manages billing and household settings. The caregiver can do what the owner allows.",
+    "you": "you",
+    "owner": "Household owner",
+    "caregiver": "Caregiver",
+    "permissionsLegend": "Caregiver permissions",
+    "permissions": {
+      "submit_requests": {
+        "label": "Request services",
+        "help": "Submit, message about, and cancel service requests."
+      },
+      "confirm_appointments": {
+        "label": "Confirm appointments",
+        "help": "Confirm, reschedule, or ask for other times."
+      },
+      "make_payments": {
+        "label": "Make payments",
+        "help": "Pay for consultations and IEP language assistance."
+      },
+      "access_training": {
+        "label": "Access RBT training",
+        "help": "Watch training and track progress."
+      },
+      "upload_documents": {
+        "label": "Upload documents",
+        "help": "Add IEP and supporting documents to requests."
+      },
+      "manage_subscription": {
+        "label": "Manage the subscription",
+        "help": "Start or manage the RBT Boot Camp subscription."
+      }
+    },
+    "noPermissions": "No additional permissions",
+    "savePermissions": "Save permissions",
+    "permissionsSaved": "Permissions saved.",
+    "removeCaregiver": "Remove caregiver",
+    "removeConfirm": "Remove this caregiver? They lose access immediately.",
+    "caregiverRemoved": "The caregiver was removed.",
+    "inviteTitle": "Invite a caregiver",
+    "caregiverLimit": "Your household already has a caregiver. Remove them to invite someone else.",
+    "inviteHelp": "We'll email an invitation link that expires in 7 days. You can also copy the link and share it yourself.",
+    "caregiverEmail": "Caregiver email",
+    "sendInvite": "Send invitation",
+    "inviteSent": "Invitation created. Share this link if the email doesn't arrive:",
+    "pendingInvitation": "Invitation sent to {email}. It expires {date}.",
+    "revokeInvitation": "Revoke invitation",
+    "revokeConfirm": "Revoke this invitation?",
+    "inviteRevoked": "The invitation was revoked.",
+    "contactSaved": "Household details saved.",
+    "profileSaved": "Your profile was saved.",
+    "errors": {
+      "denied": "Only the household owner can do that.",
+      "limit": "A household can have one owner and one caregiver, with one pending invitation at a time.",
+      "state": "That is no longer possible. Refresh the page.",
+      "validation": "Check the information and try again.",
+      "generic": "Something went wrong. Please try again.",
+      "wrongAccount": "Sign in with the email address the invitation was sent to.",
+      "alreadyInHousehold": "This account already belongs to a household.",
+      "invitationUnavailable": "This invitation has expired, was revoked, or was already used."
+    },
+    "invitation": {
+      "title": "Caregiver invitation",
+      "invalid": "This invitation link is not valid.",
+      "signedOutDescription": "You've been invited to join a household on Ethiospectrum as a caregiver. Create an account or sign in with the invited email address to accept.",
+      "createAccount": "Create an account",
+      "signIn": "Sign in",
+      "alreadyAccepted": "This invitation has already been accepted.",
+      "unavailable": "This invitation has expired or is no longer available. Ask the household owner for a new one.",
+      "description": "You've been invited to join {household} as a caregiver.",
+      "emailNotice": "Invitation for {email} · expires {date}",
+      "accept": "Accept invitation",
+      "accepting": "Joining…"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Your name, contact number, language, and time zone.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "phoneHelp": "Optional. Used only to coordinate your services.",
+    "language": "Preferred language",
+    "languageHelp": "Used for emails and notifications.",
+    "timezone": "Time zone",
+    "save": "Save",
+    "saving": "Saving…"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "description": "Updates about your account, services, appointments, and payments.",
+    "bell": "Notifications",
+    "bellUnread": "Notifications, {count} unread",
+    "markAllRead": "Mark all as read",
+    "markRead": "Mark as read",
+    "unread": "Unread",
+    "open": "Open",
+    "loadError": "Notifications could not be loaded.",
+    "empty": "You have no notifications.",
+    "generic": "Update",
+    "pagination": "Notification pages",
+    "previous": "Previous",
+    "next": "Next",
+    "email": {
+      "greeting": "Hello {name},",
+      "action": "Open Ethiospectrum",
+      "footer": "You're receiving this because you have an {brand} account. Do not reply to this email; sign in to message your specialist."
+    },
+    "types": {
+      "account_created": {
+        "title": "Welcome to Ethiospectrum",
+        "body": "Your account was created. Add your children and choose a service to get started."
+      },
+      "caregiver_invitation": {
+        "title": "You're invited to join {household}",
+        "body": "You've been invited to join {household} on Ethiospectrum as a caregiver. Open the link to accept."
+      },
+      "caregiver_joined": {
+        "title": "Your caregiver joined",
+        "body": "The caregiver you invited has joined your household."
+      },
+      "caregiver_removed": {
+        "title": "Household access removed",
+        "body": "You were removed as a caregiver from a household."
+      },
+      "subscription_activated": {
+        "title": "RBT Boot Camp is active",
+        "body": "Your subscription is active. All training videos and resources are unlocked."
+      },
+      "subscription_inactive": {
+        "title": "RBT Boot Camp access paused",
+        "body": "Your subscription is no longer active, so training content is locked. Review billing to continue."
+      },
+      "request_received": {
+        "title": "{service} request received",
+        "body": "We received your request. An administrator will review it and assign a specialist."
+      },
+      "specialist_assigned": {
+        "title": "Specialist assigned",
+        "body": "A specialist was assigned to your {service} request."
+      },
+      "appointment_proposed": {
+        "title": "Appointment times proposed",
+        "body": "New appointment times were proposed for your {service} request. Review and confirm one."
+      },
+      "appointment_confirmed": {
+        "title": "Appointment confirmed",
+        "body": "Your {service} appointment is confirmed for {start}."
+      },
+      "appointment_reminder": {
+        "title": "Appointment reminder",
+        "body": "Reminder: your {service} appointment is on {start}."
+      },
+      "appointment_cancelled": {
+        "title": "Appointment cancelled",
+        "body": "A {service} appointment or request was cancelled. Open the request for details and any refund."
+      },
+      "appointment_rescheduled": {
+        "title": "Appointment rescheduled",
+        "body": "Your {service} appointment is being rescheduled. Open the request for the latest details."
+      },
+      "payment_confirmed": {
+        "title": "Payment confirmed",
+        "body": "We received your payment of {amount} for {service}."
+      },
+      "payment_failed": {
+        "title": "Payment failed",
+        "body": "Your payment for {service} did not go through. Your request is saved and you can try again."
+      },
+      "refund_processed": {
+        "title": "Refund processed",
+        "body": "A refund of {amount} for {service} was sent to your original payment method."
+      },
+      "service_completed": {
+        "title": "Service completed",
+        "body": "Your {service} is complete. Thank you for choosing Ethiospectrum."
+      },
+      "follow_up_available": {
+        "title": "Follow-up available",
+        "body": "Your {service} includes one follow-up. Request it when you're ready."
+      },
+      "request_declined": {
+        "title": "Request declined",
+        "body": "Your {service} request could not be accepted. Open it to see the reason."
+      },
+      "document_available": {
+        "title": "New document available",
+        "body": "Your specialist added a document to your {service} request."
+      },
+      "new_message": {
+        "title": "New message",
+        "body": "You have a new message about your {service} request."
+      },
+      "specialist_new_assignment": {
+        "title": "New assignment",
+        "body": "You were assigned a {service} request."
+      },
+      "specialist_availability_requested": {
+        "title": "Availability requested",
+        "body": "Please propose appointment times for a {service} request."
+      },
+      "specialist_appointment_proposed": {
+        "title": "Times proposed",
+        "body": "Ethiospectrum proposed times for your {service} assignment, starting {start}."
+      },
+      "specialist_appointment_confirmed": {
+        "title": "Appointment confirmed",
+        "body": "A {service} appointment is confirmed for {start}."
+      },
+      "specialist_appointment_rescheduled": {
+        "title": "Appointment rescheduled",
+        "body": "A {service} appointment is being rescheduled."
+      },
+      "specialist_appointment_cancelled": {
+        "title": "Appointment cancelled",
+        "body": "A {service} appointment was cancelled."
+      },
+      "specialist_appointment_reminder": {
+        "title": "Appointment reminder",
+        "body": "Reminder: a {service} appointment is on {start}."
+      },
+      "specialist_document_available": {
+        "title": "Document available",
+        "body": "The household added a document to a {service} request."
+      },
+      "specialist_follow_up_required": {
+        "title": "Follow-up requested",
+        "body": "The household requested the included follow-up for a {service} request."
+      },
+      "specialist_new_message": {
+        "title": "New message",
+        "body": "The household sent a message about a {service} request."
+      },
+      "specialist_service_completed": {
+        "title": "Service completed",
+        "body": "An administrator marked a {service} request complete."
+      },
+      "admin_new_request": {
+        "title": "New service request",
+        "body": "A new {service} request needs review."
+      },
+      "admin_payment_failed": {
+        "title": "Payment failed",
+        "body": "A {service} payment failed."
+      },
+      "admin_cancellation": {
+        "title": "Cancellation",
+        "body": "A household cancelled a {service} request."
+      },
+      "admin_reschedule_requested": {
+        "title": "Reschedule requested",
+        "body": "A household asked to reschedule a {service} appointment."
+      },
+      "admin_unassigned_request": {
+        "title": "Request waiting for assignment",
+        "body": "A {service} request has waited more than 24 hours for assignment."
+      },
+      "admin_service_completed": {
+        "title": "Service completed",
+        "body": "A specialist completed a {service} request."
+      },
+      "admin_refund_requested": {
+        "title": "Refund requested",
+        "body": "A refund for a {service} request is ready to process."
+      },
+      "admin_availability_submitted": {
+        "title": "Availability submitted",
+        "body": "A specialist proposed times for a {service} request."
+      },
+      "admin_follow_up_requested": {
+        "title": "Follow-up requested",
+        "body": "A household requested a follow-up for a {service} request."
+      },
+      "admin_no_show": {
+        "title": "No-show recorded",
+        "body": "A {service} appointment was recorded as a no-show."
+      }
+    }
+  },
+  "publicServices": {
+    "eyebrow": "Services",
+    "title": "Support for your family, in your language",
+    "seePricing": "See services and prices",
+    "heroCardEyebrow": "Ethiospectrum services",
+    "independentNotice": "Consultation and IEP Language Assistance can be purchased on their own — no RBT Boot Camp subscription required.",
+    "rbt": {
+      "name": "RBT Boot Camp",
+      "price": "Monthly",
+      "billing": "Recurring monthly subscription",
+      "description": "A self-paced video library that helps parents understand neurodivergency, complete our curriculum, and prepare for an external RBT-related credential or exam.",
+      "features": [
+        "All training videos",
+        "All supporting resources",
+        "Progress tracking for you and your child"
+      ],
+      "action": "Start RBT Boot Camp"
+    },
+    "consultation": {
+      "name": "Consultation",
+      "price": "$9.99",
+      "billing": "One-time payment · 60 minutes",
+      "description": "General household and service guidance, or specific behavioral and educational guidance, with a matched specialist.",
+      "features": ["60-minute session", "One follow-up included", "English, Amharic, or Spanish"],
+      "action": "Request a consultation"
+    },
+    "iep": {
+      "name": "IEP Language Assistance",
+      "price": "$19.99",
+      "billing": "One-time payment · 60-minute session",
+      "description": "Understand your child's IEP, get language assistance at school meetings, and receive a written translation.",
+      "features": [
+        "English ↔ Amharic and English ↔ Spanish",
+        "Remote or in person, no travel fee",
+        "Written translation and one follow-up included"
+      ],
+      "action": "Request IEP assistance"
+    },
+    "policyTitle": "Cancellation and refunds",
+    "policy": [
+      "More than 48 hours before: 100% refund, or reschedule at no charge.",
+      "24 to 48 hours before: 50% refund, or reschedule once at no charge.",
+      "Less than 24 hours before: reschedule once without paying again; no cash refund unless an administrator approves an exception.",
+      "No-show: no automatic refund; rescheduling may be approved case by case.",
+      "If Ethiospectrum cancels, you receive a 100% refund or may reschedule."
+    ],
+    "feesTitle": "Taxes and fees",
+    "fees": [
+      "Applicable taxes are calculated at checkout where required.",
+      "No travel fee is charged for in-person IEP assistance.",
+      "Any additional fee is shown for your approval before you pay."
+    ],
+    "certificationDisclaimer": "Completing RBT Boot Camp is not an RBT certification. Ethiospectrum is not an accredited RBT credential provider.",
+    "languageTitle": "Services in English, Amharic, and Spanish",
+    "languageDescription": "Specialists are matched by the service, language, and delivery method your family needs.",
+    "languageItems": [
+      "IEP explanation and school-meeting language assistance",
+      "Written translation of IEP material",
+      "Remote sessions or in person at Ethiospectrum, the school, or an agreed location"
+    ]
+  }
 }

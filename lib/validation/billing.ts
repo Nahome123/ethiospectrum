@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { billingIntervalValues } from "@/lib/billing/constants";
+import { checkoutBillingIntervalValues } from "@/lib/billing/constants";
 
-export const billingIntervalSchema = z.enum(billingIntervalValues);
+export const billingIntervalSchema = z.enum(checkoutBillingIntervalValues);
 export const billingHouseholdIdSchema = z.uuid();
 
 export const billingCheckoutSchema = z.object({

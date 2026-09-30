@@ -21,9 +21,22 @@ type Values = {
   schoolDistrict: string;
   gradeLevel: string;
   notes: string;
+  preferredLanguage?: "" | "en" | "am" | "es";
+  serviceNeeds?: string;
+  communicationConsiderations?: string;
+  educationalInformation?: string;
+  behavioralInformation?: string;
 };
 
-type FieldName = Exclude<keyof Values, "notes">;
+type FieldName = "firstName" | "lastName" | "preferredName" | "birthYear" | "schoolDistrict" | "gradeLevel";
+type ServiceField =
+  "serviceNeeds" | "communicationConsiderations" | "educationalInformation" | "behavioralInformation";
+const serviceFields: ServiceField[] = [
+  "serviceNeeds",
+  "communicationConsiderations",
+  "educationalInformation",
+  "behavioralInformation",
+];
 
 const textFields: { key: FieldName; label: FieldName; type: "number" | "text" }[] = [
   { key: "firstName", label: "firstName", type: "text" },
@@ -58,6 +71,11 @@ export function DependentForm({
       schoolDistrict: "",
       gradeLevel: "",
       notes: "",
+      preferredLanguage: "",
+      serviceNeeds: "",
+      communicationConsiderations: "",
+      educationalInformation: "",
+      behavioralInformation: "",
       ...initial,
     },
     resolver: zodResolver(validationSchema, undefined, { raw: true }),
@@ -76,7 +94,7 @@ export function DependentForm({
         const data = new FormData();
 
         for (const [key, value] of Object.entries(values)) {
-          data.set(key, value);
+          data.set(key, value ?? "");
         }
 
         startTransition(() => action(data));
@@ -116,6 +134,38 @@ export function DependentForm({
           </div>
         );
       })}
+      <fieldset className="space-y-4 rounded-xl border p-4">
+        <legend className="px-1 text-sm font-semibold">{t("serviceInformation")}</legend>
+        <p className="text-sm text-muted-foreground">{t("serviceInformationHelp")}</p>
+        <div className="space-y-1.5">
+          <Label htmlFor="preferredLanguage">{t("preferredLanguage")}</Label>
+          <select
+            className="h-10 w-full rounded-md border border-input bg-background px-3"
+            id="preferredLanguage"
+            {...form.register("preferredLanguage")}
+          >
+            <option value="">{t("noPreference")}</option>
+            <option value="en">English</option>
+            <option value="am">አማርኛ (Amharic)</option>
+            <option value="es">Español (Spanish)</option>
+          </select>
+        </div>
+        {serviceFields.map((field) => (
+          <div className="space-y-1.5" key={field}>
+            <Label htmlFor={field}>{t(field)}</Label>
+            <Textarea
+              aria-describedby={`${field}-help`}
+              id={field}
+              maxLength={2000}
+              rows={3}
+              {...form.register(field)}
+            />
+            <p className="text-sm text-muted-foreground" id={`${field}-help`}>
+              {t(`${field}Help`)}
+            </p>
+          </div>
+        ))}
+      </fieldset>
       <div className="space-y-1.5">
         <Label htmlFor="notes">{t("notes")}</Label>
         <p className="text-sm text-muted-foreground" id="notes-help">

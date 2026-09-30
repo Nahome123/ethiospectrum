@@ -141,8 +141,15 @@ export interface OcrProviderEnv {
 export interface StripeBillingEnv {
   secretKey: string;
   webhookSecret: string;
-  familyPlusMonthlyPriceId: string;
-  familyPlusAnnualPriceId: string;
+  /** Recurring monthly Price for RBT Boot Camp; one-time services work without it. */
+  rbtMonthlyPriceId: string | undefined;
+  /** Delegates tax calculation to Stripe Tax where it is enabled on the account. */
+  automaticTax: boolean;
+}
+
+export interface NotificationEmailEnv {
+  apiKey: string;
+  from: string;
 }
 
 export function parseServerSupabaseEnv(input: EnvInput): ServerSupabaseEnv | undefined {
@@ -354,31 +361,69 @@ export function getReminderWorkerSecret(input?: EnvInput): string | undefined {
   );
 }
 
-/** Server-only Stripe configuration. All values are required together. */
+/**
+ * Server-only Stripe configuration. The secret key and webhook secret are
+ * required together; the RBT Boot Camp monthly Price is optional so one-time
+ * service payments can be enabled before the subscription product exists.
+ */
 export function getStripeBillingEnv(input?: EnvInput): StripeBillingEnv | undefined {
   const secretKey = optionalStripeSecretKey.parse(input?.STRIPE_SECRET_KEY ?? process.env.STRIPE_SECRET_KEY);
   const webhookSecret = optionalStripeWebhookSecret.parse(
     input?.STRIPE_WEBHOOK_SECRET ?? process.env.STRIPE_WEBHOOK_SECRET,
   );
-  const familyPlusMonthlyPriceId = optionalStripePriceId.parse(
-    input?.STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID ?? process.env.STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID,
+  const rbtMonthlyPriceId = optionalStripePriceId.parse(
+    input?.STRIPE_RBT_MONTHLY_PRICE_ID ?? process.env.STRIPE_RBT_MONTHLY_PRICE_ID,
   );
-  const familyPlusAnnualPriceId = optionalStripePriceId.parse(
-    input?.STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID ?? process.env.STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID,
-  );
+  const automaticTax =
+    (input?.STRIPE_AUTOMATIC_TAX ?? process.env.STRIPE_AUTOMATIC_TAX ?? "").trim() === "true";
 
-  if (!secretKey && !webhookSecret && !familyPlusMonthlyPriceId && !familyPlusAnnualPriceId) {
+  if (!secretKey && !webhookSecret && !rbtMonthlyPriceId) {
     return undefined;
   }
-  if (!secretKey || !webhookSecret || !familyPlusMonthlyPriceId || !familyPlusAnnualPriceId) {
+  if (!secretKey || !webhookSecret) {
     throw new SupabaseConfigurationError(
-      "STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID, and STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID must be configured together.",
+      "STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET must be configured together.",
     );
   }
-  if (familyPlusMonthlyPriceId === familyPlusAnnualPriceId) {
-    throw new SupabaseConfigurationError("Monthly and annual Stripe Price IDs must be different.");
+  return { secretKey, webhookSecret, rbtMonthlyPriceId, automaticTax };
+}
+
+const optionalNotificationWorkerSecret = z.preprocess(
+  (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+  z.string().min(32).optional(),
+);
+
+export function getNotificationWorkerSecret(input?: EnvInput): string | undefined {
+  return optionalNotificationWorkerSecret.parse(
+    input?.NOTIFICATION_WORKER_SECRET ?? process.env.NOTIFICATION_WORKER_SECRET,
+  );
+}
+
+/** Optional transactional email delivery (Resend). Without it, notifications stay in-app only. */
+export function getNotificationEmailEnv(input?: EnvInput): NotificationEmailEnv | undefined {
+  const apiKey = z
+    .preprocess(
+      (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+      z
+        .string()
+        .trim()
+        .regex(/^re_[A-Za-z0-9_]+$/)
+        .optional(),
+    )
+    .parse(input?.RESEND_API_KEY ?? process.env.RESEND_API_KEY);
+  const from = z
+    .preprocess(
+      (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+      z.string().trim().min(3).max(200).optional(),
+    )
+    .parse(input?.NOTIFICATION_EMAIL_FROM ?? process.env.NOTIFICATION_EMAIL_FROM);
+  if (!apiKey && !from) return undefined;
+  if (!apiKey || !from) {
+    throw new SupabaseConfigurationError(
+      "RESEND_API_KEY and NOTIFICATION_EMAIL_FROM must be configured together.",
+    );
   }
-  return { secretKey, webhookSecret, familyPlusMonthlyPriceId, familyPlusAnnualPriceId };
+  return { apiKey, from };
 }
 
 export function requireStripeBillingEnv(input?: EnvInput): StripeBillingEnv {

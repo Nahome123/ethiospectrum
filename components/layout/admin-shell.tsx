@@ -3,25 +3,23 @@ import { brandConfig } from "@/config/brand";
 import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
+import { NotificationBell } from "./notification-bell";
 import { signOutAction } from "@/lib/auth/actions";
 import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
 
+/** Administrator operations (PRD section 37). Retired demo pages are not linked. */
 const links = [
-  "users",
-  "resources",
-  "translations",
-  "documents",
-  "supportRequests",
-  "specialists",
-  "billing",
-  "prompts",
-  "auditLogs",
+  ["overview", "/admin"],
+  ["serviceRequests", "/admin/service-requests"],
+  ["payments", "/admin/payments"],
+  ["billing", "/admin/billing"],
+  ["serviceConfiguration", "/admin/services"],
+  ["specialists", "/admin/specialists"],
+  ["users", "/admin/users"],
+  ["trainingContent", "/admin/training"],
 ] as const;
-const linkPaths: Partial<Record<(typeof links)[number], string>> = {
-  auditLogs: "audit-logs",
-  supportRequests: "support-requests",
-};
+
 export async function AdminShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations();
   const locale = (await getLocale()) as AppLocale;
@@ -37,27 +35,22 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
         </Link>
         <p className="mt-1 text-sm text-slate-300">{t("navigation.admin")}</p>
         <nav aria-label={t("navigation.admin")} className="mt-6 flex gap-2 overflow-x-auto lg:flex-col">
-          <Link
-            className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-800"
-            href="/admin"
-          >
-            {t("admin.overview")}
-          </Link>
-          {links.map((link) => (
+          {links.map(([key, href]) => (
             <Link
-              className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-800"
-              href={`/admin/${linkPaths[link] ?? link}`}
-              key={link}
+              className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-slate-400"
+              href={href}
+              key={href}
             >
-              {t(`navigation.${link}`)}
+              {t(`adminConsole.nav.${key}`)}
             </Link>
           ))}
         </nav>
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
-          <p className="text-sm font-bold text-primary">{t("common.developmentOnly")}</p>
+          <p className="text-sm font-bold text-primary">{t("adminConsole.roleLabel")}</p>
           <div className="flex items-center gap-3">
+            <NotificationBell />
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
               {displayName}

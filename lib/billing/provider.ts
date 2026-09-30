@@ -14,16 +14,20 @@ export function getStripeClient(): Stripe {
   return stripeClient;
 }
 
-export function getStripePriceId(interval: BillingInterval): string {
-  const env = requireStripeBillingEnv();
-  return interval === "month" ? env.familyPlusMonthlyPriceId : env.familyPlusAnnualPriceId;
+/** The only subscription Price: RBT Boot Camp, billed monthly. */
+export function getRbtMonthlyPriceId(): string {
+  const priceId = requireStripeBillingEnv().rbtMonthlyPriceId;
+  if (!priceId) throw new Error("rbt_price_not_configured");
+  return priceId;
 }
 
 export function getConfiguredBillingInterval(priceId: string): BillingInterval | null {
   const env = requireStripeBillingEnv();
-  if (priceId === env.familyPlusMonthlyPriceId) return "month";
-  if (priceId === env.familyPlusAnnualPriceId) return "year";
-  return null;
+  return env.rbtMonthlyPriceId && priceId === env.rbtMonthlyPriceId ? "month" : null;
+}
+
+export function isStripeAutomaticTaxEnabled(): boolean {
+  return requireStripeBillingEnv().automaticTax;
 }
 
 export function getStripeWebhookSecret(): string {

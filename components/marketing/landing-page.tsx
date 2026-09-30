@@ -1,21 +1,13 @@
-import { BookOpen, CalendarDays, FileText, MessageCircleQuestion, ShieldCheck, Sparkles } from "lucide-react";
+import { ShieldCheck, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getEducationLandingState } from "@/lib/education/landing-server";
-import { EducationSupportSection } from "./education-support-section";
 import { FeatureCard } from "./feature-card";
+import { ServicesOverview } from "./services-overview";
 import { FamilyPhotoGallery } from "./family-photo-gallery";
 import { SectionHeading } from "./section-heading";
 
 export async function LandingPage() {
   const t = await getTranslations();
-  const educationLandingState = await getEducationLandingState();
-  const cards = [
-    [FileText, "documents"],
-    [MessageCircleQuestion, "assistant"],
-    [CalendarDays, "roadmap"],
-    [BookOpen, "resources"],
-  ] as const;
   return (
     <>
       <section className="border-b border-border bg-[radial-gradient(circle_at_top_right,_#e5f0ef,_#f7f8f5_55%)]">
@@ -36,30 +28,30 @@ export async function LandingPage() {
                 {t("hero.primaryAction")}
               </Link>
               <Link
-                href="/how-it-works"
+                href="/pricing"
                 className="rounded-md border border-primary px-5 py-3 font-semibold text-primary hover:bg-white"
               >
-                {t("hero.secondaryAction")}
+                {t("publicServices.seePricing")}
               </Link>
             </div>
             <p className="mt-6 text-sm font-medium text-slate-600">{t("hero.trust")}</p>
           </div>
           <div className="rounded-2xl border border-border bg-white p-5 shadow-md sm:p-7">
-            <div className="rounded-xl bg-secondary p-5">
-              <p className="text-sm font-bold text-secondary-foreground">{t("common.preview")}</p>
-              <h2 className="mt-2 text-2xl font-bold">{t("dashboard.welcome")}</h2>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">{t("dashboard.intro")}</p>
-            </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {["upcoming", "recommended", "recentDocuments", "resource"].map((item) => (
-                <div className="rounded-lg border border-border p-4" key={item}>
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                    {t(`dashboard.${item}`)}
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-slate-800">{t("common.sample")}</p>
-                </div>
+            <p className="text-sm font-bold text-secondary-foreground">
+              {t("publicServices.heroCardEyebrow")}
+            </p>
+            <ul className="mt-4 space-y-3">
+              {(["rbt", "consultation", "iep"] as const).map((key) => (
+                <li
+                  className="flex items-center justify-between gap-3 rounded-lg border border-border p-4"
+                  key={key}
+                >
+                  <span className="font-semibold">{t(`publicServices.${key}.name`)}</span>
+                  <span className="text-sm font-bold text-primary">{t(`publicServices.${key}.price`)}</span>
+                </li>
               ))}
-            </div>
+            </ul>
+            <p className="mt-4 text-sm text-muted-foreground">{t("publicServices.independentNotice")}</p>
           </div>
         </div>
       </section>
@@ -85,7 +77,12 @@ export async function LandingPage() {
           </div>
         </div>
       </section>
-      <EducationSupportSection state={educationLandingState} />
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <SectionHeading eyebrow={t("publicServices.eyebrow")} title={t("publicServices.title")} />
+        <div className="mt-10">
+          <ServicesOverview />
+        </div>
+      </section>
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t("howItWorks.eyebrow")} title={t("howItWorks.title")} />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -96,22 +93,6 @@ export async function LandingPage() {
               <p className="mt-3 leading-7 text-muted-foreground">{t(`howItWorks.step${step}Description`)}</p>
             </article>
           ))}
-        </div>
-      </section>
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <SectionHeading eyebrow={t("features.eyebrow")} title={t("features.title")} />
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {cards.map(([Icon, key]) => (
-              <FeatureCard
-                key={key}
-                icon={Icon}
-                title={t(`features.${key}Title`)}
-                description={t(`features.${key}Description`)}
-                label={t("common.plannedFeature")}
-              />
-            ))}
-          </div>
         </div>
       </section>
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
@@ -134,50 +115,21 @@ export async function LandingPage() {
         </div>
         <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
           <Sparkles aria-hidden="true" className="size-8 text-accent" />
-          <h2 className="mt-6 text-2xl font-bold">{t("digitalBinder.title")}</h2>
-          <p className="mt-3 leading-7 text-primary-foreground/85">{t("digitalBinder.description")}</p>
+          <h2 className="mt-6 text-2xl font-bold">{t("publicServices.languageTitle")}</h2>
+          <p className="mt-3 leading-7 text-primary-foreground/85">
+            {t("publicServices.languageDescription")}
+          </p>
           <ul className="mt-6 space-y-3">
-            {["itemOne", "itemTwo", "itemThree"].map((item) => (
+            {(t.raw("publicServices.languageItems") as string[]).map((item) => (
               <li className="rounded-md bg-white/10 px-4 py-3" key={item}>
-                {t(`digitalBinder.${item}`)}
+                {item}
               </li>
             ))}
           </ul>
         </div>
       </section>
       <section className="bg-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-3 lg:px-8">
-          <div className="lg:col-span-2">
-            <SectionHeading
-              eyebrow={t("documentAssistant.eyebrow")}
-              title={t("documentAssistant.title")}
-              description={t("documentAssistant.description")}
-            />
-            <p className="mt-5 rounded-md border border-accent bg-amber-50 px-4 py-3 text-sm text-slate-700">
-              {t("documentAssistant.notice")}
-            </p>
-          </div>
-          <div className="rounded-xl border border-border p-6">
-            <MessageCircleQuestion aria-hidden="true" className="size-7 text-primary" />
-            <p className="mt-6 text-sm font-bold text-muted-foreground">{t("documentAssistant.citation")}</p>
-            <p className="mt-2 font-semibold">{t("common.plannedFeature")}</p>
-          </div>
-        </div>
-      </section>
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-5 lg:grid-cols-3">
-          <FeatureCard
-            icon={CalendarDays}
-            title={t("roadmap.title")}
-            description={t("roadmap.description")}
-            label={t("common.preview")}
-          />
-          <FeatureCard
-            icon={BookOpen}
-            title={t("resources.title")}
-            description={t("resources.description")}
-            label={t("common.preview")}
-          />
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <FeatureCard
             icon={ShieldCheck}
             title={t("privacy.title")}

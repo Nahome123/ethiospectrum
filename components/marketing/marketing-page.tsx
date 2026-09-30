@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { BookOpen, FileText, ShieldCheck } from "lucide-react";
-import { FeatureCard } from "./feature-card";
+import { ShieldCheck } from "lucide-react";
 import { SectionHeading } from "./section-heading";
+import { ServicesOverview } from "./services-overview";
 
 export async function MarketingPage({
   type,
@@ -17,19 +17,8 @@ export async function MarketingPage({
           title={t("features.title")}
           description={t("marketingPages.featuresIntro")}
         />
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          <FeatureCard
-            icon={FileText}
-            title={t("features.documentsTitle")}
-            description={t("features.documentsDescription")}
-            label={t("common.plannedFeature")}
-          />
-          <FeatureCard
-            icon={BookOpen}
-            title={t("features.resourcesTitle")}
-            description={t("features.resourcesDescription")}
-            label={t("common.preview")}
-          />
+        <div className="mt-10">
+          <ServicesOverview />
         </div>
       </div>
     );
@@ -72,17 +61,15 @@ export async function MarketingPage({
     );
   if (type === "pricing")
     return (
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow={t("pricing.eyebrow")}
           title={t("pricing.title")}
           description={t("pricing.description")}
         />
-        <article className="mt-10 rounded-xl border border-border bg-white p-7">
-          <p className="text-sm font-bold text-secondary-foreground">{t("common.comingSoon")}</p>
-          <h3 className="mt-2 text-2xl font-bold">{t("pricing.planTitle")}</h3>
-          <p className="mt-3 text-muted-foreground">{t("pricing.planDescription")}</p>
-        </article>
+        <div className="mt-10">
+          <ServicesOverview showPolicy />
+        </div>
       </div>
     );
   const privacy = type === "privacy";

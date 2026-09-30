@@ -2,6 +2,11 @@ import "server-only";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import {
+  syncServicePaymentFailure,
+  syncServicePaymentFromSession,
+  syncServiceRefund,
+} from "@/lib/services/payments";
 import { BillingProviderDataError } from "./mapping";
 import { getStripeClient, getStripeWebhookSecret } from "./provider";
 import { isStripeBillingEventType } from "./constants";
@@ -62,37 +67,71 @@ export async function handleStripeWebhookRequest(
 
   let householdId: string | undefined;
   try {
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const subscriptionId = id(session.subscription);
-      if (subscriptionId) {
+    switch (event.type) {
+      case "checkout.session.completed":
+      case "checkout.session.async_payment_succeeded":
+      case "checkout.session.async_payment_failed":
+      case "checkout.session.expired": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        if (session.mode === "payment") {
+          const synced = await syncServicePaymentFromSession({
+            admin,
+            stripe,
+            sessionId: session.id,
+            providerUpdatedAt: providerCreatedAt,
+          });
+          householdId = synced?.householdId;
+        } else if (event.type === "checkout.session.completed") {
+          const subscriptionId = id(session.subscription);
+          if (subscriptionId) {
+            householdId = await syncStripeSubscription({
+              admin,
+              stripe,
+              subscriptionId,
+              providerUpdatedAt: providerCreatedAt,
+            });
+          }
+        }
+        break;
+      }
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        const subscription = event.data.object as Stripe.Subscription;
         householdId = await syncStripeSubscription({
           admin,
           stripe,
-          subscriptionId,
+          subscriptionId: subscription.id,
           providerUpdatedAt: providerCreatedAt,
         });
+        break;
       }
-    } else if (
-      event.type === "customer.subscription.created" ||
-      event.type === "customer.subscription.updated" ||
-      event.type === "customer.subscription.deleted"
-    ) {
-      const subscription = event.data.object as Stripe.Subscription;
-      householdId = await syncStripeSubscription({
-        admin,
-        stripe,
-        subscriptionId: subscription.id,
-        providerUpdatedAt: providerCreatedAt,
-      });
-    } else {
-      const invoice = event.data.object as Stripe.Invoice;
-      householdId = await syncStripeInvoice({
-        admin,
-        stripe,
-        invoiceId: invoice.id,
-        providerUpdatedAt: providerCreatedAt,
-      });
+      case "invoice.paid":
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        householdId = await syncStripeInvoice({
+          admin,
+          stripe,
+          invoiceId: invoice.id,
+          providerUpdatedAt: providerCreatedAt,
+        });
+        break;
+      }
+      case "payment_intent.payment_failed": {
+        const intent = await stripe.paymentIntents.retrieve((event.data.object as Stripe.PaymentIntent).id);
+        householdId = await syncServicePaymentFailure({
+          admin,
+          stripe,
+          paymentIntent: intent,
+          providerUpdatedAt: providerCreatedAt,
+        });
+        break;
+      }
+      case "refund.updated": {
+        const refund = await stripe.refunds.retrieve((event.data.object as Stripe.Refund).id);
+        await syncServiceRefund({ admin, refund });
+        break;
+      }
     }
 
     const completed = await admin.rpc("complete_stripe_webhook_event", {

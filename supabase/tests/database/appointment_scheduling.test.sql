@@ -316,8 +316,8 @@ select ok(not exists (
   select 1 from pg_proc as routine
   join pg_namespace as schema on schema.oid = routine.pronamespace
   where schema.nspname in ('public', 'private')
-    and (routine.proname like '%notif%' or routine.proname like '%recurring%' or routine.proname like '%calendar_sync%')
-), 'no notification, recurrence, or calendar-sync function exists');
+    and ((routine.proname like '%notif%' and routine.proname like '%appointment%') or routine.proname like '%recurring%' or routine.proname like '%calendar_sync%')
+), 'no support-appointment notification, recurrence, or calendar-sync function exists');
 select ok(not exists (
   select 1 from pg_proc as routine
   join pg_namespace as schema on schema.oid = routine.pronamespace

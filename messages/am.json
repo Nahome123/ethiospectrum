@@ -129,9 +129,9 @@
     "signup": "ጀምር",
     "dashboard": "ዳሽቦርድ",
     "onboarding": "መጀመሪያ",
-    "dependents": "የቤተሰብ አባላት",
+    "dependents": "ልጆች",
     "documents": "ሰነዶች",
-    "training": "የRBT ስህተት-አልባ ማስተማር ስልጠና መመሪያ",
+    "training": "የRBT ቡት ካምፕ",
     "assistant": "የሰነድ ረዳት",
     "roadmap": "የእርምጃ እቅድ",
     "support": "ድጋፍ",
@@ -143,7 +143,12 @@
     "supportRequests": "የድጋፍ ጥያቄዎች",
     "billing": "ክፍያ",
     "prompts": "መመሪያዎች",
-    "auditLogs": "የኦዲት መዝገብ"
+    "auditLogs": "የኦዲት መዝገብ",
+    "services": "አገልግሎቶች",
+    "requests": "የአገልግሎት ጥያቄዎች",
+    "household": "ቤተሰብ",
+    "notifications": "ማሳወቂያዎች",
+    "specialistWorkspace": "የባለሙያ የሥራ ቦታ"
   },
   "common": {
     "learnMore": "ተጨማሪ ይወቁ",
@@ -227,12 +232,97 @@
     "itemThree": "የድጋፍ ደብዳቤዎች"
   },
   "roadmap": {
-    "eyebrow": "የእርምጃ እቅድ",
-    "title": "ቀጣዩን እርምጃ የሚታይ ያድርጉ።",
-    "description": "የወደፊት እቅድ አስፈላጊ ቀኖችን እና ጥያቄዎችን ወደ ግልጽ እና ተለዋዋጭ እቅድ ይቀይራል።",
-    "itemOne": "ጥያቄዎችን አዘጋጅ",
-    "itemTwo": "ደብዳቤን ይመልከቱ",
-    "itemThree": "ማሳሰቢያ ጨምር"
+    "householdRoadmap": "የቤተሰብ የእርምጃ እቅድ",
+    "description": "መግለጫ",
+    "actionItems": "የእርምጃ ንጥሎች",
+    "newActionItem": "አዲስ የእርምጃ ንጥል",
+    "editActionItem": "የእርምጃ ንጥልን ያርትዑ",
+    "itemDetails": "የእርምጃ ንጥል ዝርዝሮች",
+    "newDescription": "የቤተሰብ የእርምጃ ንጥል ይፍጠሩ። መመደብ፣ የቤተሰብ አባል እና ቀን አማራጭ ናቸው።",
+    "titleError": "እስከ 160 ቁምፊዎች ያለው የእርምጃ ንጥል ርዕስ ያስገቡ።",
+    "descriptionError": "እስከ 4,000 ቁምፊዎች ያለው መግለጫ ያስገቡ።",
+    "dueDateError": "ትክክለኛ የቀን መቁጠሪያ ቀን ያስገቡ።",
+    "validationError": "እባክዎ የተጠቆሙትን መስኮች ይመልከቱ።",
+    "title": "ርዕስ",
+    "category": "ምድብ",
+    "priority": "ቅድሚያ",
+    "status": "ሁኔታ",
+    "dueDate": "የማለቂያ ቀን",
+    "dependent": "የቤተሰብ አባል",
+    "assignee": "ተመዳቢ",
+    "unassigned": "አልተመደበም",
+    "noDependent": "የቤተሰብ አባል የለም",
+    "assignToMe": "ለእኔ መድቡ",
+    "assignedHouseholdMember": "የተመደበ የቤተሰብ አባል",
+    "formerHouseholdMember": "የቀድሞ የቤተሰብ አባል",
+    "archivedDependent": "በማህደር የተቀመጠ የቤተሰብ አባል",
+    "categories": {
+      "general": "አጠቃላይ",
+      "healthcare": "የጤና እንክብካቤ",
+      "education": "ትምህርት",
+      "therapy": "ህክምና",
+      "benefits": "ጥቅማ ጥቅሞች",
+      "legal": "ሕጋዊ",
+      "family_support": "የቤተሰብ ድጋፍ",
+      "other": "ሌላ"
+    },
+    "priorities": {
+      "low": "ዝቅተኛ",
+      "medium": "መካከለኛ",
+      "high": "ከፍተኛ"
+    },
+    "statuses": {
+      "not_started": "አልተጀመረም",
+      "in_progress": "በሂደት ላይ",
+      "blocked": "ተከልክሏል",
+      "completed": "ተጠናቋል",
+      "cancelled": "ተሰርዟል"
+    },
+    "sorts": {
+      "manual": "በእጅ ቅደም ተከተል",
+      "due_date": "የማለቂያ ቀን",
+      "priority": "ቅድሚያ",
+      "updated": "በቅርብ የዘመነ",
+      "created": "በቅርብ የተፈጠረ"
+    },
+    "overdue": "ጊዜው አልፏል",
+    "completed": "ተጠናቋል",
+    "archive": "ወደ ማህደር አስገባ",
+    "restore": "መልስ",
+    "archiveConfirm": "ይህን የእርምጃ ንጥል ወደ ማህደር ያስገቡ? ከንቁ የእርምጃ እቅድ ይወገዳል።",
+    "archivedNotice": "ይህ የእርምጃ ንጥል በማህደር ተቀምጧል። ከማረምዎ በፊት ይመልሱት።",
+    "save": "አስቀምጥ",
+    "saving": "በማስቀመጥ ላይ…",
+    "create": "የእርምጃ ንጥል ፍጠር",
+    "creating": "በመፍጠር ላይ…",
+    "noItems": "እስካሁን ምንም የእርምጃ ንጥሎች የሉም",
+    "noMatchingItems": "ተመሳሳይ የእርምጃ ንጥሎች የሉም",
+    "emptyDescription": "ቤተሰብዎ ዝግጁ ሲሆን የእርምጃ ንጥል ይፍጠሩ።",
+    "readOnly": "ለንባብ ብቻ",
+    "readOnlyDescription": "ንቁ የቤተሰብ የእርምጃ ንጥሎችን ማየት ይችላሉ፣ ግን ለውጥ ማድረግ አይችሉም።",
+    "accessDenied": "ይህን የእርምጃ እቅድ ለመድረስ ፈቃድ የለዎትም።",
+    "createError": "ይህን የእርምጃ ንጥል መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+    "updateError": "ይህን የእርምጃ ንጥል ማዘመን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+    "archiveError": "ይህን የእርምጃ ንጥል ወደ ማህደር ማስገባት አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+    "restoreError": "ይህን የእርምጃ ንጥል መመለስ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+    "reorderError": "የእርምጃ ንጥሎችን እንደገና መደርደር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+    "reorderSuccess": "የእርምጃ ንጥል ቅደም ተከተል ተዘምኗል።",
+    "staleError": "ይህ ንጥል በሌላ ሰው ተዘምኗል። ያድሱ እና እንደገና ይሞክሩ።",
+    "filter": "አጣራ",
+    "sort": "ደርድር",
+    "all": "ሁሉም",
+    "assignedToMe": "ለእኔ የተመደበ",
+    "clearFilters": "ማጣሪያዎችን አጽዳ",
+    "archivedItems": "በማህደር ያሉ ንጥሎች",
+    "activeItems": "ንቁ ንጥሎች",
+    "previous": "ቀዳሚ",
+    "next": "ቀጣይ",
+    "page": "ገጽ {page}",
+    "pagination": "የእርምጃ እቅድ ገጽ መቀየሪያ",
+    "backToRoadmap": "ወደ የእርምጃ እቅድ ተመለስ",
+    "backToItem": "ወደ የእርምጃ ንጥል ተመለስ",
+    "moveUp": "የእርምጃ ንጥሉን ወደ ላይ አንቀሳቅስ",
+    "moveDown": "የእርምጃ ንጥሉን ወደ ታች አንቀሳቅስ"
   },
   "resources": {
     "eyebrow": "የመማሪያ ቤተ-መጽሐፍት",
@@ -468,8 +558,8 @@
   },
   "pricing": {
     "eyebrow": "ዋጋ",
-    "title": "አሳቢ ድጋፍ፣ ዝርዝሮቹ በቅርብ ጊዜ።",
-    "description": "በዚህ መሰረት ውስጥ ዋጋ እና የሚከፈልበት ድጋፍ አይገኙም። ማንኛውም የምዝገባ አገልግሎት ከመጀመሩ በፊት ግልጽ አማራጮችን እናካፍላለን።",
+    "title": "ቀላል እና ግልጽ ዋጋዎች",
+    "description": "ለRBT ቡት ካምፕ በየወሩ ይመዝገቡ፣ ወይም ምክክር ወይም የIEP የቋንቋ ድጋፍ ለብቻው ይግዙ።",
     "planTitle": "የወደፊት የድጋፍ ዕቅዶች",
     "planDescription": "ዛሬ ምንም ክፍያ ወይም ግዢ የለም።"
   },
@@ -536,7 +626,8 @@
     "pending": "እባክዎ ይጠብቁ…",
     "haveAccount": "መለያ አለዎት?",
     "needAccount": "መለያ ይፈልጋሉ?",
-    "backToLogin": "ወደ መግቢያ ተመለስ"
+    "backToLogin": "ወደ መግቢያ ተመለስ",
+    "signupCaregiverDescription": "የቤተሰቡ ባለቤት በጋበዘው የኢሜይል አድራሻ የተንከባካቢ መለያዎን ይፍጠሩ። ኢሜይልዎን ካረጋገጡ በኋላ ቤተሰባቸውን ይቀላቀላሉ።"
   },
   "dashboard": {
     "welcome": "ወደ የቤተሰብ የሥራ ቦታዎ እንኳን ደህና መጡ",
@@ -668,97 +759,24 @@
     "permissionOwnerAdministrator": "ባለቤቶች እና አስተዳዳሪዎች ለውጦችን ማድረግ ይችላሉ።",
     "dashboardTitle": "የቤተሰብ አባላት",
     "dashboardCount": "{count} ንቁ የቤተሰብ አባላት",
-    "manage": "የቤተሰብ አባላትን ያስተዳድሩ"
-  },
-  "roadmap": {
-    "householdRoadmap": "የቤተሰብ የእርምጃ እቅድ",
-    "description": "የተጋሩ የእርምጃ ንጥሎችን ያደራጁ እና ቀጣይ እርምጃዎችን ለቤተሰብዎ እንዲታዩ ያድርጉ።",
-    "actionItems": "የእርምጃ ንጥሎች",
-    "newActionItem": "አዲስ የእርምጃ ንጥል",
-    "editActionItem": "የእርምጃ ንጥልን ያርትዑ",
-    "itemDetails": "የእርምጃ ንጥል ዝርዝሮች",
-    "newDescription": "የቤተሰብ የእርምጃ ንጥል ይፍጠሩ። መመደብ፣ የቤተሰብ አባል እና ቀን አማራጭ ናቸው።",
-    "titleError": "እስከ 160 ቁምፊዎች ያለው የእርምጃ ንጥል ርዕስ ያስገቡ።",
-    "descriptionError": "እስከ 4,000 ቁምፊዎች ያለው መግለጫ ያስገቡ።",
-    "dueDateError": "ትክክለኛ የቀን መቁጠሪያ ቀን ያስገቡ።",
-    "validationError": "እባክዎ የተጠቆሙትን መስኮች ይመልከቱ።",
-    "title": "ርዕስ",
-    "description": "መግለጫ",
-    "category": "ምድብ",
-    "priority": "ቅድሚያ",
-    "status": "ሁኔታ",
-    "dueDate": "የማለቂያ ቀን",
-    "dependent": "የቤተሰብ አባል",
-    "assignee": "ተመዳቢ",
-    "unassigned": "አልተመደበም",
-    "noDependent": "የቤተሰብ አባል የለም",
-    "assignToMe": "ለእኔ መድቡ",
-    "assignedHouseholdMember": "የተመደበ የቤተሰብ አባል",
-    "formerHouseholdMember": "የቀድሞ የቤተሰብ አባል",
-    "archivedDependent": "በማህደር የተቀመጠ የቤተሰብ አባል",
-    "categories": {
-      "general": "አጠቃላይ",
-      "healthcare": "የጤና እንክብካቤ",
-      "education": "ትምህርት",
-      "therapy": "ህክምና",
-      "benefits": "ጥቅማ ጥቅሞች",
-      "legal": "ሕጋዊ",
-      "family_support": "የቤተሰብ ድጋፍ",
-      "other": "ሌላ"
-    },
-    "priorities": { "low": "ዝቅተኛ", "medium": "መካከለኛ", "high": "ከፍተኛ" },
-    "statuses": {
-      "not_started": "አልተጀመረም",
-      "in_progress": "በሂደት ላይ",
-      "blocked": "ተከልክሏል",
-      "completed": "ተጠናቋል",
-      "cancelled": "ተሰርዟል"
-    },
-    "sorts": {
-      "manual": "በእጅ ቅደም ተከተል",
-      "due_date": "የማለቂያ ቀን",
-      "priority": "ቅድሚያ",
-      "updated": "በቅርብ የዘመነ",
-      "created": "በቅርብ የተፈጠረ"
-    },
-    "overdue": "ጊዜው አልፏል",
-    "completed": "ተጠናቋል",
-    "archive": "ወደ ማህደር አስገባ",
-    "restore": "መልስ",
-    "archiveConfirm": "ይህን የእርምጃ ንጥል ወደ ማህደር ያስገቡ? ከንቁ የእርምጃ እቅድ ይወገዳል።",
-    "archivedNotice": "ይህ የእርምጃ ንጥል በማህደር ተቀምጧል። ከማረምዎ በፊት ይመልሱት።",
-    "save": "አስቀምጥ",
-    "saving": "በማስቀመጥ ላይ…",
-    "create": "የእርምጃ ንጥል ፍጠር",
-    "creating": "በመፍጠር ላይ…",
-    "noItems": "እስካሁን ምንም የእርምጃ ንጥሎች የሉም",
-    "noMatchingItems": "ተመሳሳይ የእርምጃ ንጥሎች የሉም",
-    "emptyDescription": "ቤተሰብዎ ዝግጁ ሲሆን የእርምጃ ንጥል ይፍጠሩ።",
-    "readOnly": "ለንባብ ብቻ",
-    "readOnlyDescription": "ንቁ የቤተሰብ የእርምጃ ንጥሎችን ማየት ይችላሉ፣ ግን ለውጥ ማድረግ አይችሉም።",
-    "accessDenied": "ይህን የእርምጃ እቅድ ለመድረስ ፈቃድ የለዎትም።",
-    "createError": "ይህን የእርምጃ ንጥል መፍጠር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
-    "updateError": "ይህን የእርምጃ ንጥል ማዘመን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
-    "archiveError": "ይህን የእርምጃ ንጥል ወደ ማህደር ማስገባት አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
-    "restoreError": "ይህን የእርምጃ ንጥል መመለስ አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
-    "reorderError": "የእርምጃ ንጥሎችን እንደገና መደርደር አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
-    "reorderSuccess": "የእርምጃ ንጥል ቅደም ተከተል ተዘምኗል።",
-    "staleError": "ይህ ንጥል በሌላ ሰው ተዘምኗል። ያድሱ እና እንደገና ይሞክሩ።",
-    "filter": "አጣራ",
-    "sort": "ደርድር",
-    "all": "ሁሉም",
-    "assignedToMe": "ለእኔ የተመደበ",
-    "clearFilters": "ማጣሪያዎችን አጽዳ",
-    "archivedItems": "በማህደር ያሉ ንጥሎች",
-    "activeItems": "ንቁ ንጥሎች",
-    "previous": "ቀዳሚ",
-    "next": "ቀጣይ",
-    "page": "ገጽ {page}",
-    "pagination": "የእርምጃ እቅድ ገጽ መቀየሪያ",
-    "backToRoadmap": "ወደ የእርምጃ እቅድ ተመለስ",
-    "backToItem": "ወደ የእርምጃ ንጥል ተመለስ",
-    "moveUp": "የእርምጃ ንጥሉን ወደ ላይ አንቀሳቅስ",
-    "moveDown": "የእርምጃ ንጥሉን ወደ ታች አንቀሳቅስ"
+    "manage": "የቤተሰብ አባላትን ያስተዳድሩ",
+    "serviceInformation": "የአገልግሎት መረጃ",
+    "serviceInformationHelp": "ባለሙያው አገልግሎት ለመስጠት የሚያስፈልገውን ብቻ ያጋሩ። በማንኛውም ጊዜ ማሻሻል ይችላሉ።",
+    "preferredLanguage": "የሚመርጡት ቋንቋ",
+    "noPreference": "ምርጫ የለም",
+    "serviceNeeds": "የአገልግሎት ፍላጎቶች",
+    "serviceNeedsHelp": "ለምሳሌ፦ የንግግር ድጋፍ፣ የባህሪ ድጋፍ ወይም የIEP አገልግሎቶች።",
+    "communicationConsiderations": "የመግባቢያ ጉዳዮች",
+    "communicationConsiderationsHelp": "ልጅዎ በተሻለ ሁኔታ የሚግባባበት መንገድ።",
+    "educationalInformation": "የትምህርት መረጃ",
+    "educationalInformationHelp": "ለአገልግሎቶች አስፈላጊ የሆኑ ትምህርት ቤት፣ ክፍል ወይም የመማር ድጋፎች።",
+    "behavioralInformation": "የባህሪ / የአገልግሎት መረጃ",
+    "behavioralInformationHelp": "ባለሙያው ልጅዎን እንዲደግፍ የሚረዳ ማንኛውም ነገር።",
+    "languageNames": {
+      "en": "እንግሊዝኛ",
+      "am": "አማርኛ",
+      "es": "ስፓኒሽ"
+    }
   },
   "reminders": {
     "title": "አስታዋሾች",
@@ -1481,22 +1499,29 @@
   "billing": {
     "eyebrow": "የቤተሰብ ምዝገባ",
     "title": "ክፍያ",
-    "description": "የቤተሰብዎን እቅድ፣ የFamily Plus መዳረሻ እና ደህንነቱ የተጠበቀ የደረሰኝ ታሪክ ይመልከቱ።",
+    "description": "የRBT ቡት ካምፕ ምዝገባዎን ያስተዳድሩ እና የአገልግሎት ክፍያዎችን ይመልከቱ።",
     "currentPlan": "የአሁኑ እቅድ",
     "plan": "እቅድ",
-    "entitlement": "የFamily Plus መዳረሻ",
+    "entitlement": "የRBT ቡት ካምፕ መዳረሻ",
     "billingInterval": "የክፍያ ጊዜ",
     "currentPeriod": "የአሁኑ የተከፈለበት ጊዜ የሚያበቃው",
     "accessThrough": "መዳረሻ እስከ",
-    "choosePlan": "የFamily Plus ክፍያ ይምረጡ",
+    "choosePlan": "ለRBT ቡት ካምፕ ይመዝገቡ",
     "amountManagedByStripe": "የአሁኑ የUSD መጠን በStripe ይታያል እና በደህንነት ይሰበሰባል።",
     "subscribe": "በStripe ይመዝገቡ",
     "manageBilling": "ክፍያን ያስተዳድሩ",
     "secureTitle": "ክፍያ በStripe በደህንነት ይተዳደራል",
     "secureDescription": "የክፍያ ካርድ መረጃ በStripe ገጾች ላይ ብቻ ይገባል። Ethiospectrum የካርድ ቁጥር ወይም CVC አይቀበልም እና አያከማችም።",
     "opensStripe": "ደህንነቱ የተጠበቀ የStripe ገጽ በአዲስ ትር ይከፈታል።",
-    "plans": { "free": "ነፃ", "familyPlus": "Family Plus" },
-    "intervals": { "monthly": "ወርሃዊ", "annual": "ዓመታዊ" },
+    "plans": {
+      "free": "ምዝገባ የለም",
+      "familyPlus": "የRBT ቡት ካምፕ",
+      "rbtBootcamp": "የRBT ቡት ካምፕ"
+    },
+    "intervals": {
+      "monthly": "ወርሃዊ",
+      "annual": "ዓመታዊ"
+    },
     "statuses": {
       "active": "ምዝገባው ንቁ ነው",
       "inactive": "ምዝገባው ንቁ አይደለም",
@@ -1509,7 +1534,7 @@
       "starting": "ደህንነቱ የተጠበቀ Checkout በመክፈት ላይ…",
       "redirecting": "የStripe Checkout በመክፈት ላይ…",
       "confirmingTitle": "ምዝገባን በማረጋገጥ ላይ",
-      "confirmingDescription": "Checkout በተሳካ ሁኔታ ተመልሷል። Family Plus የሚነቃው Stripe ምዝገባውን በተረጋገጠ webhook ካረጋገጠ በኋላ ብቻ ነው።",
+      "confirmingDescription": "ክፍያው በተሳካ ሁኔታ ተመልሷል። Stripe ምዝገባውን በተረጋገጠ webhook ሲያረጋግጥ የRBT ቡት ካምፕ ይነቃል።",
       "cancelledTitle": "Checkout ተሰርዟል",
       "cancelledDescription": "የእቅድ ለውጥ አልተደረገም። ዝግጁ ሲሆኑ እንደገና ይሞክሩ።"
     },
@@ -1542,7 +1567,7 @@
     },
     "errors": {
       "validation": "የክፍያ ምርጫውን ያረጋግጡ እና እንደገና ይሞክሩ።",
-      "ownerRequired": "ክፍያን ማስተዳደር የሚችለው የቤተሰብ ባለቤት ብቻ ነው።",
+      "ownerRequired": "ምዝገባውን ማስተዳደር የሚችሉት የቤተሰቡ ባለቤት ወይም የተፈቀደለት ተንከባካቢ ብቻ ናቸው።",
       "adminRequired": "የአስተዳዳሪ መዳረሻ ያስፈልጋል።",
       "checkout": "Checkout መጀመር አልተቻለም። እንደገና ይሞክሩ።",
       "portal": "የክፍያ ፖርታል መክፈት አልተቻለም።",
@@ -1551,6 +1576,19 @@
       "updatedElsewhere": "ክፍያ በሌላ ቦታ ተዘምኗል። እንደገና ከመሞከርዎ በፊት ገጹን ያድሱ።",
       "load": "ክፍያን መጫን አልተቻለም",
       "tryAgain": "ገጹን ያድሱ እና እንደገና ይሞክሩ።"
+    },
+    "monthlyPrice": "{price} በወር",
+    "certificationDisclaimer": "ኮርሱን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም።",
+    "benefits": {
+      "videos": "ሁሉም የተጠበቁ የስልጠና ቪዲዮዎች",
+      "resources": "ሁሉም ደጋፊ የስልጠና ግብዓቶች",
+      "progress": "ለእርስዎ እና ለእያንዳንዱ ልጅ የእድገት ክትትል"
+    },
+    "servicePayments": {
+      "title": "የአገልግሎት ክፍያዎች",
+      "description": "ለምክክር እና ለIEP የቋንቋ ድጋፍ የአንድ ጊዜ ክፍያዎች።",
+      "empty": "እስካሁን የአገልግሎት ክፍያዎች የሉም።",
+      "refunded": "{amount} ተመላሽ ተደርጓል"
     }
   },
   "admin": {
@@ -1571,5 +1609,1235 @@
     "returnTo": "ወደ መግቢያ ተመለስ",
     "developmentNotice": "የተጠበቁ መንገዶች የተረጋገጠ በአገልጋይ-በኩል ክፍለ-ጊዜ ይፈልጋሉ።"
   },
-  "review": { "translation": "ለስሱ ይዘት ከመጠቀሙ በፊት ትርጉም በአፍ መፍቻ ቋንቋ ተናጋሪዎች ግምገማ ይፈልጋል።" }
+  "review": {
+    "translation": "ለስሱ ይዘት ከመጠቀሙ በፊት ትርጉም በአፍ መፍቻ ቋንቋ ተናጋሪዎች ግምገማ ይፈልጋል።"
+  },
+  "services": {
+    "types": {
+      "rbt_bootcamp": "የRBT ቡት ካምፕ",
+      "consultation": "ምክክር",
+      "iep_language_assistance": "የIEP የቋንቋ ድጋፍ"
+    },
+    "status": {
+      "pending_review": "ግምገማ በመጠባበቅ ላይ",
+      "assigned": "ባለሙያ ተመድቧል",
+      "awaiting_availability": "የጊዜ ተገኝነት በመጠባበቅ ላይ",
+      "awaiting_payment": "ክፍያ በመጠባበቅ ላይ",
+      "appointment_proposed": "የቀጠሮ ጊዜዎች ቀርበዋል",
+      "appointment_confirmed": "ቀጠሮ ተረጋግጧል",
+      "in_progress": "በሂደት ላይ",
+      "completed": "ተጠናቋል",
+      "payment_failed": "ክፍያ አልተሳካም",
+      "cancelled": "ተሰርዟል",
+      "reschedule_requested": "ቀጠሮ ማሸጋሸግ ተጠይቋል",
+      "declined": "ውድቅ ተደርጓል",
+      "no_show": "አልተገኘም"
+    },
+    "statusHelp": {
+      "pending_review": "የEthiospectrum አስተዳዳሪ ጥያቄዎን እየገመገመ ነው።",
+      "assigned": "ባለሙያ ተመድቧል። የቀጠሮ ጊዜዎች በቅርቡ ይቀርባሉ።",
+      "awaiting_availability": "ባለሙያዎ የሚገኙበትን ጊዜ እያጋሩ ነው።",
+      "awaiting_payment": "የቀረቡትን ጊዜዎች ይመልከቱ፣ ከዚያ ቀጠሮዎን ለማረጋገጥ ክፍያውን ይፈጽሙ።",
+      "appointment_proposed": "ክፍያ ደርሷል። ለማረጋገጥ ከቀረቡት ጊዜዎች አንዱን ይምረጡ።",
+      "appointment_confirmed": "ቀጠሮዎ ተረጋግጧል።",
+      "in_progress": "ክፍለ ጊዜዎ ተካሂዷል። የተካተተው ክትትል ወይም የቀረው ሥራ እየተጠናቀቀ ነው።",
+      "completed": "ይህ አገልግሎት ተጠናቋል።",
+      "payment_failed": "ክፍያዎ አልተሳካም። ጥያቄዎ ተቀምጧል — እንደገና መሞከር ይችላሉ።",
+      "cancelled": "ይህ ጥያቄ ተሰርዟል።",
+      "reschedule_requested": "አዲስ የቀጠሮ ጊዜዎች ይቀርባሉ።",
+      "declined": "ይህ ጥያቄ ተቀባይነት ሊያገኝ አልቻለም።",
+      "no_show": "ቀጠሮው አልተገኘም። ቀጠሮ ለማሸጋሸግ Ethiospectrumን ያነጋግሩ።"
+    },
+    "paymentStatus": {
+      "unpaid": "አልተከፈለም",
+      "pending": "ክፍያ በመጠባበቅ ላይ",
+      "processing": "በሂደት ላይ",
+      "paid": "ተከፍሏል",
+      "failed": "አልተሳካም",
+      "partially_refunded": "በከፊል ተመላሽ ተደርጓል",
+      "refunded": "ተመላሽ ተደርጓል",
+      "requested": "ተጠይቋል",
+      "succeeded": "ተመላሽ ተደርጓል",
+      "rejected": "ውድቅ ተደርጓል"
+    },
+    "appointmentStatus": {
+      "none": "አልተያዘም",
+      "proposed": "ቀርቧል",
+      "confirmed": "ተረጋግጧል",
+      "declined": "አልተመረጠም",
+      "superseded": "ተተክቷል",
+      "cancelled": "ተሰርዟል",
+      "completed": "ተካሂዷል",
+      "no_show": "አልተገኘም"
+    },
+    "followUpStatus": {
+      "not_available": "ከክፍለ ጊዜው በኋላ ይገኛል",
+      "available": "ይገኛል",
+      "requested": "ተጠይቋል",
+      "scheduled": "ተይዟል",
+      "completed": "ተጠናቋል",
+      "waived": "አያስፈልግም"
+    },
+    "activities": {
+      "consultation_session": "የምክክር ክፍለ ጊዜ",
+      "iep_explanation": "የIEP ማብራሪያ",
+      "meeting_language_assistance": "በትምህርት ቤት ስብሰባ የቋንቋ ድጋፍ",
+      "written_translation": "የጽሑፍ ትርጉም"
+    },
+    "activityStatus": {
+      "pending": "በመጠባበቅ ላይ",
+      "in_progress": "በሂደት ላይ",
+      "completed": "ተጠናቋል",
+      "not_needed": "አያስፈልግም"
+    },
+    "languages": {
+      "en": "እንግሊዝኛ (English)",
+      "am": "አማርኛ",
+      "es": "ስፓኒሽ (Español)"
+    },
+    "iepLanguages": {
+      "am": "እንግሊዝኛ ↔ አማርኛ",
+      "es": "እንግሊዝኛ ↔ ስፓኒሽ"
+    },
+    "deliveryMethods": {
+      "remote": "በርቀት",
+      "in_person": "በአካል"
+    },
+    "locations": {
+      "remote": "በርቀት (በኦንላይን)",
+      "ethiospectrum_location": "የEthiospectrum ቢሮ",
+      "school_meeting": "ትምህርት ቤት / የIEP ስብሰባ",
+      "mutually_agreed": "በጋራ የተስማማንበት ቦታ"
+    },
+    "categories": {
+      "general_guidance": "አጠቃላይ የቤተሰብ እና የአገልግሎት መመሪያ",
+      "behavioral_educational": "የባህሪ ወይም የትምህርት መመሪያ"
+    },
+    "errors": {
+      "denied": "ይህንን ለማድረግ ፈቃድ የለዎትም።",
+      "stale": "እየተመለከቱት ሳለ ይህ ጥያቄ ተቀይሯል። ገጹን አድሰው እንደገና ይሞክሩ።",
+      "state": "ይህ ተግባር በዚህ የጥያቄ ደረጃ አይገኝም።",
+      "limit": "ገደብ ላይ ደርሰዋል። ሌላ ከማከልዎ በፊት ነባሩን ይዝጉ።",
+      "paymentRequired": "ቀጠሮው ከመረጋገጡ በፊት ክፍያ ያስፈልጋል።",
+      "conflict": "ባለሙያው በዚያ ሰዓት ሌላ ቀጠሮ አለው። ሌላ ሰዓት ይምረጡ።",
+      "rescheduleLimit": "ይህ ቀጠሮ በ48 ሰዓት ውስጥ አንድ ጊዜ ተሸጋሽጓል። ለእርዳታ Ethiospectrumን ያነጋግሩ።",
+      "feesRequired": "ከመክፈልዎ በፊት የተዘረዘሩትን ክፍያዎች ይመልከቱ እና ይቀበሉ።",
+      "timezoneTime": "ያ የአካባቢ ሰዓት በተመረጠው የሰዓት ሰቅ (በቀን ብርሃን ቁጠባ ለውጥ ምክንያት) የለም ወይም አሻሚ ነው። ሌላ ሰዓት ይምረጡ።",
+      "validation": "አንዳንድ መረጃዎች ጎድለዋል ወይም ትክክል አይደሉም። ቅጹን አረጋግጠው እንደገና ይሞክሩ።",
+      "generic": "የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
+      "paymentsUnavailable": "የኦንላይን ክፍያ ገና አልተዘጋጀም። እባክዎ Ethiospectrumን ያነጋግሩ።",
+      "checkout": "ደህንነቱ የተጠበቀ የክፍያ ገጽ መክፈት አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
+      "refund": "የክፍያ አቅራቢው ተመላሹን ማስኬድ አልቻለም። እንዳልተሳካ ተመዝግቧል እና እንደገና ሊሞከር ይችላል።"
+    },
+    "success": {
+      "appointmentConfirmed": "ቀጠሮዎ ተረጋግጧል።",
+      "otherTimesRequested": "ሌሎች ጊዜዎችን እናቀርባለን።",
+      "rescheduleRequested": "የቀጠሮ ማሸጋሸግ ጥያቄዎ ተልኳል።",
+      "requestCancelled": "ጥያቄው ተሰርዟል።",
+      "followUpRequested": "የክትትል ጥያቄዎ ተልኳል።",
+      "messageSent": "መልእክቱ ተልኳል።",
+      "redirectingToPayment": "ደህንነቱ የተጠበቀ የክፍያ ገጽ እየተከፈተ ነው…",
+      "refundProcessed": "ተመላሹ ለክፍያ አቅራቢው ተልኳል።",
+      "refundRejected": "የተመላሽ ጥያቄው ውድቅ ተደርጓል።",
+      "refundRequested": "የተመላሽ ልዩ ፈቃድ ተፈጥሯል። ከተመላሾች ዝርዝር ያስኪዱት።",
+      "specialistAssigned": "ባለሙያ ተመድቧል።",
+      "availabilityRequested": "ባለሙያው የሚገኝበትን ጊዜ እንዲያጋራ ተጠይቋል።",
+      "timesProposed": "የቀጠሮ ጊዜዎች ቀርበዋል።",
+      "appointmentScheduled": "ቀጠሮው ተይዟል።",
+      "appointmentModified": "ቀጠሮው ተሻሽሏል።",
+      "appointmentCancelled": "ቀጠሮው ተሰርዟል።",
+      "requestDeclined": "ጥያቄው ውድቅ ተደርጓል።",
+      "statusUpdated": "ሁኔታው ተሻሽሏል።",
+      "sessionRecorded": "ክፍለ ጊዜው ተመዝግቧል።",
+      "noShowRecorded": "አለመገኘቱ ተመዝግቧል።",
+      "activityUpdated": "ተግባሩ ተሻሽሏል።",
+      "serviceCompleted": "አገልግሎቱ እንደተጠናቀቀ ምልክት ተደርጎበታል።",
+      "serviceUpdated": "አገልግሎቱ ተቀምጧል።",
+      "feeSaved": "ክፍያው ተቀምጧል።",
+      "topicSaved": "ርዕሱ ተቀምጧል።",
+      "specialistUpdated": "የባለሙያው መረጃ ተቀምጧል።",
+      "roleUpdated": "ሚናው ተሻሽሏል።"
+    },
+    "catalog": {
+      "eyebrow": "አገልግሎቶች",
+      "title": "አገልግሎት ይምረጡ",
+      "intro": "Ethiospectrum ልዩ ፍላጎት ያላቸው ልጆች ወላጆችን እና ቤተሰቦችን በራስ ፍጥነት በሚሰጥ የRBT ስልጠና፣ በምክክር እና በIEP የቋንቋ ድጋፍ በእንግሊዝኛ፣ በአማርኛ እና በስፓኒሽ ይደግፋል።",
+      "independentNotice": "ምክክር እና የIEP የቋንቋ ድጋፍ የRBT ቡት ካምፕ ምዝገባ አያስፈልጋቸውም። ማንኛውንም አገልግሎት ለብቻው መጠየቅ ይችላሉ።",
+      "householdRequired": "አገልግሎት ከመጠየቅዎ በፊት በዳሽቦርዱ ላይ የቤተሰብዎን ዝግጅት ያጠናቅቁ።",
+      "monthlySubscription": "ወርሃዊ ምዝገባ",
+      "monthlyPrice": "{price} / በወር",
+      "recurring": "በየወሩ የሚታደስ ምዝገባ",
+      "oneTime": "የአንድ ጊዜ ክፍያ · የ{minutes} ደቂቃ ክፍለ ጊዜ",
+      "descriptions": {
+        "rbt_bootcamp": "ወላጆች ኒውሮዳይቨርጀንሲን እንዲረዱ፣ የEthiospectrumን ሥርዓተ ትምህርት እንዲያጠናቅቁ እና ለውጭ RBT-ነክ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ የሚረዳ በራስ ፍጥነት የሚታይ የቪዲዮ ቤተ-መጽሐፍት። ኮርሱን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም።",
+        "consultation": "ለአጠቃላይ የቤተሰብ እና የአገልግሎት መመሪያ ወይም ለተለየ የባህሪ እና የትምህርት መመሪያ የ60 ደቂቃ ምክክር።",
+        "iep_language_assistance": "IEPን ለመረዳት እገዛ፣ በትምህርት ቤት ስብሰባ ወቅት የቋንቋ ድጋፍ እና የጽሑፍ ትርጉም።"
+      },
+      "features": {
+        "rbt_bootcamp": [
+          "ሁሉም የተጠበቁ የስልጠና ቪዲዮዎች",
+          "ሁሉም ደጋፊ ግብዓቶች",
+          "ለእርስዎ እና ለእያንዳንዱ ልጅ የእድገት ክትትል",
+          "በማንኛውም ጊዜ ከክፍያ ገጽ መሰረዝ ይቻላል"
+        ],
+        "consultation": [
+          "ከተመደበ ባለሙያ ጋር የ60 ደቂቃ ክፍለ ጊዜ",
+          "አንድ ክትትል ተካቷል",
+          "ከ48 ሰዓት በፊት በነጻ መሰረዝ",
+          "ምዝገባ አያስፈልግም"
+        ],
+        "iep_language_assistance": [
+          "እንግሊዝኛ ↔ አማርኛ እና እንግሊዝኛ ↔ ስፓኒሽ",
+          "የIEP ማብራሪያ እና በትምህርት ቤት ስብሰባ ድጋፍ",
+          "የጽሑፍ ትርጉም ተካቷል",
+          "በርቀት ወይም በአካል · አንድ ክትትል ተካቷል"
+        ]
+      },
+      "subscribe": "ይመዝገቡ",
+      "openTraining": "የRBT ቡት ካምፕን ይክፈቱ",
+      "request": {
+        "consultation": "ምክክር ይጠይቁ",
+        "iep_language_assistance": "የIEP ድጋፍ ይጠይቁ"
+      },
+      "noRequestPermission": "አገልግሎት ለመጠየቅ የቤተሰቡን ባለቤት ፈቃድ ይጠይቁ።",
+      "taxNotice": "የሚመለከታቸው ግብሮች በሚያስፈልግበት ቦታ በክፍያ ወቅት ይሰላሉ። ማንኛውም ተጨማሪ ክፍያ ከመክፈልዎ በፊት ለፈቃድዎ ይታያል። የጉዞ ክፍያ አይጠየቅም።"
+    },
+    "form": {
+      "backToServices": "ወደ አገልግሎቶች ይመለሱ",
+      "consultationTitle": "ምክክር ይጠይቁ",
+      "consultationSummary": "የ{price} የአንድ ጊዜ ክፍያ · {minutes} ደቂቃ · አንድ ክትትል ተካቷል",
+      "iepTitle": "የIEP የቋንቋ ድጋፍ ይጠይቁ",
+      "iepSummary": "የ{price} የአንድ ጊዜ ክፍያ · የ{minutes} ደቂቃ ክፍለ ጊዜ · አንድ ክትትል ተካቷል",
+      "noSubscriptionNeeded": "የRBT ቡት ካምፕ ምዝገባ አያስፈልግም።",
+      "preparationNotice": "የተለየ የዝግጅት ጊዜ በመሠረታዊ ዋጋው ውስጥ አልተካተተም።",
+      "dependent": "ልጅ",
+      "dependentError": "ከቤተሰብዎ ልጅ ይምረጡ።",
+      "serviceCategory": "የአገልግሎት ምድብ",
+      "topic": "ርዕስ",
+      "topicAny": "የተለየ ርዕስ የለም",
+      "preferredLanguage": "የሚመርጡት ቋንቋ",
+      "needDescription": "ምን እገዛ እንደሚፈልጉ ይግለጹ",
+      "needDescriptionHelp": "ስለ ሁኔታዎ እና ግቦችዎ ጥቂት ዓረፍተ ነገሮች (ቢያንስ 10 ቁምፊዎች)።",
+      "descriptionError": "ፍላጎትዎን ከ10 እስከ 3,000 ቁምፊዎች ይግለጹ።",
+      "relevantInformation": "አግባብነት ያለው የአገልግሎት መረጃ",
+      "relevantInformationHelp": "አማራጭ፦ ምርመራዎች፣ አሁን ያሉ አገልግሎቶች ወይም ባለሙያው ማወቅ ያለበት ማንኛውም ነገር። አስፈላጊውን ብቻ ያጋሩ።",
+      "nextStepsConsultation": "ቀጣዩ ምንድን ነው፦ አስተዳዳሪ ጥያቄዎን ገምግሞ ባለሙያ ይመድባል። የቀረቡ ጊዜዎችን ይቀበላሉ፣ $9.99 በደህንነት ይከፍላሉ፣ ከዚያ የሚመችዎትን ጊዜ ያረጋግጣሉ።",
+      "submitConsultation": "የምክክር ጥያቄ ያስገቡ",
+      "submitting": "በማስገባት ላይ…",
+      "language": "ቋንቋ",
+      "iepServices": "የሚያስፈልጉ አገልግሎቶች",
+      "iepServicesHelp": "የሚያስፈልግዎትን እያንዳንዱን የአገልግሎቱን ክፍል ይምረጡ።",
+      "iepServicesError": "ቢያንስ አንድ አገልግሎት ይምረጡ።",
+      "iepServiceHelp": {
+        "iep_explanation": "IEPን እና ለልጅዎ ምን ማለት እንደሆነ እናስረዳዎታለን።",
+        "meeting_language_assistance": "በትምህርት ቤት ወይም በIEP ስብሰባ ወቅት የቋንቋ ድጋፍ።",
+        "written_translation": "የሚመለከተው የIEP ጽሑፍ የጽሑፍ ትርጉም።"
+      },
+      "deliveryPreference": "በርቀት ወይም በአካል",
+      "locationType": "ቦታ",
+      "chooseLocation": "ቦታ ይምረጡ",
+      "locationDetails": "የቦታ ዝርዝሮች",
+      "locationDetailsPlaceholder": "የትምህርት ቤት ስም፣ አድራሻ ወይም የስብሰባ ክፍል",
+      "locationError": "የተፈቀደ ቦታ ይምረጡ እና ለትምህርት ቤት ወይም ለተስማሙበት ቦታ ዝርዝሮችን ያክሉ።",
+      "travelNotice": "በአካል ለሚሰጥ ድጋፍ የጉዞ ክፍያ አይጠየቅም።",
+      "meetingDate": "የተጠየቀው የስብሰባ ቀን",
+      "meetingDateHelp": "አማራጭ፦ የትምህርት ቤት ወይም የIEP ስብሰባ ካለ ቀኑ።",
+      "meetingDateError": "ትክክለኛ ቀን ያስገቡ።",
+      "requestedService": "የተጠየቀው አገልግሎት",
+      "requestedServiceHelp": "የሚፈልጉትን ይንገሩን፤ ለምሳሌ የትኞቹን የIEP ክፍሎች ማብራራት እንዳለብን ወይም የስብሰባውን ዝርዝሮች።",
+      "relevantIepInformation": "አግባብነት ያለው የIEP መረጃ",
+      "relevantIepInformationHelp": "አማራጭ፦ ትምህርት ቤት፣ ክፍል፣ ግቦች፣ ማመቻቸቶች ወይም የጊዜ ገደቦች። ካስገቡ በኋላ የIEP ሰነዱን መጫን ይችላሉ።",
+      "nextStepsIep": "ቀጣዩ ምንድን ነው፦ አስተዳዳሪ ጥያቄዎን ገምግሞ ቋንቋዎን የሚናገር ባለሙያ ይመድባል። በጥያቄው ገጽ ላይ የIEP ሰነዶችን መጫን ይችላሉ። የቀረቡ ጊዜዎችን ይቀበላሉ፣ $19.99 በደህንነት ይከፍላሉ፣ ከዚያ ያረጋግጣሉ።",
+      "submitIep": "የIEP ድጋፍ ጥያቄ ያስገቡ",
+      "guard": {
+        "household": {
+          "title": "መጀመሪያ ቤተሰብዎን ያዘጋጁ",
+          "description": "አገልግሎቶች የሚጠየቁት በቤተሰብዎ ውስጥ ላለ ልጅ ነው።",
+          "action": "ወደ ዳሽቦርድ ይሂዱ"
+        },
+        "permission": {
+          "title": "ፈቃድ ያስፈልጋል",
+          "description": "የቤተሰቡ ባለቤት አገልግሎት እንዲጠይቁ ፈቃድ አልሰጠዎትም።"
+        },
+        "dependents": {
+          "title": "መጀመሪያ ልጅ ያክሉ",
+          "description": "ይህ አገልግሎት የሚሰጠውን ልጅ፣ የአገልግሎት ፍላጎቶቹን ጨምሮ ያክሉ።",
+          "action": "ልጅ ያክሉ"
+        }
+      }
+    },
+    "requests": {
+      "title": "የአገልግሎት ጥያቄዎች",
+      "description": "ምክክሮችዎን እና የIEP የቋንቋ ድጋፍዎን ከጥያቄ እስከ ማጠናቀቅ ይከታተሉ።",
+      "newRequest": "አገልግሎት ይጠይቁ",
+      "filterLabel": "ጥያቄዎችን ያጣሩ",
+      "filters": {
+        "active": "ንቁ",
+        "closed": "የተዘጉ",
+        "all": "ሁሉም"
+      },
+      "loadError": "የአገልግሎት ጥያቄዎችን መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+      "emptyTitle": "እዚህ ምንም የአገልግሎት ጥያቄ የለም",
+      "emptyDescription": "ምክክር ወይም የIEP የቋንቋ ድጋፍ ሲጠይቁ እዚህ ይታያል።",
+      "nextAppointment": "ቀጣዩ ቀጠሮ፦ {date}",
+      "updated": "የተሻሻለው {date}",
+      "pagination": "የጥያቄ ገጾች",
+      "previous": "ቀዳሚ",
+      "next": "ቀጣይ"
+    },
+    "detail": {
+      "title": "የ{service} ጥያቄ",
+      "notFound": "ይህ የአገልግሎት ጥያቄ አይገኝም።",
+      "backToRequests": "ወደ አገልግሎት ጥያቄዎች ይመለሱ",
+      "backToQueue": "ወደ ሥራ ወረፋው ይመለሱ",
+      "backToAssignments": "ወደ ምደባዎች ይመለሱ",
+      "progress": "የጥያቄው ሂደት",
+      "appointments": "ቀጠሮዎች",
+      "noAppointments": "እስካሁን ምንም የቀጠሮ ጊዜ አልቀረበም።",
+      "duration": "{minutes} ደቂቃ",
+      "primarySession": "ክፍለ ጊዜ",
+      "followUpSession": "ክትትል",
+      "joinMeeting": "የኦንላይን ስብሰባውን ይቀላቀሉ",
+      "confirmedByHousehold": "በቤተሰቡ ተረጋግጧል",
+      "scheduledByEthiospectrum": "በEthiospectrum ተይዟል",
+      "cancellationReason": "የመሰረዝ ምክንያት",
+      "declinedReason": "ምክንያት",
+      "sessionNotes": "የክፍለ ጊዜ ማስታወሻዎች",
+      "payToConfirm": "ከእነዚህ ጊዜዎች አንዱን ለማረጋገጥ ከላይ ክፍያውን ያጠናቅቁ።",
+      "confirmThisTime": "ይህንን ጊዜ ያረጋግጡ",
+      "confirming": "በማረጋገጥ ላይ…",
+      "reschedule": "ቀጠሮ ማሸጋሸግ ይፈልጋሉ?",
+      "rescheduleConfirm": "ይህን ቀጠሮ ለማሸጋሸግ ይጠይቁ? አሁን ያለው ጊዜ ይለቀቃል።",
+      "requestReschedule": "አዲስ ጊዜ ይጠይቁ",
+      "reasonOptional": "ምክንያት (አማራጭ)",
+      "reason": "ምክንያት",
+      "sending": "በመላክ ላይ…",
+      "saving": "በማስቀመጥ ላይ…",
+      "recordOutcome": "ክፍለ ጊዜውን ይመዝግቡ",
+      "saveOutcome": "ውጤቱን ያስቀምጡ",
+      "outcomeHeld": "ክፍለ ጊዜው ተካሂዷል",
+      "outcomeNoShow": "አልተገኘም",
+      "outcomeAfterStart": "ውጤቱ ቀጠሮው ሲጀምር ሊመዘገብ ይችላል።",
+      "modifyAppointment": "ቀጠሮውን ያሻሽሉ",
+      "saveChanges": "ለውጦቹን ያስቀምጡ",
+      "cancelAppointment": "ቀጠሮውን ይሰርዙ",
+      "adminCancelConfirm": "ይህን ቀጠሮ በEthiospectrum ስም ይሰርዙ? ለቤተሰቡ ሙሉ ተመላሽ ወይም አዲስ ጊዜ ይቀርብለታል።",
+      "adminCancelHelp": "Ethiospectrum መሰረዝ ሲኖርበት ይጠቀሙ። ደንበኛው ለ100% ተመላሽ ብቁ ይሆናል ወይም ቀጠሮ ማሸጋሸግ ይችላል።",
+      "noneOfTheseWork": "ከእነዚህ ጊዜዎች አንዱም አይመችዎትም?",
+      "requestOtherTimes": "ሌሎች ጊዜዎችን ይጠይቁ",
+      "availabilityNote": "መቼ እንደሚገኙ ይንገሩን (አማራጭ)",
+      "requestDetails": "የጥያቄ ዝርዝሮች",
+      "child": "ልጅ",
+      "requestedBy": "የጠየቀው",
+      "submitted": "የገባበት",
+      "specialist": "ባለሙያ",
+      "notAssigned": "ገና አልተመደበም",
+      "language": "ቋንቋ",
+      "delivery": "የአሰጣጥ ዘዴ",
+      "category": "ምድብ",
+      "preferredLocation": "የሚመርጡት ቦታ",
+      "meetingDate": "የተጠየቀው የስብሰባ ቀን",
+      "followUp": "የተካተተ ክትትል",
+      "description": "የፍላጎቱ መግለጫ",
+      "relevantInformation": "አግባብነት ያለው መረጃ",
+      "completionNotes": "የማጠናቀቂያ ማስታወሻዎች",
+      "serviceDeliveryInformation": "የአገልግሎት አሰጣጥ መረጃ",
+      "serviceNeeds": "የአገልግሎት ፍላጎቶች",
+      "communication": "የመግባቢያ ጉዳዮች",
+      "childLanguage": "የልጁ ተመራጭ ቋንቋ",
+      "educationalInformation": "የትምህርት መረጃ",
+      "behavioralInformation": "የባህሪ / የአገልግሎት መረጃ",
+      "householdPhone": "የቤተሰብ ስልክ",
+      "householdEmail": "የቤተሰብ ኢሜይል",
+      "serviceActivities": "የአገልግሎት ተግባራት",
+      "activityStatus": "የተግባር ሁኔታ",
+      "activityNotes": "ማስታወሻዎች",
+      "updateActivity": "አሻሽል",
+      "documents": "ሰነዶች",
+      "noDocuments": "ከዚህ ጥያቄ ጋር የተያያዙ ሰነዶች የሉም።",
+      "fromSpecialist": "ከEthiospectrum",
+      "fromHousehold": "ከቤተሰብ",
+      "download": "አውርድ",
+      "uploadDocument": "IEP ወይም ደጋፊ ሰነድ ይጫኑ",
+      "uploadDeliverable": "የሚረከብ ሰነድ ይጫኑ (ለምሳሌ፣ የጽሑፍ ትርጉሙ)",
+      "payments": "ክፍያዎች እና ተመላሾች",
+      "taxIncluded": "{tax} ግብርን ያካትታል",
+      "refundedAmount": "{amount} ተመላሽ ተደርጓል",
+      "refund": "ተመላሽ",
+      "activityAndMessages": "እንቅስቃሴ እና መልእክቶች",
+      "noActivity": "እስካሁን ምንም እንቅስቃሴ የለም።",
+      "sendMessage": "መልእክት ይላኩ",
+      "message": "መልእክት",
+      "messageNotice": "መልእክቶች ለቤተሰብዎ፣ ለተመደበው ባለሙያ እና ለEthiospectrum አስተዳዳሪዎች ይታያሉ። መልእክቶችን ለአስቸኳይ ጉዳዮች አይጠቀሙ።",
+      "authors": {
+        "household": "ቤተሰብ",
+        "specialist": "ባለሙያ",
+        "administrator": "Ethiospectrum",
+        "system": "Ethiospectrum"
+      }
+    },
+    "household": {
+      "created": "ጥያቄዎ ደርሷል። አስተዳዳሪ ገምግሞ ባለሙያ ይመድባል።",
+      "createdIep": "ጥያቄዎ ደርሷል። IEPን እና ማንኛውንም ደጋፊ ሰነድ ከታች መጫን ይችላሉ።",
+      "paymentConfirmed": "ክፍያው ተረጋግጧል። እናመሰግናለን!",
+      "paymentProcessing": "የክፍያ አቅራቢው ክፍያዎን እስኪያረጋግጥ እየጠበቅን ነው። ሲያረጋግጥ ይህ ገጽ ይሻሻላል።",
+      "paymentFailedReturn": "ክፍያው አልተሳካም። ከታች እንደገና መሞከር ይችላሉ።",
+      "paymentCancelled": "ክፍያው ተሰርዟል። ጥያቄዎ ተቀምጧል፤ ሲዘጋጁ መክፈል ይችላሉ።",
+      "paymentTitle": "ክፍያውን ያጠናቅቁ",
+      "retryPaymentTitle": "ክፍያውን እንደገና ይሞክሩ",
+      "paymentFailedNotice": "የመጨረሻው የክፍያ ሙከራዎ አልተሳካም። ጥያቄዎ እና የቀረቡት ጊዜዎች ተቀምጠዋል።",
+      "subtotal": "ከግብር በፊት ጠቅላላ",
+      "taxAtCheckout": "የሚመለከታቸው ግብሮች ካሉ ደህንነቱ በተጠበቀው የክፍያ ገጽ ላይ ይሰላሉ። የጉዞ ክፍያ አይጠየቅም።",
+      "acceptFees": "ከላይ ያሉትን ተጨማሪ ክፍያዎች ({amount}) ተመልክቼ ተቀብያለሁ።",
+      "securePayment": "ወደ ክፍያ አቅራቢያችን ደህንነቱ የተጠበቀ ገጽ ይወሰዳሉ። Ethiospectrum የካርድዎን ዝርዝሮች አያይም አያስቀምጥም።",
+      "payNow": "{amount} በደህንነት ይክፈሉ",
+      "openingPayment": "ደህንነቱ የተጠበቀ ክፍያ እየተከፈተ ነው…",
+      "paymentInFlight": "ክፍያ በሂደት ላይ ነው። ከክፍያ ገጹ ከወጡ ጊዜው ያልፍና እንደገና መሞከር ይችላሉ።",
+      "followUpTitle": "የተካተተው ክትትልዎ",
+      "followUpDescription": "ይህ አገልግሎት አንድ ክትትልን ያካትታል። ሲዘጋጁ ይጠይቁ፣ ጊዜዎችን እናቀርባለን።",
+      "followUpNote": "ስለ ምን መከታተል ይፈልጋሉ? (አማራጭ)",
+      "requestFollowUp": "ክትትል ይጠይቁ",
+      "sending": "በመላክ ላይ…",
+      "cancelTitle": "ይህን ጥያቄ ይሰርዙ",
+      "refundPreview": "አሁን ከሰረዙ ለ{percent}% ተመላሽ ({tier}) ብቁ ይሆናሉ። ተመላሾች በEthiospectrum ይከናወናሉ።",
+      "cancelUnpaid": "ምንም ክፍያ አልተፈጸመም፤ ስለዚህ ተመላሽ አያስፈልግም።",
+      "rescheduleInstead": "በ24 ሰዓት ውስጥ የገንዘብ ተመላሽ አይሰጥም። በምትኩ አንድ ጊዜ ቀጠሮ ማሸጋሸግ ይችላሉ።",
+      "cancelConfirm": "ይህን ጥያቄ ይሰርዙ? ይህ ሊቀለበስ አይችልም።",
+      "cancelling": "በመሰረዝ ላይ…",
+      "cancelRequest": "ጥያቄውን ይሰርዙ",
+      "reasonOptional": "ምክንያት (አማራጭ)"
+    },
+    "slots": {
+      "option": "አማራጭ {number}",
+      "dateTime": "ቀን እና ሰዓት",
+      "addOption": "ሌላ አማራጭ ያክሉ",
+      "removeOption": "የመጨረሻውን አማራጭ ያስወግዱ",
+      "timezone": "የሰዓት ሰቅ",
+      "location": "ቦታ",
+      "chooseLocation": "ቦታ ይምረጡ",
+      "locationDetails": "የቦታ ዝርዝሮች",
+      "meetingUrl": "የኦንላይን ስብሰባ ሊንክ",
+      "meetingUrlHelp": "HTTPS ብቻ። ቀጠሮው ሲረጋገጥ ለቤተሰቡ ይጋራል።",
+      "instructions": "የቀጠሮው ልዩ መመሪያዎች",
+      "instructionsPlaceholder": "ለምሳሌ፦ ሲደርሱ እባክዎ በትምህርት ቤቱ ዋና ቢሮ ይመዝገቡ።"
+    },
+    "documents": {
+      "title": "የሰነድ ርዕስ",
+      "titlePlaceholder": "ለምሳሌ፦ የ2026 IEP",
+      "file": "ፋይል (PDF፣ DOCX ወይም TXT፣ እስከ 20 MB)",
+      "privacy": "ሰነዶች በግል ይቀመጣሉ፤ ለቤተሰብዎ፣ ለተመደበው ባለሙያ እና ለEthiospectrum አስተዳዳሪዎች ብቻ ይጋራሉ።",
+      "upload": "ጫን",
+      "uploading": "በመጫን ላይ…",
+      "uploaded": "ሰነዱ ተጭኗል።",
+      "fileRequired": "የሚጫን ፋይል ይምረጡ።"
+    },
+    "policy": {
+      "title": "የመሰረዝ እና የተመላሽ ፖሊሲ",
+      "moreThan48": "ከ48 ሰዓት በላይ በፊት፦ በ100% ተመላሽ ይሰርዙ ወይም ያለ ክፍያ ቀጠሮ ያሸጋሽጉ።",
+      "between24And48": "ከ24 እስከ 48 ሰዓት በፊት፦ በ50% ተመላሽ ይሰርዙ ወይም አንድ ጊዜ ያለ ክፍያ ቀጠሮ ያሸጋሽጉ።",
+      "lessThan24": "ከ24 ሰዓት ባነሰ ጊዜ፦ እንደገና ሳይከፍሉ አንድ ጊዜ ቀጠሮ ያሸጋሽጉ፤ አስተዳዳሪ ልዩ ፈቃድ ካልሰጠ የገንዘብ ተመላሽ የለም።",
+      "noShow": "አለመገኘት፦ ራስ-ሰር ተመላሽ የለም፤ ቀጠሮ ማሸጋሸግ እንደየሁኔታው ሊፈቀድ ይችላል።",
+      "administrative": "Ethiospectrum ከሰረዘ 100% ተመላሽ ያገኛሉ ወይም ቀጠሮ ማሸጋሸግ ይችላሉ።",
+      "rescheduleRule": "ከ48 ሰዓት በላይ ቀድሞ ቀጠሮ ማሸጋሸግ ነጻ ነው። በ48 ሰዓት ውስጥ አንድ ጊዜ ማሸጋሸግ ይችላሉ።"
+    },
+    "refundTiers": {
+      "more_than_48_hours": "ከ48 ሰዓት በላይ በፊት",
+      "between_24_and_48_hours": "ከ24 እስከ 48 ሰዓት በፊት",
+      "less_than_24_hours": "ከ24 ሰዓት ባነሰ ጊዜ በፊት",
+      "no_show": "አለመገኘት",
+      "no_appointment": "ቀጠሮ ከመረጋገጡ በፊት",
+      "administrative_cancellation": "በEthiospectrum የተሰረዘ",
+      "admin_exception": "የአስተዳዳሪ ልዩ ፈቃድ",
+      "duplicate_payment": "የተደጋገመ ክፍያ"
+    },
+    "events": {
+      "generic": "ጥያቄው ተሻሽሏል",
+      "request_created": "ጥያቄው ገብቷል",
+      "specialist_assigned": "ባለሙያ ተመድቧል",
+      "availability_requested": "የባለሙያው የጊዜ ተገኝነት ተጠይቋል",
+      "appointment_proposed": "የቀጠሮ ጊዜዎች ቀርበዋል",
+      "follow_up_proposed": "የክትትል ጊዜዎች ቀርበዋል",
+      "appointment_confirmed": "ቀጠሮ ተረጋግጧል",
+      "follow_up_confirmed": "ክትትል ተረጋግጧል",
+      "other_times_requested": "ሌሎች ጊዜዎች ተጠይቀዋል",
+      "reschedule_requested": "ቀጠሮ ማሸጋሸግ ተጠይቋል",
+      "follow_up_reschedule_requested": "የክትትል ማሸጋሸግ ተጠይቋል",
+      "request_cancelled": "ጥያቄው ተሰርዟል",
+      "follow_up_requested": "ክትትል ተጠይቋል",
+      "appointment_scheduled_directly": "ቀጠሮ በEthiospectrum ተይዟል",
+      "follow_up_scheduled_directly": "ክትትል በEthiospectrum ተይዟል",
+      "appointment_modified": "ቀጠሮ ተሻሽሏል",
+      "appointment_cancelled_by_ethiospectrum": "ቀጠሮ በEthiospectrum ተሰርዟል",
+      "follow_up_cancelled_by_ethiospectrum": "ክትትል በEthiospectrum ተሰርዟል",
+      "proposal_withdrawn": "የቀረበው ጊዜ ተነስቷል",
+      "request_cancelled_by_ethiospectrum": "ጥያቄው በEthiospectrum ተሰርዟል",
+      "request_declined": "ጥያቄው ውድቅ ተደርጓል",
+      "status_overridden": "ሁኔታው በአስተዳዳሪ ተሻሽሏል",
+      "session_completed": "ክፍለ ጊዜው ተካሂዷል",
+      "no_show_recorded": "አለመገኘት ተመዝግቧል",
+      "follow_up_completed": "ክትትሉ ተካሂዷል",
+      "follow_up_no_show": "ክትትሉ አልተገኘም",
+      "activity_updated": "የአገልግሎት ተግባር ተሻሽሏል",
+      "service_completed": "አገልግሎቱ ተጠናቋል",
+      "payment_started": "ክፍያ ተጀምሯል",
+      "payment_confirmed": "ክፍያ ተረጋግጧል",
+      "payment_failed": "ክፍያ አልተሳካም",
+      "refund_exception_created": "የተመላሽ ልዩ ፈቃድ ተፈጥሯል",
+      "refund_processed": "ተመላሹ ተከናውኗል"
+    },
+    "staff": {
+      "saving": "በማስቀመጥ ላይ…",
+      "processing": "በሂደት ላይ…",
+      "reason": "ምክንያት",
+      "reasonShared": "ምክንያት (ከቤተሰቡ ጋር ይጋራል)",
+      "proposeTimes": "የቀጠሮ ጊዜዎችን ያቅርቡ",
+      "proposeHelp": "ከአንድ እስከ ሶስት ጊዜዎችን ያቅርቡ። ቤተሰቡ (ገና ካልከፈለ) ይከፍላል፣ ከዚያ አንዱን ያረጋግጣል።",
+      "sendProposal": "የቀረቡትን ጊዜዎች ይላኩ",
+      "appointmentKind": "የቀጠሮ ዓይነት",
+      "kinds": {
+        "primary": "ክፍለ ጊዜ",
+        "follow_up": "የተካተተ ክትትል"
+      },
+      "completeService": "አገልግሎቱን ያጠናቅቁ",
+      "completeHelp": "ክፍለ ጊዜው እና ማንኛውም የቀረ ሥራ (እንደ የጽሑፍ ትርጉም) ሲጠናቀቅ ማጠናቀቁን ይመዝግቡ።",
+      "completeBlockedByFollowUp": "አገልግሎቱን ከማጠናቀቅዎ በፊት የተያዘውን ክትትል ያጠናቅቁ።",
+      "completeConfirm": "ይህ አገልግሎት እንደተጠናቀቀ ምልክት ይደረግበት?",
+      "completionNotes": "የማጠናቀቂያ ማስታወሻዎች",
+      "waiveFollowUp": "ቤተሰቡ የተካተተውን ክትትል አይፈልግም።",
+      "markComplete": "እንደተጠናቀቀ ምልክት አድርግ",
+      "refundRequest": "የተመላሽ ጥያቄ፦ {amount}",
+      "refundConfirm": "ይህን ተመላሽ ለክፍያ አቅራቢው ይላክ?",
+      "processRefund": "ተመላሹን ያስኪዱ",
+      "refundAmountCents": "የተመላሽ መጠን (በሳንቲም)",
+      "refundAmountHelp": "ሥርዓቱ ካሰላው በፖሊሲው ብቁ ከሆነው መጠን ሊበልጥ አይችልም።",
+      "rejectRefund": "የተመላሽ ጥያቄውን ውድቅ ያድርጉ",
+      "assignSpecialist": "ባለሙያ ይመድቡ",
+      "reassignSpecialist": "ባለሙያውን እንደገና ይመድቡ",
+      "assignHelp": "ይህን አገልግሎት፣ ቋንቋ እና የአሰጣጥ ዘዴ የሚሰጡ ባለሙያዎች ብቻ ሊመደቡ ይችላሉ።",
+      "noSpecialists": "እስካሁን ምንም ባለሙያ የለም። ከተጠቃሚዎች ገጽ ተጠቃሚን ወደ ባለሙያነት ያሳድጉ።",
+      "specialist": "ባለሙያ",
+      "matches": "ከአገልግሎቱ፣ ከቋንቋው እና ከአሰጣጥ ዘዴው ጋር ይዛመዳል",
+      "noMatch": "ከዚህ ጥያቄ ጋር አይዛመድም",
+      "unavailable": "አይገኝም",
+      "activeRequests": "{count, plural, =0 {ንቁ ጥያቄ የለም} one {# ንቁ ጥያቄ} other {# ንቁ ጥያቄዎች}}",
+      "current": "የአሁኑ",
+      "assign": "መድብ",
+      "reassign": "እንደገና መድብ",
+      "requestAvailability": "ባለሙያውን የሚገኝበትን ጊዜ ይጠይቁ",
+      "availabilityHelp": "ባለሙያው ጊዜዎችን በቀጥታ ማቅረብ ይችላል።",
+      "askSpecialist": "የጊዜ ተገኝነት ይጠይቁ",
+      "scheduleDirectly": "በቀጥታ ይያዙ",
+      "scheduleHelp": "ያለ ቤተሰቡ ማረጋገጫ ቀጠሮ ያረጋግጣል። ከክፍለ ጊዜው በፊት ክፍያ አሁንም ያስፈልጋል።",
+      "schedule": "ያዝ",
+      "refundException": "የተመላሽ ልዩ ፈቃድ",
+      "exceptionHelp": "ከራስ-ሰር ፖሊሲው ውጭ ተመላሽ ይፍጠሩ (ለምሳሌ፣ በ24 ሰዓት ውስጥ የጸደቀ ልዩ ፈቃድ)።",
+      "createException": "የተመላሽ ጥያቄ ይፍጠሩ",
+      "moreActions": "ተጨማሪ ተግባራት",
+      "overrideStatus": "የአገልግሎቱን ሁኔታ ይቀይሩ",
+      "newStatus": "አዲስ ሁኔታ",
+      "updateStatus": "ሁኔታውን አሻሽል",
+      "declineRequest": "ጥያቄውን ውድቅ ያድርጉ",
+      "declineConfirm": "ይህን ጥያቄ ውድቅ ያድርጉ? ቤተሰቡ ይነገረዋል።",
+      "cancelRequest": "ጥያቄውን ይሰርዙ",
+      "cancelConfirm": "ይህን ጥያቄ በEthiospectrum ስም ይሰርዙ?",
+      "fullRefund": "ለማንኛውም ክፍያ የ100% ተመላሽ ጥያቄ ይፍጠሩ",
+      "specialistWaiting": "አሁን ከእርስዎ ምንም ተግባር አያስፈልግም። አስተዳዳሪው የሚገኙበትን ጊዜ ሲጠይቅ ወይም ክትትል ሲጠየቅ ይነገርዎታል።",
+      "specialistDone": "ይህ አገልግሎት ተጠናቋል። እናመሰግናለን!"
+    }
+  },
+  "adminConsole": {
+    "roleLabel": "የEthiospectrum አስተዳደር",
+    "nav": {
+      "overview": "አጠቃላይ እይታ",
+      "serviceRequests": "የአገልግሎት ሥራ ወረፋ",
+      "payments": "ክፍያዎች እና ተመላሾች",
+      "billing": "ምዝገባዎች",
+      "serviceConfiguration": "የአገልግሎት ቅንብር",
+      "specialists": "ባለሙያዎች",
+      "users": "ተጠቃሚዎች እና ሚናዎች",
+      "trainingContent": "የስልጠና ይዘት"
+    },
+    "overviewTitle": "የሥራ አጠቃላይ እይታ",
+    "overviewDescription": "ትኩረት የሚያስፈልጋቸው ሁሉም የአገልግሎት ጥያቄዎች በሥራ ወረፋዎች ተመድበው።",
+    "queues": "የሥራ ወረፋዎች",
+    "queue": {
+      "all": "ሁሉም ጥያቄዎች",
+      "new": "አዲስ ጥያቄዎች",
+      "unassigned": "ምደባ በመጠባበቅ ላይ",
+      "assigned": "የተመደቡ",
+      "awaiting_payment": "ክፍያ በመጠባበቅ ላይ",
+      "payment_failed": "ያልተሳኩ ክፍያዎች",
+      "proposed": "የቀጠሮ ሃሳቦች",
+      "upcoming": "መጪ ቀጠሮዎች",
+      "in_progress": "በሂደት ላይ",
+      "follow_up": "የተጠየቁ ክትትሎች",
+      "reschedule": "የማሸጋሸግ ጥያቄዎች",
+      "cancelled": "ስረዛዎች (30 ቀናት)",
+      "no_show": "ያልተገኙ",
+      "completed": "የተጠናቀቁ አገልግሎቶች",
+      "refunds": "የተመላሽ ጥያቄዎች",
+      "declined": "ውድቅ የተደረጉ"
+    },
+    "upcomingAppointments": "መጪ ቀጠሮዎች",
+    "noUpcoming": "የተረጋገጠ መጪ ቀጠሮ የለም።",
+    "shortcuts": "አስተዳደር",
+    "shortcut": {
+      "payments": "ክፍያዎች እና ተመላሾች",
+      "services": "ዋጋዎች፣ ክፍያዎች እና ርዕሶች",
+      "specialists": "የባለሙያዎች ችሎታዎች",
+      "training": "የስልጠና ይዘት"
+    },
+    "queueTitle": "የአገልግሎት ሥራ ወረፋ",
+    "queueDescription": "ጥያቄዎችን ይገምግሙ፣ ባለሙያዎችን ይመድቡ፣ ቀጠሮዎችን ያቅርቡ ወይም ይያዙ፣ እና ክፍያዎችን እና ተመላሾችን ይፍቱ።",
+    "serviceFilter": "በአገልግሎት ያጣሩ",
+    "allServices": "ሁሉም አገልግሎቶች",
+    "loadError": "ወረፋውን መጫን አልተቻለም።",
+    "emptyQueue": "በዚህ ወረፋ ውስጥ የሚጠብቅ ነገር የለም።",
+    "columns": {
+      "request": "ጥያቄ",
+      "household": "ቤተሰብ",
+      "specialist": "ባለሙያ",
+      "status": "ሁኔታ",
+      "next": "ቀጣይ ቀጠሮ",
+      "updated": "የተሻሻለው"
+    },
+    "unassigned": "ያልተመደበ",
+    "refundPending": "ተመላሽ በመጠባበቅ ላይ",
+    "pagination": "ገጾች",
+    "previous": "ቀዳሚ",
+    "next": "ቀጣይ",
+    "payments": {
+      "title": "ክፍያዎች እና ተመላሾች",
+      "description": "በክፍያ አቅራቢው የተረጋገጡ የአንድ ጊዜ የአገልግሎት ክፍያዎች እና የእያንዳንዳቸው የተመላሽ መዝገብ።",
+      "refunds": "ተመላሾች",
+      "noRefunds": "ምንም ተመላሽ አልተጠየቀም።",
+      "payments": "የአገልግሎት ክፍያዎች",
+      "noPayments": "ከዚህ ማጣሪያ ጋር የሚዛመድ ክፍያ የለም።",
+      "filter": "ክፍያዎችን ያጣሩ",
+      "filters": {
+        "all": "ሁሉም",
+        "paid": "የተከፈሉ",
+        "failed": "ያልተሳኩ",
+        "processing": "በሂደት ላይ",
+        "partially_refunded": "በከፊል ተመላሽ",
+        "refunded": "ተመላሽ የተደረጉ"
+      },
+      "columns": {
+        "customer": "ደንበኛ",
+        "original": "የመጀመሪያ ክፍያ",
+        "refund": "ተመላሽ",
+        "reason": "ምክንያት",
+        "status": "ሁኔታ",
+        "processed": "የተከናወነው",
+        "service": "አገልግሎት",
+        "amount": "መጠን",
+        "date": "ቀን"
+      },
+      "tax": "{amount} ግብር",
+      "refunded": "{amount} ተመላሽ ተደርጓል",
+      "subscriptionsNote": "የRBT ቡት ካምፕ ምዝገባ ደረሰኞች ለብቻቸው ተዘርዝረዋል።",
+      "subscriptionsLink": "ምዝገባዎችን ይመልከቱ"
+    },
+    "config": {
+      "title": "የአገልግሎት ቅንብር",
+      "description": "ዋጋዎች፣ መግለጫዎች፣ መደበኛ የቀጠሮ መመሪያዎች፣ የተገለጹ ክፍያዎች እና የምክክር ርዕሶች።",
+      "services": "አገልግሎቶች",
+      "stripePrice": "ዋጋው በStripe ተወስኗል",
+      "month": "ወር",
+      "active": "ንቁ",
+      "inactive": "ንቁ ያልሆነ",
+      "save": "አስቀምጥ",
+      "saving": "በማስቀመጥ ላይ…",
+      "name": "ስም",
+      "price": "ዋጋ (USD)",
+      "displayPrice": "የሚታየው ወርሃዊ ዋጋ (USD፣ አማራጭ)",
+      "displayPriceHelp": "የሚከፈለው መጠን የተዋቀረው የStripe ዋጋ ነው። ተመሳሳይ ያድርጉት ወይም ባዶ ይተዉት።",
+      "englishDescription": "መግለጫ (እንግሊዝኛ)",
+      "descriptionIn": {
+        "am": "መግለጫ (አማርኛ)",
+        "es": "መግለጫ (ስፓኒሽ)"
+      },
+      "includedFollowUps": "የተካተቱ ክትትሎች",
+      "standardInstructions": "መደበኛ የቀጠሮ መመሪያዎች",
+      "instructionsIn": {
+        "en": "የእንግሊዝኛ መመሪያዎች",
+        "am": "የአማርኛ መመሪያዎች",
+        "es": "የስፓኒሽ መመሪያዎች"
+      },
+      "activeLabel": "ለደንበኞች የሚገኝ",
+      "fees": "ተጨማሪ ክፍያዎች",
+      "feesHelp": "ክፍያዎች በራስ-ሰር አይታከሉም። እያንዳንዱ ንቁ ክፍያ ለደንበኛው ይታያል እና ከክፍያ በፊት መቀበል አለበት። በመጀመሪያው ምዕራፍ የጉዞ ክፍያ አይጠየቅም።",
+      "addFee": "ክፍያ ያክሉ",
+      "service": "አገልግሎት",
+      "amount": "መጠን (USD)",
+      "feeDisclosure": "ለደንበኛው የሚታየው ማብራሪያ",
+      "feeActive": "ንቁ (ይታያል እና ይከፈላል)",
+      "topics": "የምክክር ርዕሶች",
+      "addTopic": "ርዕስ ያክሉ",
+      "topicKey": "ቁልፍ",
+      "category": "ምድብ",
+      "sortOrder": "የቅደም ተከተል ቁጥር",
+      "labelIn": {
+        "en": "መለያ (እንግሊዝኛ)",
+        "am": "መለያ (አማርኛ)",
+        "es": "መለያ (ስፓኒሽ)"
+      }
+    },
+    "specialistsPage": {
+      "title": "ባለሙያዎች",
+      "description": "እያንዳንዱ ባለሙያ የሚሰጣቸውን አገልግሎቶች፣ ቋንቋዎች እና የአሰጣጥ ዘዴዎች ይመዝግቡ። ምደባ የሚዛመዱ ባለሙያዎች ብቻ ነው።",
+      "promoteHint": "ባለሙያ ለማከል የተጠቃሚውን ሚና ይቀይሩ፦",
+      "usersLink": "የተጠቃሚዎች ገጽ",
+      "loadError": "ባለሙያዎችን መጫን አልተቻለም።",
+      "empty": "እስካሁን ባለሙያዎች የሉም።",
+      "available": "ይገኛል",
+      "unavailable": "አይገኝም",
+      "activeRequests": "{count, plural, =0 {ንቁ ጥያቄ የለም} one {# ንቁ ጥያቄ} other {# ንቁ ጥያቄዎች}}",
+      "capabilities": "ችሎታዎች",
+      "availability": "ተገኝነት",
+      "bio": "የሕይወት ታሪክ (ውስጣዊ)",
+      "save": "አስቀምጥ",
+      "saving": "በማስቀመጥ ላይ…"
+    },
+    "usersPage": {
+      "title": "ተጠቃሚዎች እና ሚናዎች",
+      "description": "የቤተሰብ ባለቤቶች እና ተንከባካቢዎች ራሳቸው ይመዘገባሉ። ሠራተኞችን ወደ ባለሙያ ወይም አስተዳዳሪ እዚህ ያሳድጉ።",
+      "search": "ፈልግ",
+      "searchPlaceholder": "ስም ወይም ኢሜይል",
+      "searchAction": "ፈልግ",
+      "roleFilter": "በሚና ያጣሩ",
+      "roles": {
+        "all": "ሁሉም",
+        "member": "የቤተሰብ አባል",
+        "specialist": "ባለሙያ",
+        "administrator": "አስተዳዳሪ"
+      },
+      "householdRoles": {
+        "owner": "የቤተሰብ ባለቤት",
+        "member": "ተንከባካቢ",
+        "administrator": "የቤተሰብ አስተዳዳሪ",
+        "viewer": "ተመልካች"
+      },
+      "loadError": "ተጠቃሚዎችን መጫን አልተቻለም።",
+      "empty": "የሚዛመድ ተጠቃሚ የለም።",
+      "columns": {
+        "user": "ተጠቃሚ",
+        "household": "ቤተሰብ",
+        "joined": "የተቀላቀለበት",
+        "role": "ሚና"
+      },
+      "roleConfirm": "የዚህን ተጠቃሚ ሚና ይቀይሩ?",
+      "apply": "ተግብር",
+      "saving": "በማስቀመጥ ላይ…",
+      "pagination": "ገጾች",
+      "previous": "ቀዳሚ",
+      "next": "ቀጣይ"
+    }
+  },
+  "specialistConsole": {
+    "workspace": "የባለሙያ የሥራ ቦታ",
+    "nav": {
+      "dashboard": "የተመደቡ አገልግሎቶች",
+      "closed": "የተጠናቀቁ አገልግሎቶች",
+      "notifications": "ማሳወቂያዎች",
+      "settings": "ቅንብሮች"
+    },
+    "title": "የተመደቡ አገልግሎቶች",
+    "closedTitle": "የተጠናቀቁ አገልግሎቶች",
+    "description": "ለእርስዎ የተመደቡ አገልግሎቶች ብቻ ከሚሰጡበት አስፈላጊ መረጃ ጋር ይታያሉ።",
+    "upcoming": "መጪ ቀጠሮዎች",
+    "noUpcoming": "የተረጋገጠ መጪ ቀጠሮ የለም።",
+    "assigned": "ንቁ አገልግሎቶችዎ",
+    "closed": "የተጠናቀቁ እና የተሰረዙ አገልግሎቶች",
+    "loadError": "ምደባዎችዎን መጫን አልተቻለም።",
+    "empty": "አሁን ለእርስዎ የተመደበ ነገር የለም።",
+    "availabilityNeeded": "የጊዜ ተገኝነት ተጠይቋል",
+    "followUpNeeded": "ክትትል ተጠይቋል",
+    "nextAppointment": "ቀጣዩ ቀጠሮ፦ {date}"
+  },
+  "adminTraining": {
+    "title": "የስልጠና ይዘት",
+    "description": "የRBT ቡት ካምፕ ቤተ-መጽሐፍትን ያስተዳድሩ። የታተሙ ኮርሶች፣ ሞጁሎች እና ትምህርቶች ብቻ ለተመዝጋቢዎች ይታያሉ።",
+    "progressNotice": "ማህደር ማስቀመጥ ወይም ከህትመት ማውጣት የተማሪዎችን እድገት በፍጹም አይሰርዝም።",
+    "status": {
+      "draft": "ረቂቅ",
+      "published": "የታተመ",
+      "archived": "በማህደር የተቀመጠ"
+    },
+    "setStatus": {
+      "draft": "ከህትመት አውጣ",
+      "published": "አትም",
+      "archived": "በማህደር አስቀምጥ"
+    },
+    "statusLabel": "ሁኔታ",
+    "moveUp": "ወደ ላይ",
+    "moveDown": "ወደ ታች",
+    "translations": "የአማርኛ እና የስፓኒሽ ትርጉሞች",
+    "translationField": {
+      "am": {
+        "title": "ርዕስ (አማርኛ)",
+        "description": "ማጠቃለያ (አማርኛ)",
+        "body": "ማስታወሻዎች (አማርኛ)"
+      },
+      "es": {
+        "title": "ርዕስ (ስፓኒሽ)",
+        "description": "ማጠቃለያ (ስፓኒሽ)",
+        "body": "ማስታወሻዎች (ስፓኒሽ)"
+      }
+    },
+    "saving": "በማስቀመጥ ላይ…",
+    "saveLesson": "ትምህርቱን አስቀምጥ",
+    "saveModule": "ሞጁሉን አስቀምጥ",
+    "saveCourse": "ኮርሱን አስቀምጥ",
+    "lessonTitle": "የትምህርቱ ርዕስ",
+    "moduleTitle": "የሞጁሉ ርዕስ",
+    "courseTitle": "የኮርሱ ርዕስ",
+    "slug": "የURL መለያ",
+    "summary": "ማጠቃለያ",
+    "lessonNotes": "የትምህርት ማስታወሻዎች (ከቪዲዮው በታች ይታያሉ)",
+    "videoUrl": "የቪዲዮ ሊንክ (YouTube፣ Vimeo ወይም HTTPS የቪዲዮ ፋይል)",
+    "uploadedVideoInUse": "የተጫነ የግል ቪዲዮ ጥቅም ላይ ነው። ሊንክ ማከል ይተካዋል።",
+    "durationMinutes": "ርዝመት (ደቂቃ)",
+    "resourceUrl": "የግብዓት ሊንክ (HTTPS ወይም የውስጥ /training ገጽ)",
+    "uploadedResourceInUse": "የተጫነ የግል ግብዓት ጥቅም ላይ ነው። ሊንክ ማከል ይተካዋል።",
+    "resourceLabel": "የግብዓቱ መለያ",
+    "editModule": "ሞጁሉን አስተካክል",
+    "editLesson": "ትምህርቱን አስተካክል",
+    "editCourse": "ኮርሱን አስተካክል",
+    "addLesson": "ትምህርት ያክሉ",
+    "addModule": "ሞጁል ያክሉ",
+    "addCourse": "ኮርስ ያክሉ",
+    "hasVideo": "ቪዲዮ",
+    "hasResource": "ግብዓት",
+    "textOnly": "ጽሑፍ ብቻ",
+    "minutes": "{count} ደቂቃ",
+    "privateMedia": "የግል ሚዲያ ይጫኑ",
+    "uploadVideo": "ቪዲዮ ጫን",
+    "uploadResource": "ግብዓት ጫን",
+    "chooseFile": "መጀመሪያ ፋይል ይምረጡ።",
+    "uploading": "በመጫን ላይ…",
+    "uploaded": "ተጭኗል።",
+    "uploadFailed": "መጫኑ አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+    "courseSaved": "ኮርሱ ተቀምጧል።",
+    "moduleSaved": "ሞጁሉ ተቀምጧል።",
+    "lessonSaved": "ትምህርቱ ተቀምጧል።"
+  },
+  "customerDashboard": {
+    "welcome": "እንኳን ደህና መጡ",
+    "intro": "የRBT ቡት ካምፕ እድገትዎ፣ የአገልግሎት ጥያቄዎችዎ እና መጪ ቀጠሮዎችዎ በአንድ ቦታ።",
+    "caregiverHint": "እንደ ተንከባካቢ ተጋብዘዋል? ያንን ቤተሰብ ለመቀላቀል ከኢሜይልዎ የግብዣ ሊንኩን ይክፈቱ።",
+    "requestService": "አገልግሎት ይጠይቁ",
+    "joinedHousehold": "{household}ን ተቀላቅለዋል።",
+    "pendingPayments": "{count, plural, one {# ጥያቄ} other {# ጥያቄዎች}} ክፍያ በመጠባበቅ ላይ",
+    "payNow": "አሁን ይክፈሉ",
+    "retryPayment": "ክፍያውን እንደገና ይሞክሩ",
+    "upcoming": "መጪ ቀጠሮዎች",
+    "noUpcoming": "እስካሁን የተረጋገጠ ቀጠሮ የለም።",
+    "allRequests": "ሁሉም ጥያቄዎች",
+    "rbtBootcamp": "የRBT ቡት ካምፕ",
+    "openTraining": "ስልጠናውን ይክፈቱ",
+    "viewSubscription": "ይመዝገቡ",
+    "subscriptionActive": "ምዝገባው ንቁ ነው",
+    "subscriptionInactive": "ንቁ ምዝገባ የለም",
+    "endsOn": "መዳረሻው {date} ያበቃል",
+    "you": "እርስዎ",
+    "lessonsDone": "ከ{total} ትምህርቶች {done}",
+    "startTraining": "የመጀመሪያ ትምህርትዎን ይጀምሩ።",
+    "trainingLocked": "ሁሉንም የስልጠና ቪዲዮዎች እና ግብዓቶች ለመክፈት ይመዝገቡ።",
+    "activeRequests": "የአገልግሎት ጥያቄዎች",
+    "noActiveRequests": "ንቁ የአገልግሎት ጥያቄዎች የሉም።",
+    "dependents": "ልጆች",
+    "manageDependents": "አስተዳድር",
+    "noDependents": "አገልግሎቶችን ለመጠየቅ እና የስልጠና እድገታቸውን ለመከታተል ልጅዎን ያክሉ።",
+    "addDependent": "ልጅ ያክሉ",
+    "availableServices": "የሚገኙ አገልግሎቶች",
+    "monthly": "ወርሃዊ ምዝገባ",
+    "oneTime": "የአንድ ጊዜ",
+    "independentNotice": "ምክክር እና የIEP የቋንቋ ድጋፍ የRBT ቡት ካምፕ ምዝገባ አያስፈልጋቸውም።",
+    "history": "የቅርብ ጊዜ የአገልግሎት ታሪክ",
+    "noHistory": "የተጠናቀቁ እና የተሰረዙ አገልግሎቶች እዚህ ይታያሉ።"
+  },
+  "bootcamp": {
+    "eyebrow": "የRBT ቡት ካምፕ",
+    "title": "የRBT ቡት ካምፕ ቤተ-መጽሐፍት",
+    "intro": "ኒውሮዳይቨርጀንሲን እንዲረዱ፣ የEthiospectrumን ሥርዓተ ትምህርት እንዲያጠናቅቁ እና ለውጭ RBT-ነክ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ የሚረዱ በራስ ፍጥነት የሚታዩ ቪዲዮዎች እና ግብዓቶች።",
+    "lockedTitle": "የRBT ቡት ካምፕ ምዝገባ ይፈልጋል",
+    "lockedDescription": "ሁሉም የRBT ስልጠና ቪዲዮዎች እና ግብዓቶች በንቁ ወርሃዊ ምዝገባ ይገኛሉ። ያለ ምዝገባ ምንም የስልጠና ይዘት አይገኝም።",
+    "benefitVideos": "ሁሉም የስልጠና ቪዲዮዎች",
+    "benefitResources": "ባለሁለት ቋንቋ የጥናት መመሪያውን ጨምሮ ሁሉም ደጋፊ ግብዓቶች",
+    "benefitProgress": "ለእርስዎ እና ለእያንዳንዱ ልጅ የእድገት ክትትል",
+    "subscribe": "ለRBT ቡት ካምፕ ይመዝገቡ",
+    "askOwnerToSubscribe": "የቤተሰቡን ባለቤት እንዲመዘገብ ወይም ምዝገባውን እንዲያስተዳድሩ ፈቃድ እንዲሰጥዎ ይጠይቁ።",
+    "askOwnerForAccess": "ቤተሰብዎ ተመዝግቧል። የቤተሰቡን ባለቤት የስልጠና መዳረሻ እንዲሰጥዎ ይጠይቁ።",
+    "certificationDisclaimer": "የEthiospectrum ኮርስን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም። Ethiospectrum እውቅና ያለው የRBT ምስክር ወረቀት ሰጪ አይደለም፤ ኮርሱ ለውጭ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ ይረዳዎታል።",
+    "trackingFor": "እድገትን ይከታተሉ ለ",
+    "me": "እኔ",
+    "switchLearner": "ቀይር",
+    "overallProgress": "አጠቃላይ እድገት",
+    "lessonsCompleted": "ከ{total} ትምህርቶች {completed} ተጠናቀዋል",
+    "noContent": "እስካሁን የታተመ ትምህርት የለም። በቅርቡ ተመልሰው ይመልከቱ።",
+    "moduleNumber": "ሞጁል {number}",
+    "video": "ቪዲዮ",
+    "resource": "ግብዓት",
+    "minutes": "{count} ደቂቃ",
+    "completed": "ተጠናቋል",
+    "notStarted": "አልተጀመረም",
+    "lessonUnavailable": "ይህ ትምህርት አይገኝም።",
+    "backToLibrary": "ወደ ቤተ-መጽሐፍቱ ይመለሱ",
+    "trackingProgressFor": "የ{name} እድገት እየተከታተለ ነው",
+    "openResource": "ግብዓቱን ይክፈቱ",
+    "lessonCompleted": "ትምህርቱ ተጠናቋል",
+    "markIncomplete": "እንዳልተጠናቀቀ ምልክት አድርግ",
+    "markComplete": "ትምህርቱን እንደተጠናቀቀ ምልክት አድርግ",
+    "lessonNavigation": "የትምህርት መዳሰሻ"
+  },
+  "household": {
+    "title": "ቤተሰብ",
+    "description": "ቤተሰብዎ አንድ ባለቤት አለው፤ አንድ ተንከባካቢም ማከል ይችላል። ልጆች እና የአገልግሎት ጥያቄዎች በሁለቱም ይጋራሉ።",
+    "noHousehold": "እስካሁን የቤተሰብ አባል አይደሉም።",
+    "details": "የቤተሰብ ዝርዝሮች",
+    "name": "የቤተሰብ ስም",
+    "contactPhone": "የመገናኛ ስልክ",
+    "contactEmail": "የመገናኛ ኢሜይል",
+    "contactNotes": "የመገናኛ ማስታወሻዎች",
+    "contactHelp": "ቀጠሮዎችን ለማቀናጀት ከተመደበው ባለሙያ እና ከEthiospectrum አስተዳዳሪዎች ጋር ይጋራል።",
+    "yourRole": "የእርስዎ ሚና",
+    "save": "አስቀምጥ",
+    "saving": "በማስቀመጥ ላይ…",
+    "sending": "በመላክ ላይ…",
+    "people": "ሰዎች",
+    "peopleHelp": "ባለቤቱ ክፍያን እና የቤተሰብ ቅንብሮችን ያስተዳድራል። ተንከባካቢው ባለቤቱ የፈቀደውን ማድረግ ይችላል።",
+    "you": "እርስዎ",
+    "owner": "የቤተሰብ ባለቤት",
+    "caregiver": "ተንከባካቢ",
+    "permissionsLegend": "የተንከባካቢ ፈቃዶች",
+    "permissions": {
+      "submit_requests": {
+        "label": "አገልግሎቶችን መጠየቅ",
+        "help": "የአገልግሎት ጥያቄዎችን ማስገባት፣ ስለእነሱ መልእክት መላክ እና መሰረዝ።"
+      },
+      "confirm_appointments": {
+        "label": "ቀጠሮዎችን ማረጋገጥ",
+        "help": "ማረጋገጥ፣ ማሸጋሸግ ወይም ሌሎች ጊዜዎችን መጠየቅ።"
+      },
+      "make_payments": {
+        "label": "ክፍያ መፈጸም",
+        "help": "ለምክክር እና ለIEP የቋንቋ ድጋፍ መክፈል።"
+      },
+      "access_training": {
+        "label": "የRBT ስልጠናን መጠቀም",
+        "help": "ስልጠናውን መመልከት እና እድገትን መከታተል።"
+      },
+      "upload_documents": {
+        "label": "ሰነዶችን መጫን",
+        "help": "IEP እና ደጋፊ ሰነዶችን ወደ ጥያቄዎች ማከል።"
+      },
+      "manage_subscription": {
+        "label": "ምዝገባውን ማስተዳደር",
+        "help": "የRBT ቡት ካምፕ ምዝገባን መጀመር ወይም ማስተዳደር።"
+      }
+    },
+    "noPermissions": "ተጨማሪ ፈቃዶች የሉም",
+    "savePermissions": "ፈቃዶችን አስቀምጥ",
+    "permissionsSaved": "ፈቃዶች ተቀምጠዋል።",
+    "removeCaregiver": "ተንከባካቢውን አስወግድ",
+    "removeConfirm": "ይህን ተንከባካቢ ያስወግዱ? ወዲያውኑ መዳረሻቸውን ያጣሉ።",
+    "caregiverRemoved": "ተንከባካቢው ተወግዷል።",
+    "inviteTitle": "ተንከባካቢ ይጋብዙ",
+    "caregiverLimit": "ቤተሰብዎ ቀድሞውኑ ተንከባካቢ አለው። ሌላ ሰው ለመጋበዝ ያስወግዷቸው።",
+    "inviteHelp": "በ7 ቀናት ውስጥ የሚያልፍ የግብዣ ሊንክ በኢሜይል እንልካለን። ሊንኩን ቀድተው ራስዎ ማጋራትም ይችላሉ።",
+    "caregiverEmail": "የተንከባካቢው ኢሜይል",
+    "sendInvite": "ግብዣ ይላኩ",
+    "inviteSent": "ግብዣው ተፈጥሯል። ኢሜይሉ ካልደረሰ ይህን ሊንክ ያጋሩ፦",
+    "pendingInvitation": "ግብዣ ወደ {email} ተልኳል። {date} ያልፋል።",
+    "revokeInvitation": "ግብዣውን ሰርዝ",
+    "revokeConfirm": "ይህን ግብዣ ይሰርዙ?",
+    "inviteRevoked": "ግብዣው ተሰርዟል።",
+    "contactSaved": "የቤተሰብ ዝርዝሮች ተቀምጠዋል።",
+    "profileSaved": "መገለጫዎ ተቀምጧል።",
+    "errors": {
+      "denied": "ይህንን ማድረግ የሚችለው የቤተሰቡ ባለቤት ብቻ ነው።",
+      "limit": "አንድ ቤተሰብ አንድ ባለቤት እና አንድ ተንከባካቢ፣ በአንድ ጊዜ አንድ በመጠባበቅ ላይ ያለ ግብዣ ሊኖረው ይችላል።",
+      "state": "ያ ከአሁን በኋላ አይቻልም። ገጹን ያድሱ።",
+      "validation": "መረጃውን አረጋግጠው እንደገና ይሞክሩ።",
+      "generic": "የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
+      "wrongAccount": "ግብዣው በተላከበት የኢሜይል አድራሻ ይግቡ።",
+      "alreadyInHousehold": "ይህ መለያ ቀድሞውኑ የቤተሰብ አባል ነው።",
+      "invitationUnavailable": "ይህ ግብዣ ጊዜው አልፏል፣ ተሰርዟል ወይም ጥቅም ላይ ውሏል።"
+    },
+    "invitation": {
+      "title": "የተንከባካቢ ግብዣ",
+      "invalid": "ይህ የግብዣ ሊንክ ትክክል አይደለም።",
+      "signedOutDescription": "በEthiospectrum ላይ ቤተሰብን እንደ ተንከባካቢ እንዲቀላቀሉ ተጋብዘዋል። ለመቀበል መለያ ይፍጠሩ ወይም በተጋበዘው ኢሜይል ይግቡ።",
+      "createAccount": "መለያ ይፍጠሩ",
+      "signIn": "ይግቡ",
+      "alreadyAccepted": "ይህ ግብዣ ቀድሞውኑ ተቀባይነት አግኝቷል።",
+      "unavailable": "ይህ ግብዣ ጊዜው አልፏል ወይም ከአሁን በኋላ አይገኝም። ከቤተሰቡ ባለቤት አዲስ ይጠይቁ።",
+      "description": "{household}ን እንደ ተንከባካቢ እንዲቀላቀሉ ተጋብዘዋል።",
+      "emailNotice": "ግብዣ ለ{email} · {date} ያልፋል",
+      "accept": "ግብዣውን ተቀበል",
+      "accepting": "በመቀላቀል ላይ…"
+    }
+  },
+  "settings": {
+    "title": "ቅንብሮች",
+    "description": "ስምዎ፣ የመገናኛ ቁጥርዎ፣ ቋንቋዎ እና የሰዓት ሰቅዎ።",
+    "firstName": "የመጀመሪያ ስም",
+    "lastName": "የአባት ስም",
+    "phone": "ስልክ",
+    "phoneHelp": "አማራጭ። አገልግሎቶችዎን ለማቀናጀት ብቻ ጥቅም ላይ ይውላል።",
+    "language": "የሚመርጡት ቋንቋ",
+    "languageHelp": "ለኢሜይሎች እና ለማሳወቂያዎች ጥቅም ላይ ይውላል።",
+    "timezone": "የሰዓት ሰቅ",
+    "save": "አስቀምጥ",
+    "saving": "በማስቀመጥ ላይ…"
+  },
+  "notifications": {
+    "title": "ማሳወቂያዎች",
+    "description": "ስለ መለያዎ፣ አገልግሎቶችዎ፣ ቀጠሮዎችዎ እና ክፍያዎችዎ ማሻሻያዎች።",
+    "bell": "ማሳወቂያዎች",
+    "bellUnread": "ማሳወቂያዎች፣ {count} ያልተነበቡ",
+    "markAllRead": "ሁሉንም እንደተነበቡ ምልክት አድርግ",
+    "markRead": "እንደተነበበ ምልክት አድርግ",
+    "unread": "ያልተነበበ",
+    "open": "ክፈት",
+    "loadError": "ማሳወቂያዎችን መጫን አልተቻለም።",
+    "empty": "ምንም ማሳወቂያ የለዎትም።",
+    "generic": "ማሻሻያ",
+    "pagination": "የማሳወቂያ ገጾች",
+    "previous": "ቀዳሚ",
+    "next": "ቀጣይ",
+    "email": {
+      "greeting": "ሰላም {name}፣",
+      "action": "Ethiospectrumን ይክፈቱ",
+      "footer": "ይህን የሚቀበሉት የ{brand} መለያ ስላለዎት ነው። ለዚህ ኢሜይል ምላሽ አይስጡ፤ ለባለሙያዎ መልእክት ለመላክ ይግቡ።"
+    },
+    "types": {
+      "account_created": {
+        "title": "ወደ Ethiospectrum እንኳን ደህና መጡ",
+        "body": "መለያዎ ተፈጥሯል። ለመጀመር ልጆችዎን ያክሉ እና አገልግሎት ይምረጡ።"
+      },
+      "caregiver_invitation": {
+        "title": "{household}ን እንዲቀላቀሉ ተጋብዘዋል",
+        "body": "በEthiospectrum ላይ {household}ን እንደ ተንከባካቢ እንዲቀላቀሉ ተጋብዘዋል። ለመቀበል ሊንኩን ይክፈቱ።"
+      },
+      "caregiver_joined": {
+        "title": "ተንከባካቢዎ ተቀላቅሏል",
+        "body": "የጋበዙት ተንከባካቢ ቤተሰብዎን ተቀላቅሏል።"
+      },
+      "caregiver_removed": {
+        "title": "የቤተሰብ መዳረሻ ተወግዷል",
+        "body": "ከአንድ ቤተሰብ እንደ ተንከባካቢ ተወግደዋል።"
+      },
+      "subscription_activated": {
+        "title": "የRBT ቡት ካምፕ ንቁ ነው",
+        "body": "ምዝገባዎ ንቁ ነው። ሁሉም የስልጠና ቪዲዮዎች እና ግብዓቶች ተከፍተዋል።"
+      },
+      "subscription_inactive": {
+        "title": "የRBT ቡት ካምፕ መዳረሻ ቆሟል",
+        "body": "ምዝገባዎ ከአሁን በኋላ ንቁ ስላልሆነ የስልጠና ይዘት ተቆልፏል። ለመቀጠል የክፍያ ገጹን ይመልከቱ።"
+      },
+      "request_received": {
+        "title": "የ{service} ጥያቄ ደርሷል",
+        "body": "ጥያቄዎ ደርሷል። አስተዳዳሪ ገምግሞ ባለሙያ ይመድባል።"
+      },
+      "specialist_assigned": {
+        "title": "ባለሙያ ተመድቧል",
+        "body": "ለ{service} ጥያቄዎ ባለሙያ ተመድቧል።"
+      },
+      "appointment_proposed": {
+        "title": "የቀጠሮ ጊዜዎች ቀርበዋል",
+        "body": "ለ{service} ጥያቄዎ አዲስ የቀጠሮ ጊዜዎች ቀርበዋል። ይመልከቱ እና አንዱን ያረጋግጡ።"
+      },
+      "appointment_confirmed": {
+        "title": "ቀጠሮ ተረጋግጧል",
+        "body": "የ{service} ቀጠሮዎ ለ{start} ተረጋግጧል።"
+      },
+      "appointment_reminder": {
+        "title": "የቀጠሮ ማስታወሻ",
+        "body": "ማስታወሻ፦ የ{service} ቀጠሮዎ {start} ነው።"
+      },
+      "appointment_cancelled": {
+        "title": "ቀጠሮ ተሰርዟል",
+        "body": "የ{service} ቀጠሮ ወይም ጥያቄ ተሰርዟል። ለዝርዝሮች እና ለማንኛውም ተመላሽ ጥያቄውን ይክፈቱ።"
+      },
+      "appointment_rescheduled": {
+        "title": "ቀጠሮ ተሸጋሽጓል",
+        "body": "የ{service} ቀጠሮዎ እየተሸጋሸገ ነው። ለቅርብ ጊዜ ዝርዝሮች ጥያቄውን ይክፈቱ።"
+      },
+      "payment_confirmed": {
+        "title": "ክፍያ ተረጋግጧል",
+        "body": "ለ{service} የከፈሉት {amount} ደርሶናል።"
+      },
+      "payment_failed": {
+        "title": "ክፍያ አልተሳካም",
+        "body": "ለ{service} የከፈሉት ክፍያ አልተሳካም። ጥያቄዎ ተቀምጧል፤ እንደገና መሞከር ይችላሉ።"
+      },
+      "refund_processed": {
+        "title": "ተመላሽ ተከናውኗል",
+        "body": "ለ{service} የ{amount} ተመላሽ ወደ መጀመሪያው የክፍያ ዘዴዎ ተልኳል።"
+      },
+      "service_completed": {
+        "title": "አገልግሎቱ ተጠናቋል",
+        "body": "የእርስዎ {service} ተጠናቋል። Ethiospectrumን ስለመረጡ እናመሰግናለን።"
+      },
+      "follow_up_available": {
+        "title": "ክትትል ይገኛል",
+        "body": "የእርስዎ {service} አንድ ክትትልን ያካትታል። ሲዘጋጁ ይጠይቁ።"
+      },
+      "request_declined": {
+        "title": "ጥያቄው ውድቅ ተደርጓል",
+        "body": "የ{service} ጥያቄዎ ተቀባይነት ሊያገኝ አልቻለም። ምክንያቱን ለማየት ይክፈቱት።"
+      },
+      "document_available": {
+        "title": "አዲስ ሰነድ ይገኛል",
+        "body": "ባለሙያዎ ወደ {service} ጥያቄዎ ሰነድ አክሏል።"
+      },
+      "new_message": {
+        "title": "አዲስ መልእክት",
+        "body": "ስለ {service} ጥያቄዎ አዲስ መልእክት አለዎት።"
+      },
+      "specialist_new_assignment": {
+        "title": "አዲስ ምደባ",
+        "body": "የ{service} ጥያቄ ተመድቦልዎታል።"
+      },
+      "specialist_availability_requested": {
+        "title": "የጊዜ ተገኝነት ተጠይቋል",
+        "body": "እባክዎ ለ{service} ጥያቄ የቀጠሮ ጊዜዎችን ያቅርቡ።"
+      },
+      "specialist_appointment_proposed": {
+        "title": "ጊዜዎች ቀርበዋል",
+        "body": "Ethiospectrum ለ{service} ምደባዎ ከ{start} ጀምሮ ጊዜዎችን አቅርቧል።"
+      },
+      "specialist_appointment_confirmed": {
+        "title": "ቀጠሮ ተረጋግጧል",
+        "body": "የ{service} ቀጠሮ ለ{start} ተረጋግጧል።"
+      },
+      "specialist_appointment_rescheduled": {
+        "title": "ቀጠሮ ተሸጋሽጓል",
+        "body": "የ{service} ቀጠሮ እየተሸጋሸገ ነው።"
+      },
+      "specialist_appointment_cancelled": {
+        "title": "ቀጠሮ ተሰርዟል",
+        "body": "የ{service} ቀጠሮ ተሰርዟል።"
+      },
+      "specialist_appointment_reminder": {
+        "title": "የቀጠሮ ማስታወሻ",
+        "body": "ማስታወሻ፦ የ{service} ቀጠሮ {start} ነው።"
+      },
+      "specialist_document_available": {
+        "title": "ሰነድ ይገኛል",
+        "body": "ቤተሰቡ ወደ {service} ጥያቄ ሰነድ አክሏል።"
+      },
+      "specialist_follow_up_required": {
+        "title": "ክትትል ተጠይቋል",
+        "body": "ቤተሰቡ ለ{service} ጥያቄ የተካተተውን ክትትል ጠይቋል።"
+      },
+      "specialist_new_message": {
+        "title": "አዲስ መልእክት",
+        "body": "ቤተሰቡ ስለ {service} ጥያቄ መልእክት ልኳል።"
+      },
+      "specialist_service_completed": {
+        "title": "አገልግሎቱ ተጠናቋል",
+        "body": "አስተዳዳሪ የ{service} ጥያቄን እንደተጠናቀቀ ምልክት አድርጓል።"
+      },
+      "admin_new_request": {
+        "title": "አዲስ የአገልግሎት ጥያቄ",
+        "body": "አዲስ የ{service} ጥያቄ ግምገማ ይፈልጋል።"
+      },
+      "admin_payment_failed": {
+        "title": "ክፍያ አልተሳካም",
+        "body": "የ{service} ክፍያ አልተሳካም።"
+      },
+      "admin_cancellation": {
+        "title": "ስረዛ",
+        "body": "አንድ ቤተሰብ የ{service} ጥያቄን ሰርዟል።"
+      },
+      "admin_reschedule_requested": {
+        "title": "ቀጠሮ ማሸጋሸግ ተጠይቋል",
+        "body": "አንድ ቤተሰብ የ{service} ቀጠሮ እንዲሸጋሸግ ጠይቋል።"
+      },
+      "admin_unassigned_request": {
+        "title": "ምደባ የሚጠብቅ ጥያቄ",
+        "body": "የ{service} ጥያቄ ከ24 ሰዓት በላይ ምደባ እየጠበቀ ነው።"
+      },
+      "admin_service_completed": {
+        "title": "አገልግሎቱ ተጠናቋል",
+        "body": "አንድ ባለሙያ የ{service} ጥያቄን አጠናቋል።"
+      },
+      "admin_refund_requested": {
+        "title": "ተመላሽ ተጠይቋል",
+        "body": "የ{service} ጥያቄ ተመላሽ ለማስኬድ ዝግጁ ነው።"
+      },
+      "admin_availability_submitted": {
+        "title": "የጊዜ ተገኝነት ቀርቧል",
+        "body": "አንድ ባለሙያ ለ{service} ጥያቄ ጊዜዎችን አቅርቧል።"
+      },
+      "admin_follow_up_requested": {
+        "title": "ክትትል ተጠይቋል",
+        "body": "አንድ ቤተሰብ ለ{service} ጥያቄ ክትትል ጠይቋል።"
+      },
+      "admin_no_show": {
+        "title": "አለመገኘት ተመዝግቧል",
+        "body": "የ{service} ቀጠሮ እንዳልተገኘ ተመዝግቧል።"
+      }
+    }
+  },
+  "publicServices": {
+    "eyebrow": "አገልግሎቶች",
+    "title": "ለቤተሰብዎ ድጋፍ፣ በቋንቋዎ",
+    "seePricing": "አገልግሎቶችን እና ዋጋዎችን ይመልከቱ",
+    "heroCardEyebrow": "የEthiospectrum አገልግሎቶች",
+    "independentNotice": "ምክክር እና የIEP የቋንቋ ድጋፍ ለብቻቸው ሊገዙ ይችላሉ — የRBT ቡት ካምፕ ምዝገባ አያስፈልግም።",
+    "rbt": {
+      "name": "የRBT ቡት ካምፕ",
+      "price": "ወርሃዊ",
+      "billing": "በየወሩ የሚታደስ ምዝገባ",
+      "description": "ወላጆች ኒውሮዳይቨርጀንሲን እንዲረዱ፣ ሥርዓተ ትምህርታችንን እንዲያጠናቅቁ እና ለውጭ RBT-ነክ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ የሚረዳ በራስ ፍጥነት የሚታይ የቪዲዮ ቤተ-መጽሐፍት።",
+      "features": ["ሁሉም የስልጠና ቪዲዮዎች", "ሁሉም ደጋፊ ግብዓቶች", "ለእርስዎ እና ለልጅዎ የእድገት ክትትል"],
+      "action": "የRBT ቡት ካምፕን ይጀምሩ"
+    },
+    "consultation": {
+      "name": "ምክክር",
+      "price": "$9.99",
+      "billing": "የአንድ ጊዜ ክፍያ · 60 ደቂቃ",
+      "description": "አጠቃላይ የቤተሰብ እና የአገልግሎት መመሪያ፣ ወይም የተለየ የባህሪ እና የትምህርት መመሪያ ከተመደበ ባለሙያ ጋር።",
+      "features": ["የ60 ደቂቃ ክፍለ ጊዜ", "አንድ ክትትል ተካቷል", "በእንግሊዝኛ፣ በአማርኛ ወይም በስፓኒሽ"],
+      "action": "ምክክር ይጠይቁ"
+    },
+    "iep": {
+      "name": "የIEP የቋንቋ ድጋፍ",
+      "price": "$19.99",
+      "billing": "የአንድ ጊዜ ክፍያ · የ60 ደቂቃ ክፍለ ጊዜ",
+      "description": "የልጅዎን IEP ይረዱ፣ በትምህርት ቤት ስብሰባዎች የቋንቋ ድጋፍ ያግኙ፣ እና የጽሑፍ ትርጉም ይቀበሉ።",
+      "features": [
+        "እንግሊዝኛ ↔ አማርኛ እና እንግሊዝኛ ↔ ስፓኒሽ",
+        "በርቀት ወይም በአካል፣ ያለ ጉዞ ክፍያ",
+        "የጽሑፍ ትርጉም እና አንድ ክትትል ተካተዋል"
+      ],
+      "action": "የIEP ድጋፍ ይጠይቁ"
+    },
+    "policyTitle": "ስረዛ እና ተመላሾች",
+    "policy": [
+      "ከ48 ሰዓት በላይ በፊት፦ 100% ተመላሽ፣ ወይም ያለ ክፍያ ቀጠሮ ማሸጋሸግ።",
+      "ከ24 እስከ 48 ሰዓት በፊት፦ 50% ተመላሽ፣ ወይም አንድ ጊዜ ያለ ክፍያ ቀጠሮ ማሸጋሸግ።",
+      "ከ24 ሰዓት ባነሰ ጊዜ፦ እንደገና ሳይከፍሉ አንድ ጊዜ ቀጠሮ ማሸጋሸግ፤ አስተዳዳሪ ልዩ ፈቃድ ካልሰጠ የገንዘብ ተመላሽ የለም።",
+      "አለመገኘት፦ ራስ-ሰር ተመላሽ የለም፤ ቀጠሮ ማሸጋሸግ እንደየሁኔታው ሊፈቀድ ይችላል።",
+      "Ethiospectrum ከሰረዘ 100% ተመላሽ ያገኛሉ ወይም ቀጠሮ ማሸጋሸግ ይችላሉ።"
+    ],
+    "feesTitle": "ግብሮች እና ክፍያዎች",
+    "fees": [
+      "የሚመለከታቸው ግብሮች በሚያስፈልግበት ቦታ በክፍያ ወቅት ይሰላሉ።",
+      "በአካል ለሚሰጥ የIEP ድጋፍ የጉዞ ክፍያ አይጠየቅም።",
+      "ማንኛውም ተጨማሪ ክፍያ ከመክፈልዎ በፊት ለፈቃድዎ ይታያል።"
+    ],
+    "certificationDisclaimer": "የRBT ቡት ካምፕን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም። Ethiospectrum እውቅና ያለው የRBT ምስክር ወረቀት ሰጪ አይደለም።",
+    "languageTitle": "አገልግሎቶች በእንግሊዝኛ፣ በአማርኛ እና በስፓኒሽ",
+    "languageDescription": "ባለሙያዎች ቤተሰብዎ በሚፈልገው አገልግሎት፣ ቋንቋ እና የአሰጣጥ ዘዴ ይመደባሉ።",
+    "languageItems": [
+      "የIEP ማብራሪያ እና በትምህርት ቤት ስብሰባ የቋንቋ ድጋፍ",
+      "የIEP ጽሑፍ የጽሑፍ ትርጉም",
+      "በርቀት ወይም በአካል በEthiospectrum፣ በትምህርት ቤት ወይም በተስማሙበት ቦታ"
+    ]
+  }
 }

@@ -10,8 +10,8 @@ export default async function SpecialistLayout({
 }: Readonly<{ children: React.ReactNode; params: Promise<{ locale: string }> }>) {
   const { locale: localeParam } = await params;
   const locale = localeParam as AppLocale;
-  // The global specialist role only opens this shell; each request stays gated
-  // by its own live assignment check in the database.
-  await requireRole(locale, `/${locale}/specialist/support-requests`, "specialist");
+  // The global specialist role only opens this shell; each service request is
+  // authorized by its live assignment in the database on every query.
+  await requireRole(locale, `/${locale}/specialist`, "specialist");
   return <SpecialistShell>{children}</SpecialistShell>;
 }

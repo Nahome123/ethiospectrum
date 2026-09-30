@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { retiredApiResponse } from "@/lib/features";
 import { hasValidDocumentSummarySecret } from "@/lib/documents/summaries/internal-secret";
 import { runDocumentSummaryBatch } from "@/lib/documents/summaries/runner";
 
@@ -14,6 +15,8 @@ function unavailableResponse() {
 
 /** Protected scheduler/platform entry point. It accepts no document or summary identifiers. */
 export async function POST(request: Request) {
+  const retired = retiredApiResponse("documentAi");
+  if (retired) return retired;
   let authorized: boolean;
   try {
     authorized = hasValidDocumentSummarySecret(request.headers.get("x-document-summary-secret"));

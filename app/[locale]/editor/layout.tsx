@@ -1,10 +1,12 @@
 import type { AppLocale } from "@/i18n/routing";
+import { requireFeature } from "@/lib/features";
 import { requireContentEditor } from "@/lib/auth/guards";
 
 export default async function EditorLayout({
   children,
   params,
 }: Readonly<{ children: React.ReactNode; params: Promise<{ locale: string }> }>) {
+  requireFeature("resourceHub");
   const { locale: localeParam } = await params;
   const locale = localeParam as AppLocale;
   await requireContentEditor(locale, `/${locale}/editor`);

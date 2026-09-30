@@ -28,13 +28,21 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
           [t("birthYear"), dependent.birth_year],
           [t("schoolDistrict"), dependent.school_district],
           [t("gradeLevel"), dependent.grade_level],
+          [
+            t("preferredLanguage"),
+            dependent.preferred_language ? t(`languageNames.${dependent.preferred_language}`) : null,
+          ],
+          [t("serviceNeeds"), dependent.service_needs],
+          [t("communicationConsiderations"), dependent.communication_considerations],
+          [t("educationalInformation"), dependent.educational_information],
+          [t("behavioralInformation"), dependent.behavioral_information],
           [t("notes"), dependent.notes],
         ]
           .filter(([, v]) => v)
           .map(([label, value]) => (
             <div key={String(label)}>
               <dt className="font-semibold">{label}</dt>
-              <dd>{String(value)}</dd>
+              <dd className="whitespace-pre-line">{String(value)}</dd>
             </div>
           ))}
       </dl>

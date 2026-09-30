@@ -42,20 +42,20 @@ reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = '30000000-0000-0000-0000-000000000003';
 select is((select count(*) from public.dependents), 2::bigint, 'ordinary member can read active dependents');
-select throws_ok($$insert into public.dependents (household_id, first_name) values ('40000000-0000-0000-0000-000000000001', 'Denied member')$$, '42501', null, 'ordinary member cannot create a dependent');
-select lives_ok($$update public.dependents set first_name = 'Denied update' where first_name = 'Child'$$, 'ordinary member update is filtered by RLS');
+select lives_ok($$insert into public.dependents (household_id, first_name) values ('40000000-0000-0000-0000-000000000001', 'Caregiver child')$$, 'the caregiver (member) can create a dependent');
+select lives_ok($$update public.dependents set grade_level = 'Grade 3' where first_name = 'Child'$$, 'the caregiver (member) can update a dependent');
 
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = '30000000-0000-0000-0000-000000000001';
-select is((select first_name from public.dependents where preferred_name = 'First'), 'Child', 'ordinary member cannot update a dependent');
+select is((select grade_level from public.dependents where preferred_name = 'First'), 'Grade 3', 'the caregiver update is visible to the owner');
 select throws_ok($$update public.dependents set household_id = '40000000-0000-0000-0000-000000000002' where preferred_name = 'First'$$, '42501', null, 'household reassignment is denied');
 select lives_ok($$update public.dependents set first_name = 'Updated child' where preferred_name = 'First'$$, 'owner can update a dependent');
 
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = '30000000-0000-0000-0000-000000000004';
-select is((select count(*) from public.dependents), 2::bigint, 'viewer can read active dependents');
+select is((select count(*) from public.dependents), 3::bigint, 'viewer can read active dependents');
 select throws_ok($$insert into public.dependents (household_id, first_name) values ('40000000-0000-0000-0000-000000000001', 'Denied viewer')$$, '42501', null, 'viewer cannot create a dependent');
 
 reset role;
@@ -71,7 +71,7 @@ select lives_ok($$update public.dependents set archived_at = now() where preferr
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = '30000000-0000-0000-0000-000000000003';
-select is((select count(*) from public.dependents), 1::bigint, 'archived dependents are excluded from ordinary member reads');
+select is((select count(*) from public.dependents), 2::bigint, 'archived dependents are excluded from ordinary member reads');
 
 reset role;
 set local role authenticated;

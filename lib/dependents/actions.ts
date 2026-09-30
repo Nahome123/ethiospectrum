@@ -18,6 +18,11 @@ function input(formData: FormData) {
     schoolDistrict: String(formData.get("schoolDistrict") ?? ""),
     gradeLevel: String(formData.get("gradeLevel") ?? ""),
     notes: String(formData.get("notes") ?? ""),
+    preferredLanguage: String(formData.get("preferredLanguage") ?? ""),
+    serviceNeeds: String(formData.get("serviceNeeds") ?? ""),
+    communicationConsiderations: String(formData.get("communicationConsiderations") ?? ""),
+    educationalInformation: String(formData.get("educationalInformation") ?? ""),
+    behavioralInformation: String(formData.get("behavioralInformation") ?? ""),
   };
 }
 async function parsed(locale: AppLocale, formData: FormData) {
@@ -51,6 +56,11 @@ export async function createDependentAction(
     school_district: result.data.schoolDistrict,
     grade_level: result.data.gradeLevel,
     notes: result.data.notes,
+    preferred_language: result.data.preferredLanguage,
+    service_needs: result.data.serviceNeeds,
+    communication_considerations: result.data.communicationConsiderations,
+    educational_information: result.data.educationalInformation,
+    behavioral_information: result.data.behavioralInformation,
   });
   if (error) return { status: "error", message: t("saveError") };
   revalidatePath(`/${locale}/dependents`);
@@ -78,6 +88,11 @@ export async function updateDependentAction(
       school_district: result.data.schoolDistrict,
       grade_level: result.data.gradeLevel,
       notes: result.data.notes,
+      preferred_language: result.data.preferredLanguage,
+      service_needs: result.data.serviceNeeds,
+      communication_considerations: result.data.communicationConsiderations,
+      educational_information: result.data.educationalInformation,
+      behavioral_information: result.data.behavioralInformation,
     })
     .eq("id", dependentId)
     .eq("household_id", record.context.household.id);

@@ -4,32 +4,44 @@ import { brandConfig } from "@/config/brand";
 import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
+import { NotificationBell } from "./notification-bell";
 import { signOutAction } from "@/lib/auth/actions";
-import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
+import { getCurrentMemberProfile, getCurrentSupabaseUser, getCurrentUserRole } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
 import { MemberNavigation } from "./member-navigation";
-import { formatUnseenReminderCount, getUnseenReminderCount } from "@/lib/reminders/server";
 
-const links = [
-  "dashboard",
-  "dependents",
-  "documents",
-  "assistant",
-  "roadmap",
-  "reminders",
-  "resources",
-  "support",
-  "billing",
-  "settings",
+/** Household workspace navigation (PRD sections 32-33). */
+const householdLinks = [
+  ["dashboard", "/dashboard"],
+  ["services", "/services"],
+  ["requests", "/requests"],
+  ["training", "/training"],
+  ["dependents", "/dependents"],
+  ["documents", "/documents"],
+  ["household", "/household"],
+  ["billing", "/billing"],
+  ["notifications", "/notifications"],
+  ["settings", "/settings"],
 ] as const;
+
 export async function MemberShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations();
   const locale = (await getLocale()) as AppLocale;
   const user = await getCurrentSupabaseUser();
-  const [profile, unseenReminderCount] = user
-    ? await Promise.all([getCurrentMemberProfile(user.id), getUnseenReminderCount()])
-    : [null, 0];
+  const [profile, role] = user
+    ? await Promise.all([getCurrentMemberProfile(user.id), getCurrentUserRole(user.id)])
+    : [null, null];
   const displayName = profile?.first_name || user?.email || t("member.profile");
+  // Staff accounts reach shared pages (notifications, settings) from their own workspace.
+  const links =
+    role === "specialist"
+      ? ([
+          ["specialistWorkspace", "/specialist"],
+          ["notifications", "/notifications"],
+          ["settings", "/settings"],
+        ] as const)
+      : householdLinks;
+
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b border-border bg-white p-5 lg:border-b-0 lg:border-r">
@@ -39,22 +51,24 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
         <p className="mt-1 text-sm text-muted-foreground">{t("member.workspace")}</p>
         <MemberNavigation
           closeLabel={t("accessibility.closeMenu")}
-          items={links.map((link) => ({
-            badge: link === "reminders" ? formatUnseenReminderCount(unseenReminderCount) : null,
-            href: link === "resources" ? "/member/resources" : `/${link}`,
-            label: link === "reminders" ? t("reminders.title") : t(`navigation.${link}`),
-          }))}
+          items={links.map(([key, href]) => ({ href, label: t(`navigation.${key}`) }))}
           label={t("member.workspace")}
           menuLabel={t("common.menu")}
           openLabel={t("common.openMenu")}
         />
+        {role === "administrator" ? (
+          <Link
+            className="mt-4 block rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white"
+            href="/admin"
+          >
+            {t("navigation.admin")}
+          </Link>
+        ) : null}
       </aside>
       <div>
-        <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
-          <Link className="text-sm font-semibold underline" href="/dependents">
-            {t("member.allDependents")}
-          </Link>
+        <header className="flex min-h-16 flex-wrap items-center justify-end gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
+            <NotificationBell />
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
               {displayName}

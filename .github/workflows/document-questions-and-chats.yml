@@ -1,8 +1,8 @@
 name: Process document questions and chats
 
+# Document AI is retired for launch (config/features.ts); the worker route answers 404.
+# Scheduling stays disabled until the feature is re-approved; manual runs remain available.
 on:
-  schedule:
-    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 # This scheduler only needs its configured endpoint and question-worker secret.

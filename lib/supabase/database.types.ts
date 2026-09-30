@@ -558,6 +558,39 @@ export type Database = {
           },
         ];
       };
+      consultation_topics: {
+        Row: {
+          active: boolean;
+          category: string;
+          created_at: string;
+          id: string;
+          labels: Json;
+          sort_order: number;
+          topic_key: string;
+          updated_at: string;
+        };
+        Insert: {
+          active?: boolean;
+          category: string;
+          created_at?: string;
+          id?: string;
+          labels: Json;
+          sort_order?: number;
+          topic_key: string;
+          updated_at?: string;
+        };
+        Update: {
+          active?: boolean;
+          category?: string;
+          created_at?: string;
+          id?: string;
+          labels?: Json;
+          sort_order?: number;
+          topic_key?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       conversations: {
         Row: {
           created_at: string;
@@ -616,47 +649,62 @@ export type Database = {
       dependents: {
         Row: {
           archived_at: string | null;
+          behavioral_information: string | null;
           birth_year: number | null;
+          communication_considerations: string | null;
           created_at: string;
           created_by: string;
+          educational_information: string | null;
           first_name: string;
           grade_level: string | null;
           household_id: string;
           id: string;
           last_name: string | null;
           notes: string | null;
+          preferred_language: string | null;
           preferred_name: string | null;
           school_district: string | null;
+          service_needs: string | null;
           updated_at: string;
         };
         Insert: {
           archived_at?: string | null;
+          behavioral_information?: string | null;
           birth_year?: number | null;
+          communication_considerations?: string | null;
           created_at?: string;
           created_by: string;
+          educational_information?: string | null;
           first_name: string;
           grade_level?: string | null;
           household_id: string;
           id?: string;
           last_name?: string | null;
           notes?: string | null;
+          preferred_language?: string | null;
           preferred_name?: string | null;
           school_district?: string | null;
+          service_needs?: string | null;
           updated_at?: string;
         };
         Update: {
           archived_at?: string | null;
+          behavioral_information?: string | null;
           birth_year?: number | null;
+          communication_considerations?: string | null;
           created_at?: string;
           created_by?: string;
+          educational_information?: string | null;
           first_name?: string;
           grade_level?: string | null;
           household_id?: string;
           id?: string;
           last_name?: string | null;
           notes?: string | null;
+          preferred_language?: string | null;
           preferred_name?: string | null;
           school_district?: string | null;
+          service_needs?: string | null;
           updated_at?: string;
         };
         Relationships: [
@@ -1553,6 +1601,7 @@ export type Database = {
           mime_type: string;
           original_filename: string;
           processing_status: string;
+          service_request_id: string | null;
           storage_bucket: string;
           storage_path: string;
           title: string;
@@ -1572,6 +1621,7 @@ export type Database = {
           mime_type: string;
           original_filename: string;
           processing_status?: string;
+          service_request_id?: string | null;
           storage_bucket?: string;
           storage_path: string;
           title: string;
@@ -1591,6 +1641,7 @@ export type Database = {
           mime_type?: string;
           original_filename?: string;
           processing_status?: string;
+          service_request_id?: string | null;
           storage_bucket?: string;
           storage_path?: string;
           title?: string;
@@ -1614,6 +1665,13 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "documents_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "documents_uploaded_by_fkey";
             columns: ["uploaded_by"];
             isOneToOne: false;
@@ -1622,8 +1680,65 @@ export type Database = {
           },
         ];
       };
+      household_invitations: {
+        Row: {
+          accepted_at: string | null;
+          accepted_by: string | null;
+          caregiver_permissions: string[];
+          created_at: string;
+          email: string;
+          expires_at: string;
+          household_id: string;
+          id: string;
+          invited_by: string;
+          revoked_at: string | null;
+          status: string;
+          token_hash: string;
+          updated_at: string;
+        };
+        Insert: {
+          accepted_at?: string | null;
+          accepted_by?: string | null;
+          caregiver_permissions: string[];
+          created_at?: string;
+          email: string;
+          expires_at: string;
+          household_id: string;
+          id?: string;
+          invited_by: string;
+          revoked_at?: string | null;
+          status?: string;
+          token_hash: string;
+          updated_at?: string;
+        };
+        Update: {
+          accepted_at?: string | null;
+          accepted_by?: string | null;
+          caregiver_permissions?: string[];
+          created_at?: string;
+          email?: string;
+          expires_at?: string;
+          household_id?: string;
+          id?: string;
+          invited_by?: string;
+          revoked_at?: string | null;
+          status?: string;
+          token_hash?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "household_invitations_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       household_members: {
         Row: {
+          caregiver_permissions: string[];
           created_at: string;
           household_id: string;
           id: string;
@@ -1636,6 +1751,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          caregiver_permissions?: string[];
           created_at?: string;
           household_id: string;
           id?: string;
@@ -1648,6 +1764,7 @@ export type Database = {
           user_id: string;
         };
         Update: {
+          caregiver_permissions?: string[];
           created_at?: string;
           household_id?: string;
           id?: string;
@@ -1720,6 +1837,9 @@ export type Database = {
       };
       households: {
         Row: {
+          contact_email: string | null;
+          contact_notes: string | null;
+          contact_phone: string | null;
           created_at: string;
           created_by: string;
           deleted_at: string | null;
@@ -1729,6 +1849,9 @@ export type Database = {
           updated_at: string;
         };
         Insert: {
+          contact_email?: string | null;
+          contact_notes?: string | null;
+          contact_phone?: string | null;
           created_at?: string;
           created_by: string;
           deleted_at?: string | null;
@@ -1738,6 +1861,9 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          contact_email?: string | null;
+          contact_notes?: string | null;
+          contact_phone?: string | null;
           created_at?: string;
           created_by?: string;
           deleted_at?: string | null;
@@ -1786,12 +1912,82 @@ export type Database = {
           },
         ];
       };
+      notifications: {
+        Row: {
+          created_at: string;
+          email_attempts: number;
+          email_error_code: string | null;
+          email_locked_at: string | null;
+          email_status: string;
+          emailed_at: string | null;
+          household_id: string | null;
+          id: string;
+          link_path: string | null;
+          notification_type: string;
+          payload: Json;
+          read_at: string | null;
+          recipient_email: string | null;
+          recipient_id: string | null;
+          service_request_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          email_attempts?: number;
+          email_error_code?: string | null;
+          email_locked_at?: string | null;
+          email_status?: string;
+          emailed_at?: string | null;
+          household_id?: string | null;
+          id?: string;
+          link_path?: string | null;
+          notification_type: string;
+          payload?: Json;
+          read_at?: string | null;
+          recipient_email?: string | null;
+          recipient_id?: string | null;
+          service_request_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          email_attempts?: number;
+          email_error_code?: string | null;
+          email_locked_at?: string | null;
+          email_status?: string;
+          emailed_at?: string | null;
+          household_id?: string | null;
+          id?: string;
+          link_path?: string | null;
+          notification_type?: string;
+          payload?: Json;
+          read_at?: string | null;
+          recipient_email?: string | null;
+          recipient_id?: string | null;
+          service_request_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notifications_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "notifications_service_request_fk";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           created_at: string;
           first_name: string | null;
           id: string;
           last_name: string | null;
+          phone: string | null;
           preferred_locale: string;
           timezone: string;
           updated_at: string;
@@ -1801,6 +1997,7 @@ export type Database = {
           first_name?: string | null;
           id: string;
           last_name?: string | null;
+          phone?: string | null;
           preferred_locale?: string;
           timezone?: string;
           updated_at?: string;
@@ -1810,6 +2007,7 @@ export type Database = {
           first_name?: string | null;
           id?: string;
           last_name?: string | null;
+          phone?: string | null;
           preferred_locale?: string;
           timezone?: string;
           updated_at?: string;
@@ -2528,6 +2726,699 @@ export type Database = {
           },
         ];
       };
+      service_appointments: {
+        Row: {
+          cancellation_kind: string | null;
+          cancellation_reason: string | null;
+          cancelled_at: string | null;
+          cancelled_by: string | null;
+          completed_at: string | null;
+          completed_by: string | null;
+          completion_notes: string | null;
+          confirmed_at: string | null;
+          confirmed_by: string | null;
+          created_at: string;
+          customer_confirmed: boolean;
+          delivery_method: string;
+          end_at: string;
+          household_id: string;
+          id: string;
+          instructions: string | null;
+          kind: string;
+          location_details: string | null;
+          location_type: string;
+          meeting_url: string | null;
+          proposal_group: string;
+          proposed_by: string | null;
+          proposed_by_role: string;
+          reminder_sent_at: string | null;
+          scheduled_directly: boolean;
+          service_request_id: string;
+          specialist_id: string;
+          start_at: string;
+          status: string;
+          timezone: string;
+          updated_at: string;
+        };
+        Insert: {
+          cancellation_kind?: string | null;
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          completion_notes?: string | null;
+          confirmed_at?: string | null;
+          confirmed_by?: string | null;
+          created_at?: string;
+          customer_confirmed?: boolean;
+          delivery_method: string;
+          end_at: string;
+          household_id: string;
+          id?: string;
+          instructions?: string | null;
+          kind: string;
+          location_details?: string | null;
+          location_type: string;
+          meeting_url?: string | null;
+          proposal_group: string;
+          proposed_by?: string | null;
+          proposed_by_role: string;
+          reminder_sent_at?: string | null;
+          scheduled_directly?: boolean;
+          service_request_id: string;
+          specialist_id: string;
+          start_at: string;
+          status: string;
+          timezone: string;
+          updated_at?: string;
+        };
+        Update: {
+          cancellation_kind?: string | null;
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          completion_notes?: string | null;
+          confirmed_at?: string | null;
+          confirmed_by?: string | null;
+          created_at?: string;
+          customer_confirmed?: boolean;
+          delivery_method?: string;
+          end_at?: string;
+          household_id?: string;
+          id?: string;
+          instructions?: string | null;
+          kind?: string;
+          location_details?: string | null;
+          location_type?: string;
+          meeting_url?: string | null;
+          proposal_group?: string;
+          proposed_by?: string | null;
+          proposed_by_role?: string;
+          reminder_sent_at?: string | null;
+          scheduled_directly?: boolean;
+          service_request_id?: string;
+          specialist_id?: string;
+          start_at?: string;
+          status?: string;
+          timezone?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_appointments_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_appointments_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_appointments_specialist_id_fkey";
+            columns: ["specialist_id"];
+            isOneToOne: false;
+            referencedRelation: "specialists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      service_fees: {
+        Row: {
+          active: boolean;
+          amount_cents: number;
+          created_at: string;
+          created_by: string | null;
+          description: string;
+          id: string;
+          name: string;
+          service_type: string;
+          updated_at: string;
+        };
+        Insert: {
+          active?: boolean;
+          amount_cents: number;
+          created_at?: string;
+          created_by?: string | null;
+          description: string;
+          id?: string;
+          name: string;
+          service_type: string;
+          updated_at?: string;
+        };
+        Update: {
+          active?: boolean;
+          amount_cents?: number;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string;
+          id?: string;
+          name?: string;
+          service_type?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      service_payments: {
+        Row: {
+          accepted_fees: Json;
+          amount_total_cents: number;
+          base_amount_cents: number;
+          created_at: string;
+          currency: string;
+          failure_code: string | null;
+          fee_amount_cents: number;
+          household_id: string;
+          id: string;
+          paid_at: string | null;
+          payer_user_id: string;
+          payment_type: string;
+          provider_checkout_session_id: string | null;
+          provider_transaction_id: string | null;
+          provider_updated_at: string | null;
+          refunded_amount_cents: number;
+          service_request_id: string;
+          status: string;
+          subtotal_cents: number;
+          tax_amount_cents: number | null;
+          updated_at: string;
+        };
+        Insert: {
+          accepted_fees?: Json;
+          amount_total_cents: number;
+          base_amount_cents: number;
+          created_at?: string;
+          currency?: string;
+          failure_code?: string | null;
+          fee_amount_cents?: number;
+          household_id: string;
+          id?: string;
+          paid_at?: string | null;
+          payer_user_id: string;
+          payment_type?: string;
+          provider_checkout_session_id?: string | null;
+          provider_transaction_id?: string | null;
+          provider_updated_at?: string | null;
+          refunded_amount_cents?: number;
+          service_request_id: string;
+          status?: string;
+          subtotal_cents: number;
+          tax_amount_cents?: number | null;
+          updated_at?: string;
+        };
+        Update: {
+          accepted_fees?: Json;
+          amount_total_cents?: number;
+          base_amount_cents?: number;
+          created_at?: string;
+          currency?: string;
+          failure_code?: string | null;
+          fee_amount_cents?: number;
+          household_id?: string;
+          id?: string;
+          paid_at?: string | null;
+          payer_user_id?: string;
+          payment_type?: string;
+          provider_checkout_session_id?: string | null;
+          provider_transaction_id?: string | null;
+          provider_updated_at?: string | null;
+          refunded_amount_cents?: number;
+          service_request_id?: string;
+          status?: string;
+          subtotal_cents?: number;
+          tax_amount_cents?: number | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_payments_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_payments_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      service_refunds: {
+        Row: {
+          created_at: string;
+          customer_user_id: string | null;
+          eligible_amount_cents: number;
+          failure_code: string | null;
+          household_id: string;
+          id: string;
+          original_amount_cents: number;
+          payment_id: string;
+          policy_tier: string;
+          processed_at: string | null;
+          processed_by: string | null;
+          provider_refund_id: string | null;
+          reason: string;
+          refund_amount_cents: number | null;
+          requested_by: string | null;
+          service_request_id: string;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          customer_user_id?: string | null;
+          eligible_amount_cents: number;
+          failure_code?: string | null;
+          household_id: string;
+          id?: string;
+          original_amount_cents: number;
+          payment_id: string;
+          policy_tier: string;
+          processed_at?: string | null;
+          processed_by?: string | null;
+          provider_refund_id?: string | null;
+          reason: string;
+          refund_amount_cents?: number | null;
+          requested_by?: string | null;
+          service_request_id: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          customer_user_id?: string | null;
+          eligible_amount_cents?: number;
+          failure_code?: string | null;
+          household_id?: string;
+          id?: string;
+          original_amount_cents?: number;
+          payment_id?: string;
+          policy_tier?: string;
+          processed_at?: string | null;
+          processed_by?: string | null;
+          provider_refund_id?: string | null;
+          reason?: string;
+          refund_amount_cents?: number | null;
+          requested_by?: string | null;
+          service_request_id?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_refunds_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_refunds_payment_id_fkey";
+            columns: ["payment_id"];
+            isOneToOne: false;
+            referencedRelation: "service_payments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_refunds_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      service_request_activities: {
+        Row: {
+          activity_type: string;
+          completed_at: string | null;
+          completed_by: string | null;
+          id: string;
+          notes: string | null;
+          service_request_id: string;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          activity_type: string;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          id?: string;
+          notes?: string | null;
+          service_request_id: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          activity_type?: string;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          id?: string;
+          notes?: string | null;
+          service_request_id?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_request_activities_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      service_request_events: {
+        Row: {
+          action: string;
+          actor_id: string | null;
+          actor_kind: string;
+          created_at: string;
+          from_status: string | null;
+          id: string;
+          safe_metadata: Json;
+          service_request_id: string;
+          to_status: string | null;
+        };
+        Insert: {
+          action: string;
+          actor_id?: string | null;
+          actor_kind: string;
+          created_at?: string;
+          from_status?: string | null;
+          id?: string;
+          safe_metadata?: Json;
+          service_request_id: string;
+          to_status?: string | null;
+        };
+        Update: {
+          action?: string;
+          actor_id?: string | null;
+          actor_kind?: string;
+          created_at?: string;
+          from_status?: string | null;
+          id?: string;
+          safe_metadata?: Json;
+          service_request_id?: string;
+          to_status?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_request_events_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      service_request_messages: {
+        Row: {
+          author_id: string | null;
+          author_kind: string;
+          body: string;
+          created_at: string;
+          id: string;
+          service_request_id: string;
+        };
+        Insert: {
+          author_id?: string | null;
+          author_kind: string;
+          body: string;
+          created_at?: string;
+          id?: string;
+          service_request_id: string;
+        };
+        Update: {
+          author_id?: string | null;
+          author_kind?: string;
+          body?: string;
+          created_at?: string;
+          id?: string;
+          service_request_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_request_messages_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: false;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      service_requests: {
+        Row: {
+          appointment_status: string;
+          availability_requested_at: string | null;
+          cancellation_reason: string | null;
+          cancelled_at: string | null;
+          cancelled_by: string | null;
+          completed_at: string | null;
+          completed_by: string | null;
+          completion_notes: string | null;
+          consultation_category: string | null;
+          consultation_topic_key: string | null;
+          created_at: string;
+          declined_reason: string | null;
+          delivery_method: string;
+          dependent_id: string;
+          description: string;
+          follow_up_status: string;
+          full_refund_eligible: boolean;
+          household_id: string;
+          id: string;
+          idempotency_key: string;
+          iep_language: string | null;
+          iep_services: string[];
+          late_reschedule_used: boolean;
+          payment_status: string;
+          preferred_language: string;
+          preferred_location_details: string | null;
+          preferred_location_type: string | null;
+          primary_session_completed_at: string | null;
+          refund_cap_percent: number;
+          relevant_information: string | null;
+          requested_by: string;
+          requested_meeting_date: string | null;
+          service_id: string;
+          service_type: string;
+          specialist_id: string | null;
+          status: string;
+          updated_at: string;
+          version: number;
+        };
+        Insert: {
+          appointment_status?: string;
+          availability_requested_at?: string | null;
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          completion_notes?: string | null;
+          consultation_category?: string | null;
+          consultation_topic_key?: string | null;
+          created_at?: string;
+          declined_reason?: string | null;
+          delivery_method: string;
+          dependent_id: string;
+          description: string;
+          follow_up_status?: string;
+          full_refund_eligible?: boolean;
+          household_id: string;
+          id?: string;
+          idempotency_key: string;
+          iep_language?: string | null;
+          iep_services?: string[];
+          late_reschedule_used?: boolean;
+          payment_status?: string;
+          preferred_language: string;
+          preferred_location_details?: string | null;
+          preferred_location_type?: string | null;
+          primary_session_completed_at?: string | null;
+          refund_cap_percent?: number;
+          relevant_information?: string | null;
+          requested_by: string;
+          requested_meeting_date?: string | null;
+          service_id: string;
+          service_type: string;
+          specialist_id?: string | null;
+          status?: string;
+          updated_at?: string;
+          version?: number;
+        };
+        Update: {
+          appointment_status?: string;
+          availability_requested_at?: string | null;
+          cancellation_reason?: string | null;
+          cancelled_at?: string | null;
+          cancelled_by?: string | null;
+          completed_at?: string | null;
+          completed_by?: string | null;
+          completion_notes?: string | null;
+          consultation_category?: string | null;
+          consultation_topic_key?: string | null;
+          created_at?: string;
+          declined_reason?: string | null;
+          delivery_method?: string;
+          dependent_id?: string;
+          description?: string;
+          follow_up_status?: string;
+          full_refund_eligible?: boolean;
+          household_id?: string;
+          id?: string;
+          idempotency_key?: string;
+          iep_language?: string | null;
+          iep_services?: string[];
+          late_reschedule_used?: boolean;
+          payment_status?: string;
+          preferred_language?: string;
+          preferred_location_details?: string | null;
+          preferred_location_type?: string | null;
+          primary_session_completed_at?: string | null;
+          refund_cap_percent?: number;
+          relevant_information?: string | null;
+          requested_by?: string;
+          requested_meeting_date?: string | null;
+          service_id?: string;
+          service_type?: string;
+          specialist_id?: string | null;
+          status?: string;
+          updated_at?: string;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_requests_dependent_id_fkey";
+            columns: ["dependent_id"];
+            isOneToOne: false;
+            referencedRelation: "dependents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_requests_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_requests_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "service_requests_specialist_id_fkey";
+            columns: ["specialist_id"];
+            isOneToOne: false;
+            referencedRelation: "specialists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      services: {
+        Row: {
+          active: boolean;
+          created_at: string;
+          currency: string;
+          description: string;
+          duration_minutes: number | null;
+          id: string;
+          included_follow_ups: number;
+          localized: Json;
+          name: string;
+          payment_type: string;
+          price_cents: number | null;
+          service_type: string;
+          standard_instructions: Json;
+          updated_at: string;
+          version: number;
+        };
+        Insert: {
+          active?: boolean;
+          created_at?: string;
+          currency?: string;
+          description: string;
+          duration_minutes?: number | null;
+          id?: string;
+          included_follow_ups?: number;
+          localized?: Json;
+          name: string;
+          payment_type: string;
+          price_cents?: number | null;
+          service_type: string;
+          standard_instructions?: Json;
+          updated_at?: string;
+          version?: number;
+        };
+        Update: {
+          active?: boolean;
+          created_at?: string;
+          currency?: string;
+          description?: string;
+          duration_minutes?: number | null;
+          id?: string;
+          included_follow_ups?: number;
+          localized?: Json;
+          name?: string;
+          payment_type?: string;
+          price_cents?: number | null;
+          service_type?: string;
+          standard_instructions?: Json;
+          updated_at?: string;
+          version?: number;
+        };
+        Relationships: [];
+      };
+      specialist_capabilities: {
+        Row: {
+          created_at: string;
+          delivery_method: string;
+          id: string;
+          language: string;
+          service_type: string;
+          specialist_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          delivery_method: string;
+          id?: string;
+          language: string;
+          service_type: string;
+          specialist_id: string;
+        };
+        Update: {
+          created_at?: string;
+          delivery_method?: string;
+          id?: string;
+          language?: string;
+          service_type?: string;
+          specialist_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "specialist_capabilities_specialist_id_fkey";
+            columns: ["specialist_id"];
+            isOneToOne: false;
+            referencedRelation: "specialists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       specialists: {
         Row: {
           availability_status: string;
@@ -2868,6 +3759,211 @@ export type Database = {
           },
         ];
       };
+      training_courses: {
+        Row: {
+          created_at: string;
+          created_by: string | null;
+          description: string | null;
+          id: string;
+          localized: Json;
+          sequence: number;
+          slug: string;
+          status: string;
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          id?: string;
+          localized?: Json;
+          sequence?: number;
+          slug: string;
+          status?: string;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          id?: string;
+          localized?: Json;
+          sequence?: number;
+          slug?: string;
+          status?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      training_lesson_progress: {
+        Row: {
+          completed: boolean;
+          completed_at: string | null;
+          household_id: string;
+          id: string;
+          learner_id: string;
+          learner_type: string;
+          lesson_id: string;
+          progress_percentage: number;
+          started_at: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          completed?: boolean;
+          completed_at?: string | null;
+          household_id: string;
+          id?: string;
+          learner_id: string;
+          learner_type: string;
+          lesson_id: string;
+          progress_percentage?: number;
+          started_at?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          completed?: boolean;
+          completed_at?: string | null;
+          household_id?: string;
+          id?: string;
+          learner_id?: string;
+          learner_type?: string;
+          lesson_id?: string;
+          progress_percentage?: number;
+          started_at?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "training_lesson_progress_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "training_lesson_progress_lesson_id_fkey";
+            columns: ["lesson_id"];
+            isOneToOne: false;
+            referencedRelation: "training_lessons";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      training_lessons: {
+        Row: {
+          body: string | null;
+          created_at: string;
+          description: string | null;
+          duration_minutes: number | null;
+          id: string;
+          localized: Json;
+          module_id: string;
+          resource_label: string | null;
+          resource_storage_path: string | null;
+          resource_url: string | null;
+          sequence: number;
+          status: string;
+          title: string;
+          updated_at: string;
+          video_storage_path: string | null;
+          video_url: string | null;
+        };
+        Insert: {
+          body?: string | null;
+          created_at?: string;
+          description?: string | null;
+          duration_minutes?: number | null;
+          id?: string;
+          localized?: Json;
+          module_id: string;
+          resource_label?: string | null;
+          resource_storage_path?: string | null;
+          resource_url?: string | null;
+          sequence?: number;
+          status?: string;
+          title: string;
+          updated_at?: string;
+          video_storage_path?: string | null;
+          video_url?: string | null;
+        };
+        Update: {
+          body?: string | null;
+          created_at?: string;
+          description?: string | null;
+          duration_minutes?: number | null;
+          id?: string;
+          localized?: Json;
+          module_id?: string;
+          resource_label?: string | null;
+          resource_storage_path?: string | null;
+          resource_url?: string | null;
+          sequence?: number;
+          status?: string;
+          title?: string;
+          updated_at?: string;
+          video_storage_path?: string | null;
+          video_url?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "training_lessons_module_id_fkey";
+            columns: ["module_id"];
+            isOneToOne: false;
+            referencedRelation: "training_modules";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      training_modules: {
+        Row: {
+          course_id: string;
+          created_at: string;
+          description: string | null;
+          id: string;
+          localized: Json;
+          sequence: number;
+          status: string;
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          course_id: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          localized?: Json;
+          sequence?: number;
+          status?: string;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          course_id?: string;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          localized?: Json;
+          sequence?: number;
+          status?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "training_modules_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "training_courses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       training_progress: {
         Row: {
           completed_at: string | null;
@@ -2930,6 +4026,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      accept_caregiver_invitation: { Args: { input_token: string }; Returns: string };
       accept_support_appointment: {
         Args: {
           expected_version: number;
@@ -2949,27 +4046,271 @@ export type Database = {
           item_id: string;
         }[];
       };
+      add_service_request_message: {
+        Args: { input_body: string; target_request_id: string };
+        Returns: string;
+      };
       add_specialist_support_message: {
-        Args: {
-          input_body: string;
-          input_idempotency_key: string;
-          target_thread_id: string;
-        };
+        Args: { input_body: string; input_idempotency_key: string; target_thread_id: string };
         Returns: {
           assignment_version: number;
           id: string;
         }[];
       };
       add_support_request_message: {
-        Args: {
-          input_body: string;
-          input_idempotency_key: string;
-          target_thread_id: string;
-        };
+        Args: { input_body: string; input_idempotency_key: string; target_thread_id: string };
         Returns: {
           id: string;
           version: number;
         }[];
+      };
+      admin_assign_service_specialist: {
+        Args: { expected_version: number; target_request_id: string; target_specialist_id: string };
+        Returns: undefined;
+      };
+      admin_attach_training_media: {
+        Args: { input_filename: string; input_media_kind: string; target_lesson_id: string };
+        Returns: string;
+      };
+      admin_cancel_service_appointment: {
+        Args: { input_reason: string; target_appointment_id: string };
+        Returns: undefined;
+      };
+      admin_cancel_service_request: {
+        Args: { input_full_refund?: boolean; input_reason: string; target_request_id: string };
+        Returns: undefined;
+      };
+      admin_create_service_refund: {
+        Args: { input_amount_cents: number; input_reason: string; target_payment_id: string };
+        Returns: string;
+      };
+      admin_decline_service_request: {
+        Args: { expected_version: number; input_reason: string; target_request_id: string };
+        Returns: undefined;
+      };
+      admin_list_matching_specialists: {
+        Args: { target_request_id: string };
+        Returns: {
+          active_request_count: number;
+          availability_status: string;
+          capabilities: Json;
+          display_name: string;
+          is_eligible: boolean;
+          is_match: boolean;
+          specialist_id: string;
+        }[];
+      };
+      admin_list_service_payments: {
+        Args: { input_page?: number; input_status?: string };
+        Returns: {
+          amount_total_cents: number;
+          created_at: string;
+          failure_code: string;
+          household_name: string;
+          id: string;
+          paid_at: string;
+          payer_name: string;
+          provider_transaction_id: string;
+          refunded_amount_cents: number;
+          service_request_id: string;
+          service_type: string;
+          status: string;
+          tax_amount_cents: number;
+          total_count: number;
+        }[];
+      };
+      admin_list_service_refunds: {
+        Args: { input_page?: number; input_status?: string };
+        Returns: {
+          created_at: string;
+          customer_name: string;
+          eligible_amount_cents: number;
+          household_id: string;
+          household_name: string;
+          id: string;
+          original_amount_cents: number;
+          payment_id: string;
+          policy_tier: string;
+          processed_at: string;
+          processed_by_name: string;
+          provider_refund_id: string;
+          reason: string;
+          refund_amount_cents: number;
+          service_request_id: string;
+          status: string;
+          total_count: number;
+        }[];
+      };
+      admin_list_service_requests: {
+        Args: { input_page?: number; input_queue?: string; input_service_type?: string };
+        Returns: {
+          appointment_status: string;
+          created_at: string;
+          delivery_method: string;
+          dependent_name: string;
+          follow_up_status: string;
+          household_name: string;
+          id: string;
+          language: string;
+          next_appointment_at: string;
+          open_refund_count: number;
+          payment_status: string;
+          service_type: string;
+          specialist_name: string;
+          status: string;
+          total_count: number;
+          updated_at: string;
+        }[];
+      };
+      admin_list_specialists: {
+        Args: never;
+        Returns: {
+          active_request_count: number;
+          availability_status: string;
+          bio: string;
+          capabilities: Json;
+          display_name: string;
+          email: string;
+          specialist_id: string;
+          user_id: string;
+        }[];
+      };
+      admin_list_users: {
+        Args: { input_page?: number; input_role?: string; input_search?: string };
+        Returns: {
+          availability_status: string;
+          created_at: string;
+          display_name: string;
+          email: string;
+          household_name: string;
+          household_permission: Database["public"]["Enums"]["household_permission"];
+          role: Database["public"]["Enums"]["app_role"];
+          specialist_id: string;
+          total_count: number;
+          user_id: string;
+        }[];
+      };
+      admin_modify_service_appointment: {
+        Args: { input_slot: Json; target_appointment_id: string };
+        Returns: undefined;
+      };
+      admin_move_training_item: {
+        Args: { input_direction: string; input_entity: string; target_id: string };
+        Returns: undefined;
+      };
+      admin_override_service_status: {
+        Args: { input_reason: string; input_status: string; target_request_id: string };
+        Returns: undefined;
+      };
+      admin_reject_service_refund: {
+        Args: { input_reason: string; target_refund_id: string };
+        Returns: undefined;
+      };
+      admin_request_specialist_availability: {
+        Args: { expected_version: number; target_request_id: string };
+        Returns: undefined;
+      };
+      admin_save_consultation_topic: {
+        Args: {
+          input_active: boolean;
+          input_category: string;
+          input_labels: Json;
+          input_sort_order: number;
+          input_topic_key: string;
+          target_topic_id?: string;
+        };
+        Returns: string;
+      };
+      admin_save_service_fee: {
+        Args: {
+          input_active: boolean;
+          input_amount_cents: number;
+          input_description: string;
+          input_name: string;
+          input_service_type: string;
+          target_fee_id?: string;
+        };
+        Returns: string;
+      };
+      admin_save_training_course: {
+        Args: {
+          input_description?: string;
+          input_localized?: Json;
+          input_slug: string;
+          input_status: string;
+          input_title: string;
+          target_course_id?: string;
+        };
+        Returns: string;
+      };
+      admin_save_training_lesson: {
+        Args: {
+          input_body?: string;
+          input_description?: string;
+          input_duration_minutes?: number;
+          input_localized?: Json;
+          input_resource_label?: string;
+          input_resource_url?: string;
+          input_status: string;
+          input_title: string;
+          input_video_url?: string;
+          target_lesson_id?: string;
+          target_module_id: string;
+        };
+        Returns: string;
+      };
+      admin_save_training_module: {
+        Args: {
+          input_description?: string;
+          input_localized?: Json;
+          input_status: string;
+          input_title: string;
+          target_course_id: string;
+          target_module_id?: string;
+        };
+        Returns: string;
+      };
+      admin_schedule_service_appointment: {
+        Args: { expected_version: number; input_kind: string; input_slot: Json; target_request_id: string };
+        Returns: string;
+      };
+      admin_service_queue_counts: {
+        Args: never;
+        Returns: {
+          item_count: number;
+          queue: string;
+        }[];
+      };
+      admin_set_training_status: {
+        Args: { input_entity: string; input_status: string; target_id: string };
+        Returns: undefined;
+      };
+      admin_set_user_role: {
+        Args: { input_role: Database["public"]["Enums"]["app_role"]; target_user_id: string };
+        Returns: undefined;
+      };
+      admin_update_service: {
+        Args: {
+          expected_version: number;
+          input_active: boolean;
+          input_description: string;
+          input_included_follow_ups: number;
+          input_localized: Json;
+          input_name: string;
+          input_price_cents?: number;
+          input_standard_instructions: Json;
+          target_service_id: string;
+        };
+        Returns: number;
+      };
+      admin_update_specialist: {
+        Args: {
+          input_availability_status: string;
+          input_bio?: string;
+          input_capabilities: Json;
+          target_specialist_id: string;
+        };
+        Returns: undefined;
       };
       approve_resource: {
         Args: { expected_version: number; target_resource_id: string };
@@ -3002,14 +4343,23 @@ export type Database = {
         }[];
       };
       assign_specialist_to_support_request: {
-        Args: {
-          expected_assignment_version: number;
-          target_specialist_id: string;
-          target_thread_id: string;
-        };
+        Args: { expected_assignment_version: number; target_specialist_id: string; target_thread_id: string };
         Returns: {
           assignment_version: number;
           id: string;
+        }[];
+      };
+      attach_service_payment_session: {
+        Args: { input_session_id: string; target_payment_id: string };
+        Returns: undefined;
+      };
+      begin_service_refund: {
+        Args: { input_amount_cents: number; target_actor_id: string; target_refund_id: string };
+        Returns: {
+          currency: string;
+          provider_transaction_id: string;
+          refund_amount_cents: number;
+          refund_id: string;
         }[];
       };
       begin_stripe_webhook_event: {
@@ -3021,15 +4371,19 @@ export type Database = {
         };
         Returns: string;
       };
-      can_access_household: {
-        Args: { target_household: string };
-        Returns: boolean;
-      };
+      can_access_household: { Args: { target_household: string }; Returns: boolean };
       cancel_personal_reminder: {
         Args: { expected_updated_at: string; target_reminder_id: string };
         Returns: {
           id: string;
           updated_at: string;
+        }[];
+      };
+      cancel_service_request: {
+        Args: { input_reason?: string; target_request_id: string };
+        Returns: {
+          refund_percent: number;
+          refund_tier: string;
         }[];
       };
       cancel_support_appointment: {
@@ -3128,6 +4482,18 @@ export type Database = {
           summary_id: string;
         }[];
       };
+      claim_notification_emails: {
+        Args: { batch_size?: number };
+        Returns: {
+          id: string;
+          link_path: string;
+          notification_type: string;
+          payload: Json;
+          recipient_email: string;
+          recipient_first_name: string;
+          recipient_locale: string;
+        }[];
+      };
       classify_reminder_delivery: {
         Args: { target_reminder_id: string; worker_run_id: string };
         Returns: string;
@@ -3218,19 +4584,47 @@ export type Database = {
         };
         Returns: string;
       };
+      complete_notification_email: {
+        Args: { input_error_code?: string; input_outcome: string; target_notification_id: string };
+        Returns: undefined;
+      };
       complete_reminder_delivery: {
         Args: { target_reminder_id: string; worker_run_id: string };
         Returns: boolean;
       };
-      complete_stripe_webhook_event: {
-        Args: { input_stripe_event_id: string };
+      complete_service_refund: {
+        Args: {
+          input_failure_code?: string;
+          input_outcome: string;
+          input_provider_refund_id?: string;
+          target_refund_id: string;
+        };
         Returns: undefined;
       };
+      complete_service_request: {
+        Args: {
+          expected_version?: number;
+          input_notes: string;
+          input_waive_follow_up?: boolean;
+          target_request_id: string;
+        };
+        Returns: undefined;
+      };
+      complete_stripe_webhook_event: { Args: { input_stripe_event_id: string }; Returns: undefined };
       complete_support_appointment: {
         Args: { expected_version: number; target_appointment_id: string };
         Returns: {
           id: string;
           version: number;
+        }[];
+      };
+      confirm_service_appointment: { Args: { target_appointment_id: string }; Returns: undefined };
+      create_caregiver_invitation: {
+        Args: { input_email: string; input_permissions: string[] };
+        Returns: {
+          expires_at: string;
+          invitation_id: string;
+          invitation_token: string;
         }[];
       };
       create_document_chat_conversation: {
@@ -3308,6 +4702,25 @@ export type Database = {
           updated_at: string;
         }[];
       };
+      create_service_request: {
+        Args: {
+          input_consultation_category?: string;
+          input_consultation_topic_key?: string;
+          input_delivery_method?: string;
+          input_dependent_id: string;
+          input_description: string;
+          input_idempotency_key: string;
+          input_iep_language?: string;
+          input_iep_services?: string[];
+          input_preferred_language: string;
+          input_preferred_location_details?: string;
+          input_preferred_location_type?: string;
+          input_relevant_information?: string;
+          input_requested_meeting_date?: string;
+          input_service_type: string;
+        };
+        Returns: string;
+      };
       create_support_request: {
         Args: {
           input_acknowledged: boolean;
@@ -3334,60 +4747,51 @@ export type Database = {
         Returns: boolean;
       };
       fail_document_chat_message: {
-        Args: {
-          expected_worker_identity: string;
-          safe_error_code: string;
-          target_message_id: string;
-        };
+        Args: { expected_worker_identity: string; safe_error_code: string; target_message_id: string };
         Returns: boolean;
       };
       fail_document_ocr_job: {
-        Args: {
-          expected_worker_identity: string;
-          safe_error_code: string;
-          target_job_id: string;
-        };
+        Args: { expected_worker_identity: string; safe_error_code: string; target_job_id: string };
         Returns: boolean;
       };
       fail_document_processing_job: {
-        Args: {
-          expected_worker_identity: string;
-          safe_error_code: string;
-          target_job_id: string;
-        };
+        Args: { expected_worker_identity: string; safe_error_code: string; target_job_id: string };
         Returns: boolean;
       };
       fail_document_question_job: {
-        Args: {
-          expected_worker_identity: string;
-          safe_error_code: string;
-          target_question_id: string;
-        };
+        Args: { expected_worker_identity: string; safe_error_code: string; target_question_id: string };
         Returns: boolean;
       };
       fail_document_summary_job: {
-        Args: {
-          expected_worker_identity: string;
-          safe_error_code: string;
-          target_summary_id: string;
-        };
+        Args: { expected_worker_identity: string; safe_error_code: string; target_summary_id: string };
         Returns: boolean;
       };
       fail_reminder_delivery: {
-        Args: {
-          safe_error_code: string;
-          target_reminder_id: string;
-          worker_run_id: string;
-        };
+        Args: { safe_error_code: string; target_reminder_id: string; worker_run_id: string };
         Returns: string;
       };
       fail_stripe_webhook_event: {
-        Args: {
-          input_error_code: string;
-          input_stripe_event_id: string;
-          target_household_id?: string;
-        };
+        Args: { input_error_code: string; input_stripe_event_id: string; target_household_id?: string };
         Returns: undefined;
+      };
+      get_caregiver_invitation: {
+        Args: { input_token: string };
+        Returns: {
+          expires_at: string;
+          household_name: string;
+          invited_email: string;
+          status: string;
+        }[];
+      };
+      get_current_household_access: {
+        Args: never;
+        Returns: {
+          caregiver_permissions: string[];
+          household_id: string;
+          household_name: string;
+          is_owner: boolean;
+          permission: Database["public"]["Enums"]["household_permission"];
+        }[];
       };
       get_document_chat_conversation: {
         Args: { target_conversation_id: string; target_document_id: string };
@@ -3552,6 +4956,12 @@ export type Database = {
           using_english_fallback: boolean;
         }[];
       };
+      get_notification_summary: {
+        Args: never;
+        Returns: {
+          unread_count: number;
+        }[];
+      };
       get_published_resource: {
         Args: { input_locale: string; input_slug: string };
         Returns: {
@@ -3563,6 +4973,76 @@ export type Database = {
           summary: string;
           title: string;
           using_english_fallback: boolean;
+        }[];
+      };
+      get_service_payment_for_sync: {
+        Args: { target_payment_id: string };
+        Returns: {
+          household_id: string;
+          payment_id: string;
+          provider_checkout_session_id: string;
+          service_request_id: string;
+          status: string;
+        }[];
+      };
+      get_service_request_detail: {
+        Args: { target_request_id: string };
+        Returns: {
+          appointment_status: string;
+          availability_requested: boolean;
+          can_confirm: boolean;
+          can_deliver: boolean;
+          can_manage: boolean;
+          can_pay: boolean;
+          can_propose: boolean;
+          can_upload: boolean;
+          cancellation_reason: string;
+          cancelled_at: string;
+          completed_at: string;
+          completion_notes: string;
+          consultation_category: string;
+          consultation_topic_key: string;
+          created_at: string;
+          declined_reason: string;
+          delivery_method: string;
+          dependent_behavioral_information: string;
+          dependent_communication: string;
+          dependent_educational_information: string;
+          dependent_id: string;
+          dependent_name: string;
+          dependent_preferred_language: string;
+          dependent_service_needs: string;
+          description: string;
+          duration_minutes: number;
+          follow_up_status: string;
+          full_refund_eligible: boolean;
+          household_contact_email: string;
+          household_contact_phone: string;
+          household_id: string;
+          household_name: string;
+          id: string;
+          iep_language: string;
+          iep_services: string[];
+          late_reschedule_used: boolean;
+          payment_status: string;
+          preferred_language: string;
+          preferred_location_details: string;
+          preferred_location_type: string;
+          price_cents: number;
+          primary_session_completed_at: string;
+          refund_cap_percent: number;
+          relevant_information: string;
+          requested_meeting_date: string;
+          requester_name: string;
+          service_name: string;
+          service_type: string;
+          specialist_id: string;
+          specialist_name: string;
+          standard_instructions: Json;
+          status: string;
+          updated_at: string;
+          version: number;
+          viewer_role: string;
         }[];
       };
       get_specialist_support_request: {
@@ -3625,25 +5105,59 @@ export type Database = {
           id: string;
         }[];
       };
-      has_household_entitlement: {
-        Args: { input_entitlement: string };
-        Returns: boolean;
+      get_training_access: {
+        Args: never;
+        Returns: {
+          can_subscribe: boolean;
+          has_access: boolean;
+          has_subscription: boolean;
+          is_administrator: boolean;
+        }[];
       };
-      is_active_household_member: {
-        Args: { target_household: string };
-        Returns: boolean;
+      get_training_outline: {
+        Args: { input_dependent_id?: string; input_learner_type?: string };
+        Returns: {
+          completed: boolean;
+          completed_at: string;
+          course_description: string;
+          course_id: string;
+          course_localized: Json;
+          course_slug: string;
+          course_title: string;
+          duration_minutes: number;
+          has_resource: boolean;
+          has_video: boolean;
+          lesson_description: string;
+          lesson_id: string;
+          lesson_localized: Json;
+          lesson_sequence: number;
+          lesson_title: string;
+          module_description: string;
+          module_id: string;
+          module_localized: Json;
+          module_sequence: number;
+          module_title: string;
+          progress_percentage: number;
+          started_at: string;
+        }[];
       };
+      get_training_progress_summary: {
+        Args: never;
+        Returns: {
+          completed_lessons: number;
+          last_activity_at: string;
+          learner_id: string;
+          learner_name: string;
+          learner_type: string;
+          total_lessons: number;
+        }[];
+      };
+      has_household_entitlement: { Args: { input_entitlement: string }; Returns: boolean };
+      is_active_household_member: { Args: { target_household: string }; Returns: boolean };
       is_administrator: { Args: never; Returns: boolean };
-      is_assigned_specialist: {
-        Args: { target_household: string };
-        Returns: boolean;
-      };
+      is_assigned_specialist: { Args: { target_household: string }; Returns: boolean };
       link_household_billing_customer: {
-        Args: {
-          input_stripe_customer_id: string;
-          target_actor_id: string;
-          target_household_id: string;
-        };
+        Args: { input_stripe_customer_id: string; target_actor_id: string; target_household_id: string };
         Returns: undefined;
       };
       list_admin_billing_invoices: {
@@ -3726,6 +5240,53 @@ export type Database = {
           status: string;
         }[];
       };
+      list_household_payment_history: {
+        Args: never;
+        Returns: {
+          amount_total_cents: number;
+          created_at: string;
+          id: string;
+          paid_at: string;
+          refunded_amount_cents: number;
+          service_request_id: string;
+          service_type: string;
+          status: string;
+          tax_amount_cents: number;
+        }[];
+      };
+      list_household_people: {
+        Args: never;
+        Returns: {
+          caregiver_permissions: string[];
+          display_name: string;
+          is_self: boolean;
+          joined_at: string;
+          member_id: string;
+          permission: Database["public"]["Enums"]["household_permission"];
+          relationship: string;
+          user_id: string;
+        }[];
+      };
+      list_household_service_requests: {
+        Args: { input_page?: number; input_status?: string };
+        Returns: {
+          amount_cents: number;
+          appointment_status: string;
+          created_at: string;
+          delivery_method: string;
+          dependent_name: string;
+          follow_up_status: string;
+          id: string;
+          next_appointment_at: string;
+          payment_status: string;
+          service_name: string;
+          service_type: string;
+          specialist_name: string;
+          status: string;
+          total_count: number;
+          updated_at: string;
+        }[];
+      };
       list_member_resources: {
         Args: {
           input_assigned_only?: boolean;
@@ -3751,6 +5312,18 @@ export type Database = {
           title: string;
           total_count: number;
           using_english_fallback: boolean;
+        }[];
+      };
+      list_notifications: {
+        Args: { input_page?: number };
+        Returns: {
+          created_at: string;
+          id: string;
+          link_path: string;
+          notification_type: string;
+          payload: Json;
+          read_at: string;
+          total_count: number;
         }[];
       };
       list_published_resources: {
@@ -3816,6 +5389,113 @@ export type Database = {
           sort_order: number;
           status: string;
           title: string;
+          total_count: number;
+          updated_at: string;
+        }[];
+      };
+      list_service_request_appointments: {
+        Args: { target_request_id: string };
+        Returns: {
+          cancellation_kind: string;
+          cancellation_reason: string;
+          completed_at: string;
+          completion_notes: string;
+          confirmed_at: string;
+          created_at: string;
+          customer_confirmed: boolean;
+          delivery_method: string;
+          end_at: string;
+          id: string;
+          instructions: string;
+          kind: string;
+          location_details: string;
+          location_type: string;
+          meeting_url: string;
+          proposal_group: string;
+          proposed_by_role: string;
+          scheduled_directly: boolean;
+          specialist_name: string;
+          start_at: string;
+          status: string;
+          timezone: string;
+        }[];
+      };
+      list_service_request_documents: {
+        Args: { target_request_id: string };
+        Returns: {
+          created_at: string;
+          document_type: string;
+          file_size: number;
+          id: string;
+          mime_type: string;
+          original_filename: string;
+          title: string;
+          uploaded_by_name: string;
+          uploaded_by_staff: boolean;
+        }[];
+      };
+      list_service_request_payments: {
+        Args: { target_request_id: string };
+        Returns: {
+          accepted_fees: Json;
+          amount_total_cents: number;
+          base_amount_cents: number;
+          created_at: string;
+          failure_code: string;
+          fee_amount_cents: number;
+          id: string;
+          paid_at: string;
+          refunded_amount_cents: number;
+          status: string;
+          tax_amount_cents: number;
+        }[];
+      };
+      list_service_request_refunds: {
+        Args: { target_request_id: string };
+        Returns: {
+          created_at: string;
+          eligible_amount_cents: number;
+          id: string;
+          original_amount_cents: number;
+          payment_id: string;
+          policy_tier: string;
+          processed_at: string;
+          processed_by_name: string;
+          provider_refund_id: string;
+          reason: string;
+          refund_amount_cents: number;
+          status: string;
+        }[];
+      };
+      list_service_request_timeline: {
+        Args: { target_request_id: string };
+        Returns: {
+          action: string;
+          actor_kind: string;
+          actor_name: string;
+          body: string;
+          created_at: string;
+          from_status: string;
+          id: string;
+          is_self: boolean;
+          item_type: string;
+          metadata: Json;
+          to_status: string;
+        }[];
+      };
+      list_specialist_service_requests: {
+        Args: { input_page?: number; input_scope?: string };
+        Returns: {
+          availability_requested: boolean;
+          delivery_method: string;
+          dependent_name: string;
+          follow_up_status: string;
+          household_name: string;
+          id: string;
+          language: string;
+          next_appointment_at: string;
+          service_type: string;
+          status: string;
           total_count: number;
           updated_at: string;
         }[];
@@ -3893,9 +5573,46 @@ export type Database = {
           total_count: number;
         }[];
       };
-      mark_reminder_seen: {
-        Args: { target_reminder_id: string };
-        Returns: boolean;
+      list_upcoming_service_appointments: {
+        Args: { input_limit?: number };
+        Returns: {
+          appointment_id: string;
+          delivery_method: string;
+          dependent_name: string;
+          end_at: string;
+          household_name: string;
+          kind: string;
+          location_type: string;
+          service_request_id: string;
+          service_type: string;
+          specialist_name: string;
+          start_at: string;
+          timezone: string;
+        }[];
+      };
+      mark_notifications_read: { Args: { target_ids?: string[] }; Returns: number };
+      mark_reminder_seen: { Args: { target_reminder_id: string }; Returns: boolean };
+      prepare_service_payment: {
+        Args: {
+          input_accepted_fee_ids: string[];
+          input_fees_acknowledged: boolean;
+          target_request_id: string;
+        };
+        Returns: {
+          base_amount_cents: number;
+          currency: string;
+          fees: Json;
+          household_id: string;
+          payment_id: string;
+          service_name: string;
+          service_type: string;
+          subtotal_cents: number;
+          superseded_session_ids: string[];
+        }[];
+      };
+      propose_service_appointments: {
+        Args: { expected_version: number; input_kind: string; input_slots: Json; target_request_id: string };
+        Returns: number;
       };
       propose_support_appointment: {
         Args: {
@@ -3939,16 +5656,27 @@ export type Database = {
           processing_status: string;
         }[];
       };
+      queue_service_appointment_reminders: { Args: never; Returns: number };
       record_billing_checkout_started: {
-        Args: {
-          input_billing_interval: string;
-          target_actor_id: string;
-          target_household_id: string;
-        };
+        Args: { input_billing_interval: string; target_actor_id: string; target_household_id: string };
         Returns: undefined;
       };
       record_billing_reconciliation: {
         Args: { target_actor_id: string; target_household_id: string };
+        Returns: undefined;
+      };
+      record_lesson_progress: {
+        Args: {
+          input_completed: boolean;
+          input_dependent_id?: string;
+          input_learner_type: string;
+          input_progress_percentage: number;
+          target_lesson_id: string;
+        };
+        Returns: undefined;
+      };
+      record_service_appointment_outcome: {
+        Args: { input_notes?: string; input_outcome: string; target_appointment_id: string };
         Returns: undefined;
       };
       record_training_progress: {
@@ -3960,11 +5688,7 @@ export type Database = {
         }[];
       };
       reject_resource: {
-        Args: {
-          expected_version: number;
-          input_rejection_note: string;
-          target_resource_id: string;
-        };
+        Args: { expected_version: number; input_rejection_note: string; target_resource_id: string };
         Returns: {
           resource_id: string;
           resource_status: Database["public"]["Enums"]["resource_status"];
@@ -3972,33 +5696,22 @@ export type Database = {
         }[];
       };
       reject_resource_translation: {
-        Args: {
-          expected_version: number;
-          input_rejection_note: string;
-          target_translation_id: string;
-        };
+        Args: { expected_version: number; input_rejection_note: string; target_translation_id: string };
         Returns: {
           translation_id: string;
           translation_version: number;
         }[];
       };
+      remove_caregiver: { Args: { target_member_id: string }; Returns: undefined };
       reorder_roadmap_items: {
-        Args: {
-          expected_updated_at: string;
-          input_direction: string;
-          target_item_id: string;
-        };
+        Args: { expected_updated_at: string; input_direction: string; target_item_id: string };
         Returns: {
           id: string;
           updated_at: string;
         }[];
       };
       request_document_question: {
-        Args: {
-          requested_language: string;
-          requested_question: string;
-          target_document_id: string;
-        };
+        Args: { requested_language: string; requested_question: string; target_document_id: string };
         Returns: {
           already_active: boolean;
           question_id: string;
@@ -4014,6 +5727,22 @@ export type Database = {
           summary_id: string;
           summary_status: string;
         }[];
+      };
+      request_other_appointment_times: {
+        Args: { input_note?: string; target_request_id: string };
+        Returns: undefined;
+      };
+      request_service_follow_up: {
+        Args: { input_note?: string; target_request_id: string };
+        Returns: undefined;
+      };
+      request_service_reschedule: {
+        Args: { input_reason?: string; target_request_id: string };
+        Returns: undefined;
+      };
+      reset_lesson_progress: {
+        Args: { input_dependent_id?: string; input_learner_type: string; target_lesson_id: string };
+        Returns: undefined;
       };
       restore_resource: {
         Args: { expected_version: number; target_resource_id: string };
@@ -4031,13 +5760,10 @@ export type Database = {
         }[];
       };
       retry_document_chat_response: {
-        Args: {
-          target_conversation_id: string;
-          target_document_id: string;
-          target_message_id: string;
-        };
+        Args: { target_conversation_id: string; target_document_id: string; target_message_id: string };
         Returns: boolean;
       };
+      revoke_caregiver_invitation: { Args: { target_invitation_id: string }; Returns: undefined };
       revoke_specialist_from_support_request: {
         Args: { expected_assignment_version: number; target_thread_id: string };
         Returns: {
@@ -4057,27 +5783,23 @@ export type Database = {
           assistant_message_id: string;
         }[];
       };
+      service_refund_policy: {
+        Args: { hours_before_start: number };
+        Returns: {
+          policy_tier: string;
+          refund_percent: number;
+        }[];
+      };
       set_resource_account_access: {
-        Args: {
-          expected_version: number;
-          input_user_ids: string[];
-          target_resource_id: string;
-        };
+        Args: { expected_version: number; input_user_ids: string[]; target_resource_id: string };
         Returns: {
           resource_id: string;
           resource_version: number;
         }[];
       };
-      set_resource_bookmark: {
-        Args: { input_bookmarked: boolean; input_slug: string };
-        Returns: boolean;
-      };
+      set_resource_bookmark: { Args: { input_bookmarked: boolean; input_slug: string }; Returns: boolean };
       skip_reminder_delivery: {
-        Args: {
-          safe_skip_code: string;
-          target_reminder_id: string;
-          worker_run_id: string;
-        };
+        Args: { safe_skip_code: string; target_reminder_id: string; worker_run_id: string };
         Returns: boolean;
       };
       submit_resource_for_review: {
@@ -4129,6 +5851,19 @@ export type Database = {
         };
         Returns: boolean;
       };
+      sync_service_payment: {
+        Args: {
+          input_amount_total_cents?: number;
+          input_failure_code?: string;
+          input_outcome: string;
+          input_payment_intent_id?: string;
+          input_provider_updated_at: string;
+          input_session_id: string;
+          input_tax_amount_cents?: number;
+          target_payment_id: string;
+        };
+        Returns: boolean;
+      };
       transition_resource: {
         Args: {
           expected_version: number;
@@ -4149,6 +5884,10 @@ export type Database = {
           resource_status: Database["public"]["Enums"]["resource_status"];
           resource_version: number;
         }[];
+      };
+      update_caregiver_permissions: {
+        Args: { input_permissions: string[]; target_member_id: string };
+        Returns: undefined;
       };
       update_personal_reminder: {
         Args: {
@@ -4244,6 +5983,10 @@ export type Database = {
           id: string;
           updated_at: string;
         }[];
+      };
+      update_service_activity: {
+        Args: { input_notes?: string; input_status: string; target_activity_id: string };
+        Returns: undefined;
       };
       upsert_document_summary_review: {
         Args: {

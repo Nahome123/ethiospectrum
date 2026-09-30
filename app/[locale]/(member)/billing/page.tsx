@@ -8,6 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { requireHouseholdBillingAccess } from "@/lib/billing/access";
 import { createBillingCheckoutSessionAction, createBillingPortalSessionAction } from "@/lib/billing/actions";
 import { getHouseholdBillingSummary, listHouseholdBillingInvoices } from "@/lib/billing/server";
+import { PaymentStatusBadge } from "@/components/services/status-badge";
+import { Link } from "@/i18n/navigation";
+import { formatCents } from "@/lib/services/constants";
+import { getService, listHouseholdPaymentHistory } from "@/lib/services/server";
 
 const dateLocales: Record<AppLocale, string> = { en: "en-US", am: "am-ET", es: "es-ES" };
 
@@ -39,7 +43,12 @@ export default async function BillingPage({
     getTranslations({ locale, namespace: "billing" }),
     getHouseholdBillingSummary(),
   ]);
-  const invoices = summary?.can_view_invoices ? await listHouseholdBillingInvoices() : [];
+  const [invoices, servicePayments, rbtService, serviceTypes] = await Promise.all([
+    summary?.can_view_invoices ? listHouseholdBillingInvoices() : Promise.resolve([]),
+    listHouseholdPaymentHistory(),
+    getService("rbt_bootcamp"),
+    getTranslations({ locale, namespace: "services.types" }),
+  ]);
   const isBillingManager = summary?.can_manage_billing ?? false;
   const showsBillingDetails = summary?.can_view_invoices ?? false;
   const active = summary?.entitlement_status === "active";
@@ -81,7 +90,7 @@ export default async function BillingPage({
             <div>
               <p className="text-sm text-muted-foreground">{t("plan")}</p>
               <p className="mt-1 text-xl font-bold">
-                {summary.plan_key === "family_plus" ? t("plans.familyPlus") : t("plans.free")}
+                {summary.plan_key === "rbt_bootcamp" ? t("plans.rbtBootcamp") : t("plans.free")}
               </p>
             </div>
             <div>
@@ -124,24 +133,30 @@ export default async function BillingPage({
             <p className="mt-1 text-muted-foreground">{t("amountManagedByStripe")}</p>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            {(["month", "year"] as const).map((interval) => (
-              <Card key={interval}>
-                <CardHeader>
-                  <CardTitle>
-                    {interval === "month" ? t("intervals.monthly") : t("intervals.annual")}
-                  </CardTitle>
-                  <CardDescription>{t("plans.familyPlus")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <BillingActionForm
-                    action={createBillingCheckoutSessionAction.bind(null, locale)}
-                    label={t("subscribe")}
-                    pendingLabel={t("checkout.starting")}
-                    billingInterval={interval}
-                  />
-                </CardContent>
-              </Card>
-            ))}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("plans.rbtBootcamp")}</CardTitle>
+                <CardDescription>
+                  {rbtService?.price_cents !== null && rbtService?.price_cents !== undefined
+                    ? t("monthlyPrice", { price: formatCents(rbtService.price_cents, locale) })
+                    : t("intervals.monthly")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <ul className="list-disc space-y-1 pl-5 text-sm">
+                  <li>{t("benefits.videos")}</li>
+                  <li>{t("benefits.resources")}</li>
+                  <li>{t("benefits.progress")}</li>
+                </ul>
+                <BillingActionForm
+                  action={createBillingCheckoutSessionAction.bind(null, locale)}
+                  label={t("subscribe")}
+                  pendingLabel={t("checkout.starting")}
+                  billingInterval="month"
+                />
+                <p className="text-xs text-muted-foreground">{t("certificationDisclaimer")}</p>
+              </CardContent>
+            </Card>
           </div>
         </section>
       ) : null}
@@ -216,6 +231,46 @@ export default async function BillingPage({
           )}
         </section>
       ) : null}
+
+      <section aria-labelledby="service-payments-title" className="space-y-4">
+        <div>
+          <h2 id="service-payments-title" className="text-2xl font-bold">
+            {t("servicePayments.title")}
+          </h2>
+          <p className="mt-1 text-muted-foreground">{t("servicePayments.description")}</p>
+        </div>
+        {servicePayments.length === 0 ? (
+          <Card>
+            <CardContent>{t("servicePayments.empty")}</CardContent>
+          </Card>
+        ) : (
+          <ul className="space-y-3">
+            {servicePayments.map((payment) => (
+              <li
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-white p-4"
+                key={payment.id}
+              >
+                <div>
+                  <Link
+                    className="font-semibold text-primary underline"
+                    href={`/requests/${payment.service_request_id}`}
+                  >
+                    {serviceTypes(payment.service_type)}
+                  </Link>
+                  <p className="text-sm text-muted-foreground">
+                    {formatDate(payment.paid_at ?? payment.created_at, locale)} ·{" "}
+                    {formatCents(payment.amount_total_cents, locale)}
+                    {payment.refunded_amount_cents
+                      ? ` · ${t("servicePayments.refunded", { amount: formatCents(payment.refunded_amount_cents, locale) })}`
+                      : ""}
+                  </p>
+                </div>
+                <PaymentStatusBadge status={payment.status} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <Alert>
         <ShieldCheck aria-hidden="true" />

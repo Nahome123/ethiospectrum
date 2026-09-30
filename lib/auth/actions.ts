@@ -16,6 +16,7 @@ import { getLocaleDashboardPath, getSafeLocaleRedirect } from "./redirects";
 import { clearPasswordRecoveryIntent, hasPasswordRecoveryIntent } from "./recovery";
 import { getSiteUrl } from "./site-url";
 import type { AuthActionState } from "./action-state";
+import { ONBOARDING_POLICY_VERSION } from "@/lib/onboarding/policy";
 
 function isAppLocale(value: string): value is AppLocale {
   return (routing.locales as readonly string[]).includes(value);
@@ -69,6 +70,12 @@ export async function signUpAction(
   if (!parsed.success)
     return { status: "error", message: t("validationError"), email: String(formData.get("email") ?? "") };
 
+  // A caregiver signs up from an invitation link and joins the owner household;
+  // every other registration is a household owner whose household is created
+  // automatically by the database (PRD section 43). The intent only decides
+  // whether to create a household for this new user; it grants nothing else.
+  const invitation = String(formData.get("invitation") ?? "");
+  const hasInvitation = /^[0-9a-f]{64}$/.test(invitation);
   const supabase = await createServerActionSupabaseClient();
   const { error } = await supabase.auth.signUp({
     email: parsed.data.email,
@@ -78,8 +85,12 @@ export async function signUpAction(
         first_name: parsed.data.firstName,
         last_name: parsed.data.lastName,
         preferred_locale: localeValue,
+        account_intent: hasInvitation ? "caregiver" : "household_owner",
+        terms_policy_version: ONBOARDING_POLICY_VERSION,
       },
-      emailRedirectTo: confirmationUrl(getLocaleDashboardPath(localeValue)),
+      emailRedirectTo: confirmationUrl(
+        hasInvitation ? `/${localeValue}/invitations/${invitation}` : getLocaleDashboardPath(localeValue),
+      ),
     },
   });
   if (error) {

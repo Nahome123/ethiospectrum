@@ -4,12 +4,13 @@ const mocks = vi.hoisted(() => ({
   getTranslations: vi.fn(),
   revalidatePath: vi.fn(),
   getSiteUrl: vi.fn(),
-  getCurrentHouseholdContext: vi.fn(),
+  getHouseholdAccess: vi.fn(),
   getCurrentSupabaseClaims: vi.fn(),
   getCurrentUserRole: vi.fn(),
   createSupabaseAdminClient: vi.fn(),
   getStripeClient: vi.fn(),
-  getStripePriceId: vi.fn(),
+  getRbtMonthlyPriceId: vi.fn(),
+  isStripeAutomaticTaxEnabled: vi.fn(),
   getConfiguredBillingInterval: vi.fn(),
   reconcileBillingHousehold: vi.fn(),
 }));
@@ -18,7 +19,7 @@ vi.mock("next-intl/server", () => ({ getTranslations: mocks.getTranslations }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 vi.mock("@/lib/auth/site-url", () => ({ getSiteUrl: mocks.getSiteUrl }));
 vi.mock("@/lib/households/server", () => ({
-  getCurrentHouseholdContext: mocks.getCurrentHouseholdContext,
+  getHouseholdAccess: mocks.getHouseholdAccess,
 }));
 vi.mock("@/lib/supabase/server", () => ({
   getCurrentSupabaseClaims: mocks.getCurrentSupabaseClaims,
@@ -29,7 +30,8 @@ vi.mock("@/lib/supabase/admin", () => ({
 }));
 vi.mock("@/lib/billing/provider", () => ({
   getStripeClient: mocks.getStripeClient,
-  getStripePriceId: mocks.getStripePriceId,
+  getRbtMonthlyPriceId: mocks.getRbtMonthlyPriceId,
+  isStripeAutomaticTaxEnabled: mocks.isStripeAutomaticTaxEnabled,
   getConfiguredBillingInterval: mocks.getConfiguredBillingInterval,
 }));
 vi.mock("@/lib/billing/sync", () => ({ reconcileBillingHousehold: mocks.reconcileBillingHousehold }));
@@ -69,13 +71,15 @@ describe("billing Server Actions", () => {
     vi.clearAllMocks();
     mocks.getTranslations.mockResolvedValue((key: string) => key);
     mocks.getSiteUrl.mockReturnValue("http://localhost:3000");
-    mocks.getCurrentHouseholdContext.mockResolvedValue({
+    mocks.getHouseholdAccess.mockResolvedValue({
       household: { id: householdId, name: "Synthetic household" },
       permission: "owner",
-      canManage: true,
+      isOwner: true,
+      permissions: ["submit_requests", "make_payments", "manage_subscription"],
     });
     mocks.getCurrentSupabaseClaims.mockResolvedValue({ sub: userId });
-    mocks.getStripePriceId.mockReturnValue("price_monthly_server");
+    mocks.getRbtMonthlyPriceId.mockReturnValue("price_monthly_server");
+    mocks.isStripeAutomaticTaxEnabled.mockReturnValue(false);
     mocks.getConfiguredBillingInterval.mockImplementation((price: string) =>
       price === "price_monthly_server" ? "month" : null,
     );
@@ -111,13 +115,32 @@ describe("billing Server Actions", () => {
     expect(calls).not.toMatch(/dependent|diagnos|appointment|support.?request/iu);
   });
 
+  it("lets a caregiver granted manage_subscription start Checkout", async () => {
+    mocks.getHouseholdAccess.mockResolvedValue({
+      household: { id: householdId, name: "Synthetic household" },
+      permission: "member",
+      isOwner: false,
+      permissions: ["manage_subscription"],
+    });
+    const checkoutCreate = vi.fn().mockResolvedValue({ url: "https://checkout.stripe.test/session" });
+    mocks.createSupabaseAdminClient.mockReturnValue(adminClient());
+    mocks.getStripeClient.mockReturnValue({
+      subscriptions: { list: vi.fn().mockResolvedValue({ data: [] }) },
+      checkout: { sessions: { create: checkoutCreate } },
+    });
+    await expect(createBillingCheckoutSessionAction("en", idle, checkoutForm())).resolves.toMatchObject({
+      status: "success",
+    });
+  });
+
   it.each(["administrator", "member", "viewer"])(
-    "denies %s Checkout before Stripe access",
+    "denies a %s without the subscription permission before Stripe access",
     async (permission) => {
-      mocks.getCurrentHouseholdContext.mockResolvedValue({
+      mocks.getHouseholdAccess.mockResolvedValue({
         household: { id: householdId, name: "Synthetic household" },
         permission,
-        canManage: permission === "administrator",
+        isOwner: false,
+        permissions: ["submit_requests", "access_training"],
       });
       await expect(createBillingCheckoutSessionAction("en", idle, checkoutForm())).resolves.toEqual({
         status: "error",

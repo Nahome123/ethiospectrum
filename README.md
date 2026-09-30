@@ -1,12 +1,92 @@
 # Ethiospectrum
 
-Ethiospectrum is a multilingual family-support platform foundation for organizing important information, understanding complex documents, tracking next steps, and finding educational resources in English, Amharic, and Spanish.
+Ethiospectrum is a multilingual (English, Amharic, Spanish) household service platform for parents and families of children with special needs. It offers three services:
+
+- **RBT Boot Camp**, a self-paced video library with a monthly subscription.
+- **Consultation**, $9.99.
+- **IEP Language Assistance**, $19.99.
+
+Consultation and IEP Language Assistance can be purchased without the subscription.
+
+The product definition is [docs/prd-v1.md](docs/prd-v1.md). The demo features it replaced or retired are listed in [docs/demo-reconciliation.md](docs/demo-reconciliation.md).
 
 ## Current status
 
-Implemented locally: locale-prefixed public routes, responsive marketing UI, centralized branding, Supabase email/password authentication, profiles, isolated roles, households, household memberships, family onboarding, RLS-protected dependent profile management, private document upload/download/archive flows, a household-scoped digital document binder, controlled document processing, source-grounded document summaries with deterministic quality evaluation and household review, household-shared specialist support requests with read-only administrator triage, household-level Stripe subscription infrastructure, and a protected bilingual RBT Errorless Teaching study resource with user-only progress.
+The PRD v1.0 launch scope is implemented and verified locally (see "Verification" below). Nothing is deployed, and no hosted migration, Stripe product, or email domain has been created. Amharic and Spanish copy still needs native-speaker review before release.
 
-Planned or awaiting later work: profile and household synchronization, general-purpose AI answers, messaging, transactional email, analytics, and monitoring. No hosted Stripe configuration or deployment is implied by the local ETH-028 implementation.
+## PRD v1.0 launch implementation
+
+| Area           | Routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Households     | Registration automatically creates the owner's household. `/household` has contact details, one caregiver invitation, per-caregiver permissions, and removal. `/invitations/[token]` accepts an invitation. `/dependents` stores service needs and delivery information. `/settings` stores the profile.                                                                                                                                                                                                                                                                  |
+| Services       | `/services` shows the catalog. `/services/consultation` and `/services/iep` are the request forms. `/requests` and `/requests/[id]` show status, proposed and confirmed appointments, payment, reschedule, cancellation with a refund preview, the follow-up, documents, and messages.                                                                                                                                                                                                                                                                                    |
+| RBT Boot Camp  | `/training` is the library, locked without a subscription. `/training/lessons/[id]` has video (YouTube, Vimeo, HTTPS, or uploaded private media), resources, and progress for the member or each child. `/training/rbt/*` is the existing bilingual study guide, now subscription-gated. `/billing` holds the subscription and service payment history.                                                                                                                                                                                                                   |
+| Specialists    | `/specialist` lists assigned services and upcoming appointments. `/specialist/requests/[id]` shows the service-delivery information and authorized documents, and lets the specialist propose times when asked, record sessions and no-shows, track written translation and other activities, upload deliverables, and complete the service.                                                                                                                                                                                                                              |
+| Administrators | `/admin` is the work queue overview. `/admin/service-requests` is the queue: assign a language-matched specialist, request availability, propose one to three times, schedule directly, modify or cancel, record outcomes, complete, decline, override status, and refund. `/admin/payments` lists payments and full refund records. `/admin/services` sets prices, instructions, disclosed fees, and consultation topics. `/admin/specialists` sets capabilities. `/admin/users` manages roles. `/admin/training` manages content. `/admin/billing` shows subscriptions. |
+| Notifications  | `/notifications` plus a bell in every shell. Emails are optional through Resend. Appointment reminders and escalation of unassigned requests run in `/api/workers/notifications`.                                                                                                                                                                                                                                                                                                                                                                                         |
+
+Authorization lives in PostgreSQL. Every table is under forced RLS, and every mutation is a `security definer` function that derives the actor from `auth.uid()`. Specialists are authorized per request (`private.is_request_specialist`), never household-wide. Payment amounts are computed in the database. A payment counts as paid only after it is re-fetched from Stripe (webhook or return page). Card data never reaches Ethiospectrum.
+
+The database changes are four migrations, `supabase/migrations/20260929000000_*` through `20260929000300_*`:
+
+- households and notifications
+- service catalog
+- service requests, appointments, payments, and refunds
+- RBT Boot Camp
+
+### Local setup
+
+1. `pnpm install`, then copy `.env.example` to `.env.local`.
+2. Start local Supabase (`pnpm db:start`, which needs Docker) and apply the migrations (`pnpm db:reset`). Put the local URL, publishable key, and secret key in `.env.local`.
+3. Create the first administrator. Sign up, then run in the local SQL console: `update public.user_roles set role = 'administrator' where user_id = '<uuid>';`
+4. Create specialists from `/admin/users`: set a user's role to **Specialist**, then record their service, language, and delivery-method capabilities in `/admin/specialists`. Assignment is limited to matching specialists.
+5. Stripe (test mode):
+   1. Create a recurring monthly Price for RBT Boot Camp.
+   2. Set `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and `STRIPE_RBT_MONTHLY_PRICE_ID`. Optionally set `STRIPE_AUTOMATIC_TAX=true` once Stripe Tax is configured.
+   3. Point the webhook at `/api/stripe/webhook` with these events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`, `payment_intent.payment_failed`, `refund.updated`.
+   4. Locally, use `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+   5. Consultation and IEP amounts come from the `services` table, so no Stripe Price is needed for them.
+6. Notifications:
+   1. Set a distinct, high-entropy `NOTIFICATION_WORKER_SECRET`.
+   2. Optionally set `RESEND_API_KEY` and `NOTIFICATION_EMAIL_FROM`.
+   3. Invoke `POST /api/workers/notifications` with the `x-notification-worker-secret` header every few minutes. `.github/workflows/notifications.yml` does this; it needs the `NOTIFICATION_WORKER_ORIGIN` variable and the `NOTIFICATION_WORKER_SECRET` secret.
+7. `pnpm dev`.
+
+Launch decisions are enforced in code and tested:
+
+- 60-minute sessions.
+- Admin proposes times and the household owner (or an authorized caregiver) confirms.
+- Payment is required before confirmation.
+- Refunds follow timing: 100% more than 48 hours before, 50% at 24 to 48 hours, 0% under 24 hours, 0% for a no-show, and 100% when Ethiospectrum cancels.
+- One reschedule is allowed within 48 hours.
+- One follow-up is included.
+- There is no automatic travel fee, and additional fees must be disclosed and accepted.
+- Every refund stores all PRD section 27 fields.
+- No training content is available without an active subscription.
+
+### Verification
+
+```bash
+pnpm typecheck && pnpm lint && pnpm test && pnpm build   # CI build uses the public Supabase placeholders from ci.yml
+pnpm db:test                                              # pgTAP, including prd_households, prd_service_requests, prd_rbt_bootcamp
+```
+
+The PRD database suites cover:
+
+- automatic household creation, caregiver invitation and limits, and permission enforcement
+- capability matching
+- the payment gate
+- idempotent provider synchronization
+- every refund tier, the reschedule limits, and no-shows
+- administrative cancellation
+- fee acceptance
+- follow-ups and completion
+- specialist and household isolation for requests and documents
+- subscription-gated training and learner progress
+
+## Demo history
+
+The sections below describe the demo tickets (ETH-008 to ETH-028) as they were built. Features marked RETIRE in [docs/demo-reconciliation.md](docs/demo-reconciliation.md) are switched off by `config/features.ts`.
 
 ## ETH-022 personal reminders
 

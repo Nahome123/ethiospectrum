@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { isFeatureEnabled } from "@/config/features";
 import type { AppLocale } from "@/i18n/routing";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import { createDocumentMetadataSchema, documentIdSchema } from "@/lib/validation/document";
@@ -190,9 +191,10 @@ export async function completeDocumentUploadAction(
   // not request an AI summary or chat response; those remain explicit actions.
   // A queue failure must not turn a completed private upload into a failed one,
   // because the detail page still provides the authorized retry control.
-  const processingQueue = await record.supabase.rpc("queue_document_processing", {
-    target_document_id: completedDocument.id,
-  });
+  // Extraction only feeds the retired AI features, so it is not queued at launch.
+  const processingQueue = isFeatureEnabled("documentAi")
+    ? await record.supabase.rpc("queue_document_processing", { target_document_id: completedDocument.id })
+    : { error: null, data: null };
   revalidateDocumentPaths(locale, record.document.id);
   return {
     status: "complete",

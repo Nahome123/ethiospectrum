@@ -116,7 +116,47 @@ describe("authentication actions", () => {
       first_name: "Ada",
       last_name: "Lovelace",
       preferred_locale: "am",
+      account_intent: "household_owner",
+      terms_policy_version: expect.any(String),
     });
+  });
+
+  it("registers an invited caregiver without creating a household and returns to the invitation", async () => {
+    const token = "a".repeat(64);
+    await signUpAction(
+      "es",
+      idle,
+      formData({
+        firstName: "Abel",
+        lastName: "Kebede",
+        email: "caregiver@example.test",
+        password: "long-enough",
+        confirmPassword: "long-enough",
+        termsAccepted: "on",
+        invitation: token,
+      }),
+    );
+    expect(mocks.signUp.mock.calls[0][0].options.data.account_intent).toBe("caregiver");
+    expect(mocks.signUp.mock.calls[0][0].options.emailRedirectTo).toContain(
+      encodeURIComponent(`/es/invitations/${token}`),
+    );
+  });
+
+  it("ignores a malformed invitation token", async () => {
+    await signUpAction(
+      "en",
+      idle,
+      formData({
+        firstName: "Ada",
+        lastName: "Lovelace",
+        email: "member@example.test",
+        password: "long-enough",
+        confirmPassword: "long-enough",
+        termsAccepted: "on",
+        invitation: "not-a-token",
+      }),
+    );
+    expect(mocks.signUp.mock.calls[0][0].options.data.account_intent).toBe("household_owner");
   });
 
   it("returns a safe rate-limit message for throttled confirmation emails", async () => {

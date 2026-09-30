@@ -1,5 +1,37 @@
 # Data model
 
+## PRD v1.0 data model
+
+- **Identity and households.**
+  - `profiles.phone`.
+  - `households.contact_phone`, `contact_email`, `contact_notes`.
+  - `household_members.caregiver_permissions text[]`, allowlisted: `submit_requests`, `confirm_appointments`, `make_payments`, `access_training`, `upload_documents`, `manage_subscription`.
+  - `household_invitations` stores an email, a token hash, permissions, a status, and an expiry. It allows one pending invitation per household. The invitation RPCs enforce the one-caregiver limit.
+- **Dependents** gain `service_needs`, `communication_considerations`, `preferred_language`, `educational_information`, and `behavioral_information`.
+- **Catalog.**
+  - `services` has one row per `rbt_bootcamp`, `consultation`, and `iep_language_assistance`, with price in cents (null for the Stripe-priced subscription), payment type, duration, included follow-ups, localized descriptions, standard instructions per locale, active flag, and version.
+  - `service_fees` holds explicit, customer-accepted fees.
+  - `consultation_topics` holds keyed, categorized, localized labels.
+  - `specialist_capabilities` stores specialist × service type × language × delivery method.
+- **Service requests.**
+  - `service_requests` stores the household, dependent, service, requester, and specialist; description and relevant information; consultation category and topic; preferred language; IEP language (`am`/`es`) and IEP services; delivery method and preferred location; and requested meeting date.
+  - It tracks `status`, `payment_status`, `appointment_status`, and `follow_up_status` independently.
+  - It stores late-reschedule, refund-cap, and full-refund-eligibility flags; completion, cancellation, and decline fields; an idempotency key; and a version.
+- **Appointments.** `service_appointments` stores the kind (primary or follow-up), proposal group, UTC start and end, IANA zone, delivery method, location type (remote, Ethiospectrum location, school/IEP meeting, mutually agreed) and details, HTTPS meeting link, appointment-specific instructions, status, customer confirmation, direct-scheduling flag, proposer role, cancellation kind and reason, completion, and reminder timestamp.
+- **Activities, messages, events.**
+  - `service_request_activities` tracks the consultation session, IEP explanation, meeting language assistance, and written translation separately.
+  - `service_request_messages` is immutable.
+  - `service_request_events` is append-only.
+- **Payments and refunds.**
+  - `service_payments` stores the base amount, accepted fee snapshot, subtotal, provider tax, provider total, refunded amount, the status (`pending`, `processing`, `paid`, `failed`, `partially_refunded`, `refunded`), the Stripe session and PaymentIntent ids, and a failure code. It allows one settled charge per request.
+  - `service_refunds` stores the original amount, policy-eligible amount, refund amount, refund date (`processed_at`), reason, policy tier, provider refund id, service request, customer (household and payer), requester, and processor.
+- **Documents** gain `service_request_id`. It is immutable and must match the request's household and dependent.
+- **Notifications** store the recipient (user, or email for invitations), type, small safe payload, relative link, read time, and email outbox state.
+- **Training.**
+  - `training_courses`, `training_modules`, and `training_lessons` are ordered, have draft, published, and archived states, and hold localized text. Lessons hold video and resource URLs or private object paths.
+  - `training_lesson_progress` stores household, learner type and id, lesson, percentage, completed, started, and completed timestamps.
+  - `billing_subscriptions.plan_key` is now `rbt_bootcamp`.
+
 ## ETH-028 billing
 
 `public.billing_customers` provides the one-household-to-one-Stripe-Customer link. `public.billing_subscriptions` stores one current synchronized subscription per household: opaque customer/subscription/Price identifiers, `family_plus`, monthly or annual interval, raw Stripe status, derived active/inactive entitlement, period and cancellation fields, provider timestamp, and local version. An eligible entitlement is constrained to an `active` Stripe subscription. Ended or expired subscriptions project as `free`; other non-active states preserve their provider state but grant no entitlement.

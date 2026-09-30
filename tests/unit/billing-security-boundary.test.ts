@@ -30,7 +30,8 @@ describe("ETH-028 security architecture", () => {
   it("validates only interval while resolving Price IDs server-side", () => {
     const checkoutAction = actionSource.split("export async function createBillingPortalSessionAction")[0];
     expect(checkoutAction).toContain("billingCheckoutSchema");
-    expect(checkoutAction).toContain("getStripePriceId(parsed.data.billingInterval)");
+    // RBT Boot Camp has exactly one server-configured monthly Price.
+    expect(checkoutAction).toContain("line_items: [{ price: getRbtMonthlyPriceId(), quantity: 1 }]");
     expect(checkoutAction).not.toMatch(/formData.*price|value\(formData, ["']price/iu);
     expect(checkoutAction).not.toMatch(/value\(formData, ["']household/iu);
     expect(checkoutAction).not.toMatch(/value\(formData, ["']customer/iu);

@@ -8,18 +8,23 @@ type TestLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 };
 
 const mocks = vi.hoisted(() => ({
-  createServerComponentSupabaseClient: vi.fn(),
-  getDependentContext: vi.fn(),
-  getDocumentDashboardSummary: vi.fn(),
+  getHouseholdAccess: vi.fn(),
+  listHouseholdServiceRequests: vi.fn(),
+  listUpcomingAppointments: vi.fn(),
+  listServices: vi.fn(),
+  listDependentOptions: vi.fn(),
+  getTrainingAccess: vi.fn(),
+  getTrainingProgressSummary: vi.fn(),
+  getHouseholdBillingSummary: vi.fn(),
 }));
 
-vi.mock("@/components/onboarding/household-edit-form", () => ({
-  HouseholdEditForm: ({ householdName }: { householdName: string }) => (
-    <div>Edit household form for {householdName}</div>
-  ),
-}));
 vi.mock("@/components/onboarding/onboarding-form", () => ({
   OnboardingForm: () => <div>Create household form</div>,
+}));
+vi.mock("@/components/services/status-badge", () => ({
+  ServiceStatusBadge: ({ status }: { status: string }) => <span>{status}</span>,
+  PaymentStatusBadge: ({ status }: { status: string }) => <span>{status}</span>,
+  StatusPill: ({ label }: { label: string }) => <span>{label}</span>,
 }));
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ children, href, ...props }: TestLinkProps) => (
@@ -28,84 +33,78 @@ vi.mock("@/i18n/navigation", () => ({
     </a>
   ),
 }));
-vi.mock("@/lib/dependents/server", () => ({
-  getDependentContext: mocks.getDependentContext,
+vi.mock("@/lib/households/server", () => ({ getHouseholdAccess: mocks.getHouseholdAccess }));
+vi.mock("@/lib/services/server", () => ({
+  listHouseholdServiceRequests: mocks.listHouseholdServiceRequests,
+  listUpcomingAppointments: mocks.listUpcomingAppointments,
+  listServices: mocks.listServices,
+  listDependentOptions: mocks.listDependentOptions,
 }));
-vi.mock("@/lib/documents/binder-query", () => ({
-  getDocumentDashboardSummary: mocks.getDocumentDashboardSummary,
+vi.mock("@/lib/training/server", () => ({
+  getTrainingAccess: mocks.getTrainingAccess,
+  getTrainingProgressSummary: mocks.getTrainingProgressSummary,
 }));
-vi.mock("@/lib/supabase/server", () => ({
-  createServerComponentSupabaseClient: mocks.createServerComponentSupabaseClient,
-}));
+vi.mock("@/lib/billing/server", () => ({ getHouseholdBillingSummary: mocks.getHouseholdBillingSummary }));
 vi.mock("next-intl/server", () => ({
   getTranslations: vi.fn(async () => (key: string) => key),
 }));
 
 import DashboardPage from "@/app/[locale]/(member)/dashboard/page";
 
-type QueryResult = { count?: number; data?: unknown[] };
+const props = { params: Promise.resolve({ locale: "en" }), searchParams: Promise.resolve({}) };
 
-function createQuery(result: QueryResult) {
-  const promise = Promise.resolve(result);
-  return {
-    eq() {
-      return this;
-    },
-    is() {
-      return this;
-    },
-    limit() {
-      return this;
-    },
-    order() {
-      return this;
-    },
-    then: promise.then.bind(promise),
-  };
-}
-
-describe("Dashboard household setup", () => {
+describe("Customer dashboard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mocks.getDocumentDashboardSummary.mockResolvedValue({
-      activeCount: 0,
-      completedCount: 0,
-      context: null,
-      failedCount: 0,
-      needsOcrCount: 0,
-      pendingCount: 0,
-      processingCount: 0,
-      processingFailedCount: 0,
-      recentDocuments: [],
+    mocks.listHouseholdServiceRequests.mockResolvedValue([]);
+    mocks.listUpcomingAppointments.mockResolvedValue([]);
+    mocks.listServices.mockResolvedValue([]);
+    mocks.listDependentOptions.mockResolvedValue([]);
+    mocks.getTrainingAccess.mockResolvedValue({
+      hasAccess: false,
+      hasSubscription: false,
+      canSubscribe: true,
+      isAdministrator: false,
     });
-    mocks.createServerComponentSupabaseClient.mockResolvedValue({
-      from: () => ({
-        select: (_columns: string, options?: { head?: boolean }) =>
-          createQuery(options?.head ? { count: 0 } : { data: [] }),
-      }),
-    });
+    mocks.getTrainingProgressSummary.mockResolvedValue([]);
+    mocks.getHouseholdBillingSummary.mockResolvedValue(null);
   });
 
-  it("shows household creation directly on Dashboard when no household is active", async () => {
-    mocks.getDependentContext.mockResolvedValue(null);
-
-    render(await DashboardPage({ params: Promise.resolve({ locale: "en" }) }));
-
+  it("shows household creation when the account has no household", async () => {
+    mocks.getHouseholdAccess.mockResolvedValue(null);
+    render(await DashboardPage(props));
     expect(screen.getByText("Create household form")).toBeVisible();
-    expect(mocks.getDocumentDashboardSummary).not.toHaveBeenCalled();
-    expect(mocks.createServerComponentSupabaseClient).not.toHaveBeenCalled();
+    expect(mocks.listHouseholdServiceRequests).not.toHaveBeenCalled();
   });
 
-  it("keeps household editing on Dashboard for household managers", async () => {
-    mocks.getDependentContext.mockResolvedValue({
-      canManage: true,
-      household: { id: "household-id", name: "Teshome family" },
+  it("surfaces pending payments, the subscription state, and independent purchases", async () => {
+    mocks.getHouseholdAccess.mockResolvedValue({
+      household: { id: "household-id", name: "Teshome household" },
       permission: "owner",
-      userId: "user-id",
+      isOwner: true,
+      permissions: ["submit_requests", "make_payments"],
     });
-
-    render(await DashboardPage({ params: Promise.resolve({ locale: "en" }) }));
-
-    expect(screen.getByText("Edit household form for Teshome family")).toBeVisible();
+    mocks.listHouseholdServiceRequests.mockImplementation(async (status: string) =>
+      status === "active"
+        ? [
+            {
+              id: "request-1",
+              service_type: "consultation",
+              dependent_name: "Nati",
+              status: "awaiting_payment",
+              payment_status: "unpaid",
+              amount_cents: 999,
+              updated_at: "2026-09-29T12:00:00Z",
+            },
+          ]
+        : [],
+    );
+    render(await DashboardPage(props));
+    expect(screen.getByText("Teshome household")).toBeVisible();
+    expect(screen.getByText("pendingPayments")).toBeVisible();
+    expect(screen.getByRole("link", { name: "payNow" })).toHaveAttribute("href", "/requests/request-1");
+    expect(screen.getByText("subscriptionInactive")).toBeVisible();
+    expect(screen.getByText("independentNotice")).toBeVisible();
+    expect(screen.getByRole("link", { name: "requestService" })).toHaveAttribute("href", "/services");
   });
 });

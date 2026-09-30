@@ -1,5 +1,7 @@
 export const billingIntervalValues = ["month", "year"] as const;
-export const billingPlanValues = ["free", "family_plus"] as const;
+export const billingPlanValues = ["free", "rbt_bootcamp"] as const;
+/** RBT Boot Camp is sold monthly only (PRD section 8). */
+export const checkoutBillingIntervalValues = ["month"] as const;
 export const billingEntitlementValues = ["active", "inactive"] as const;
 export const stripeSubscriptionStatusValues = [
   "incomplete",
@@ -14,11 +16,16 @@ export const stripeSubscriptionStatusValues = [
 
 export const stripeBillingEventValues = [
   "checkout.session.completed",
+  "checkout.session.async_payment_succeeded",
+  "checkout.session.async_payment_failed",
+  "checkout.session.expired",
   "customer.subscription.created",
   "customer.subscription.updated",
   "customer.subscription.deleted",
   "invoice.paid",
   "invoice.payment_failed",
+  "payment_intent.payment_failed",
+  "refund.updated",
 ] as const;
 
 export type BillingInterval = (typeof billingIntervalValues)[number];
@@ -32,8 +39,15 @@ export function mapSubscriptionEntitlement(status: StripeSubscriptionStatus): Bi
   return status === "active" ? "active" : "inactive";
 }
 
-export function canManageBilling(permission: BillingHouseholdPermission): boolean {
-  return permission === "owner";
+/** The owner, or a caregiver the owner granted `manage_subscription`. */
+export function canManageBilling(
+  permission: BillingHouseholdPermission,
+  caregiverPermissions: readonly string[] = [],
+): boolean {
+  return (
+    permission === "owner" ||
+    (permission === "member" && caregiverPermissions.includes("manage_subscription"))
+  );
 }
 
 export function canViewBillingInvoices(permission: BillingHouseholdPermission): boolean {

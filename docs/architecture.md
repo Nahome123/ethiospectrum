@@ -1,5 +1,53 @@
 # Architecture
 
+## PRD v1.0 launch architecture
+
+**Boundary.** The launch keeps the demo's layering. Server Components read narrow projections through request-scoped Supabase clients. Small Client Components submit Server Actions. PostgreSQL owns authorization.
+
+Four migrations (`20260929000000` to `20260929000300`) add the launch domain:
+
+- `services`, `service_fees`, `consultation_topics`, `specialist_capabilities`
+- `service_requests` with `service_appointments`, `service_request_activities`, `service_request_messages`, `service_request_events`
+- `service_payments` and `service_refunds`
+- `notifications` and `household_invitations`
+- `training_courses`, `training_modules`, `training_lessons`, `training_lesson_progress`
+
+Every table forces RLS and exposes select-only policies. Every write is a `security definer` function with an empty search path. Each one derives the actor from `auth.uid()` and re-checks role, household permission, request state, and optimistic version, then records an immutable `service_request_events` row. Custom SQLSTATEs (`ES402` payment required, `ES409` schedule conflict, `ES410` reschedule limit, `ES422` fees not accepted) map to localized messages in `lib/services/action-state.ts`.
+
+**Roles.**
+
+- HOUSEHOLD_OWNER is the active `owner` membership.
+- CAREGIVER is the single active `member` membership. It holds owner-granted `caregiver_permissions`, checked by `private.household_actor_can(household, permission)`.
+- ADMIN and SPECIALIST are the global `user_roles`.
+- A specialist is authorized per request by `private.is_request_specialist(request)`, re-evaluated on every query. This covers the request, its appointments, messages, events, and linked documents and Storage objects. Reassignment removes access immediately. Specialists never read the household `dependents` table; `get_service_request_detail` returns only the dependent's service-delivery fields.
+
+**Service lifecycle.** Status, payment status, appointment status, follow-up status, and completion are separate columns.
+
+- Admins assign only capability-matched specialists (service, language, delivery method). The language is the IEP pair's non-English side, or the consultation language.
+- Admins propose one to three slots, or ask the specialist for availability. A slot is a local date-time plus an IANA zone. `private.resolve_appointment_instant`, reused from ETH-027, rejects nonexistent and ambiguous DST times.
+- Unpaid proposals move the request to `awaiting_payment`.
+- `prepare_service_payment` computes the amount from the catalog and all active fees, which the customer must accept. It supersedes older pending attempts, whose Stripe sessions are expired, and returns data for a Stripe Checkout in `payment` mode.
+- A payment is marked paid only by `sync_service_payment`. That service-role function runs from the signed webhook, or from the return page after the server re-fetches the session. It is idempotent, never regresses a settled payment, and records Stripe-calculated tax.
+- The owner, or a caregiver with `confirm_appointments`, confirms one option. Payment must be settled first.
+- Direct scheduling by an admin creates a confirmed appointment that is still gated by payment before the session is recorded.
+- Reschedules and cancellations apply the PRD section 26 schedule in the database (`service_refund_policy`). A late reschedule caps any later refund.
+- Refunds are created as `requested` rows. An administrator processes them through Stripe with idempotency keys; the result is completed synchronously or by `refund.updated`.
+- Recording the primary session opens the included follow-up. Completion requires the follow-up to be done or explicitly waived.
+
+**Notifications.** `private.notify*` helpers write localized-by-type `notifications` rows (with small, safe payloads) inside the same transaction as the event.
+
+- The bell and `/notifications` read the caller's own rows.
+- `/api/workers/notifications` is protected by `NOTIFICATION_WORKER_SECRET`. It queues appointment reminders and escalates unassigned requests. It then claims a leased batch, renders email with the recipient's locale messages, and sends through Resend when configured; otherwise it marks the batch `skipped`.
+- Invitation bearer tokens exist only as SHA-256 hashes on the invitation. The one-time email copy is stripped after the final delivery outcome.
+
+**RBT Boot Camp.** `private.has_training_access()` grants access to administrators, and otherwise to an active owner, or a caregiver with `access_training`, of a household whose `rbt_bootcamp` subscription is `active` and unexpired.
+
+- Training tables and the private `training-media` bucket are readable only through that function.
+- Uploaded media reaches subscribers only as short-lived signed URLs.
+- Progress rows are keyed by learner type and id (the member or a household dependent), never regress, and survive unpublishing or archiving.
+
+**Retired demo features** stay in the code, switched off by `config/features.ts` (see docs/demo-reconciliation.md).
+
 ## ETH-028 household subscriptions
 
 ETH-028 isolates Stripe behind server-only modules. The localized household route is server-rendered from narrow PostgreSQL projections; only small interactive forms are Client Components. Owner Checkout and Portal Server Actions derive identity, active household, permission, customer, configured Price, and fixed return origin on the server. The browser supplies only `month` or `year`. Stripe's hosted pages retain the payment-card boundary, while `/api/stripe/webhook` runs in the Node runtime, reads the raw body, verifies `Stripe-Signature`, accepts an explicit event allowlist, and refetches the authoritative subscription or invoice before synchronizing.

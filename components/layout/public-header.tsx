@@ -11,7 +11,7 @@ import { LanguageSelector } from "./language-selector";
 const links = [
   { key: "features", href: "/features" },
   { key: "howItWorks", href: "/how-it-works" },
-  { key: "resources", href: "/resources" },
+  { key: "resources", href: "/resources/education" },
   { key: "pricing", href: "/pricing" },
 ] as const;
 

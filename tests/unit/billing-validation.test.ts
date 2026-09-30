@@ -42,11 +42,11 @@ function subscription(overrides: Partial<Stripe.Subscription> = {}): Stripe.Subs
 }
 
 describe("billing validation and trusted mappings", () => {
-  it.each(["month", "year"])("accepts the controlled %s interval", (billingInterval) => {
-    expect(billingCheckoutSchema.safeParse({ billingInterval }).success).toBe(true);
+  it("accepts only the monthly RBT Boot Camp interval", () => {
+    expect(billingCheckoutSchema.safeParse({ billingInterval: "month" }).success).toBe(true);
   });
 
-  it.each(["price_monthly123", "family_plus", "quarter", "", 12])(
+  it.each(["year", "price_monthly123", "rbt_bootcamp", "quarter", "", 12])(
     "rejects browser plan or Price input %j",
     (billingInterval) => {
       expect(billingCheckoutSchema.safeParse({ billingInterval }).success).toBe(false);
@@ -119,16 +119,23 @@ describe("billing validation and trusted mappings", () => {
     expect(JSON.stringify(result)).not.toMatch(/card|payment_method|cvc/iu);
   });
 
-  it("requires all Stripe server values together and keeps intervals distinct", () => {
+  it("requires the Stripe key and webhook secret together; the RBT Price and tax flag are optional", () => {
     expect(getStripeBillingEnv({})).toBeUndefined();
     expect(() => getStripeBillingEnv({ STRIPE_SECRET_KEY: "sk_test_synthetic" })).toThrow();
+    expect(() => getStripeBillingEnv({ STRIPE_RBT_MONTHLY_PRICE_ID: "price_monthly123" })).toThrow();
     expect(
       getStripeBillingEnv({
         STRIPE_SECRET_KEY: "sk_test_synthetic",
         STRIPE_WEBHOOK_SECRET: "whsec_synthetic",
-        STRIPE_FAMILY_PLUS_MONTHLY_PRICE_ID: "price_monthly123",
-        STRIPE_FAMILY_PLUS_ANNUAL_PRICE_ID: "price_annual123",
       }),
-    ).toMatchObject({ familyPlusMonthlyPriceId: "price_monthly123" });
+    ).toMatchObject({ rbtMonthlyPriceId: undefined, automaticTax: false });
+    expect(
+      getStripeBillingEnv({
+        STRIPE_SECRET_KEY: "sk_test_synthetic",
+        STRIPE_WEBHOOK_SECRET: "whsec_synthetic",
+        STRIPE_RBT_MONTHLY_PRICE_ID: "price_monthly123",
+        STRIPE_AUTOMATIC_TAX: "true",
+      }),
+    ).toMatchObject({ rbtMonthlyPriceId: "price_monthly123", automaticTax: true });
   });
 });

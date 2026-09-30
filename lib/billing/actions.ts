@@ -4,12 +4,18 @@ import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
 import { getSiteUrl } from "@/lib/auth/site-url";
-import { getCurrentHouseholdContext } from "@/lib/households/server";
+import { getHouseholdAccess } from "@/lib/households/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/server";
 import { billingCheckoutSchema, billingReconciliationSchema } from "@/lib/validation/billing";
 import type { BillingActionState } from "./action-state";
-import { getConfiguredBillingInterval, getStripeClient, getStripePriceId } from "./provider";
+import { ensureStripeCustomer } from "./customer";
+import {
+  getConfiguredBillingInterval,
+  getRbtMonthlyPriceId,
+  getStripeClient,
+  isStripeAutomaticTaxEnabled,
+} from "./provider";
 import { reconcileBillingHousehold } from "./sync";
 
 function value(formData: FormData, key: string): string {
@@ -19,15 +25,22 @@ function value(formData: FormData, key: string): string {
 
 function revalidateBilling(locale: AppLocale) {
   revalidatePath(`/${locale}/billing`);
+  revalidatePath(`/${locale}/training`);
   revalidatePath(`/${locale}/admin/billing`);
 }
 
-async function getOwnerContext() {
-  const [context, claims] = await Promise.all([getCurrentHouseholdContext(), getCurrentSupabaseClaims()]);
-  if (!context || context.permission !== "owner" || !claims || typeof claims.sub !== "string") {
+/** The owner, or a caregiver granted `manage_subscription`, may manage the subscription. */
+async function getSubscriptionManagerContext() {
+  const [access, claims] = await Promise.all([getHouseholdAccess(), getCurrentSupabaseClaims()]);
+  if (
+    !access ||
+    !access.permissions.includes("manage_subscription") ||
+    !claims ||
+    typeof claims.sub !== "string"
+  ) {
     return null;
   }
-  return { household: context.household, userId: claims.sub };
+  return { household: access.household, userId: claims.sub };
 }
 
 export async function createBillingCheckoutSessionAction(
@@ -38,36 +51,21 @@ export async function createBillingCheckoutSessionAction(
   void _state;
   const t = await getTranslations({ locale, namespace: "billing" });
   const parsed = billingCheckoutSchema.safeParse({
-    billingInterval: value(formData, "billingInterval"),
+    billingInterval: value(formData, "billingInterval") || "month",
   });
   if (!parsed.success) return { status: "error", message: t("errors.validation") };
-  const context = await getOwnerContext();
+  const context = await getSubscriptionManagerContext();
   if (!context) return { status: "error", message: t("errors.ownerRequired") };
 
   try {
     const admin = createSupabaseAdminClient();
     const stripe = getStripeClient();
-    const existingCustomer = await admin
-      .from("billing_customers")
-      .select("stripe_customer_id")
-      .eq("household_id", context.household.id)
-      .maybeSingle();
-    if (existingCustomer.error) throw new Error("billing_customer_load_failed");
-
-    let customerId = existingCustomer.data?.stripe_customer_id;
-    if (!customerId) {
-      const customer = await stripe.customers.create(
-        { metadata: { ethiospectrum_household_id: context.household.id } },
-        { idempotencyKey: `ethiospectrum-household-${context.household.id}` },
-      );
-      customerId = customer.id;
-      const linked = await admin.rpc("link_household_billing_customer", {
-        target_household_id: context.household.id,
-        target_actor_id: context.userId,
-        input_stripe_customer_id: customerId,
-      });
-      if (linked.error) throw new Error("billing_customer_link_failed");
-    }
+    const customerId = await ensureStripeCustomer({
+      admin,
+      stripe,
+      householdId: context.household.id,
+      actorId: context.userId,
+    });
 
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
@@ -85,15 +83,19 @@ export async function createBillingCheckoutSessionAction(
     if (hasManagedSubscription) return { status: "error", message: t("errors.updatedElsewhere") };
 
     const siteUrl = getSiteUrl();
+    const automaticTax = isStripeAutomaticTaxEnabled();
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer: customerId,
       client_reference_id: context.household.id,
-      line_items: [{ price: getStripePriceId(parsed.data.billingInterval), quantity: 1 }],
+      line_items: [{ price: getRbtMonthlyPriceId(), quantity: 1 }],
       metadata: { ethiospectrum_household_id: context.household.id },
       subscription_data: {
         metadata: { ethiospectrum_household_id: context.household.id },
       },
+      ...(automaticTax
+        ? { automatic_tax: { enabled: true }, customer_update: { address: "auto" as const } }
+        : {}),
       success_url: `${siteUrl}/${locale}/billing?checkout=success`,
       cancel_url: `${siteUrl}/${locale}/billing?checkout=cancelled`,
     });
@@ -119,7 +121,7 @@ export async function createBillingPortalSessionAction(
   void _state;
   void _formData;
   const t = await getTranslations({ locale, namespace: "billing" });
-  const context = await getOwnerContext();
+  const context = await getSubscriptionManagerContext();
   if (!context) return { status: "error", message: t("errors.ownerRequired") };
   try {
     const admin = createSupabaseAdminClient();

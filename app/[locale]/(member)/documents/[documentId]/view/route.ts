@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { retiredApiResponse } from "@/lib/features";
 import { getDocumentContext } from "@/lib/documents/server";
 import { documentCitationNavigationSearchSchema } from "@/lib/documents/citations/schemas";
 import { resolveDocumentCitationEvidence } from "@/lib/documents/citations/server";
@@ -14,6 +15,8 @@ function notFoundResponse() {
  * requested page is derived from the stored citation, never from this URL.
  */
 export async function GET(request: Request, { params }: { params: Promise<{ documentId: string }> }) {
+  const retired = retiredApiResponse("documentAi");
+  if (retired) return retired;
   const { documentId } = await params;
   if (!documentIdSchema.safeParse(documentId).success) return notFoundResponse();
 

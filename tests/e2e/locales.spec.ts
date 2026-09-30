@@ -10,34 +10,39 @@ test("supported locales render localized landing pages", async ({ page }) => {
     await expect(page.locator("h1")).toBeVisible();
   }
 });
-test("education support landing content is localized and has working destinations", async ({ page }) => {
+test("landing page presents the three PRD services with launch prices", async ({ page }) => {
   await page.goto("/en");
   await expect(
-    page.getByRole("heading", { name: "Understand school planning with less confusion." }),
+    page.getByRole("heading", { name: "Support for your family, in your language" }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Explore education support" })).toHaveAttribute(
+  await expect(page.getByText("$9.99").first()).toBeVisible();
+  await expect(page.getByText("$19.99").first()).toBeVisible();
+  await expect(
+    page.getByText("no RBT Boot Camp subscription required", { exact: false }).first(),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "See services and prices" })).toHaveAttribute(
     "href",
-    "/en/resources/education",
+    "/en/pricing",
   );
-  const assistant = page.getByRole("link", { name: "Open assistant" });
-  await assistant.focus();
-  await expect(assistant).toBeFocused();
-  await expect(assistant).toHaveAttribute("href", "/en/assistant");
-
-  await page.setViewportSize({ width: 320, height: 740 });
-  await expect(page.getByRole("link", { name: "Open assistant" })).toBeVisible();
+  // Retired demo destinations are no longer linked.
+  await expect(page.locator('a[href="/en/assistant"]')).toHaveCount(0);
 
   await page.goto("/am");
-  await expect(page.getByRole("heading", { name: "የትምህርት ቤት እቅድን በቀላል መንገድ ይረዱ።" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "ለቤተሰብዎ ድጋፍ፣ በቋንቋዎ" })).toBeVisible();
 });
-test("education support reflows without horizontal overflow", async ({ page }) => {
-  for (const width of [320, 375, 430, 768, 1024, 1440]) {
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto("/en");
-    await expect(
-      page.getByRole("heading", { name: "Understand school planning with less confusion." }),
-    ).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+test("landing and pricing reflow without horizontal overflow", async ({ page }) => {
+  for (const path of ["/en", "/en/pricing"]) {
+    for (const width of [320, 375, 430, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(path);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    }
+  }
+});
+test("retired demo routes are not exposed", async ({ page }) => {
+  for (const path of ["/en/resources", "/en/training/rbt-preview"]) {
+    const response = await page.goto(path);
+    expect(response?.status()).toBe(404);
   }
 });
 test("language selector preserves the current route", async ({ page }) => {
@@ -54,7 +59,7 @@ test("language selector does not nest locale prefixes", async ({ page }) => {
   const combinations = [
     ["/en", "am", /\/am$/],
     ["/am", "es", /\/es$/],
-    ["/es/resources", "en", /\/en\/resources$/],
+    ["/es/pricing", "en", /\/en\/pricing$/],
   ] as const;
   for (const [path, locale, expectedUrl] of combinations) {
     await page.goto(path);

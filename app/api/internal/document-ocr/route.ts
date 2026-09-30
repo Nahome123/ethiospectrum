@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { retiredApiResponse } from "@/lib/features";
 import { hasValidDocumentOcrSecret } from "@/lib/documents/ocr/internal-secret";
 import { runDocumentOcrBatch } from "@/lib/documents/ocr/runner";
 
@@ -14,6 +15,8 @@ function unavailableResponse() {
 
 /** Protected scheduler entry point. It accepts no document identifiers or body. */
 export async function POST(request: Request) {
+  const retired = retiredApiResponse("documentAi");
+  if (retired) return retired;
   let authorized: boolean;
   try {
     authorized = hasValidDocumentOcrSecret(request.headers.get("x-document-ocr-secret"));

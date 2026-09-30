@@ -3,9 +3,17 @@ import { brandConfig } from "@/config/brand";
 import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
+import { NotificationBell } from "./notification-bell";
 import { signOutAction } from "@/lib/auth/actions";
 import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
+
+const links = [
+  ["dashboard", "/specialist"],
+  ["closed", "/specialist?scope=closed"],
+  ["notifications", "/notifications"],
+  ["settings", "/settings"],
+] as const;
 
 export async function SpecialistShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations();
@@ -17,23 +25,27 @@ export async function SpecialistShell({ children }: Readonly<{ children: React.R
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b border-border bg-white p-5 lg:border-b-0 lg:border-r">
-        <Link href="/specialist/support-requests" aria-label={brandConfig.name} className="inline-block">
+        <Link href="/specialist" aria-label={brandConfig.name} className="inline-block">
           <BrandLogo className="h-10 w-48" />
         </Link>
-        <p className="mt-1 text-sm text-muted-foreground">{t("specialists.workspace")}</p>
-        <nav aria-label={t("specialists.workspace")} className="mt-6 grid gap-1">
-          <Link
-            className="rounded-md px-3 py-2 text-sm font-medium hover:bg-secondary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
-            href="/specialist/support-requests"
-          >
-            {t("specialists.assignedRequests")}
-          </Link>
+        <p className="mt-1 text-sm text-muted-foreground">{t("specialistConsole.workspace")}</p>
+        <nav aria-label={t("specialistConsole.workspace")} className="mt-6 grid gap-1">
+          {links.map(([key, href]) => (
+            <Link
+              className="rounded-md px-3 py-2 text-sm font-medium hover:bg-secondary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+              href={href}
+              key={key}
+            >
+              {t(`specialistConsole.nav.${key}`)}
+            </Link>
+          ))}
         </nav>
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
-          <p className="text-sm font-semibold text-primary">{t("specialists.workspace")}</p>
+          <p className="text-sm font-semibold text-primary">{t("specialistConsole.workspace")}</p>
           <div className="flex items-center gap-3">
+            <NotificationBell />
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
               {displayName}

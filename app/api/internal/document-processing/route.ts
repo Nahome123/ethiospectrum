@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { retiredApiResponse } from "@/lib/features";
 import { hasValidDocumentProcessingSecret } from "@/lib/documents/processing/internal-secret";
 import { runDocumentProcessingBatch } from "@/lib/documents/processing/runner";
 
@@ -14,6 +15,8 @@ function unavailableResponse() {
 
 /** Protected scheduler/platform entry point. It accepts no document identifiers. */
 export async function POST(request: Request) {
+  const retired = retiredApiResponse("documentAi");
+  if (retired) return retired;
   let authorized: boolean;
   try {
     authorized = hasValidDocumentProcessingSecret(request.headers.get("x-document-processing-secret"));

@@ -66,7 +66,7 @@ export async function listHouseholdBillingInvoices(): Promise<BillingInvoice[]> 
   return error || !data ? [] : (data as BillingInvoice[]);
 }
 
-export async function hasHouseholdEntitlement(entitlement: "family_plus"): Promise<boolean> {
+export async function hasHouseholdEntitlement(entitlement: "rbt_bootcamp"): Promise<boolean> {
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase.rpc("has_household_entitlement", {
     input_entitlement: entitlement,

@@ -129,9 +129,9 @@
     "signup": "Comenzar",
     "dashboard": "Panel",
     "onboarding": "Primeros pasos",
-    "dependents": "Miembros de la familia",
+    "dependents": "Niños",
     "documents": "Documentos",
-    "training": "Guía de capacitación RBT sobre enseñanza sin errores",
+    "training": "Campamento RBT",
     "assistant": "Asistente de documentos",
     "roadmap": "Plan de pasos",
     "support": "Apoyo",
@@ -143,7 +143,12 @@
     "supportRequests": "Solicitudes de apoyo",
     "billing": "Facturación",
     "prompts": "Indicaciones",
-    "auditLogs": "Registro de auditoría"
+    "auditLogs": "Registro de auditoría",
+    "services": "Servicios",
+    "requests": "Solicitudes de servicio",
+    "household": "Hogar",
+    "notifications": "Notificaciones",
+    "specialistWorkspace": "Espacio del especialista"
   },
   "common": {
     "learnMore": "Más información",
@@ -227,12 +232,97 @@
     "itemThree": "Cartas de beneficios"
   },
   "roadmap": {
-    "eyebrow": "Plan de pasos",
-    "title": "Haz visible el próximo paso.",
-    "description": "Un futuro plan convertirá fechas y preguntas importantes en un plan claro y flexible.",
-    "itemOne": "Preparar preguntas",
-    "itemTwo": "Revisar una carta",
-    "itemThree": "Agregar un recordatorio"
+    "householdRoadmap": "Plan de acción del hogar",
+    "description": "Descripción",
+    "actionItems": "Acciones",
+    "newActionItem": "Nueva acción",
+    "editActionItem": "Editar acción",
+    "itemDetails": "Detalles de la acción",
+    "newDescription": "Crea una acción del hogar. La asignación, el miembro de la familia y la fecha límite son opcionales.",
+    "titleError": "Ingresa un título de acción de 160 caracteres o menos.",
+    "descriptionError": "Ingresa una descripción de 4.000 caracteres o menos.",
+    "dueDateError": "Ingresa una fecha de calendario válida.",
+    "validationError": "Revisa los campos resaltados.",
+    "title": "Título",
+    "category": "Categoría",
+    "priority": "Prioridad",
+    "status": "Estado",
+    "dueDate": "Fecha límite",
+    "dependent": "Miembro de la familia",
+    "assignee": "Persona asignada",
+    "unassigned": "Sin asignar",
+    "noDependent": "Sin miembro de la familia",
+    "assignToMe": "Asignarme a mí",
+    "assignedHouseholdMember": "Miembro del hogar asignado",
+    "formerHouseholdMember": "Exmiembro del hogar",
+    "archivedDependent": "Miembro de la familia archivado",
+    "categories": {
+      "general": "General",
+      "healthcare": "Atención médica",
+      "education": "Educación",
+      "therapy": "Terapia",
+      "benefits": "Beneficios",
+      "legal": "Legal",
+      "family_support": "Apoyo familiar",
+      "other": "Otro"
+    },
+    "priorities": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta"
+    },
+    "statuses": {
+      "not_started": "Sin empezar",
+      "in_progress": "En curso",
+      "blocked": "Bloqueada",
+      "completed": "Completada",
+      "cancelled": "Cancelada"
+    },
+    "sorts": {
+      "manual": "Orden manual",
+      "due_date": "Fecha límite",
+      "priority": "Prioridad",
+      "updated": "Actualizadas recientemente",
+      "created": "Creadas recientemente"
+    },
+    "overdue": "Vencida",
+    "completed": "Completada",
+    "archive": "Archivar",
+    "restore": "Restaurar",
+    "archiveConfirm": "¿Archivar esta acción? Se quitará del plan de acción activo.",
+    "archivedNotice": "Esta acción está archivada. Restáurala antes de editarla.",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "create": "Crear acción",
+    "creating": "Creando…",
+    "noItems": "Aún no hay acciones",
+    "noMatchingItems": "No hay acciones que coincidan",
+    "emptyDescription": "Crea una acción cuando tu hogar esté listo.",
+    "readOnly": "Solo lectura",
+    "readOnlyDescription": "Puedes ver las acciones activas del hogar, pero no puedes hacer cambios.",
+    "accessDenied": "No tienes permiso para acceder a este plan de acción.",
+    "createError": "No pudimos crear esta acción. Inténtalo de nuevo.",
+    "updateError": "No pudimos actualizar esta acción. Inténtalo de nuevo.",
+    "archiveError": "No pudimos archivar esta acción. Inténtalo de nuevo.",
+    "restoreError": "No pudimos restaurar esta acción. Inténtalo de nuevo.",
+    "reorderError": "No pudimos reordenar las acciones. Inténtalo de nuevo.",
+    "reorderSuccess": "Se actualizó el orden de las acciones.",
+    "staleError": "Otra persona actualizó esta acción. Actualiza la página e inténtalo de nuevo.",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "all": "Todas",
+    "assignedToMe": "Asignadas a mí",
+    "clearFilters": "Borrar filtros",
+    "archivedItems": "Acciones archivadas",
+    "activeItems": "Acciones activas",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "page": "Página {page}",
+    "pagination": "Paginación del plan de acción",
+    "backToRoadmap": "Volver al plan de acción",
+    "backToItem": "Volver a la acción",
+    "moveUp": "Mover la acción hacia arriba",
+    "moveDown": "Mover la acción hacia abajo"
   },
   "resources": {
     "eyebrow": "Biblioteca de aprendizaje",
@@ -468,8 +558,8 @@
   },
   "pricing": {
     "eyebrow": "Precios",
-    "title": "Apoyo atento, con detalles por venir.",
-    "description": "Los precios y el apoyo pagado no están disponibles en esta base. Compartiremos opciones claras antes de lanzar un servicio de suscripción.",
+    "title": "Precios simples y transparentes",
+    "description": "Suscríbase mensualmente al Campamento RBT, o compre una consulta o asistencia lingüística con el IEP por separado.",
     "planTitle": "Planes futuros de apoyo",
     "planDescription": "Hoy no hay ningún cargo ni compra disponible."
   },
@@ -536,7 +626,8 @@
     "pending": "Espera, por favor…",
     "haveAccount": "¿Ya tienes una cuenta?",
     "needAccount": "¿Necesitas una cuenta?",
-    "backToLogin": "Volver a iniciar sesión"
+    "backToLogin": "Volver a iniciar sesión",
+    "signupCaregiverDescription": "Cree su cuenta de cuidador con el correo que invitó el propietario del hogar. Después de confirmar su correo, se unirá a su hogar."
   },
   "dashboard": {
     "welcome": "Bienvenido a tu espacio familiar",
@@ -668,97 +759,24 @@
     "permissionOwnerAdministrator": "Los propietarios y administradores del hogar pueden realizar cambios.",
     "dashboardTitle": "Miembros de la familia",
     "dashboardCount": "{count} miembros activos de la familia",
-    "manage": "Administrar miembros de la familia"
-  },
-  "roadmap": {
-    "householdRoadmap": "Plan de acción del hogar",
-    "description": "Organiza acciones compartidas y mantén visibles los próximos pasos para tu hogar.",
-    "actionItems": "Acciones",
-    "newActionItem": "Nueva acción",
-    "editActionItem": "Editar acción",
-    "itemDetails": "Detalles de la acción",
-    "newDescription": "Crea una acción del hogar. La asignación, el miembro de la familia y la fecha límite son opcionales.",
-    "titleError": "Ingresa un título de acción de 160 caracteres o menos.",
-    "descriptionError": "Ingresa una descripción de 4.000 caracteres o menos.",
-    "dueDateError": "Ingresa una fecha de calendario válida.",
-    "validationError": "Revisa los campos resaltados.",
-    "title": "Título",
-    "description": "Descripción",
-    "category": "Categoría",
-    "priority": "Prioridad",
-    "status": "Estado",
-    "dueDate": "Fecha límite",
-    "dependent": "Miembro de la familia",
-    "assignee": "Persona asignada",
-    "unassigned": "Sin asignar",
-    "noDependent": "Sin miembro de la familia",
-    "assignToMe": "Asignarme a mí",
-    "assignedHouseholdMember": "Miembro del hogar asignado",
-    "formerHouseholdMember": "Exmiembro del hogar",
-    "archivedDependent": "Miembro de la familia archivado",
-    "categories": {
-      "general": "General",
-      "healthcare": "Atención médica",
-      "education": "Educación",
-      "therapy": "Terapia",
-      "benefits": "Beneficios",
-      "legal": "Legal",
-      "family_support": "Apoyo familiar",
-      "other": "Otro"
-    },
-    "priorities": { "low": "Baja", "medium": "Media", "high": "Alta" },
-    "statuses": {
-      "not_started": "Sin empezar",
-      "in_progress": "En curso",
-      "blocked": "Bloqueada",
-      "completed": "Completada",
-      "cancelled": "Cancelada"
-    },
-    "sorts": {
-      "manual": "Orden manual",
-      "due_date": "Fecha límite",
-      "priority": "Prioridad",
-      "updated": "Actualizadas recientemente",
-      "created": "Creadas recientemente"
-    },
-    "overdue": "Vencida",
-    "completed": "Completada",
-    "archive": "Archivar",
-    "restore": "Restaurar",
-    "archiveConfirm": "¿Archivar esta acción? Se quitará del plan de acción activo.",
-    "archivedNotice": "Esta acción está archivada. Restáurala antes de editarla.",
-    "save": "Guardar",
-    "saving": "Guardando…",
-    "create": "Crear acción",
-    "creating": "Creando…",
-    "noItems": "Aún no hay acciones",
-    "noMatchingItems": "No hay acciones que coincidan",
-    "emptyDescription": "Crea una acción cuando tu hogar esté listo.",
-    "readOnly": "Solo lectura",
-    "readOnlyDescription": "Puedes ver las acciones activas del hogar, pero no puedes hacer cambios.",
-    "accessDenied": "No tienes permiso para acceder a este plan de acción.",
-    "createError": "No pudimos crear esta acción. Inténtalo de nuevo.",
-    "updateError": "No pudimos actualizar esta acción. Inténtalo de nuevo.",
-    "archiveError": "No pudimos archivar esta acción. Inténtalo de nuevo.",
-    "restoreError": "No pudimos restaurar esta acción. Inténtalo de nuevo.",
-    "reorderError": "No pudimos reordenar las acciones. Inténtalo de nuevo.",
-    "reorderSuccess": "Se actualizó el orden de las acciones.",
-    "staleError": "Otra persona actualizó esta acción. Actualiza la página e inténtalo de nuevo.",
-    "filter": "Filtrar",
-    "sort": "Ordenar",
-    "all": "Todas",
-    "assignedToMe": "Asignadas a mí",
-    "clearFilters": "Borrar filtros",
-    "archivedItems": "Acciones archivadas",
-    "activeItems": "Acciones activas",
-    "previous": "Anterior",
-    "next": "Siguiente",
-    "page": "Página {page}",
-    "pagination": "Paginación del plan de acción",
-    "backToRoadmap": "Volver al plan de acción",
-    "backToItem": "Volver a la acción",
-    "moveUp": "Mover la acción hacia arriba",
-    "moveDown": "Mover la acción hacia abajo"
+    "manage": "Administrar miembros de la familia",
+    "serviceInformation": "Información del servicio",
+    "serviceInformationHelp": "Comparta solo lo que un especialista necesita para prestar los servicios. Puede actualizarlo en cualquier momento.",
+    "preferredLanguage": "Idioma preferido",
+    "noPreference": "Sin preferencia",
+    "serviceNeeds": "Necesidades de servicio",
+    "serviceNeedsHelp": "Por ejemplo: apoyo del habla, apoyo conductual o servicios del IEP.",
+    "communicationConsiderations": "Consideraciones de comunicación",
+    "communicationConsiderationsHelp": "Cómo se comunica mejor su hijo o hija.",
+    "educationalInformation": "Información educativa",
+    "educationalInformationHelp": "Escuela, grado o apoyos de aprendizaje importantes para los servicios.",
+    "behavioralInformation": "Información conductual / de servicios",
+    "behavioralInformationHelp": "Cualquier cosa que ayude a un especialista a apoyar a su hijo o hija.",
+    "languageNames": {
+      "en": "Inglés",
+      "am": "Amárico",
+      "es": "Español"
+    }
   },
   "reminders": {
     "title": "Recordatorios",
@@ -1481,22 +1499,29 @@
   "billing": {
     "eyebrow": "Suscripción del hogar",
     "title": "Facturación",
-    "description": "Consulta el plan del hogar, el acceso a Family Plus y el historial seguro de facturas.",
+    "description": "Administre su suscripción al Campamento RBT y revise los pagos de servicios.",
     "currentPlan": "Plan actual",
     "plan": "Plan",
-    "entitlement": "Acceso a Family Plus",
+    "entitlement": "Acceso al Campamento RBT",
     "billingInterval": "Periodo de facturación",
     "currentPeriod": "El periodo pagado actual termina",
     "accessThrough": "Acceso hasta",
-    "choosePlan": "Elige la facturación de Family Plus",
+    "choosePlan": "Suscribirse al Campamento RBT",
     "amountManagedByStripe": "Stripe muestra y cobra de forma segura el importe actual en USD.",
     "subscribe": "Suscribirse con Stripe",
     "manageBilling": "Administrar facturación",
     "secureTitle": "Stripe administra la facturación de forma segura",
     "secureDescription": "Los datos de la tarjeta se ingresan únicamente en páginas alojadas por Stripe. Ethiospectrum no recibe ni almacena números de tarjeta ni CVC.",
     "opensStripe": "Abre una página segura de Stripe en una pestaña nueva.",
-    "plans": { "free": "Gratis", "familyPlus": "Family Plus" },
-    "intervals": { "monthly": "Mensual", "annual": "Anual" },
+    "plans": {
+      "free": "Sin suscripción",
+      "familyPlus": "Campamento RBT",
+      "rbtBootcamp": "Campamento RBT"
+    },
+    "intervals": {
+      "monthly": "Mensual",
+      "annual": "Anual"
+    },
     "statuses": {
       "active": "Suscripción activa",
       "inactive": "Suscripción inactiva",
@@ -1509,7 +1534,7 @@
       "starting": "Abriendo el pago seguro…",
       "redirecting": "Abriendo Stripe Checkout…",
       "confirmingTitle": "Confirmando la suscripción",
-      "confirmingDescription": "Checkout regresó correctamente. Family Plus se activa solo después de que Stripe confirme la suscripción mediante un webhook verificado.",
+      "confirmingDescription": "El pago regresó correctamente. El Campamento RBT se activa cuando Stripe confirma la suscripción mediante un webhook verificado.",
       "cancelledTitle": "Checkout cancelado",
       "cancelledDescription": "No se cambió el plan. Puedes volver a intentarlo cuando quieras."
     },
@@ -1542,7 +1567,7 @@
     },
     "errors": {
       "validation": "Revisa la selección de facturación e inténtalo de nuevo.",
-      "ownerRequired": "Solo el propietario del hogar puede administrar la facturación.",
+      "ownerRequired": "Solo el propietario del hogar o un cuidador autorizado puede administrar la suscripción.",
       "adminRequired": "Se requiere acceso de administrador.",
       "checkout": "No se pudo iniciar Checkout. Inténtalo de nuevo.",
       "portal": "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
@@ -1551,6 +1576,19 @@
       "updatedElsewhere": "La facturación se actualizó en otro lugar. Actualiza antes de intentarlo de nuevo.",
       "load": "No se pudo cargar la facturación",
       "tryAgain": "Actualiza la página e inténtalo de nuevo."
+    },
+    "monthlyPrice": "{price} al mes",
+    "certificationDisclaimer": "Completar el curso no es una certificación RBT.",
+    "benefits": {
+      "videos": "Todos los videos de capacitación protegidos",
+      "resources": "Todos los recursos de capacitación de apoyo",
+      "progress": "Seguimiento del progreso para usted y cada niño"
+    },
+    "servicePayments": {
+      "title": "Pagos de servicios",
+      "description": "Pagos únicos de consultas y asistencia lingüística con el IEP.",
+      "empty": "Aún no hay pagos de servicios.",
+      "refunded": "{amount} reembolsado"
     }
   },
   "admin": {
@@ -1573,5 +1611,1237 @@
   },
   "review": {
     "translation": "La traducción requiere revisión de hablantes nativos antes de usarse para contenido sensible."
+  },
+  "services": {
+    "types": {
+      "rbt_bootcamp": "Campamento RBT",
+      "consultation": "Consulta",
+      "iep_language_assistance": "Asistencia lingüística con el IEP"
+    },
+    "status": {
+      "pending_review": "Pendiente de revisión",
+      "assigned": "Especialista asignado",
+      "awaiting_availability": "Esperando disponibilidad",
+      "awaiting_payment": "Esperando pago",
+      "appointment_proposed": "Horarios propuestos",
+      "appointment_confirmed": "Cita confirmada",
+      "in_progress": "En curso",
+      "completed": "Completado",
+      "payment_failed": "Pago fallido",
+      "cancelled": "Cancelado",
+      "reschedule_requested": "Reprogramación solicitada",
+      "declined": "Rechazado",
+      "no_show": "Inasistencia"
+    },
+    "statusHelp": {
+      "pending_review": "Un administrador de Ethiospectrum está revisando su solicitud.",
+      "assigned": "Se asignó un especialista. Pronto se propondrán horarios para la cita.",
+      "awaiting_availability": "Su especialista está compartiendo su disponibilidad.",
+      "awaiting_payment": "Revise los horarios propuestos y luego complete el pago para confirmar su cita.",
+      "appointment_proposed": "Pago recibido. Elija uno de los horarios propuestos para confirmar.",
+      "appointment_confirmed": "Su cita está confirmada.",
+      "in_progress": "Su sesión se realizó. Se está completando el seguimiento incluido o el trabajo pendiente.",
+      "completed": "Este servicio está completo.",
+      "payment_failed": "Su pago no se procesó. Su solicitud está guardada; puede intentarlo de nuevo.",
+      "cancelled": "Esta solicitud fue cancelada.",
+      "reschedule_requested": "Se propondrán nuevos horarios para la cita.",
+      "declined": "Esta solicitud no pudo ser aceptada.",
+      "no_show": "No asistió a la cita. Comuníquese con Ethiospectrum para reprogramar."
+    },
+    "paymentStatus": {
+      "unpaid": "Sin pagar",
+      "pending": "Pago pendiente",
+      "processing": "Procesando",
+      "paid": "Pagado",
+      "failed": "Fallido",
+      "partially_refunded": "Reembolso parcial",
+      "refunded": "Reembolsado",
+      "requested": "Solicitado",
+      "succeeded": "Reembolsado",
+      "rejected": "Rechazado"
+    },
+    "appointmentStatus": {
+      "none": "Sin programar",
+      "proposed": "Propuesta",
+      "confirmed": "Confirmada",
+      "declined": "No seleccionada",
+      "superseded": "Reemplazada",
+      "cancelled": "Cancelada",
+      "completed": "Realizada",
+      "no_show": "Inasistencia"
+    },
+    "followUpStatus": {
+      "not_available": "Disponible después de la sesión",
+      "available": "Disponible",
+      "requested": "Solicitado",
+      "scheduled": "Programado",
+      "completed": "Completado",
+      "waived": "No necesario"
+    },
+    "activities": {
+      "consultation_session": "Sesión de consulta",
+      "iep_explanation": "Explicación del IEP",
+      "meeting_language_assistance": "Asistencia lingüística en la reunión escolar",
+      "written_translation": "Traducción escrita"
+    },
+    "activityStatus": {
+      "pending": "Pendiente",
+      "in_progress": "En curso",
+      "completed": "Completado",
+      "not_needed": "No necesario"
+    },
+    "languages": {
+      "en": "Inglés (English)",
+      "am": "Amárico (አማርኛ)",
+      "es": "Español"
+    },
+    "iepLanguages": {
+      "am": "Inglés ↔ Amárico",
+      "es": "Inglés ↔ Español"
+    },
+    "deliveryMethods": {
+      "remote": "Remota",
+      "in_person": "En persona"
+    },
+    "locations": {
+      "remote": "Remota (en línea)",
+      "ethiospectrum_location": "Oficina de Ethiospectrum",
+      "school_meeting": "Escuela / reunión del IEP",
+      "mutually_agreed": "Lugar acordado mutuamente"
+    },
+    "categories": {
+      "general_guidance": "Orientación general sobre el hogar y los servicios",
+      "behavioral_educational": "Orientación conductual o educativa"
+    },
+    "errors": {
+      "denied": "No tiene permiso para hacer eso.",
+      "stale": "Esta solicitud cambió mientras la veía. Actualice la página e inténtelo de nuevo.",
+      "state": "Esa acción no está disponible en esta etapa de la solicitud.",
+      "limit": "Se alcanzó un límite. Cierre un elemento existente antes de agregar otro.",
+      "paymentRequired": "Se requiere el pago antes de confirmar la cita.",
+      "conflict": "El especialista ya tiene una cita a esa hora. Elija otra hora.",
+      "rescheduleLimit": "Esta cita ya se reprogramó una vez dentro de las 48 horas. Comuníquese con Ethiospectrum para recibir ayuda.",
+      "feesRequired": "Revise y acepte los cargos indicados antes de pagar.",
+      "timezoneTime": "Esa hora local no existe o es ambigua en la zona horaria seleccionada (cambio de horario de verano). Elija otra hora.",
+      "validation": "Falta información o no es válida. Revise el formulario e inténtelo de nuevo.",
+      "generic": "Algo salió mal. Inténtelo de nuevo.",
+      "paymentsUnavailable": "Los pagos en línea aún no están configurados. Comuníquese con Ethiospectrum.",
+      "checkout": "No pudimos abrir la página de pago segura. Inténtelo de nuevo.",
+      "refund": "El proveedor de pagos no pudo procesar el reembolso. Se marcó como fallido y puede reintentarse."
+    },
+    "success": {
+      "appointmentConfirmed": "Su cita está confirmada.",
+      "otherTimesRequested": "Le propondremos otros horarios.",
+      "rescheduleRequested": "Se envió su solicitud de reprogramación.",
+      "requestCancelled": "La solicitud fue cancelada.",
+      "followUpRequested": "Se envió su solicitud de seguimiento.",
+      "messageSent": "Mensaje enviado.",
+      "redirectingToPayment": "Abriendo la página de pago segura…",
+      "refundProcessed": "El reembolso se envió al proveedor de pagos.",
+      "refundRejected": "La solicitud de reembolso fue rechazada.",
+      "refundRequested": "Se creó la excepción de reembolso. Procésela desde la lista de reembolsos.",
+      "specialistAssigned": "Especialista asignado.",
+      "availabilityRequested": "Se pidió disponibilidad al especialista.",
+      "timesProposed": "Se propusieron horarios para la cita.",
+      "appointmentScheduled": "La cita fue programada.",
+      "appointmentModified": "La cita fue actualizada.",
+      "appointmentCancelled": "La cita fue cancelada.",
+      "requestDeclined": "La solicitud fue rechazada.",
+      "statusUpdated": "El estado fue actualizado.",
+      "sessionRecorded": "La sesión fue registrada.",
+      "noShowRecorded": "Se registró la inasistencia.",
+      "activityUpdated": "La actividad fue actualizada.",
+      "serviceCompleted": "El servicio se marcó como completado.",
+      "serviceUpdated": "El servicio fue guardado.",
+      "feeSaved": "El cargo fue guardado.",
+      "topicSaved": "El tema fue guardado.",
+      "specialistUpdated": "El especialista fue guardado.",
+      "roleUpdated": "El rol fue actualizado."
+    },
+    "catalog": {
+      "eyebrow": "Servicios",
+      "title": "Elija un servicio",
+      "intro": "Ethiospectrum apoya a padres y familias de niños con necesidades especiales mediante capacitación RBT a su ritmo, consultas y asistencia lingüística con el IEP en inglés, amárico y español.",
+      "independentNotice": "La Consulta y la Asistencia lingüística con el IEP no requieren una suscripción al Campamento RBT. Puede solicitar cualquiera de los dos servicios por separado.",
+      "householdRequired": "Termine de configurar su hogar en el panel antes de solicitar un servicio.",
+      "monthlySubscription": "Suscripción mensual",
+      "monthlyPrice": "{price} / mes",
+      "recurring": "Suscripción mensual recurrente",
+      "oneTime": "Pago único · sesión de {minutes} minutos",
+      "descriptions": {
+        "rbt_bootcamp": "Una videoteca a su propio ritmo que ayuda a los padres a comprender la neurodivergencia, completar el plan de estudios de Ethiospectrum y prepararse para una credencial o examen externo relacionado con RBT. Completar el curso no es una certificación RBT.",
+        "consultation": "Una consulta de 60 minutos con orientación general sobre el hogar y los servicios, u orientación conductual y educativa específica.",
+        "iep_language_assistance": "Ayuda para comprender un IEP, asistencia lingüística durante una reunión escolar y traducción escrita."
+      },
+      "features": {
+        "rbt_bootcamp": [
+          "Todos los videos de capacitación protegidos",
+          "Todos los recursos de apoyo",
+          "Seguimiento del progreso para usted y cada niño",
+          "Cancele en cualquier momento desde facturación"
+        ],
+        "consultation": [
+          "Sesión de 60 minutos con un especialista asignado",
+          "Un seguimiento incluido",
+          "Cancelación gratuita con más de 48 horas de anticipación",
+          "No requiere suscripción"
+        ],
+        "iep_language_assistance": [
+          "Inglés ↔ Amárico e Inglés ↔ Español",
+          "Explicación del IEP y asistencia en reuniones escolares",
+          "Traducción escrita incluida",
+          "Remota o en persona · un seguimiento incluido"
+        ]
+      },
+      "subscribe": "Suscribirse",
+      "openTraining": "Abrir el Campamento RBT",
+      "request": {
+        "consultation": "Solicitar una consulta",
+        "iep_language_assistance": "Solicitar asistencia con el IEP"
+      },
+      "noRequestPermission": "Pida al propietario del hogar permiso para solicitar servicios.",
+      "taxNotice": "Los impuestos aplicables se calculan al pagar cuando corresponda. Cualquier cargo adicional se muestra para su aprobación antes de pagar. No se cobra cargo por traslado."
+    },
+    "form": {
+      "backToServices": "Volver a los servicios",
+      "consultationTitle": "Solicitar una consulta",
+      "consultationSummary": "Pago único de {price} · {minutes} minutos · un seguimiento incluido",
+      "iepTitle": "Solicitar asistencia lingüística con el IEP",
+      "iepSummary": "Pago único de {price} · sesión de {minutes} minutos · un seguimiento incluido",
+      "noSubscriptionNeeded": "No se requiere suscripción al Campamento RBT.",
+      "preparationNotice": "El precio base no incluye un período de preparación por separado.",
+      "dependent": "Niño o niña",
+      "dependentError": "Elija un niño de su hogar.",
+      "serviceCategory": "Categoría del servicio",
+      "topic": "Tema",
+      "topicAny": "Sin tema específico",
+      "preferredLanguage": "Idioma preferido",
+      "needDescription": "Describa en qué necesita ayuda",
+      "needDescriptionHelp": "Algunas oraciones sobre su situación y sus metas (al menos 10 caracteres).",
+      "descriptionError": "Describa su necesidad en 10 a 3000 caracteres.",
+      "relevantInformation": "Información relevante del servicio",
+      "relevantInformationHelp": "Opcional: diagnósticos, servicios actuales o cualquier cosa que el especialista deba saber. Comparta solo lo necesario.",
+      "nextStepsConsultation": "Qué sigue: un administrador revisa su solicitud y asigna un especialista. Recibirá horarios propuestos, pagará $9.99 de forma segura y luego confirmará el horario que le convenga.",
+      "submitConsultation": "Enviar solicitud de consulta",
+      "submitting": "Enviando…",
+      "language": "Idioma",
+      "iepServices": "Servicios necesarios",
+      "iepServicesHelp": "Elija todas las partes del servicio que necesita.",
+      "iepServicesError": "Elija al menos un servicio.",
+      "iepServiceHelp": {
+        "iep_explanation": "Le explicamos el IEP y lo que significa para su hijo o hija.",
+        "meeting_language_assistance": "Asistencia lingüística durante una reunión escolar o del IEP.",
+        "written_translation": "Una traducción escrita del material relevante del IEP."
+      },
+      "deliveryPreference": "Remota o en persona",
+      "locationType": "Lugar",
+      "chooseLocation": "Elija un lugar",
+      "locationDetails": "Detalles del lugar",
+      "locationDetailsPlaceholder": "Nombre de la escuela, dirección o sala de reunión",
+      "locationError": "Elija un lugar aprobado y agregue detalles para escuelas o lugares acordados.",
+      "travelNotice": "No se cobra cargo por traslado para la asistencia en persona.",
+      "meetingDate": "Fecha de la reunión solicitada",
+      "meetingDateHelp": "Opcional: la fecha de la reunión escolar o del IEP, si la hay.",
+      "meetingDateError": "Ingrese una fecha válida.",
+      "requestedService": "Servicio solicitado",
+      "requestedServiceHelp": "Díganos qué necesita, por ejemplo qué partes del IEP explicar o los detalles de la reunión.",
+      "relevantIepInformation": "Información relevante del IEP",
+      "relevantIepInformationHelp": "Opcional: escuela, grado, metas, adaptaciones o fechas límite. Puede subir el documento del IEP después de enviar.",
+      "nextStepsIep": "Qué sigue: un administrador revisa su solicitud y asigna un especialista que hable su idioma. Puede subir documentos del IEP en la página de la solicitud. Recibirá horarios propuestos, pagará $19.99 de forma segura y luego confirmará.",
+      "submitIep": "Enviar solicitud de asistencia con el IEP",
+      "guard": {
+        "household": {
+          "title": "Primero configure su hogar",
+          "description": "Los servicios se solicitan para un niño de su hogar.",
+          "action": "Ir al panel"
+        },
+        "permission": {
+          "title": "Se necesita permiso",
+          "description": "El propietario del hogar no le ha dado permiso para solicitar servicios."
+        },
+        "dependents": {
+          "title": "Primero agregue a un niño",
+          "description": "Agregue al niño para quien es este servicio, incluidas sus necesidades de servicio.",
+          "action": "Agregar un niño"
+        }
+      }
+    },
+    "requests": {
+      "title": "Solicitudes de servicio",
+      "description": "Siga sus consultas y la asistencia con el IEP desde la solicitud hasta su finalización.",
+      "newRequest": "Solicitar un servicio",
+      "filterLabel": "Filtrar solicitudes",
+      "filters": {
+        "active": "Activas",
+        "closed": "Cerradas",
+        "all": "Todas"
+      },
+      "loadError": "No se pudieron cargar las solicitudes de servicio. Inténtelo de nuevo.",
+      "emptyTitle": "No hay solicitudes de servicio aquí",
+      "emptyDescription": "Cuando solicite una consulta o asistencia con el IEP, aparecerá aquí.",
+      "nextAppointment": "Próxima cita: {date}",
+      "updated": "Actualizado {date}",
+      "pagination": "Páginas de solicitudes",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "detail": {
+      "title": "Solicitud de {service}",
+      "notFound": "Esta solicitud de servicio no está disponible.",
+      "backToRequests": "Volver a las solicitudes de servicio",
+      "backToQueue": "Volver a la cola de trabajo",
+      "backToAssignments": "Volver a las asignaciones",
+      "progress": "Progreso de la solicitud",
+      "appointments": "Citas",
+      "noAppointments": "Aún no se han propuesto horarios.",
+      "duration": "{minutes} minutos",
+      "primarySession": "Sesión",
+      "followUpSession": "Seguimiento",
+      "joinMeeting": "Unirse a la reunión en línea",
+      "confirmedByHousehold": "Confirmada por el hogar",
+      "scheduledByEthiospectrum": "Programada por Ethiospectrum",
+      "cancellationReason": "Motivo de la cancelación",
+      "declinedReason": "Motivo",
+      "sessionNotes": "Notas de la sesión",
+      "payToConfirm": "Complete el pago arriba para confirmar uno de estos horarios.",
+      "confirmThisTime": "Confirmar este horario",
+      "confirming": "Confirmando…",
+      "reschedule": "¿Necesita reprogramar?",
+      "rescheduleConfirm": "¿Solicitar reprogramar esta cita? Se liberará el horario actual.",
+      "requestReschedule": "Solicitar un nuevo horario",
+      "reasonOptional": "Motivo (opcional)",
+      "reason": "Motivo",
+      "sending": "Enviando…",
+      "saving": "Guardando…",
+      "recordOutcome": "Registrar la sesión",
+      "saveOutcome": "Guardar resultado",
+      "outcomeHeld": "Sesión realizada",
+      "outcomeNoShow": "Inasistencia",
+      "outcomeAfterStart": "El resultado se puede registrar cuando comience la cita.",
+      "modifyAppointment": "Modificar la cita",
+      "saveChanges": "Guardar cambios",
+      "cancelAppointment": "Cancelar la cita",
+      "adminCancelConfirm": "¿Cancelar esta cita en nombre de Ethiospectrum? Se ofrecerá al hogar un reembolso total o un nuevo horario.",
+      "adminCancelHelp": "Úselo cuando Ethiospectrum deba cancelar. El cliente será elegible para un reembolso del 100 % o podrá reprogramar.",
+      "noneOfTheseWork": "¿Ninguno de estos horarios le funciona?",
+      "requestOtherTimes": "Pedir otros horarios",
+      "availabilityNote": "Díganos cuándo está disponible (opcional)",
+      "requestDetails": "Detalles de la solicitud",
+      "child": "Niño o niña",
+      "requestedBy": "Solicitado por",
+      "submitted": "Enviado",
+      "specialist": "Especialista",
+      "notAssigned": "Aún sin asignar",
+      "language": "Idioma",
+      "delivery": "Modalidad",
+      "category": "Categoría",
+      "preferredLocation": "Lugar preferido",
+      "meetingDate": "Fecha de la reunión solicitada",
+      "followUp": "Seguimiento incluido",
+      "description": "Descripción de la necesidad",
+      "relevantInformation": "Información relevante",
+      "completionNotes": "Notas de finalización",
+      "serviceDeliveryInformation": "Información para la prestación del servicio",
+      "serviceNeeds": "Necesidades de servicio",
+      "communication": "Consideraciones de comunicación",
+      "childLanguage": "Idioma preferido del niño",
+      "educationalInformation": "Información educativa",
+      "behavioralInformation": "Información conductual / de servicios",
+      "householdPhone": "Teléfono del hogar",
+      "householdEmail": "Correo del hogar",
+      "serviceActivities": "Actividades del servicio",
+      "activityStatus": "Estado de la actividad",
+      "activityNotes": "Notas",
+      "updateActivity": "Actualizar",
+      "documents": "Documentos",
+      "noDocuments": "No hay documentos adjuntos a esta solicitud.",
+      "fromSpecialist": "De Ethiospectrum",
+      "fromHousehold": "Del hogar",
+      "download": "Descargar",
+      "uploadDocument": "Subir un IEP o documento de apoyo",
+      "uploadDeliverable": "Subir un entregable (por ejemplo, la traducción escrita)",
+      "payments": "Pagos y reembolsos",
+      "taxIncluded": "incluye {tax} de impuestos",
+      "refundedAmount": "{amount} reembolsado",
+      "refund": "Reembolso",
+      "activityAndMessages": "Actividad y mensajes",
+      "noActivity": "Aún no hay actividad.",
+      "sendMessage": "Enviar mensaje",
+      "message": "Mensaje",
+      "messageNotice": "Los mensajes son visibles para su hogar, el especialista asignado y los administradores de Ethiospectrum. No use los mensajes para emergencias.",
+      "authors": {
+        "household": "Hogar",
+        "specialist": "Especialista",
+        "administrator": "Ethiospectrum",
+        "system": "Ethiospectrum"
+      }
+    },
+    "household": {
+      "created": "Recibimos su solicitud. Un administrador la revisará y asignará un especialista.",
+      "createdIep": "Recibimos su solicitud. Puede subir el IEP y cualquier documento de apoyo abajo.",
+      "paymentConfirmed": "Pago confirmado. ¡Gracias!",
+      "paymentProcessing": "Estamos esperando que el proveedor de pagos confirme su pago. Esta página se actualizará cuando lo haga.",
+      "paymentFailedReturn": "El pago no se procesó. Puede intentarlo de nuevo abajo.",
+      "paymentCancelled": "Se canceló el pago. Su solicitud está guardada y puede pagar cuando esté listo.",
+      "paymentTitle": "Completar el pago",
+      "retryPaymentTitle": "Intentar el pago de nuevo",
+      "paymentFailedNotice": "Su último intento de pago falló. Su solicitud y los horarios propuestos están guardados.",
+      "subtotal": "Total antes de impuestos",
+      "taxAtCheckout": "Los impuestos aplicables, si los hay, se calculan en la página de pago segura. No se cobra cargo por traslado.",
+      "acceptFees": "He revisado y acepto los cargos adicionales indicados arriba ({amount}).",
+      "securePayment": "Irá a la página segura de nuestro proveedor de pagos. Ethiospectrum nunca ve ni guarda los datos de su tarjeta.",
+      "payNow": "Pagar {amount} de forma segura",
+      "openingPayment": "Abriendo el pago seguro…",
+      "paymentInFlight": "Hay un pago en curso. Si salió de la página de pago, vencerá y podrá intentarlo de nuevo.",
+      "followUpTitle": "Su seguimiento incluido",
+      "followUpDescription": "Este servicio incluye un seguimiento. Solicítelo cuando esté listo y le propondremos horarios.",
+      "followUpNote": "¿Sobre qué le gustaría hacer el seguimiento? (opcional)",
+      "requestFollowUp": "Solicitar seguimiento",
+      "sending": "Enviando…",
+      "cancelTitle": "Cancelar esta solicitud",
+      "refundPreview": "Si cancela ahora, será elegible para un reembolso del {percent} % ({tier}). Ethiospectrum procesa los reembolsos.",
+      "cancelUnpaid": "No se ha realizado ningún pago, por lo que no se necesita reembolso.",
+      "rescheduleInstead": "Dentro de las 24 horas no se hace reembolso en efectivo. En su lugar puede reprogramar una vez.",
+      "cancelConfirm": "¿Cancelar esta solicitud? Esto no se puede deshacer.",
+      "cancelling": "Cancelando…",
+      "cancelRequest": "Cancelar solicitud",
+      "reasonOptional": "Motivo (opcional)"
+    },
+    "slots": {
+      "option": "Opción {number}",
+      "dateTime": "Fecha y hora",
+      "addOption": "Agregar otra opción",
+      "removeOption": "Quitar la última opción",
+      "timezone": "Zona horaria",
+      "location": "Lugar",
+      "chooseLocation": "Elija un lugar",
+      "locationDetails": "Detalles del lugar",
+      "meetingUrl": "Enlace de la reunión en línea",
+      "meetingUrlHelp": "Solo HTTPS. Se comparte con el hogar cuando se confirma la cita.",
+      "instructions": "Instrucciones específicas de la cita",
+      "instructionsPlaceholder": "Por ejemplo: Preséntese en la oficina principal de la escuela al llegar."
+    },
+    "documents": {
+      "title": "Título del documento",
+      "titlePlaceholder": "Por ejemplo: IEP 2026",
+      "file": "Archivo (PDF, DOCX o TXT, hasta 20 MB)",
+      "privacy": "Los documentos se guardan de forma privada y solo se comparten con su hogar, el especialista asignado y los administradores de Ethiospectrum.",
+      "upload": "Subir",
+      "uploading": "Subiendo…",
+      "uploaded": "El documento se subió.",
+      "fileRequired": "Elija un archivo para subir."
+    },
+    "policy": {
+      "title": "Política de cancelación y reembolsos",
+      "moreThan48": "Más de 48 horas antes: cancele con reembolso del 100 % o reprograme sin costo.",
+      "between24And48": "De 24 a 48 horas antes: cancele con reembolso del 50 % o reprograme una vez sin costo.",
+      "lessThan24": "Menos de 24 horas antes: reprograme una vez sin volver a pagar; no hay reembolso en efectivo salvo que un administrador apruebe una excepción.",
+      "noShow": "Inasistencia: no hay reembolso automático; la reprogramación puede aprobarse según el caso.",
+      "administrative": "Si Ethiospectrum cancela, recibe un reembolso del 100 % o puede reprogramar.",
+      "rescheduleRule": "Reprogramar con más de 48 horas de anticipación es gratis. Dentro de las 48 horas puede reprogramar una vez."
+    },
+    "refundTiers": {
+      "more_than_48_hours": "más de 48 horas antes",
+      "between_24_and_48_hours": "de 24 a 48 horas antes",
+      "less_than_24_hours": "menos de 24 horas antes",
+      "no_show": "inasistencia",
+      "no_appointment": "antes de confirmar una cita",
+      "administrative_cancellation": "cancelado por Ethiospectrum",
+      "admin_exception": "excepción del administrador",
+      "duplicate_payment": "pago duplicado"
+    },
+    "events": {
+      "generic": "Solicitud actualizada",
+      "request_created": "Solicitud enviada",
+      "specialist_assigned": "Especialista asignado",
+      "availability_requested": "Se pidió disponibilidad al especialista",
+      "appointment_proposed": "Horarios propuestos",
+      "follow_up_proposed": "Horarios de seguimiento propuestos",
+      "appointment_confirmed": "Cita confirmada",
+      "follow_up_confirmed": "Seguimiento confirmado",
+      "other_times_requested": "Se pidieron otros horarios",
+      "reschedule_requested": "Reprogramación solicitada",
+      "follow_up_reschedule_requested": "Reprogramación del seguimiento solicitada",
+      "request_cancelled": "Solicitud cancelada",
+      "follow_up_requested": "Seguimiento solicitado",
+      "appointment_scheduled_directly": "Cita programada por Ethiospectrum",
+      "follow_up_scheduled_directly": "Seguimiento programado por Ethiospectrum",
+      "appointment_modified": "Cita actualizada",
+      "appointment_cancelled_by_ethiospectrum": "Cita cancelada por Ethiospectrum",
+      "follow_up_cancelled_by_ethiospectrum": "Seguimiento cancelado por Ethiospectrum",
+      "proposal_withdrawn": "Horario propuesto retirado",
+      "request_cancelled_by_ethiospectrum": "Solicitud cancelada por Ethiospectrum",
+      "request_declined": "Solicitud rechazada",
+      "status_overridden": "Estado actualizado por un administrador",
+      "session_completed": "Sesión realizada",
+      "no_show_recorded": "Inasistencia registrada",
+      "follow_up_completed": "Seguimiento realizado",
+      "follow_up_no_show": "Seguimiento no asistido",
+      "activity_updated": "Actividad del servicio actualizada",
+      "service_completed": "Servicio completado",
+      "payment_started": "Pago iniciado",
+      "payment_confirmed": "Pago confirmado",
+      "payment_failed": "Pago fallido",
+      "refund_exception_created": "Excepción de reembolso creada",
+      "refund_processed": "Reembolso procesado"
+    },
+    "staff": {
+      "saving": "Guardando…",
+      "processing": "Procesando…",
+      "reason": "Motivo",
+      "reasonShared": "Motivo (se comparte con el hogar)",
+      "proposeTimes": "Proponer horarios para la cita",
+      "proposeHelp": "Ofrezca de uno a tres horarios. El hogar paga (si aún no lo hizo) y luego confirma uno.",
+      "sendProposal": "Enviar horarios propuestos",
+      "appointmentKind": "Tipo de cita",
+      "kinds": {
+        "primary": "Sesión",
+        "follow_up": "Seguimiento incluido"
+      },
+      "completeService": "Completar el servicio",
+      "completeHelp": "Registre la finalización cuando la sesión y cualquier trabajo pendiente (como la traducción escrita) estén terminados.",
+      "completeBlockedByFollowUp": "Termine el seguimiento programado antes de completar el servicio.",
+      "completeConfirm": "¿Marcar este servicio como completado?",
+      "completionNotes": "Notas de finalización",
+      "waiveFollowUp": "El hogar no necesita el seguimiento incluido.",
+      "markComplete": "Marcar como completado",
+      "refundRequest": "Solicitud de reembolso: {amount}",
+      "refundConfirm": "¿Enviar este reembolso al proveedor de pagos?",
+      "processRefund": "Procesar reembolso",
+      "refundAmountCents": "Monto del reembolso (centavos)",
+      "refundAmountHelp": "No puede superar el monto elegible calculado por el sistema según la política.",
+      "rejectRefund": "Rechazar la solicitud de reembolso",
+      "assignSpecialist": "Asignar un especialista",
+      "reassignSpecialist": "Reasignar el especialista",
+      "assignHelp": "Solo se pueden asignar especialistas que ofrecen este servicio, idioma y modalidad.",
+      "noSpecialists": "Aún no hay especialistas. Cambie el rol de un usuario a especialista desde la página de Usuarios.",
+      "specialist": "Especialista",
+      "matches": "Coincide con el servicio, el idioma y la modalidad",
+      "noMatch": "No coincide con esta solicitud",
+      "unavailable": "No disponible",
+      "activeRequests": "{count, plural, =0 {sin solicitudes activas} one {# solicitud activa} other {# solicitudes activas}}",
+      "current": "Actual",
+      "assign": "Asignar",
+      "reassign": "Reasignar",
+      "requestAvailability": "Pedir disponibilidad al especialista",
+      "availabilityHelp": "El especialista podrá proponer horarios directamente.",
+      "askSpecialist": "Pedir disponibilidad",
+      "scheduleDirectly": "Programar directamente",
+      "scheduleHelp": "Confirma una cita sin la confirmación del hogar. El pago sigue siendo necesario antes de la sesión.",
+      "schedule": "Programar",
+      "refundException": "Excepción de reembolso",
+      "exceptionHelp": "Cree un reembolso fuera de la política automática (por ejemplo, una excepción aprobada dentro de las 24 horas).",
+      "createException": "Crear solicitud de reembolso",
+      "moreActions": "Más acciones",
+      "overrideStatus": "Cambiar el estado del servicio",
+      "newStatus": "Nuevo estado",
+      "updateStatus": "Actualizar estado",
+      "declineRequest": "Rechazar la solicitud",
+      "declineConfirm": "¿Rechazar esta solicitud? Se notificará al hogar.",
+      "cancelRequest": "Cancelar la solicitud",
+      "cancelConfirm": "¿Cancelar esta solicitud en nombre de Ethiospectrum?",
+      "fullRefund": "Crear una solicitud de reembolso del 100 % para cualquier pago",
+      "specialistWaiting": "Por ahora no se necesita ninguna acción de su parte. Se le avisará cuando el administrador pida su disponibilidad o se solicite un seguimiento.",
+      "specialistDone": "Este servicio está completo. ¡Gracias!"
+    }
+  },
+  "adminConsole": {
+    "roleLabel": "Administración de Ethiospectrum",
+    "nav": {
+      "overview": "Resumen",
+      "serviceRequests": "Cola de trabajo de servicios",
+      "payments": "Pagos y reembolsos",
+      "billing": "Suscripciones",
+      "serviceConfiguration": "Configuración de servicios",
+      "specialists": "Especialistas",
+      "users": "Usuarios y roles",
+      "trainingContent": "Contenido de capacitación"
+    },
+    "overviewTitle": "Resumen de operaciones",
+    "overviewDescription": "Todas las solicitudes de servicio que requieren atención, agrupadas en colas de trabajo.",
+    "queues": "Colas de trabajo",
+    "queue": {
+      "all": "Todas las solicitudes",
+      "new": "Solicitudes nuevas",
+      "unassigned": "Esperando asignación",
+      "assigned": "Asignadas",
+      "awaiting_payment": "Esperando pago",
+      "payment_failed": "Pagos fallidos",
+      "proposed": "Propuestas de cita",
+      "upcoming": "Próximas citas",
+      "in_progress": "En curso",
+      "follow_up": "Seguimientos solicitados",
+      "reschedule": "Solicitudes de reprogramación",
+      "cancelled": "Cancelaciones (30 días)",
+      "no_show": "Inasistencias",
+      "completed": "Servicios completados",
+      "refunds": "Solicitudes de reembolso",
+      "declined": "Rechazadas"
+    },
+    "upcomingAppointments": "Próximas citas",
+    "noUpcoming": "No hay citas confirmadas próximas.",
+    "shortcuts": "Gestión",
+    "shortcut": {
+      "payments": "Pagos y reembolsos",
+      "services": "Precios, cargos y temas",
+      "specialists": "Capacidades de los especialistas",
+      "training": "Contenido de capacitación"
+    },
+    "queueTitle": "Cola de trabajo de servicios",
+    "queueDescription": "Revise solicitudes, asigne especialistas, proponga o programe citas y resuelva pagos y reembolsos.",
+    "serviceFilter": "Filtrar por servicio",
+    "allServices": "Todos los servicios",
+    "loadError": "No se pudo cargar la cola.",
+    "emptyQueue": "No hay nada pendiente en esta cola.",
+    "columns": {
+      "request": "Solicitud",
+      "household": "Hogar",
+      "specialist": "Especialista",
+      "status": "Estado",
+      "next": "Próxima cita",
+      "updated": "Actualizado"
+    },
+    "unassigned": "Sin asignar",
+    "refundPending": "Reembolso pendiente",
+    "pagination": "Páginas",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "payments": {
+      "title": "Pagos y reembolsos",
+      "description": "Pagos únicos de servicios confirmados por el proveedor de pagos y el registro de reembolso de cada uno.",
+      "refunds": "Reembolsos",
+      "noRefunds": "No se han solicitado reembolsos.",
+      "payments": "Pagos de servicios",
+      "noPayments": "Ningún pago coincide con este filtro.",
+      "filter": "Filtrar pagos",
+      "filters": {
+        "all": "Todos",
+        "paid": "Pagados",
+        "failed": "Fallidos",
+        "processing": "Procesando",
+        "partially_refunded": "Reembolso parcial",
+        "refunded": "Reembolsados"
+      },
+      "columns": {
+        "customer": "Cliente",
+        "original": "Pago original",
+        "refund": "Reembolso",
+        "reason": "Motivo",
+        "status": "Estado",
+        "processed": "Procesado",
+        "service": "Servicio",
+        "amount": "Monto",
+        "date": "Fecha"
+      },
+      "tax": "{amount} de impuestos",
+      "refunded": "{amount} reembolsado",
+      "subscriptionsNote": "Las facturas de la suscripción al Campamento RBT se muestran por separado.",
+      "subscriptionsLink": "Ver suscripciones"
+    },
+    "config": {
+      "title": "Configuración de servicios",
+      "description": "Precios, descripciones, instrucciones estándar de las citas, cargos informados y temas de consulta.",
+      "services": "Servicios",
+      "stripePrice": "precio definido en Stripe",
+      "month": "mes",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "save": "Guardar",
+      "saving": "Guardando…",
+      "name": "Nombre",
+      "price": "Precio (USD)",
+      "displayPrice": "Precio mensual mostrado (USD, opcional)",
+      "displayPriceHelp": "El monto cobrado es el precio configurado en Stripe. Manténgalo sincronizado o déjelo vacío.",
+      "englishDescription": "Descripción (inglés)",
+      "descriptionIn": {
+        "am": "Descripción (amárico)",
+        "es": "Descripción (español)"
+      },
+      "includedFollowUps": "Seguimientos incluidos",
+      "standardInstructions": "Instrucciones estándar de la cita",
+      "instructionsIn": {
+        "en": "Instrucciones en inglés",
+        "am": "Instrucciones en amárico",
+        "es": "Instrucciones en español"
+      },
+      "activeLabel": "Disponible para los clientes",
+      "fees": "Cargos adicionales",
+      "feesHelp": "Los cargos nunca se agregan automáticamente. Cada cargo activo se muestra al cliente y debe aceptarse antes de pagar. No se cobra cargo por traslado en el lanzamiento.",
+      "addFee": "Agregar un cargo",
+      "service": "Servicio",
+      "amount": "Monto (USD)",
+      "feeDisclosure": "Aviso que se muestra al cliente",
+      "feeActive": "Activo (se muestra y se cobra)",
+      "topics": "Temas de consulta",
+      "addTopic": "Agregar un tema",
+      "topicKey": "Clave",
+      "category": "Categoría",
+      "sortOrder": "Orden",
+      "labelIn": {
+        "en": "Etiqueta (inglés)",
+        "am": "Etiqueta (amárico)",
+        "es": "Etiqueta (español)"
+      }
+    },
+    "specialistsPage": {
+      "title": "Especialistas",
+      "description": "Registre qué servicios, idiomas y modalidades ofrece cada especialista. La asignación se limita a especialistas que coincidan.",
+      "promoteHint": "Para agregar un especialista, cambie el rol de un usuario en la",
+      "usersLink": "página de Usuarios",
+      "loadError": "No se pudieron cargar los especialistas.",
+      "empty": "Aún no hay especialistas.",
+      "available": "Disponible",
+      "unavailable": "No disponible",
+      "activeRequests": "{count, plural, =0 {sin solicitudes activas} one {# solicitud activa} other {# solicitudes activas}}",
+      "capabilities": "Capacidades",
+      "availability": "Disponibilidad",
+      "bio": "Biografía (interna)",
+      "save": "Guardar",
+      "saving": "Guardando…"
+    },
+    "usersPage": {
+      "title": "Usuarios y roles",
+      "description": "Los propietarios y cuidadores del hogar se registran por su cuenta. Asigne aquí los roles de especialista o administrador.",
+      "search": "Buscar",
+      "searchPlaceholder": "Nombre o correo",
+      "searchAction": "Buscar",
+      "roleFilter": "Filtrar por rol",
+      "roles": {
+        "all": "Todos",
+        "member": "Miembro del hogar",
+        "specialist": "Especialista",
+        "administrator": "Administrador"
+      },
+      "householdRoles": {
+        "owner": "Propietario del hogar",
+        "member": "Cuidador",
+        "administrator": "Administrador del hogar",
+        "viewer": "Observador"
+      },
+      "loadError": "No se pudieron cargar los usuarios.",
+      "empty": "Ningún usuario coincide.",
+      "columns": {
+        "user": "Usuario",
+        "household": "Hogar",
+        "joined": "Se unió",
+        "role": "Rol"
+      },
+      "roleConfirm": "¿Cambiar el rol de este usuario?",
+      "apply": "Aplicar",
+      "saving": "Guardando…",
+      "pagination": "Páginas",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  },
+  "specialistConsole": {
+    "workspace": "Espacio del especialista",
+    "nav": {
+      "dashboard": "Servicios asignados",
+      "closed": "Servicios completados",
+      "notifications": "Notificaciones",
+      "settings": "Configuración"
+    },
+    "title": "Servicios asignados",
+    "closedTitle": "Servicios completados",
+    "description": "Solo se muestran los servicios asignados a usted, con la información necesaria para prestarlos.",
+    "upcoming": "Próximas citas",
+    "noUpcoming": "No hay citas confirmadas próximas.",
+    "assigned": "Sus servicios activos",
+    "closed": "Servicios completados y cancelados",
+    "loadError": "No se pudieron cargar sus asignaciones.",
+    "empty": "No tiene nada asignado en este momento.",
+    "availabilityNeeded": "Disponibilidad solicitada",
+    "followUpNeeded": "Seguimiento solicitado",
+    "nextAppointment": "Próxima cita: {date}"
+  },
+  "adminTraining": {
+    "title": "Contenido de capacitación",
+    "description": "Mantenga la biblioteca del Campamento RBT. Solo los cursos, módulos y lecciones publicados son visibles para los suscriptores.",
+    "progressNotice": "Archivar o despublicar nunca elimina el progreso de los estudiantes.",
+    "status": {
+      "draft": "Borrador",
+      "published": "Publicado",
+      "archived": "Archivado"
+    },
+    "setStatus": {
+      "draft": "Despublicar",
+      "published": "Publicar",
+      "archived": "Archivar"
+    },
+    "statusLabel": "Estado",
+    "moveUp": "Subir",
+    "moveDown": "Bajar",
+    "translations": "Traducciones al amárico y al español",
+    "translationField": {
+      "am": {
+        "title": "Título (amárico)",
+        "description": "Resumen (amárico)",
+        "body": "Notas (amárico)"
+      },
+      "es": {
+        "title": "Título (español)",
+        "description": "Resumen (español)",
+        "body": "Notas (español)"
+      }
+    },
+    "saving": "Guardando…",
+    "saveLesson": "Guardar lección",
+    "saveModule": "Guardar módulo",
+    "saveCourse": "Guardar curso",
+    "lessonTitle": "Título de la lección",
+    "moduleTitle": "Título del módulo",
+    "courseTitle": "Título del curso",
+    "slug": "Identificador en la URL",
+    "summary": "Resumen",
+    "lessonNotes": "Notas de la lección (se muestran debajo del video)",
+    "videoUrl": "Enlace del video (YouTube, Vimeo o archivo de video HTTPS)",
+    "uploadedVideoInUse": "Se está usando un video privado subido. Agregar un enlace lo reemplaza.",
+    "durationMinutes": "Duración (minutos)",
+    "resourceUrl": "Enlace del recurso (HTTPS o una página interna /training)",
+    "uploadedResourceInUse": "Se está usando un recurso privado subido. Agregar un enlace lo reemplaza.",
+    "resourceLabel": "Etiqueta del recurso",
+    "editModule": "Editar módulo",
+    "editLesson": "Editar lección",
+    "editCourse": "Editar curso",
+    "addLesson": "Agregar una lección",
+    "addModule": "Agregar un módulo",
+    "addCourse": "Agregar un curso",
+    "hasVideo": "Video",
+    "hasResource": "Recurso",
+    "textOnly": "Solo texto",
+    "minutes": "{count} min",
+    "privateMedia": "Subir multimedia privada",
+    "uploadVideo": "Subir video",
+    "uploadResource": "Subir recurso",
+    "chooseFile": "Primero elija un archivo.",
+    "uploading": "Subiendo…",
+    "uploaded": "Subido.",
+    "uploadFailed": "No se pudo subir. Inténtelo de nuevo.",
+    "courseSaved": "Curso guardado.",
+    "moduleSaved": "Módulo guardado.",
+    "lessonSaved": "Lección guardada."
+  },
+  "customerDashboard": {
+    "welcome": "Bienvenido de nuevo",
+    "intro": "Su progreso en el Campamento RBT, sus solicitudes de servicio y sus próximas citas en un solo lugar.",
+    "caregiverHint": "¿Lo invitaron como cuidador? Abra el enlace de invitación de su correo para unirse a ese hogar.",
+    "requestService": "Solicitar un servicio",
+    "joinedHousehold": "Se unió a {household}.",
+    "pendingPayments": "{count, plural, one {# solicitud está} other {# solicitudes están}} esperando pago",
+    "payNow": "Pagar ahora",
+    "retryPayment": "Reintentar el pago",
+    "upcoming": "Próximas citas",
+    "noUpcoming": "Aún no hay citas confirmadas.",
+    "allRequests": "Todas las solicitudes",
+    "rbtBootcamp": "Campamento RBT",
+    "openTraining": "Abrir la capacitación",
+    "viewSubscription": "Suscribirse",
+    "subscriptionActive": "Suscripción activa",
+    "subscriptionInactive": "Sin suscripción activa",
+    "endsOn": "El acceso termina el {date}",
+    "you": "Usted",
+    "lessonsDone": "{done} de {total} lecciones",
+    "startTraining": "Comience su primera lección.",
+    "trainingLocked": "Suscríbase para desbloquear todos los videos y recursos de capacitación.",
+    "activeRequests": "Solicitudes de servicio",
+    "noActiveRequests": "No hay solicitudes de servicio activas.",
+    "dependents": "Niños",
+    "manageDependents": "Administrar",
+    "noDependents": "Agregue a su hijo o hija para solicitar servicios y seguir su progreso en la capacitación.",
+    "addDependent": "Agregar un niño",
+    "availableServices": "Servicios disponibles",
+    "monthly": "Suscripción mensual",
+    "oneTime": "pago único",
+    "independentNotice": "La Consulta y la Asistencia lingüística con el IEP no requieren una suscripción al Campamento RBT.",
+    "history": "Historial reciente de servicios",
+    "noHistory": "Los servicios completados y cancelados aparecerán aquí."
+  },
+  "bootcamp": {
+    "eyebrow": "Campamento RBT",
+    "title": "Biblioteca del Campamento RBT",
+    "intro": "Videos y recursos a su propio ritmo para ayudarle a comprender la neurodivergencia, completar el plan de estudios de Ethiospectrum y prepararse para una credencial o examen externo relacionado con RBT.",
+    "lockedTitle": "El Campamento RBT requiere una suscripción",
+    "lockedDescription": "Todos los videos y recursos de capacitación RBT están disponibles con una suscripción mensual activa. No hay contenido de capacitación disponible sin ella.",
+    "benefitVideos": "Todos los videos de capacitación",
+    "benefitResources": "Todos los recursos de apoyo, incluida la guía de estudio bilingüe",
+    "benefitProgress": "Seguimiento del progreso para usted y cada niño",
+    "subscribe": "Suscribirse al Campamento RBT",
+    "askOwnerToSubscribe": "Pida al propietario del hogar que se suscriba o que le dé permiso para administrar la suscripción.",
+    "askOwnerForAccess": "Su hogar está suscrito. Pida al propietario del hogar que le dé acceso a la capacitación.",
+    "certificationDisclaimer": "Completar el curso de Ethiospectrum no es una certificación RBT. Ethiospectrum no es un proveedor acreditado de credenciales RBT; el curso le ayuda a prepararse para una credencial o examen externo.",
+    "trackingFor": "Seguir el progreso de",
+    "me": "Yo",
+    "switchLearner": "Cambiar",
+    "overallProgress": "Progreso general",
+    "lessonsCompleted": "{completed} de {total} lecciones completadas",
+    "noContent": "Aún no hay lecciones publicadas. Vuelva pronto.",
+    "moduleNumber": "Módulo {number}",
+    "video": "Video",
+    "resource": "Recurso",
+    "minutes": "{count} min",
+    "completed": "Completada",
+    "notStarted": "Sin comenzar",
+    "lessonUnavailable": "Esta lección no está disponible.",
+    "backToLibrary": "Volver a la biblioteca",
+    "trackingProgressFor": "Siguiendo el progreso de {name}",
+    "openResource": "Abrir el recurso",
+    "lessonCompleted": "Lección completada",
+    "markIncomplete": "Marcar como no completada",
+    "markComplete": "Marcar la lección como completada",
+    "lessonNavigation": "Navegación de lecciones"
+  },
+  "household": {
+    "title": "Hogar",
+    "description": "Su hogar tiene un propietario y puede agregar un cuidador. Ambos comparten los niños y las solicitudes de servicio.",
+    "noHousehold": "Aún no forma parte de un hogar.",
+    "details": "Detalles del hogar",
+    "name": "Nombre del hogar",
+    "contactPhone": "Teléfono de contacto",
+    "contactEmail": "Correo de contacto",
+    "contactNotes": "Notas de contacto",
+    "contactHelp": "Se comparte con el especialista asignado y los administradores de Ethiospectrum para coordinar citas.",
+    "yourRole": "Su rol",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "sending": "Enviando…",
+    "people": "Personas",
+    "peopleHelp": "El propietario administra la facturación y la configuración del hogar. El cuidador puede hacer lo que el propietario permita.",
+    "you": "usted",
+    "owner": "Propietario del hogar",
+    "caregiver": "Cuidador",
+    "permissionsLegend": "Permisos del cuidador",
+    "permissions": {
+      "submit_requests": {
+        "label": "Solicitar servicios",
+        "help": "Enviar solicitudes de servicio, escribir mensajes sobre ellas y cancelarlas."
+      },
+      "confirm_appointments": {
+        "label": "Confirmar citas",
+        "help": "Confirmar, reprogramar o pedir otros horarios."
+      },
+      "make_payments": {
+        "label": "Realizar pagos",
+        "help": "Pagar consultas y asistencia lingüística con el IEP."
+      },
+      "access_training": {
+        "label": "Acceder a la capacitación RBT",
+        "help": "Ver la capacitación y seguir el progreso."
+      },
+      "upload_documents": {
+        "label": "Subir documentos",
+        "help": "Agregar el IEP y documentos de apoyo a las solicitudes."
+      },
+      "manage_subscription": {
+        "label": "Administrar la suscripción",
+        "help": "Iniciar o administrar la suscripción al Campamento RBT."
+      }
+    },
+    "noPermissions": "Sin permisos adicionales",
+    "savePermissions": "Guardar permisos",
+    "permissionsSaved": "Permisos guardados.",
+    "removeCaregiver": "Quitar al cuidador",
+    "removeConfirm": "¿Quitar a este cuidador? Perderá el acceso de inmediato.",
+    "caregiverRemoved": "Se quitó al cuidador.",
+    "inviteTitle": "Invitar a un cuidador",
+    "caregiverLimit": "Su hogar ya tiene un cuidador. Quítelo para invitar a otra persona.",
+    "inviteHelp": "Enviaremos por correo un enlace de invitación que vence en 7 días. También puede copiar el enlace y compartirlo usted mismo.",
+    "caregiverEmail": "Correo del cuidador",
+    "sendInvite": "Enviar invitación",
+    "inviteSent": "Invitación creada. Comparta este enlace si el correo no llega:",
+    "pendingInvitation": "Invitación enviada a {email}. Vence el {date}.",
+    "revokeInvitation": "Revocar la invitación",
+    "revokeConfirm": "¿Revocar esta invitación?",
+    "inviteRevoked": "Se revocó la invitación.",
+    "contactSaved": "Se guardaron los detalles del hogar.",
+    "profileSaved": "Se guardó su perfil.",
+    "errors": {
+      "denied": "Solo el propietario del hogar puede hacer eso.",
+      "limit": "Un hogar puede tener un propietario y un cuidador, con una invitación pendiente a la vez.",
+      "state": "Eso ya no es posible. Actualice la página.",
+      "validation": "Revise la información e inténtelo de nuevo.",
+      "generic": "Algo salió mal. Inténtelo de nuevo.",
+      "wrongAccount": "Inicie sesión con el correo al que se envió la invitación.",
+      "alreadyInHousehold": "Esta cuenta ya pertenece a un hogar.",
+      "invitationUnavailable": "Esta invitación venció, fue revocada o ya se usó."
+    },
+    "invitation": {
+      "title": "Invitación de cuidador",
+      "invalid": "Este enlace de invitación no es válido.",
+      "signedOutDescription": "Lo invitaron a unirse a un hogar en Ethiospectrum como cuidador. Cree una cuenta o inicie sesión con el correo invitado para aceptar.",
+      "createAccount": "Crear una cuenta",
+      "signIn": "Iniciar sesión",
+      "alreadyAccepted": "Esta invitación ya fue aceptada.",
+      "unavailable": "Esta invitación venció o ya no está disponible. Pida una nueva al propietario del hogar.",
+      "description": "Lo invitaron a unirse a {household} como cuidador.",
+      "emailNotice": "Invitación para {email} · vence el {date}",
+      "accept": "Aceptar la invitación",
+      "accepting": "Uniéndose…"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "description": "Su nombre, número de contacto, idioma y zona horaria.",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Teléfono",
+    "phoneHelp": "Opcional. Se usa solo para coordinar sus servicios.",
+    "language": "Idioma preferido",
+    "languageHelp": "Se usa para correos y notificaciones.",
+    "timezone": "Zona horaria",
+    "save": "Guardar",
+    "saving": "Guardando…"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "description": "Novedades sobre su cuenta, servicios, citas y pagos.",
+    "bell": "Notificaciones",
+    "bellUnread": "Notificaciones, {count} sin leer",
+    "markAllRead": "Marcar todas como leídas",
+    "markRead": "Marcar como leída",
+    "unread": "Sin leer",
+    "open": "Abrir",
+    "loadError": "No se pudieron cargar las notificaciones.",
+    "empty": "No tiene notificaciones.",
+    "generic": "Novedad",
+    "pagination": "Páginas de notificaciones",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "email": {
+      "greeting": "Hola, {name}:",
+      "action": "Abrir Ethiospectrum",
+      "footer": "Recibe este mensaje porque tiene una cuenta de {brand}. No responda a este correo; inicie sesión para escribir a su especialista."
+    },
+    "types": {
+      "account_created": {
+        "title": "Bienvenido a Ethiospectrum",
+        "body": "Se creó su cuenta. Agregue a sus hijos y elija un servicio para comenzar."
+      },
+      "caregiver_invitation": {
+        "title": "Lo invitaron a unirse a {household}",
+        "body": "Lo invitaron a unirse a {household} en Ethiospectrum como cuidador. Abra el enlace para aceptar."
+      },
+      "caregiver_joined": {
+        "title": "Su cuidador se unió",
+        "body": "El cuidador que invitó se unió a su hogar."
+      },
+      "caregiver_removed": {
+        "title": "Acceso al hogar retirado",
+        "body": "Se le quitó como cuidador de un hogar."
+      },
+      "subscription_activated": {
+        "title": "El Campamento RBT está activo",
+        "body": "Su suscripción está activa. Todos los videos y recursos de capacitación están desbloqueados."
+      },
+      "subscription_inactive": {
+        "title": "Acceso al Campamento RBT en pausa",
+        "body": "Su suscripción ya no está activa, por lo que el contenido de capacitación está bloqueado. Revise la facturación para continuar."
+      },
+      "request_received": {
+        "title": "Recibimos la solicitud de {service}",
+        "body": "Recibimos su solicitud. Un administrador la revisará y asignará un especialista."
+      },
+      "specialist_assigned": {
+        "title": "Especialista asignado",
+        "body": "Se asignó un especialista a su solicitud de {service}."
+      },
+      "appointment_proposed": {
+        "title": "Horarios propuestos",
+        "body": "Se propusieron nuevos horarios para su solicitud de {service}. Revíselos y confirme uno."
+      },
+      "appointment_confirmed": {
+        "title": "Cita confirmada",
+        "body": "Su cita de {service} está confirmada para el {start}."
+      },
+      "appointment_reminder": {
+        "title": "Recordatorio de cita",
+        "body": "Recordatorio: su cita de {service} es el {start}."
+      },
+      "appointment_cancelled": {
+        "title": "Cita cancelada",
+        "body": "Se canceló una cita o solicitud de {service}. Abra la solicitud para ver los detalles y cualquier reembolso."
+      },
+      "appointment_rescheduled": {
+        "title": "Cita reprogramada",
+        "body": "Se está reprogramando su cita de {service}. Abra la solicitud para ver los detalles más recientes."
+      },
+      "payment_confirmed": {
+        "title": "Pago confirmado",
+        "body": "Recibimos su pago de {amount} por {service}."
+      },
+      "payment_failed": {
+        "title": "Pago fallido",
+        "body": "Su pago por {service} no se procesó. Su solicitud está guardada y puede intentarlo de nuevo."
+      },
+      "refund_processed": {
+        "title": "Reembolso procesado",
+        "body": "Se envió un reembolso de {amount} por {service} a su método de pago original."
+      },
+      "service_completed": {
+        "title": "Servicio completado",
+        "body": "Su {service} está completo. Gracias por elegir Ethiospectrum."
+      },
+      "follow_up_available": {
+        "title": "Seguimiento disponible",
+        "body": "Su {service} incluye un seguimiento. Solicítelo cuando esté listo."
+      },
+      "request_declined": {
+        "title": "Solicitud rechazada",
+        "body": "Su solicitud de {service} no pudo ser aceptada. Ábrala para ver el motivo."
+      },
+      "document_available": {
+        "title": "Nuevo documento disponible",
+        "body": "Su especialista agregó un documento a su solicitud de {service}."
+      },
+      "new_message": {
+        "title": "Nuevo mensaje",
+        "body": "Tiene un nuevo mensaje sobre su solicitud de {service}."
+      },
+      "specialist_new_assignment": {
+        "title": "Nueva asignación",
+        "body": "Se le asignó una solicitud de {service}."
+      },
+      "specialist_availability_requested": {
+        "title": "Disponibilidad solicitada",
+        "body": "Proponga horarios para una solicitud de {service}."
+      },
+      "specialist_appointment_proposed": {
+        "title": "Horarios propuestos",
+        "body": "Ethiospectrum propuso horarios para su asignación de {service}, a partir del {start}."
+      },
+      "specialist_appointment_confirmed": {
+        "title": "Cita confirmada",
+        "body": "Una cita de {service} está confirmada para el {start}."
+      },
+      "specialist_appointment_rescheduled": {
+        "title": "Cita reprogramada",
+        "body": "Se está reprogramando una cita de {service}."
+      },
+      "specialist_appointment_cancelled": {
+        "title": "Cita cancelada",
+        "body": "Se canceló una cita de {service}."
+      },
+      "specialist_appointment_reminder": {
+        "title": "Recordatorio de cita",
+        "body": "Recordatorio: una cita de {service} es el {start}."
+      },
+      "specialist_document_available": {
+        "title": "Documento disponible",
+        "body": "El hogar agregó un documento a una solicitud de {service}."
+      },
+      "specialist_follow_up_required": {
+        "title": "Seguimiento solicitado",
+        "body": "El hogar solicitó el seguimiento incluido de una solicitud de {service}."
+      },
+      "specialist_new_message": {
+        "title": "Nuevo mensaje",
+        "body": "El hogar envió un mensaje sobre una solicitud de {service}."
+      },
+      "specialist_service_completed": {
+        "title": "Servicio completado",
+        "body": "Un administrador marcó como completada una solicitud de {service}."
+      },
+      "admin_new_request": {
+        "title": "Nueva solicitud de servicio",
+        "body": "Una nueva solicitud de {service} necesita revisión."
+      },
+      "admin_payment_failed": {
+        "title": "Pago fallido",
+        "body": "Falló un pago de {service}."
+      },
+      "admin_cancellation": {
+        "title": "Cancelación",
+        "body": "Un hogar canceló una solicitud de {service}."
+      },
+      "admin_reschedule_requested": {
+        "title": "Reprogramación solicitada",
+        "body": "Un hogar pidió reprogramar una cita de {service}."
+      },
+      "admin_unassigned_request": {
+        "title": "Solicitud esperando asignación",
+        "body": "Una solicitud de {service} lleva más de 24 horas esperando asignación."
+      },
+      "admin_service_completed": {
+        "title": "Servicio completado",
+        "body": "Un especialista completó una solicitud de {service}."
+      },
+      "admin_refund_requested": {
+        "title": "Reembolso solicitado",
+        "body": "Un reembolso de una solicitud de {service} está listo para procesarse."
+      },
+      "admin_availability_submitted": {
+        "title": "Disponibilidad enviada",
+        "body": "Un especialista propuso horarios para una solicitud de {service}."
+      },
+      "admin_follow_up_requested": {
+        "title": "Seguimiento solicitado",
+        "body": "Un hogar solicitó un seguimiento para una solicitud de {service}."
+      },
+      "admin_no_show": {
+        "title": "Inasistencia registrada",
+        "body": "Una cita de {service} se registró como inasistencia."
+      }
+    }
+  },
+  "publicServices": {
+    "eyebrow": "Servicios",
+    "title": "Apoyo para su familia, en su idioma",
+    "seePricing": "Ver servicios y precios",
+    "heroCardEyebrow": "Servicios de Ethiospectrum",
+    "independentNotice": "La Consulta y la Asistencia lingüística con el IEP se pueden comprar por separado; no se requiere suscripción al Campamento RBT.",
+    "rbt": {
+      "name": "Campamento RBT",
+      "price": "Mensual",
+      "billing": "Suscripción mensual recurrente",
+      "description": "Una videoteca a su propio ritmo que ayuda a los padres a comprender la neurodivergencia, completar nuestro plan de estudios y prepararse para una credencial o examen externo relacionado con RBT.",
+      "features": [
+        "Todos los videos de capacitación",
+        "Todos los recursos de apoyo",
+        "Seguimiento del progreso para usted y su hijo"
+      ],
+      "action": "Comenzar el Campamento RBT"
+    },
+    "consultation": {
+      "name": "Consulta",
+      "price": "$9.99",
+      "billing": "Pago único · 60 minutos",
+      "description": "Orientación general sobre el hogar y los servicios, u orientación conductual y educativa específica, con un especialista asignado.",
+      "features": ["Sesión de 60 minutos", "Un seguimiento incluido", "Inglés, amárico o español"],
+      "action": "Solicitar una consulta"
+    },
+    "iep": {
+      "name": "Asistencia lingüística con el IEP",
+      "price": "$19.99",
+      "billing": "Pago único · sesión de 60 minutos",
+      "description": "Comprenda el IEP de su hijo, reciba asistencia lingüística en reuniones escolares y una traducción escrita.",
+      "features": [
+        "Inglés ↔ Amárico e Inglés ↔ Español",
+        "Remota o en persona, sin cargo por traslado",
+        "Traducción escrita y un seguimiento incluidos"
+      ],
+      "action": "Solicitar asistencia con el IEP"
+    },
+    "policyTitle": "Cancelaciones y reembolsos",
+    "policy": [
+      "Más de 48 horas antes: reembolso del 100 % o reprogramación sin costo.",
+      "De 24 a 48 horas antes: reembolso del 50 % o una reprogramación sin costo.",
+      "Menos de 24 horas antes: una reprogramación sin volver a pagar; no hay reembolso en efectivo salvo que un administrador apruebe una excepción.",
+      "Inasistencia: no hay reembolso automático; la reprogramación puede aprobarse según el caso.",
+      "Si Ethiospectrum cancela, recibe un reembolso del 100 % o puede reprogramar."
+    ],
+    "feesTitle": "Impuestos y cargos",
+    "fees": [
+      "Los impuestos aplicables se calculan al pagar cuando corresponda.",
+      "No se cobra cargo por traslado para la asistencia con el IEP en persona.",
+      "Cualquier cargo adicional se muestra para su aprobación antes de pagar."
+    ],
+    "certificationDisclaimer": "Completar el Campamento RBT no es una certificación RBT. Ethiospectrum no es un proveedor acreditado de credenciales RBT.",
+    "languageTitle": "Servicios en inglés, amárico y español",
+    "languageDescription": "Los especialistas se asignan según el servicio, el idioma y la modalidad que necesita su familia.",
+    "languageItems": [
+      "Explicación del IEP y asistencia lingüística en reuniones escolares",
+      "Traducción escrita del material del IEP",
+      "Sesiones remotas o en persona en Ethiospectrum, la escuela o un lugar acordado"
+    ]
   }
 }

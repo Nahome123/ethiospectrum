@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { retiredApiResponse } from "@/lib/features";
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { hasValidReminderWorkerSecret } from "@/lib/reminders/internal-secret";
@@ -6,6 +7,8 @@ import { hasValidReminderWorkerSecret } from "@/lib/reminders/internal-secret";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const retired = retiredApiResponse("reminders");
+  if (retired) return retired;
   if (!hasValidReminderWorkerSecret(request.headers.get("x-reminder-worker-secret"))) {
     return new NextResponse(null, { status: 401 });
   }

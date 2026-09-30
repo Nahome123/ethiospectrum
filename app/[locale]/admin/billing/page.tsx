@@ -27,7 +27,7 @@ export default async function AdminBillingPage({ params }: { params: Promise<{ l
             <CardHeader>
               <CardTitle>{household.household_name}</CardTitle>
               <CardDescription>
-                {household.plan_key === "family_plus" ? t("plans.familyPlus") : t("plans.free")}
+                {household.plan_key === "rbt_bootcamp" ? t("plans.rbtBootcamp") : t("plans.free")}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
