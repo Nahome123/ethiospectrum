@@ -594,7 +594,7 @@ export type Database = {
       conversations: {
         Row: {
           created_at: string;
-          created_by: string;
+          created_by: string | null;
           dependent_id: string | null;
           household_id: string;
           id: string;
@@ -604,7 +604,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
           dependent_id?: string | null;
           household_id: string;
           id?: string;
@@ -614,7 +614,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
           dependent_id?: string | null;
           household_id?: string;
           id?: string;
@@ -653,7 +653,7 @@ export type Database = {
           birth_year: number | null;
           communication_considerations: string | null;
           created_at: string;
-          created_by: string;
+          created_by: string | null;
           educational_information: string | null;
           first_name: string;
           grade_level: string | null;
@@ -673,7 +673,7 @@ export type Database = {
           birth_year?: number | null;
           communication_considerations?: string | null;
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
           educational_information?: string | null;
           first_name: string;
           grade_level?: string | null;
@@ -693,7 +693,7 @@ export type Database = {
           birth_year?: number | null;
           communication_considerations?: string | null;
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
           educational_information?: string | null;
           first_name?: string;
           grade_level?: string | null;
@@ -767,7 +767,7 @@ export type Database = {
       document_chat_conversations: {
         Row: {
           created_at: string;
-          created_by: string;
+          created_by: string | null;
           creation_idempotency_key: string;
           document_id: string;
           household_id: string;
@@ -780,7 +780,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
           creation_idempotency_key: string;
           document_id: string;
           household_id: string;
@@ -793,7 +793,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
           creation_idempotency_key?: string;
           document_id?: string;
           household_id?: string;
@@ -1211,7 +1211,7 @@ export type Database = {
           question: string;
           question_normalized: string;
           requested_at: string;
-          requested_by: string;
+          requested_by: string | null;
           source_character_count: number;
           source_coverage: string;
           source_item_count: number;
@@ -1242,7 +1242,7 @@ export type Database = {
           question: string;
           question_normalized: string;
           requested_at?: string;
-          requested_by: string;
+          requested_by?: string | null;
           source_character_count?: number;
           source_coverage?: string;
           source_item_count?: number;
@@ -1273,7 +1273,7 @@ export type Database = {
           question?: string;
           question_normalized?: string;
           requested_at?: string;
-          requested_by?: string;
+          requested_by?: string | null;
           source_character_count?: number;
           source_coverage?: string;
           source_item_count?: number;
@@ -1326,7 +1326,7 @@ export type Database = {
           provider: string | null;
           provider_call_count: number;
           requested_at: string;
-          requested_by: string;
+          requested_by: string | null;
           source_character_count: number;
           source_coverage: string;
           source_item_count: number;
@@ -1356,7 +1356,7 @@ export type Database = {
           provider?: string | null;
           provider_call_count?: number;
           requested_at?: string;
-          requested_by: string;
+          requested_by?: string | null;
           source_character_count?: number;
           source_coverage?: string;
           source_item_count?: number;
@@ -1386,7 +1386,7 @@ export type Database = {
           provider?: string | null;
           provider_call_count?: number;
           requested_at?: string;
-          requested_by?: string;
+          requested_by?: string | null;
           source_character_count?: number;
           source_coverage?: string;
           source_item_count?: number;
@@ -1607,7 +1607,7 @@ export type Database = {
           title: string;
           updated_at: string;
           upload_status: Database["public"]["Enums"]["document_upload_status"];
-          uploaded_by: string;
+          uploaded_by: string | null;
         };
         Insert: {
           created_at?: string;
@@ -1627,7 +1627,7 @@ export type Database = {
           title: string;
           updated_at?: string;
           upload_status?: Database["public"]["Enums"]["document_upload_status"];
-          uploaded_by: string;
+          uploaded_by?: string | null;
         };
         Update: {
           created_at?: string;
@@ -1647,7 +1647,7 @@ export type Database = {
           title?: string;
           updated_at?: string;
           upload_status?: Database["public"]["Enums"]["document_upload_status"];
-          uploaded_by?: string;
+          uploaded_by?: string | null;
         };
         Relationships: [
           {
@@ -1841,7 +1841,7 @@ export type Database = {
           contact_notes: string | null;
           contact_phone: string | null;
           created_at: string;
-          created_by: string;
+          created_by: string | null;
           deleted_at: string | null;
           id: string;
           name: string;
@@ -1853,7 +1853,7 @@ export type Database = {
           contact_notes?: string | null;
           contact_phone?: string | null;
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
           deleted_at?: string | null;
           id?: string;
           name: string;
@@ -1865,7 +1865,7 @@ export type Database = {
           contact_notes?: string | null;
           contact_phone?: string | null;
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
           deleted_at?: string | null;
           id?: string;
           name?: string;
@@ -2204,19 +2204,19 @@ export type Database = {
       };
       resource_account_access: {
         Row: {
-          assigned_by: string;
+          assigned_by: string | null;
           created_at: string;
           resource_id: string;
           user_id: string;
         };
         Insert: {
-          assigned_by: string;
+          assigned_by?: string | null;
           created_at?: string;
           resource_id: string;
           user_id: string;
         };
         Update: {
-          assigned_by?: string;
+          assigned_by?: string | null;
           created_at?: string;
           resource_id?: string;
           user_id?: string;
@@ -2248,7 +2248,7 @@ export type Database = {
       resource_audit_events: {
         Row: {
           action: string;
-          actor_user_id: string;
+          actor_user_id: string | null;
           created_at: string;
           from_status: Database["public"]["Enums"]["resource_status"] | null;
           id: string;
@@ -2259,7 +2259,7 @@ export type Database = {
         };
         Insert: {
           action: string;
-          actor_user_id: string;
+          actor_user_id?: string | null;
           created_at?: string;
           from_status?: Database["public"]["Enums"]["resource_status"] | null;
           id?: string;
@@ -2270,7 +2270,7 @@ export type Database = {
         };
         Update: {
           action?: string;
-          actor_user_id?: string;
+          actor_user_id?: string | null;
           created_at?: string;
           from_status?: Database["public"]["Enums"]["resource_status"] | null;
           id?: string;
@@ -2332,7 +2332,7 @@ export type Database = {
       resource_translation_audit_events: {
         Row: {
           action: string;
-          actor_user_id: string;
+          actor_user_id: string | null;
           created_at: string;
           from_review_status: string | null;
           id: string;
@@ -2346,7 +2346,7 @@ export type Database = {
         };
         Insert: {
           action: string;
-          actor_user_id: string;
+          actor_user_id?: string | null;
           created_at?: string;
           from_review_status?: string | null;
           id?: string;
@@ -2360,7 +2360,7 @@ export type Database = {
         };
         Update: {
           action?: string;
-          actor_user_id?: string;
+          actor_user_id?: string | null;
           created_at?: string;
           from_review_status?: string | null;
           id?: string;
@@ -2594,7 +2594,7 @@ export type Database = {
           category: string;
           completed_at: string | null;
           created_at: string;
-          created_by: string;
+          created_by: string | null;
           dependent_id: string | null;
           description: string | null;
           due_date: string | null;
@@ -2616,7 +2616,7 @@ export type Database = {
           category?: string;
           completed_at?: string | null;
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
           dependent_id?: string | null;
           description?: string | null;
           due_date?: string | null;
@@ -2638,7 +2638,7 @@ export type Database = {
           category?: string;
           completed_at?: string | null;
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
           dependent_id?: string | null;
           description?: string | null;
           due_date?: string | null;
@@ -2898,7 +2898,7 @@ export type Database = {
           household_id: string;
           id: string;
           paid_at: string | null;
-          payer_user_id: string;
+          payer_user_id: string | null;
           payment_type: string;
           provider_checkout_session_id: string | null;
           provider_transaction_id: string | null;
@@ -2921,7 +2921,7 @@ export type Database = {
           household_id: string;
           id?: string;
           paid_at?: string | null;
-          payer_user_id: string;
+          payer_user_id?: string | null;
           payment_type?: string;
           provider_checkout_session_id?: string | null;
           provider_transaction_id?: string | null;
@@ -2944,7 +2944,7 @@ export type Database = {
           household_id?: string;
           id?: string;
           paid_at?: string | null;
-          payer_user_id?: string;
+          payer_user_id?: string | null;
           payment_type?: string;
           provider_checkout_session_id?: string | null;
           provider_transaction_id?: string | null;
@@ -3210,7 +3210,7 @@ export type Database = {
           primary_session_completed_at: string | null;
           refund_cap_percent: number;
           relevant_information: string | null;
-          requested_by: string;
+          requested_by: string | null;
           requested_meeting_date: string | null;
           service_id: string;
           service_type: string;
@@ -3250,7 +3250,7 @@ export type Database = {
           primary_session_completed_at?: string | null;
           refund_cap_percent?: number;
           relevant_information?: string | null;
-          requested_by: string;
+          requested_by?: string | null;
           requested_meeting_date?: string | null;
           service_id: string;
           service_type: string;
@@ -3290,7 +3290,7 @@ export type Database = {
           primary_session_completed_at?: string | null;
           refund_cap_percent?: number;
           relevant_information?: string | null;
-          requested_by?: string;
+          requested_by?: string | null;
           requested_meeting_date?: string | null;
           service_id?: string;
           service_type?: string;
@@ -3428,7 +3428,7 @@ export type Database = {
           languages: string[];
           specialties: string[];
           updated_at: string;
-          user_id: string;
+          user_id: string | null;
         };
         Insert: {
           availability_status?: string;
@@ -3438,7 +3438,7 @@ export type Database = {
           languages?: string[];
           specialties?: string[];
           updated_at?: string;
-          user_id: string;
+          user_id?: string | null;
         };
         Update: {
           availability_status?: string;
@@ -3448,7 +3448,7 @@ export type Database = {
           languages?: string[];
           specialties?: string[];
           updated_at?: string;
-          user_id?: string;
+          user_id?: string | null;
         };
         Relationships: [
           {
@@ -3507,7 +3507,7 @@ export type Database = {
           household_id: string;
           id: string;
           idempotency_key: string | null;
-          sender_id: string;
+          sender_id: string | null;
           support_thread_id: string;
         };
         Insert: {
@@ -3517,7 +3517,7 @@ export type Database = {
           household_id: string;
           id?: string;
           idempotency_key?: string | null;
-          sender_id: string;
+          sender_id?: string | null;
           support_thread_id: string;
         };
         Update: {
@@ -3527,7 +3527,7 @@ export type Database = {
           household_id?: string;
           id?: string;
           idempotency_key?: string | null;
-          sender_id?: string;
+          sender_id?: string | null;
           support_thread_id?: string;
         };
         Relationships: [
@@ -3679,7 +3679,7 @@ export type Database = {
           closed_at: string | null;
           closed_by: string | null;
           created_at: string;
-          created_by: string;
+          created_by: string | null;
           expectations_acknowledged_at: string;
           expectations_copy_version: string;
           household_id: string;
@@ -3703,7 +3703,7 @@ export type Database = {
           closed_at?: string | null;
           closed_by?: string | null;
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
           expectations_acknowledged_at: string;
           expectations_copy_version: string;
           household_id: string;
@@ -3727,7 +3727,7 @@ export type Database = {
           closed_at?: string | null;
           closed_by?: string | null;
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
           expectations_acknowledged_at?: string;
           expectations_copy_version?: string;
           household_id?: string;

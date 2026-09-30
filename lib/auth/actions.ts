@@ -77,7 +77,7 @@ export async function signUpAction(
   const invitation = String(formData.get("invitation") ?? "");
   const hasInvitation = /^[0-9a-f]{64}$/.test(invitation);
   const supabase = await createServerActionSupabaseClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
@@ -99,6 +99,12 @@ export async function signUpAction(
       message: isEmailRateLimitError(error) ? t("emailRateLimit") : t("genericError"),
       email: parsed.data.email,
     };
+  }
+  // With email confirmation disabled, Supabase returns a live session: skip the
+  // "check your email" screen and continue where the confirmation link would go.
+  if (data?.session) {
+    revalidatePath("/", "layout");
+    redirect(hasInvitation ? `/${localeValue}/invitations/${invitation}` : getLocaleDashboardPath(localeValue));
   }
   redirect(`/${localeValue}/check-email`);
 }

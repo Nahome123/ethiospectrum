@@ -31,12 +31,33 @@ export type HouseholdAccess = {
   permissions: HouseholdPermissionKey[];
 };
 
-/** The launch authorization projection; the database re-checks every mutation. */
+export class HouseholdAccessError extends Error {
+  constructor(readonly code: string | undefined) {
+    super(
+      code === "PGRST202" || code === "42883"
+        ? "get_current_household_access() does not exist in this database. Apply the 20260929* migrations."
+        : `Household access could not be loaded (${code ?? "unknown error"}).`,
+    );
+    this.name = "HouseholdAccessError";
+  }
+}
+
+/**
+ * The launch authorization projection; the database re-checks every mutation.
+ * Returns null only when the caller genuinely has no active household. A failed
+ * lookup throws instead: treating it as "no household" would offer onboarding
+ * and let the user create a second household.
+ */
 export async function getHouseholdAccess(): Promise<HouseholdAccess | null> {
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase.rpc("get_current_household_access");
+  if (error) {
+    // Codes and messages only; no identifiers or household data are logged.
+    console.error("get_current_household_access failed", { code: error.code, message: error.message });
+    throw new HouseholdAccessError(error.code);
+  }
   const row = data?.[0];
-  if (error || !row) return null;
+  if (!row) return null;
   return {
     household: { id: row.household_id, name: row.household_name },
     permission: row.permission,

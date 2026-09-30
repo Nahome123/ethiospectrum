@@ -447,5 +447,35 @@ select is((select refund_tier || '/' || refund_percent from public.cancel_servic
   'a no-show receives no automatic refund');
 select is((select count(*) from public.service_refunds where service_request_id = (select id from ids where name = 'noshow')), 0::bigint, 'no refund request is created');
 
+-- 8. Account deletion -------------------------------------------------------
+
+reset role;
+select lives_ok($$delete from auth.users where id = 'b1000000-0000-4000-8000-000000000004'$$,
+  'a specialist who acted on requests and appointments can be deleted');
+select ok((select count(*) from public.service_appointments where service_request_id = (select id from ids where name = 'consult')) > 0,
+  'appointments survive the specialist deletion');
+select is((select user_id from public.specialists where id = (select id from ids where name = 'spec_am')), null,
+  'the specialist record is kept without its account');
+select throws_ok($$delete from public.service_request_events where service_request_id = (select id from ids where name = 'consult')$$, '42501', null,
+  'service history still cannot be deleted directly after a user deletion');
+select throws_ok($$update public.service_request_events set action = 'rewritten' where service_request_id = (select id from ids where name = 'consult')$$, '42501', null,
+  'service history still cannot be rewritten after a user deletion');
+select lives_ok($$delete from auth.users where id = 'b1000000-0000-4000-8000-000000000003'$$,
+  'an administrator who configured the catalog and processed refunds can be deleted');
+select is((select count(*) from public.service_refunds where processed_by is null and status <> 'requested'), (select count(*) from public.service_refunds where status <> 'requested'),
+  'processed refunds keep their records without the deleted administrator');
+select lives_ok($$delete from auth.users where id = 'b1000000-0000-4000-8000-000000000002'$$,
+  'a caregiver can be deleted');
+select is((select count(*) from public.household_members where user_id = 'b1000000-0000-4000-8000-000000000002'), 0::bigint,
+  'the caregiver membership is removed');
+select lives_ok($$delete from auth.users where id = 'b1000000-0000-4000-8000-000000000001'$$,
+  'a household owner with requests, payments and refunds can be deleted');
+select is((select count(*) from public.households where primary_owner_id = 'b1000000-0000-4000-8000-000000000001'), 0::bigint,
+  'the owner household is deleted with its owner');
+select is((select count(*) from public.service_requests where id = (select id from ids where name = 'consult')), 0::bigint,
+  'household-scoped requests are deleted with the household');
+select is((select count(*) from public.households where primary_owner_id = 'b1000000-0000-4000-8000-000000000006'), 1::bigint,
+  'unrelated households are untouched');
+
 select * from finish();
 rollback;

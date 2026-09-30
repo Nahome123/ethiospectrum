@@ -142,6 +142,59 @@ describe("authentication actions", () => {
     );
   });
 
+  it("sends a signed-in owner to the dashboard when email confirmation is disabled", async () => {
+    mocks.signUp.mockResolvedValue({ data: { session: { access_token: "synthetic" } }, error: null });
+    await signUpAction(
+      "es",
+      idle,
+      formData({
+        firstName: "Ada",
+        lastName: "Lovelace",
+        email: "member@example.test",
+        password: "long-enough",
+        confirmPassword: "long-enough",
+        termsAccepted: "on",
+      }),
+    );
+    expect(mocks.redirect.mock.calls[0][0]).toBe("/es/dashboard");
+  });
+
+  it("sends a signed-in caregiver back to the invitation when confirmation is disabled", async () => {
+    const token = "b".repeat(64);
+    mocks.signUp.mockResolvedValue({ data: { session: { access_token: "synthetic" } }, error: null });
+    await signUpAction(
+      "en",
+      idle,
+      formData({
+        firstName: "Abel",
+        lastName: "Kebede",
+        email: "caregiver@example.test",
+        password: "long-enough",
+        confirmPassword: "long-enough",
+        termsAccepted: "on",
+        invitation: token,
+      }),
+    );
+    expect(mocks.redirect.mock.calls[0][0]).toBe(`/en/invitations/${token}`);
+  });
+
+  it("asks the user to check email when no session is returned", async () => {
+    mocks.signUp.mockResolvedValue({ data: { session: null }, error: null });
+    await signUpAction(
+      "en",
+      idle,
+      formData({
+        firstName: "Ada",
+        lastName: "Lovelace",
+        email: "member@example.test",
+        password: "long-enough",
+        confirmPassword: "long-enough",
+        termsAccepted: "on",
+      }),
+    );
+    expect(mocks.redirect.mock.calls[0][0]).toBe("/en/check-email");
+  });
+
   it("ignores a malformed invitation token", async () => {
     await signUpAction(
       "en",
