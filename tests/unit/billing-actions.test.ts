@@ -194,7 +194,7 @@ describe("billing Server Actions", () => {
   it("denies content editors and specialists from reconciliation", async () => {
     const form = new FormData();
     form.set("householdId", householdId);
-    for (const role of ["content_editor", "specialist"] as const) {
+    for (const role of ["specialist"] as const) {
       mocks.getCurrentUserRole.mockResolvedValue(role);
       await expect(reconcileBillingHouseholdAction("en", idle, form)).resolves.toEqual({
         status: "error",

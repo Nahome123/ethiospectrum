@@ -4,6 +4,7 @@ import { LanguageSelector } from "./language-selector";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
 import { NotificationBell } from "./notification-bell";
+import { AdminViewSwitcher } from "./admin-view-switcher";
 import { signOutAction } from "@/lib/auth/actions";
 import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
@@ -48,7 +49,10 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
-          <p className="text-sm font-bold text-primary">{t("adminConsole.roleLabel")}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm font-bold text-primary">{t("adminConsole.roleLabel")}</p>
+            <AdminViewSwitcher current="admin" />
+          </div>
           <div className="flex items-center gap-3">
             <NotificationBell />
             <LanguageSelector />

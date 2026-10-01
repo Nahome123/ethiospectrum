@@ -129,10 +129,13 @@ export default async function AdminUsersPage({
                       <label className="sr-only" htmlFor={`role-${user.user_id}`}>
                         {t("columns.role")}
                       </label>
+                      {/* defaultValue applies only on mount; keying on the role remounts the
+                          select after a change so it never shows a stale value. */}
                       <select
                         className="h-8 rounded-md border border-input bg-background px-2 text-sm"
-                        defaultValue={user.role === "content_editor" ? "member" : user.role}
+                        defaultValue={user.role}
                         id={`role-${user.user_id}`}
+                        key={`${user.user_id}-${user.role}`}
                         name="role"
                       >
                         {assignableRoles.map((value) => (

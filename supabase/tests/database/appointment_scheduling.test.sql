@@ -32,7 +32,7 @@ values
 update public.user_roles set role = 'administrator' where user_id = 'd1000000-0000-4000-8000-000000000005';
 update public.user_roles set role = 'specialist' where user_id = 'd1000000-0000-4000-8000-000000000006';
 update public.user_roles set role = 'specialist' where user_id = 'd1000000-0000-4000-8000-000000000007';
-update public.user_roles set role = 'content_editor' where user_id = 'd1000000-0000-4000-8000-000000000008';
+update public.user_roles set role = 'member' where user_id = 'd1000000-0000-4000-8000-000000000008';
 
 insert into public.specialists (id, user_id, availability_status)
 values

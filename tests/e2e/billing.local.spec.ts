@@ -53,7 +53,7 @@ function runLocalSql(sql: string, variables: Record<string, string> = {}) {
 }
 
 async function createActor(
-  role: "member" | "administrator" | "specialist" | "content_editor",
+  role: "member" | "administrator" | "specialist",
   label: string,
 ) {
   const email = `billing-${label}-${Date.now()}-${randomUUID()}@example.test`;
@@ -213,11 +213,11 @@ test.describe("Stripe subscriptions (local Supabase and safe provider fixtures o
     for (const userId of createdUserIds.splice(0)) await admin.auth.admin.deleteUser(userId);
   });
 
-  test("denies logged-out, specialist, and content-editor billing access", async ({ browser, page }) => {
+  test("denies logged-out and specialist billing access", async ({ browser, page }) => {
     await page.goto("/en/billing");
     await expect(page).toHaveURL(/\/en\/login\?next=/);
 
-    for (const role of ["specialist", "content_editor"] as const) {
+    for (const role of ["specialist"] as const) {
       const actor = await createActor(role, role);
       const session = await openAuthenticatedPage(browser, actor.email, "/en/billing");
       await expect(session.page).toHaveURL(/\/en\/auth-error\?reason=access-denied$/);

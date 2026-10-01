@@ -63,7 +63,7 @@ async function createConfirmedUser(email: string, label: string) {
   return requireUuid(data.user.id, "user id");
 }
 
-function setGlobalRole(userId: string, role: "administrator" | "specialist" | "content_editor") {
+function setGlobalRole(userId: string, role: "administrator" | "specialist" | "member") {
   runLocalSql(
     `update public.user_roles set role = '${role}' where user_id = '${requireUuid(userId, "user id")}'`,
   );
@@ -190,9 +190,9 @@ test.describe("specialist assignment (local Supabase only)", () => {
     setGlobalRole(otherSpecialistUserId, "specialist");
     createSpecialistProfile(otherSpecialistUserId);
     const editorId = await createConfirmedUser(editorEmail, "editor");
-    setGlobalRole(editorId, "content_editor");
+    setGlobalRole(editorId, "member");
 
-    // The content editor gains nothing from ETH-026.
+    // A non-administrator account gains nothing from ETH-026.
     await logIn(page, editorEmail);
     await page.goto("/en/admin/specialists");
     await expect(page).toHaveURL(/auth-error\?reason=access-denied/);

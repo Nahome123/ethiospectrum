@@ -90,7 +90,7 @@ describe("resource translation action authorization", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.getTranslations.mockResolvedValue((key: string) => key);
-    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "content_editor" });
+    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "administrator" });
     rpcResult();
   });
 
@@ -112,7 +112,7 @@ describe("resource translation action authorization", () => {
       mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "member" });
       const form = createForm();
       form.set("householdRole", householdRole);
-      form.set("role", "content_editor");
+      form.set("role", "administrator");
       await expect(createResourceTranslation("en", idle, form)).resolves.toEqual({
         status: "error",
         message: "validationError",
@@ -121,7 +121,7 @@ describe("resource translation action authorization", () => {
     },
   );
 
-  it.each(["content_editor", "administrator"])("allows the global %s role for all actions", async (role) => {
+  it.each(["administrator"])("allows the global %s role for all actions", async (role) => {
     mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role });
     for (const call of allActionCalls()) {
       await expect(call()).resolves.toEqual({ status: "success", message: "saved" });
@@ -134,7 +134,7 @@ describe("resource translation create and update actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.getTranslations.mockResolvedValue((key: string) => key);
-    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "content_editor" });
+    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "administrator" });
   });
 
   it.each(["am", "es"] as const)("creates a %s draft through the controlled RPC", async (locale) => {
@@ -225,7 +225,7 @@ describe("resource translation transition actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.getTranslations.mockResolvedValue((key: string) => key);
-    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "content_editor" });
+    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "administrator" });
   });
 
   it.each([
@@ -334,7 +334,7 @@ describe("resource translation route revalidation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.getTranslations.mockResolvedValue((key: string) => key);
-    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "content_editor" });
+    mocks.getAuthenticatedUser.mockResolvedValue({ id: actorId, role: "administrator" });
     rpcResult();
   });
 

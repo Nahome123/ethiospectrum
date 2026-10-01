@@ -57,7 +57,7 @@ describe("household billing route access", () => {
     },
   );
 
-  it.each(["specialist", "content_editor"] as const)(
+  it.each(["specialist"] as const)(
     "denies a %s even if a household owner record is present",
     async (role) => {
       mocks.requireUser.mockResolvedValue({ id: `${role}-owner`, role });

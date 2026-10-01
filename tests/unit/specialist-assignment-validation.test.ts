@@ -80,7 +80,7 @@ describe("specialist assignment permission matrix", () => {
   it("permits assignment only for a platform administrator", () => {
     expect(canAdministerAssignment("administrator")).toBe(true);
     expect(canAdministerAssignment("specialist")).toBe(false);
-    expect(canAdministerAssignment("content_editor")).toBe(false);
+    expect(canAdministerAssignment("member")).toBe(false);
     expect(canAdministerAssignment("member")).toBe(false);
     expect(canAdministerAssignment(null)).toBe(false);
   });

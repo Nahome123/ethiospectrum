@@ -17,10 +17,19 @@ function functionBody(schema: "private" | "public", name: string): string {
 }
 
 describe("resource translation controlled lifecycle", () => {
-  it("authorizes only global editors and excludes household membership", () => {
-    const authorization = functionBody("private", "can_manage_resources");
-    expect(authorization).toContain("'administrator'::public.app_role");
-    expect(authorization).toContain("'content_editor'::public.app_role");
+  it("authorizes only administrators and excludes household membership", () => {
+    // The content editor role was removed; the current definition lives in the roles migration.
+    const rolesMigration = readFileSync(
+      resolve("supabase/migrations/20261001000000_roles_admin_specialist.sql"),
+      "utf8",
+    );
+    const authorization = (
+      rolesMigration.match(/create or replace function private\.can_manage_resources\([^]*?\$\$;/i)?.[0] ?? ""
+    )
+      .replace(/\s+/g, " ")
+      .toLowerCase();
+    expect(authorization).toContain("private.is_current_user_administrator()");
+    expect(authorization).not.toContain("content_editor");
     expect(authorization).not.toContain("household");
     expect(authorization).not.toContain("owner");
     expect(authorization).not.toContain("viewer");

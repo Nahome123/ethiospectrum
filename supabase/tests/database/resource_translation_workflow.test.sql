@@ -7,7 +7,7 @@ values
   ('00000000-0000-0000-0000-000000000000','24000000-0000-0000-0000-000000000001','authenticated','authenticated','translation-author@example.test','not-a-real-password',now(),'{}','{}',now(),now()),
   ('00000000-0000-0000-0000-000000000000','24000000-0000-0000-0000-000000000002','authenticated','authenticated','translation-reviewer@example.test','not-a-real-password',now(),'{}','{}',now(),now()),
   ('00000000-0000-0000-0000-000000000000','24000000-0000-0000-0000-000000000003','authenticated','authenticated','translation-member@example.test','not-a-real-password',now(),'{}','{}',now(),now());
-update public.user_roles set role='content_editor' where user_id in ('24000000-0000-0000-0000-000000000001','24000000-0000-0000-0000-000000000002');
+update public.user_roles set role='administrator' where user_id in ('24000000-0000-0000-0000-000000000001','24000000-0000-0000-0000-000000000002');
 
 select has_table('public','resource_translation_audit_events','translation audits reuse the resource workflow boundary');
 select has_column('public','resource_translations','source_translation_version','source version is stored on translations');

@@ -28,7 +28,7 @@ values
 
 update public.user_roles set role = 'administrator' where user_id = 'e1000000-0000-4000-8000-000000000006';
 update public.user_roles set role = 'specialist' where user_id = 'e1000000-0000-4000-8000-000000000007';
-update public.user_roles set role = 'content_editor' where user_id = 'e1000000-0000-4000-8000-000000000008';
+update public.user_roles set role = 'member' where user_id = 'e1000000-0000-4000-8000-000000000008';
 
 select has_table('public', 'billing_customers', 'billing customers table exists');
 select has_table('public', 'billing_subscriptions', 'billing subscriptions table exists');

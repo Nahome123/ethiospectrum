@@ -29,7 +29,7 @@ function localReader() {
   return createClient(url, key);
 }
 
-function setSyntheticAppRole(userId: string, role: "member" | "content_editor" | "administrator") {
+function setSyntheticAppRole(userId: string, role: "member" | "administrator") {
   if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Invalid synthetic actor identifier.");
   runLocalSql("update public.user_roles set role=:'role' where user_id=:'user_id'", {
     role,
@@ -57,7 +57,7 @@ function runLocalSql(sql: string, variables: Record<string, string> = {}) {
   );
 }
 
-async function createActor(role: "member" | "content_editor" | "administrator", label: string) {
+async function createActor(role: "member" | "administrator", label: string) {
   const admin = localAdmin();
   const suffix = `${Date.now()}-${randomUUID()}`;
   const email = `resource-${label}-${suffix}@example.test`;
@@ -241,7 +241,7 @@ async function expectEditorDenied(browser: Browser, email: string, resourceId: s
   const context = await browser.newContext();
   const page = await context.newPage();
   await login(page, email);
-  await page.goto(`/en/editor/resources/${resourceId}/translations?role=content_editor`);
+  await page.goto(`/en/editor/resources/${resourceId}/translations?role=administrator`);
   await expect(page).toHaveURL(/\/en\/auth-error\?reason=access-denied$/);
   await page.reload();
   await expect(page).toHaveURL(/\/en\/auth-error\?reason=access-denied$/);
@@ -587,7 +587,7 @@ test.describe("resource translations (local Supabase only)", () => {
 
   test("enforces global editor authorization and household isolation", async ({ browser, page }) => {
     const platformAdmin = await createActor("administrator", "platform-admin");
-    const editor = await createActor("content_editor", "editor-isolated");
+    const editor = await createActor("administrator", "editor-isolated");
     const owner = await createActor("member", "household-owner");
     const householdAdmin = await createActor("member", "household-admin");
     const member = await createActor("member", "household-member");
@@ -736,8 +736,8 @@ test.describe("resource translations (local Supabase only)", () => {
 
   test("completes Amharic and Spanish workflows with separate reviewers", async ({ browser }) => {
     const administrator = await createActor("administrator", "workflow-admin");
-    const editorA = await createActor("content_editor", "editor-a");
-    const editorB = await createActor("content_editor", "editor-b");
+    const editorA = await createActor("administrator", "editor-a");
+    const editorB = await createActor("administrator", "editor-b");
     const resource = await createResourceFixture({
       authorId: administrator.id,
       slug: `workflow-${randomUUID()}`,
@@ -824,8 +824,8 @@ test.describe("resource translations (local Supabase only)", () => {
 
   test("withdraws and rejects translations with private review notes", async ({ browser }) => {
     const administrator = await createActor("administrator", "branch-admin");
-    const editorA = await createActor("content_editor", "branch-editor-a");
-    const editorB = await createActor("content_editor", "branch-editor-b");
+    const editorA = await createActor("administrator", "branch-editor-a");
+    const editorB = await createActor("administrator", "branch-editor-b");
     const rejectionNote = "Synthetic reviewer note that must remain private to resource editors.";
     const resource = await createResourceFixture({
       authorId: administrator.id,
@@ -883,7 +883,7 @@ test.describe("resource translations (local Supabase only)", () => {
 
   test("invalidates translated sources and preserves parent lifecycle records", async ({ browser }) => {
     const administrator = await createActor("administrator", "lifecycle-admin");
-    const reviewer = await createActor("content_editor", "lifecycle-reviewer");
+    const reviewer = await createActor("administrator", "lifecycle-reviewer");
     const resource = await createResourceFixture({
       authorId: administrator.id,
       slug: `lifecycle-${randomUUID()}`,

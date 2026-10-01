@@ -72,6 +72,19 @@ export async function getCurrentHousehold(): Promise<HouseholdSummary | null> {
   return data;
 }
 
+/** The role with the time it was last changed; null when unavailable. */
+export async function getCurrentUserRoleRecord(
+  userId: string,
+): Promise<{ role: SupabaseRole; grantedAt: string | null } | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("role, granted_at")
+    .eq("user_id", userId)
+    .maybeSingle();
+  return error || !data ? null : { role: data.role, grantedAt: data.granted_at };
+}
+
 /** Returns null for an unavailable or untrusted role so callers fail closed. */
 export async function getCurrentUserRole(userId: string): Promise<SupabaseRole | null> {
   const supabase = await createServerComponentSupabaseClient();

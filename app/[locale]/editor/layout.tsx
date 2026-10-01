@@ -1,6 +1,6 @@
 import type { AppLocale } from "@/i18n/routing";
 import { requireFeature } from "@/lib/features";
-import { requireContentEditor } from "@/lib/auth/guards";
+import { requireRole } from "@/lib/auth/guards";
 
 export default async function EditorLayout({
   children,
@@ -9,6 +9,6 @@ export default async function EditorLayout({
   requireFeature("resourceHub");
   const { locale: localeParam } = await params;
   const locale = localeParam as AppLocale;
-  await requireContentEditor(locale, `/${locale}/editor`);
+  await requireRole(locale, `/${locale}/editor`, "administrator");
   return <main className="mx-auto w-full max-w-6xl px-5 py-10">{children}</main>;
 }

@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
   clearPasswordRecoveryIntent: vi.fn(),
   redirect: vi.fn(),
   revalidatePath: vi.fn(),
+  roleRow: vi.fn(),
 }));
 
 vi.mock("@/lib/supabase/server-action", () => ({
@@ -23,6 +24,7 @@ vi.mock("@/lib/supabase/server-action", () => ({
       updateUser: mocks.updateUser,
       signOut: mocks.signOut,
     },
+    from: () => ({ select: () => ({ eq: () => ({ maybeSingle: mocks.roleRow }) }) }),
   })),
 }));
 vi.mock("@/lib/auth/recovery", () => ({
@@ -73,6 +75,28 @@ describe("authentication actions", () => {
       password: "long-enough",
     });
     expect(mocks.redirect).toHaveBeenCalledWith("/en/documents");
+  });
+
+  it.each([
+    ["administrator", "/en/admin"],
+    ["specialist", "/en/specialist"],
+    ["member", "/en/dashboard"],
+  ])("sends a signed-in %s without a destination to their workspace", async (role, path) => {
+    mocks.signInWithPassword.mockResolvedValue({ data: { user: { id: "user-id" } }, error: null });
+    mocks.roleRow.mockResolvedValue({ data: { role }, error: null });
+    await signInAction("en", idle, formData({ email: "member@example.test", password: "long-enough" }));
+    expect(mocks.redirect).toHaveBeenCalledWith(path);
+  });
+
+  it("keeps an explicit destination after sign-in regardless of role", async () => {
+    mocks.signInWithPassword.mockResolvedValue({ data: { user: { id: "user-id" } }, error: null });
+    mocks.roleRow.mockResolvedValue({ data: { role: "administrator" }, error: null });
+    await signInAction(
+      "en",
+      idle,
+      formData({ email: "member@example.test", password: "long-enough", next: "/en/dashboard" }),
+    );
+    expect(mocks.redirect).toHaveBeenCalledWith("/en/dashboard");
   });
 
   it("returns a safe localized error for failed sign-in", async () => {

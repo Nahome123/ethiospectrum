@@ -9,6 +9,7 @@ import { signOutAction } from "@/lib/auth/actions";
 import { getCurrentMemberProfile, getCurrentSupabaseUser, getCurrentUserRole } from "@/lib/supabase/server";
 import type { AppLocale } from "@/i18n/routing";
 import { MemberNavigation } from "./member-navigation";
+import { AdminViewSwitcher, MemberPreview } from "./admin-view-switcher";
 
 /** Household workspace navigation (PRD sections 32-33). */
 const householdLinks = [
@@ -32,6 +33,8 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
     ? await Promise.all([getCurrentMemberProfile(user.id), getCurrentUserRole(user.id)])
     : [null, null];
   const displayName = profile?.first_name || user?.email || t("member.profile");
+  // Administrators see the household area as a read-only preview.
+  const isAdministrator = role === "administrator";
   // Staff accounts reach shared pages (notifications, settings) from their own workspace.
   const links =
     role === "specialist"
@@ -56,17 +59,14 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
           menuLabel={t("common.menu")}
           openLabel={t("common.openMenu")}
         />
-        {role === "administrator" ? (
-          <Link
-            className="mt-4 block rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white"
-            href="/admin"
-          >
-            {t("navigation.admin")}
-          </Link>
-        ) : null}
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-end gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
+          {isAdministrator ? (
+            <div className="mr-auto">
+              <AdminViewSwitcher current="member" />
+            </div>
+          ) : null}
           <div className="flex items-center gap-3">
             <NotificationBell />
             <LanguageSelector />
@@ -83,7 +83,9 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
             </form>
           </div>
         </header>
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="p-4 sm:p-6 lg:p-8">
+          {isAdministrator ? <MemberPreview>{children}</MemberPreview> : children}
+        </main>
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ describe("resource translation architecture", () => {
   it("keeps authorization global and does not import household access", () => {
     expect(actions).toContain("getAuthenticatedUser");
     expect(actions).toContain('user?.role === "administrator"');
-    expect(actions).toContain('user?.role === "content_editor"');
+    expect(actions).not.toContain("content_editor");
     expect(actions).not.toMatch(/household|membership|permission/i);
     expect(actions).not.toContain("createAdminSupabaseClient");
   });

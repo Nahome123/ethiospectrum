@@ -627,7 +627,8 @@
     "haveAccount": "Already have an account?",
     "needAccount": "Need an account?",
     "backToLogin": "Back to sign in",
-    "signupCaregiverDescription": "Create your caregiver account with the email address the household owner invited. After confirming your email you'll join their household."
+    "signupCaregiverDescription": "Create your caregiver account with the email address the household owner invited. After confirming your email you'll join their household.",
+    "roleChangedNotice": "Your role was changed. Please sign in again to continue with your new access."
   },
   "dashboard": {
     "welcome": "Welcome to your family workspace",
@@ -2843,5 +2844,13 @@
       "Written translation of IEP material",
       "Remote sessions or in person at Ethiospectrum, the school, or an agreed location"
     ]
+  },
+  "adminView": {
+    "label": "Choose view",
+    "admin": "Admin console",
+    "member": "Member view",
+    "specialist": "Specialist view",
+    "memberPreviewTitle": "Member view (read-only preview)",
+    "memberPreviewDescription": "You are seeing what members see. Administrators cannot submit requests, make payments, or change household data here."
   }
 }

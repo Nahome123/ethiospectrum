@@ -119,7 +119,7 @@ describe("resource discovery administration", () => {
 
   it.each([
     ["member", { id: "member", role: "member" }],
-    ["content editor", { id: "editor", role: "content_editor" }],
+    ["specialist", { id: "specialist", role: "specialist" }],
     ["anonymous user", null],
   ])("denies %s before database access", async (_label, actor) => {
     mocks.getAuthenticatedUser.mockResolvedValue(actor);

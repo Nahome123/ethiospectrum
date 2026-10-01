@@ -14,6 +14,7 @@ import {
 } from "@/lib/validation/auth";
 import { getLocaleDashboardPath, getSafeLocaleRedirect } from "./redirects";
 import { clearPasswordRecoveryIntent, hasPasswordRecoveryIntent } from "./recovery";
+import { getRoleHomePath } from "./role-session";
 import { getSiteUrl } from "./site-url";
 import type { AuthActionState } from "./action-state";
 import { ONBOARDING_POLICY_VERSION } from "@/lib/onboarding/policy";
@@ -104,7 +105,9 @@ export async function signUpAction(
   // "check your email" screen and continue where the confirmation link would go.
   if (data?.session) {
     revalidatePath("/", "layout");
-    redirect(hasInvitation ? `/${localeValue}/invitations/${invitation}` : getLocaleDashboardPath(localeValue));
+    redirect(
+      hasInvitation ? `/${localeValue}/invitations/${invitation}` : getLocaleDashboardPath(localeValue),
+    );
   }
   redirect(`/${localeValue}/check-email`);
 }
@@ -122,7 +125,7 @@ export async function signInAction(
     return { status: "error", message: t("validationError"), email: String(formData.get("email") ?? "") };
 
   const supabase = await createServerActionSupabaseClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
     if (isEmailConfirmationRequiredError(error)) {
       return {
@@ -134,11 +137,17 @@ export async function signInAction(
     }
     return { status: "error", message: t("invalidCredentials"), email: parsed.data.email };
   }
-  const next = getSafeLocaleRedirect(
-    String(formData.get("next") ?? ""),
-    getLocaleDashboardPath(localeValue),
-    localeValue,
-  );
+  // Without an explicit destination, staff start in their own workspace.
+  let home = getLocaleDashboardPath(localeValue);
+  if (data?.user) {
+    const { data: roleRow } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .maybeSingle();
+    home = getRoleHomePath(localeValue, roleRow?.role ?? null);
+  }
+  const next = getSafeLocaleRedirect(String(formData.get("next") ?? ""), home, localeValue);
   revalidatePath("/", "layout");
   redirect(next);
 }

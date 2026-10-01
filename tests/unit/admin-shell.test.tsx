@@ -38,6 +38,9 @@ vi.mock("@/components/layout/language-selector", () => ({
 vi.mock("@/components/layout/notification-bell", () => ({
   NotificationBell: () => <span>Notifications</span>,
 }));
+vi.mock("@/components/layout/admin-view-switcher", () => ({
+  AdminViewSwitcher: ({ current }: { current: string }) => <nav aria-label="Choose view">{current}</nav>,
+}));
 
 import { AdminShell } from "@/components/layout/admin-shell";
 

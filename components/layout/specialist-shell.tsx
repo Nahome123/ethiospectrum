@@ -5,7 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "./brand-logo";
 import { NotificationBell } from "./notification-bell";
 import { signOutAction } from "@/lib/auth/actions";
-import { getCurrentMemberProfile, getCurrentSupabaseUser } from "@/lib/supabase/server";
+import { getCurrentMemberProfile, getCurrentSupabaseUser, getCurrentUserRole } from "@/lib/supabase/server";
+import { AdminViewSwitcher } from "./admin-view-switcher";
 import type { AppLocale } from "@/i18n/routing";
 
 const links = [
@@ -19,7 +20,9 @@ export async function SpecialistShell({ children }: Readonly<{ children: React.R
   const t = await getTranslations();
   const locale = (await getLocale()) as AppLocale;
   const user = await getCurrentSupabaseUser();
-  const profile = user ? await getCurrentMemberProfile(user.id) : null;
+  const [profile, role] = user
+    ? await Promise.all([getCurrentMemberProfile(user.id), getCurrentUserRole(user.id)])
+    : [null, null];
   const displayName = profile?.first_name || user?.email || t("member.profile");
 
   return (
@@ -43,7 +46,11 @@ export async function SpecialistShell({ children }: Readonly<{ children: React.R
       </aside>
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
-          <p className="text-sm font-semibold text-primary">{t("specialistConsole.workspace")}</p>
+          {role === "administrator" ? (
+            <AdminViewSwitcher current="specialist" />
+          ) : (
+            <p className="text-sm font-semibold text-primary">{t("specialistConsole.workspace")}</p>
+          )}
           <div className="flex items-center gap-3">
             <NotificationBell />
             <LanguageSelector />

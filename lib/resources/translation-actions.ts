@@ -19,7 +19,7 @@ function field(formData: FormData, name: string): string {
 
 async function canManageTranslations(): Promise<boolean> {
   const user = await getAuthenticatedUser();
-  return user?.role === "administrator" || user?.role === "content_editor";
+  return user?.role === "administrator";
 }
 
 function paths(

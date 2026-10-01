@@ -6020,7 +6020,7 @@ export type Database = {
       };
     };
     Enums: {
-      app_role: "member" | "specialist" | "content_editor" | "administrator";
+      app_role: "member" | "specialist" | "administrator";
       document_upload_status: "pending" | "uploaded" | "failed" | "archived";
       household_permission: "owner" | "administrator" | "member" | "viewer";
       member_status: "active" | "invited" | "removed";
@@ -6151,7 +6151,7 @@ export const Constants = {
   },
   public: {
     Enums: {
-      app_role: ["member", "specialist", "content_editor", "administrator"],
+      app_role: ["member", "specialist", "administrator"],
       document_upload_status: ["pending", "uploaded", "failed", "archived"],
       household_permission: ["owner", "administrator", "member", "viewer"],
       member_status: ["active", "invited", "removed"],

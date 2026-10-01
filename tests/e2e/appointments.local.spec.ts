@@ -63,7 +63,7 @@ async function createConfirmedUser(email: string, label: string) {
   return requireUuid(data.user.id, "user id");
 }
 
-function setGlobalRole(userId: string, role: "administrator" | "specialist" | "content_editor") {
+function setGlobalRole(userId: string, role: "administrator" | "specialist" | "member") {
   runLocalSql(
     `update public.user_roles set role = '${role}' where user_id = '${requireUuid(userId, "user id")}'`,
   );

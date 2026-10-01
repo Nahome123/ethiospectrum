@@ -1,6 +1,7 @@
 import "server-only";
 import { createServerComponentSupabaseClient, getCurrentSupabaseClaims } from "@/lib/supabase/server";
 import { getCurrentUserRole } from "@/lib/supabase/server";
+import { hasSpecialistRole } from "@/lib/auth/role-session";
 
 export type AssignableSpecialist = {
   id: string;
@@ -56,12 +57,12 @@ export type SpecialistSupportRequestDetail = {
   message_count: number;
 };
 
-/** Confirms the caller holds the global specialist role before rendering. */
+/** Confirms the caller holds the global specialist role (administrators do too) before rendering. */
 export async function getCurrentSpecialistUser(): Promise<{ id: string } | null> {
   const claims = await getCurrentSupabaseClaims();
   if (!claims || typeof claims.sub !== "string") return null;
   const role = await getCurrentUserRole(claims.sub);
-  return role === "specialist" ? { id: claims.sub } : null;
+  return hasSpecialistRole(role) ? { id: claims.sub } : null;
 }
 
 /** Returns null on a load failure so pages can distinguish it from empty data. */
