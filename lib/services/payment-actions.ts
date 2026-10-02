@@ -4,8 +4,8 @@ import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
 import { getSiteUrl } from "@/lib/auth/site-url";
 import { ensureStripeCustomer } from "@/lib/billing/customer";
-import { getStripeClient, isStripeAutomaticTaxEnabled } from "@/lib/billing/provider";
-import { getStripeBillingEnv } from "@/lib/env/server";
+import { getStripeClient } from "@/lib/billing/provider";
+import { describeStripeBillingEnvProblems, getStripeBillingEnv } from "@/lib/env/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/server";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
@@ -30,11 +30,20 @@ async function failure(locale: AppLocale, key: string): Promise<ServiceActionSta
 }
 
 function paymentsConfigured(): boolean {
+  let configured = false;
   try {
-    return Boolean(getStripeBillingEnv());
+    configured = Boolean(getStripeBillingEnv());
   } catch {
-    return false;
+    configured = false;
   }
+  if (!configured) {
+    // Variable names and problem types only; values are never logged.
+    console.error("Stripe payments are not configured", {
+      problems: describeStripeBillingEnvProblems(),
+      vercelEnv: process.env.VERCEL_ENV ?? null,
+    });
+  }
+  return configured;
 }
 
 /**
@@ -88,9 +97,9 @@ export async function startServicePaymentAction(
       ethiospectrum_household_id: payment.household_id,
     };
     const siteUrl = getSiteUrl();
-    const automaticTax = isStripeAutomaticTaxEnabled();
     const session = await stripe.checkout.sessions.create(
       {
+        ui_mode: "hosted_page",
         mode: "payment",
         customer: customerId,
         client_reference_id: payment.household_id,
@@ -110,9 +119,13 @@ export async function startServicePaymentAction(
         ],
         metadata,
         payment_intent_data: { metadata },
-        ...(automaticTax
-          ? { automatic_tax: { enabled: true }, customer_update: { address: "auto" as const } }
-          : {}),
+        billing_address_collection: "auto",
+        phone_number_collection: { enabled: false },
+        automatic_tax: { enabled: false },
+        allow_promotion_codes: false,
+        submit_type: "auto",
+        integration_identifier: "hosted_web_0001",
+        origin_context: "web",
         success_url: `${siteUrl}/${locale}/requests/${request.data}?payment=return&session={CHECKOUT_SESSION_ID}`,
         cancel_url: `${siteUrl}/${locale}/requests/${request.data}?payment=cancelled`,
       },

@@ -10,12 +10,7 @@ import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/ser
 import { billingCheckoutSchema, billingReconciliationSchema } from "@/lib/validation/billing";
 import type { BillingActionState } from "./action-state";
 import { ensureStripeCustomer } from "./customer";
-import {
-  getConfiguredBillingInterval,
-  getRbtMonthlyPriceId,
-  getStripeClient,
-  isStripeAutomaticTaxEnabled,
-} from "./provider";
+import { getConfiguredBillingInterval, getRbtMonthlyPriceId, getStripeClient } from "./provider";
 import { reconcileBillingHousehold } from "./sync";
 
 function value(formData: FormData, key: string): string {
@@ -83,8 +78,8 @@ export async function createBillingCheckoutSessionAction(
     if (hasManagedSubscription) return { status: "error", message: t("errors.updatedElsewhere") };
 
     const siteUrl = getSiteUrl();
-    const automaticTax = isStripeAutomaticTaxEnabled();
     const session = await stripe.checkout.sessions.create({
+      ui_mode: "hosted_page",
       mode: "subscription",
       customer: customerId,
       client_reference_id: context.household.id,
@@ -93,9 +88,14 @@ export async function createBillingCheckoutSessionAction(
       subscription_data: {
         metadata: { ethiospectrum_household_id: context.household.id },
       },
-      ...(automaticTax
-        ? { automatic_tax: { enabled: true }, customer_update: { address: "auto" as const } }
-        : {}),
+      billing_address_collection: "auto",
+      phone_number_collection: { enabled: false },
+      automatic_tax: { enabled: false },
+      allow_promotion_codes: false,
+      payment_method_collection: "always",
+      submit_type: "auto",
+      integration_identifier: "hosted_web_0001",
+      origin_context: "web",
       success_url: `${siteUrl}/${locale}/billing?checkout=success`,
       cancel_url: `${siteUrl}/${locale}/billing?checkout=cancelled`,
     });
