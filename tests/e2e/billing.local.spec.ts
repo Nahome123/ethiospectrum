@@ -52,10 +52,7 @@ function runLocalSql(sql: string, variables: Record<string, string> = {}) {
   );
 }
 
-async function createActor(
-  role: "member" | "administrator" | "specialist",
-  label: string,
-) {
+async function createActor(role: "member" | "administrator" | "specialist", label: string) {
   const email = `billing-${label}-${Date.now()}-${randomUUID()}@example.test`;
   const result = await localAdmin().auth.admin.createUser({
     email,

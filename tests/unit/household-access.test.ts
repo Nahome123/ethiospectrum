@@ -59,7 +59,9 @@ describe("getHouseholdAccess", () => {
   it("reads the membership directly when the RPC is missing from the database", async () => {
     mocks.rpc.mockResolvedValue({ data: null, error: { code: "PGRST202", message: "not found" } });
     mocks.membership.mockResolvedValue({
-      data: [{ permission: "owner", households: { ...household, deleted_at: null, created_at: "2026-09-29" } }],
+      data: [
+        { permission: "owner", households: { ...household, deleted_at: null, created_at: "2026-09-29" } },
+      ],
       error: null,
     });
     const access = await getHouseholdAccess();
@@ -71,7 +73,9 @@ describe("getHouseholdAccess", () => {
   it("gives a caregiver no launch permissions in the fallback", async () => {
     mocks.rpc.mockResolvedValue({ data: null, error: { code: "PGRST202", message: "not found" } });
     mocks.membership.mockResolvedValue({
-      data: [{ permission: "member", households: { ...household, deleted_at: null, created_at: "2026-09-29" } }],
+      data: [
+        { permission: "member", households: { ...household, deleted_at: null, created_at: "2026-09-29" } },
+      ],
       error: null,
     });
     await expect(getHouseholdAccess()).resolves.toMatchObject({ isOwner: false, permissions: [] });
