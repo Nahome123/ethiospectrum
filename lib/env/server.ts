@@ -426,6 +426,36 @@ export function getNotificationEmailEnv(input?: EnvInput): NotificationEmailEnv 
   return { apiKey, from };
 }
 
+const stripeEnvFormats = [
+  ["STRIPE_SECRET_KEY", /^sk_(?:test|live)_/, "sk_test_ or sk_live_"],
+  ["STRIPE_WEBHOOK_SECRET", /^whsec_/, "whsec_"],
+  ["STRIPE_RBT_MONTHLY_PRICE_ID", /^price_/, "price_"],
+] as const;
+
+/**
+ * Explains why the Stripe configuration is unusable, naming variables but never
+ * their values, so a misconfigured deployment can be diagnosed from its logs.
+ */
+export function describeStripeBillingEnvProblems(input?: EnvInput): string[] {
+  const problems: string[] = [];
+  for (const [name, prefix, expected] of stripeEnvFormats) {
+    const raw = input?.[name] ?? process.env[name];
+    const value = raw?.trim() ?? "";
+    if (!value) {
+      if (name !== "STRIPE_RBT_MONTHLY_PRICE_ID") problems.push(`${name} is missing or empty`);
+      continue;
+    }
+    if (!prefix.test(value)) {
+      problems.push(`${name} does not start with ${expected} (found prefix "${value.split("_")[0]}_")`);
+    } else if (!/^[a-z]+_(?:(?:test|live)_)?[A-Za-z0-9]+$/.test(value)) {
+      problems.push(
+        `${name} contains characters other than letters and digits (quotes, spaces, or line breaks?)`,
+      );
+    }
+  }
+  return problems;
+}
+
 export function requireStripeBillingEnv(input?: EnvInput): StripeBillingEnv {
   const env = getStripeBillingEnv(input);
   if (!env) {
