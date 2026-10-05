@@ -1,12 +1,20 @@
 import { Bell } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { notificationsPath, type NotificationAudience } from "@/lib/notifications/audience";
 import { formatUnreadCount, getUnreadNotificationCount } from "@/lib/notifications/server";
 import { cn } from "@/lib/utils";
 
-export async function NotificationBell({ onDark = false }: { onDark?: boolean }) {
+/** Links to, and counts, only the given workspace's notifications. */
+export async function NotificationBell({
+  audience,
+  onDark = false,
+}: {
+  audience: NotificationAudience;
+  onDark?: boolean;
+}) {
   const t = await getTranslations("notifications");
-  const count = await getUnreadNotificationCount();
+  const count = await getUnreadNotificationCount(audience);
   const badge = formatUnreadCount(count);
   return (
     <Link
@@ -15,7 +23,7 @@ export async function NotificationBell({ onDark = false }: { onDark?: boolean })
         "relative inline-flex size-10 items-center justify-center rounded-md border focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
         onDark ? "border-slate-600 text-white hover:bg-slate-800" : "border-border hover:bg-secondary",
       )}
-      href="/notifications"
+      href={notificationsPath(audience)}
     >
       <Bell aria-hidden="true" className="size-4" />
       {badge ? (

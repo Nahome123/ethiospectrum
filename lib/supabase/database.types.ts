@@ -4957,7 +4957,7 @@ export type Database = {
         }[];
       };
       get_notification_summary: {
-        Args: never;
+        Args: { input_audience?: string };
         Returns: {
           unread_count: number;
         }[];
@@ -5315,7 +5315,7 @@ export type Database = {
         }[];
       };
       list_notifications: {
-        Args: { input_page?: number };
+        Args: { input_audience?: string; input_page?: number };
         Returns: {
           created_at: string;
           id: string;
@@ -5590,7 +5590,7 @@ export type Database = {
           timezone: string;
         }[];
       };
-      mark_notifications_read: { Args: { target_ids?: string[] }; Returns: number };
+      mark_notifications_read: { Args: { input_audience?: string; target_ids?: string[] }; Returns: number };
       mark_reminder_seen: { Args: { target_reminder_id: string }; Returns: boolean };
       prepare_service_payment: {
         Args: {

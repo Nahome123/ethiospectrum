@@ -19,6 +19,7 @@ const links = [
   ["specialists", "/admin/specialists"],
   ["users", "/admin/users"],
   ["trainingContent", "/admin/training"],
+  ["notifications", "/admin/notifications"],
 ] as const;
 
 export async function AdminShell({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -54,7 +55,7 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
             <AdminViewSwitcher current="admin" />
           </div>
           <div className="flex items-center gap-3">
-            <NotificationBell />
+            <NotificationBell audience="admin" />
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
               {displayName}

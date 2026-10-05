@@ -2158,7 +2158,8 @@
       "serviceConfiguration": "የአገልግሎት ቅንብር",
       "specialists": "ባለሙያዎች",
       "users": "ተጠቃሚዎች እና ሚናዎች",
-      "trainingContent": "የስልጠና ይዘት"
+      "trainingContent": "የስልጠና ይዘት",
+      "notifications": "ማሳወቂያዎች"
     },
     "overviewTitle": "የሥራ አጠቃላይ እይታ",
     "overviewDescription": "ትኩረት የሚያስፈልጋቸው ሁሉም የአገልግሎት ጥያቄዎች በሥራ ወረፋዎች ተመድበው።",

@@ -2158,7 +2158,8 @@
       "serviceConfiguration": "Configuración de servicios",
       "specialists": "Especialistas",
       "users": "Usuarios y roles",
-      "trainingContent": "Contenido de capacitación"
+      "trainingContent": "Contenido de capacitación",
+      "notifications": "Notificaciones"
     },
     "overviewTitle": "Resumen de operaciones",
     "overviewDescription": "Todas las solicitudes de servicio que requieren atención, agrupadas en colas de trabajo.",

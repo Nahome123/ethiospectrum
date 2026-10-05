@@ -2158,7 +2158,8 @@
       "serviceConfiguration": "Service configuration",
       "specialists": "Specialists",
       "users": "Users and roles",
-      "trainingContent": "Training content"
+      "trainingContent": "Training content",
+      "notifications": "Notifications"
     },
     "overviewTitle": "Operations overview",
     "overviewDescription": "Every service request that needs attention, grouped into work queues.",

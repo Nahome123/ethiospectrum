@@ -68,7 +68,7 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
             </div>
           ) : null}
           <div className="flex items-center gap-3">
-            <NotificationBell />
+            <NotificationBell audience="family" />
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
               {displayName}

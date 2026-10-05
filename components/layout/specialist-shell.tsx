@@ -12,7 +12,7 @@ import type { AppLocale } from "@/i18n/routing";
 const links = [
   ["dashboard", "/specialist"],
   ["closed", "/specialist?scope=closed"],
-  ["notifications", "/notifications"],
+  ["notifications", "/specialist/notifications"],
   ["settings", "/settings"],
 ] as const;
 
@@ -52,7 +52,7 @@ export async function SpecialistShell({ children }: Readonly<{ children: React.R
             <p className="text-sm font-semibold text-primary">{t("specialistConsole.workspace")}</p>
           )}
           <div className="flex items-center gap-3">
-            <NotificationBell />
+            <NotificationBell audience="specialist" />
             <LanguageSelector />
             <span className="max-w-40 truncate text-sm font-semibold" title={displayName}>
               {displayName}
