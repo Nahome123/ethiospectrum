@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { ActionForm } from "@/components/services/action-form";
 import { StatusPill } from "@/components/services/status-badge";
@@ -6,6 +6,7 @@ import { TrainingMediaUpload } from "@/components/training/training-media-upload
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import {
   moveTrainingItemAction,
@@ -20,9 +21,27 @@ import {
   type TrainingLesson,
   type TrainingModule,
 } from "@/lib/training/server";
+import { cn } from "@/lib/utils";
 
 type Status = "draft" | "published" | "archived";
+type Entity = "course" | "module" | "lesson";
 const statusTone = { draft: "warning", published: "success", archived: "neutral" } as const;
+
+/**
+ * What the editor panel shows, from the URL. One item is edited at a time:
+ * `?course=` selects a course; `edit=course|module|lesson` with `id=` edits an
+ * item; `new=course|module|lesson` (with `module=` for a lesson) adds one.
+ */
+type EditorTarget =
+  | { kind: "none" }
+  | { kind: "course"; course: TrainingCourse | null }
+  | { kind: "module"; module: TrainingModule | null; courseId: string }
+  | { kind: "lesson"; lesson: TrainingLesson | null; moduleId: string };
+
+function param(search: Record<string, string | string[] | undefined>, name: string): string {
+  const value = search[name];
+  return typeof value === "string" ? value : "";
+}
 
 function loc(value: unknown, locale: "am" | "es", field: string): string {
   if (!value || typeof value !== "object" || Array.isArray(value)) return "";
@@ -32,37 +51,40 @@ function loc(value: unknown, locale: "am" | "es", field: string): string {
   return typeof result === "string" ? result : "";
 }
 
-async function ItemControls({
+function href(courseId: string | null, extra: Record<string, string> = {}): string {
+  const params = new URLSearchParams();
+  if (courseId) params.set("course", courseId);
+  for (const [key, value] of Object.entries(extra)) params.set(key, value);
+  const text = params.toString();
+  return text ? `/admin/training?${text}` : "/admin/training";
+}
+
+/** Publish/unpublish (or restore) in one click, plus reordering. Archiving lives in the editor. */
+async function QuickControls({
   entity,
   id,
   locale,
   status,
 }: {
-  entity: "course" | "module" | "lesson";
+  entity: Entity;
   id: string;
   locale: AppLocale;
   status: Status;
 }) {
   const t = await getTranslations({ locale, namespace: "adminTraining" });
-  const next: Status[] =
-    status === "published"
-      ? ["draft", "archived"]
-      : status === "draft"
-        ? ["published", "archived"]
-        : ["draft"];
+  const next: Status = status === "published" ? "draft" : status === "draft" ? "published" : "draft";
+  const label = status === "archived" ? t("restore") : t(`setStatus.${next}`);
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex shrink-0 items-center gap-1.5">
       <StatusPill label={t(`status.${status}`)} tone={statusTone[status]} />
-      {next.map((value) => (
-        <form action={setTrainingStatusAction.bind(null, locale, entity, id, value)} key={value}>
-          <button
-            className="rounded-full border px-2.5 py-0.5 text-xs font-semibold hover:bg-secondary"
-            type="submit"
-          >
-            {t(`setStatus.${value}`)}
-          </button>
-        </form>
-      ))}
+      <form action={setTrainingStatusAction.bind(null, locale, entity, id, next)}>
+        <button
+          className="rounded-full border px-2.5 py-0.5 text-xs font-semibold hover:bg-secondary"
+          type="submit"
+        >
+          {label}
+        </button>
+      </form>
       <form action={moveTrainingItemAction.bind(null, locale, entity, id, "up")}>
         <button aria-label={t("moveUp")} className="rounded-full border p-1 hover:bg-secondary" type="submit">
           <ArrowUp aria-hidden="true" className="size-3.5" />
@@ -81,32 +103,27 @@ async function ItemControls({
   );
 }
 
-async function StatusSelect({
-  defaultValue,
-  id,
-  locale,
-}: {
-  defaultValue: Status;
-  id: string;
-  locale: AppLocale;
-}) {
+async function StatusChoice({ defaultValue, locale }: { defaultValue: Status; locale: AppLocale }) {
   const t = await getTranslations({ locale, namespace: "adminTraining" });
   return (
-    <div className="space-y-1.5">
-      <Label htmlFor={id}>{t("statusLabel")}</Label>
-      <select
-        className="h-10 w-full rounded-md border border-input bg-background px-3"
-        defaultValue={defaultValue}
-        id={id}
-        name="status"
-      >
+    <fieldset className="space-y-2">
+      <legend className="text-sm font-medium">{t("statusLabel")}</legend>
+      <div className="flex flex-wrap gap-4 text-sm">
         {(["draft", "published", "archived"] as const).map((value) => (
-          <option key={value} value={value}>
+          <label className="flex items-center gap-2" key={value}>
+            <input
+              className="size-4"
+              defaultChecked={defaultValue === value}
+              name="status"
+              type="radio"
+              value={value}
+            />
             {t(`status.${value}`)}
-          </option>
+          </label>
         ))}
-      </select>
-    </div>
+      </div>
+      <p className="text-xs text-muted-foreground">{t("statusHelp")}</p>
+    </fieldset>
   );
 }
 
@@ -155,248 +172,45 @@ async function TranslationFields({
   );
 }
 
-async function LessonForm({
-  lesson,
-  locale,
-  moduleId,
-}: {
-  lesson: TrainingLesson | null;
-  locale: AppLocale;
-  moduleId: string;
-}) {
-  const t = await getTranslations({ locale, namespace: "adminTraining" });
-  const key = lesson?.id ?? `new-${moduleId}`;
+function FormSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <ActionForm
-      action={saveTrainingLessonAction.bind(null, locale)}
-      pendingLabel={t("saving")}
-      submitLabel={t("saveLesson")}
-    >
-      <input name="id" type="hidden" value={lesson?.id ?? ""} />
-      <input name="moduleId" type="hidden" value={moduleId} />
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor={`${key}-title`}>{t("lessonTitle")}</Label>
-          <Input defaultValue={lesson?.title} id={`${key}-title`} maxLength={160} name="title" required />
-        </div>
-        <StatusSelect
-          defaultValue={(lesson?.status as Status) ?? "draft"}
-          id={`${key}-status`}
-          locale={locale}
-        />
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor={`${key}-description`}>{t("summary")}</Label>
-        <Textarea
-          defaultValue={lesson?.description ?? ""}
-          id={`${key}-description`}
-          maxLength={4000}
-          name="description"
-          rows={2}
-        />
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor={`${key}-body`}>{t("lessonNotes")}</Label>
-        <Textarea
-          defaultValue={lesson?.body ?? ""}
-          id={`${key}-body`}
-          maxLength={20000}
-          name="body"
-          rows={4}
-        />
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label htmlFor={`${key}-video`}>{t("videoUrl")}</Label>
-          <Input
-            defaultValue={lesson?.video_url ?? ""}
-            id={`${key}-video`}
-            name="videoUrl"
-            placeholder="https://www.youtube.com/watch?v=…"
-            type="url"
-          />
-          {lesson?.video_storage_path ? (
-            <p className="text-xs text-muted-foreground">{t("uploadedVideoInUse")}</p>
-          ) : null}
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`${key}-duration`}>{t("durationMinutes")}</Label>
-          <Input
-            defaultValue={lesson?.duration_minutes ?? ""}
-            id={`${key}-duration`}
-            max={600}
-            min={1}
-            name="durationMinutes"
-            type="number"
-          />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`${key}-resource`}>{t("resourceUrl")}</Label>
-          <Input
-            defaultValue={lesson?.resource_url ?? ""}
-            id={`${key}-resource`}
-            name="resourceUrl"
-            placeholder="https://… or /training/rbt"
-          />
-          {lesson?.resource_storage_path ? (
-            <p className="text-xs text-muted-foreground">{t("uploadedResourceInUse")}</p>
-          ) : null}
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`${key}-resource-label`}>{t("resourceLabel")}</Label>
-          <Input
-            defaultValue={lesson?.resource_label ?? ""}
-            id={`${key}-resource-label`}
-            maxLength={160}
-            name="resourceLabel"
-          />
-        </div>
-      </div>
-      <TranslationFields
-        fields={["title", "description", "body"]}
-        idPrefix={key}
-        locale={locale}
-        localized={lesson?.localized}
-      />
-    </ActionForm>
+    <fieldset className="space-y-3 border-t pt-4 first:border-t-0 first:pt-0">
+      <legend className="mb-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+        {title}
+      </legend>
+      {children}
+    </fieldset>
   );
 }
 
-async function ModuleBlock({
-  lessons,
-  locale,
-  module,
-}: {
-  lessons: TrainingLesson[];
-  locale: AppLocale;
-  module: TrainingModule;
-}) {
-  const t = await getTranslations({ locale, namespace: "adminTraining" });
-  return (
-    <li className="rounded-xl border bg-slate-50 p-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <h3 className="font-bold">{module.title}</h3>
-        <ItemControls entity="module" id={module.id} locale={locale} status={module.status as Status} />
-      </div>
-      <details className="mt-2">
-        <summary className="cursor-pointer text-sm font-semibold underline">{t("editModule")}</summary>
-        <div className="mt-3">
-          <ActionForm
-            action={saveTrainingModuleAction.bind(null, locale)}
-            pendingLabel={t("saving")}
-            submitLabel={t("saveModule")}
-          >
-            <input name="id" type="hidden" value={module.id} />
-            <input name="courseId" type="hidden" value={module.course_id} />
-            <div className="grid gap-3 sm:grid-cols-3">
-              <div className="space-y-1.5 sm:col-span-2">
-                <Label htmlFor={`${module.id}-title`}>{t("moduleTitle")}</Label>
-                <Input
-                  defaultValue={module.title}
-                  id={`${module.id}-title`}
-                  maxLength={160}
-                  name="title"
-                  required
-                />
-              </div>
-              <StatusSelect
-                defaultValue={module.status as Status}
-                id={`${module.id}-status`}
-                locale={locale}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor={`${module.id}-description`}>{t("summary")}</Label>
-              <Textarea
-                defaultValue={module.description ?? ""}
-                id={`${module.id}-description`}
-                name="description"
-                rows={2}
-              />
-            </div>
-            <TranslationFields
-              fields={["title", "description"]}
-              idPrefix={module.id}
-              locale={locale}
-              localized={module.localized}
-            />
-          </ActionForm>
-        </div>
-      </details>
-      <ul className="mt-4 space-y-3">
-        {lessons.map((lesson) => (
-          <li className="rounded-lg border bg-white p-3" key={lesson.id}>
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p className="font-semibold">{lesson.title}</p>
-                <p className="text-xs text-muted-foreground">
-                  {[
-                    lesson.video_url || lesson.video_storage_path ? t("hasVideo") : null,
-                    lesson.resource_url || lesson.resource_storage_path ? t("hasResource") : null,
-                    lesson.duration_minutes ? t("minutes", { count: lesson.duration_minutes }) : null,
-                  ]
-                    .filter(Boolean)
-                    .join(" · ") || t("textOnly")}
-                </p>
-              </div>
-              <ItemControls entity="lesson" id={lesson.id} locale={locale} status={lesson.status as Status} />
-            </div>
-            <details className="mt-2">
-              <summary className="cursor-pointer text-sm font-semibold underline">{t("editLesson")}</summary>
-              <div className="mt-3 space-y-4">
-                <LessonForm lesson={lesson} locale={locale} moduleId={module.id} />
-                <div className="space-y-2 border-t pt-3">
-                  <p className="text-sm font-semibold">{t("privateMedia")}</p>
-                  <TrainingMediaUpload kind="video" lessonId={lesson.id} locale={locale} />
-                  <TrainingMediaUpload kind="resource" lessonId={lesson.id} locale={locale} />
-                </div>
-              </div>
-            </details>
-          </li>
-        ))}
-      </ul>
-      <details className="mt-3">
-        <summary className="cursor-pointer text-sm font-semibold text-primary underline">
-          {t("addLesson")}
-        </summary>
-        <div className="mt-3 rounded-lg border bg-white p-3">
-          <LessonForm lesson={null} locale={locale} moduleId={module.id} />
-        </div>
-      </details>
-    </li>
-  );
-}
-
-async function CourseForm({ course, locale }: { course: TrainingCourse | null; locale: AppLocale }) {
+async function CourseEditor({ course, locale }: { course: TrainingCourse | null; locale: AppLocale }) {
   const t = await getTranslations({ locale, namespace: "adminTraining" });
   const key = course?.id ?? "new-course";
   return (
     <ActionForm
       action={saveTrainingCourseAction.bind(null, locale)}
+      key={key}
       pendingLabel={t("saving")}
       submitLabel={t("saveCourse")}
     >
       <input name="id" type="hidden" value={course?.id ?? ""} />
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div className="space-y-1.5">
-          <Label htmlFor={`${key}-title`}>{t("courseTitle")}</Label>
-          <Input defaultValue={course?.title} id={`${key}-title`} maxLength={160} name="title" required />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor={`${key}-slug`}>{t("slug")}</Label>
-          <Input
-            defaultValue={course?.slug}
-            id={`${key}-slug`}
-            name="slug"
-            pattern="[a-z0-9][a-z0-9-]{1,79}"
-            required
-          />
-        </div>
-        <StatusSelect
-          defaultValue={(course?.status as Status) ?? "draft"}
-          id={`${key}-status`}
-          locale={locale}
+      <div className="space-y-1.5">
+        <Label htmlFor={`${key}-title`}>{t("courseTitle")}</Label>
+        <Input defaultValue={course?.title} id={`${key}-title`} maxLength={160} name="title" required />
+      </div>
+      <div className="space-y-1.5">
+        <Label htmlFor={`${key}-slug`}>{t("slug")}</Label>
+        <Input
+          aria-describedby={`${key}-slug-help`}
+          defaultValue={course?.slug}
+          id={`${key}-slug`}
+          name="slug"
+          pattern="[a-z0-9][a-z0-9-]{1,79}"
+          required
         />
+        <p className="text-xs text-muted-foreground" id={`${key}-slug-help`}>
+          {t("slugHelp")}
+        </p>
       </div>
       <div className="space-y-1.5">
         <Label htmlFor={`${key}-description`}>{t("summary")}</Label>
@@ -408,6 +222,7 @@ async function CourseForm({ course, locale }: { course: TrainingCourse | null; l
           rows={3}
         />
       </div>
+      <StatusChoice defaultValue={(course?.status as Status) ?? "draft"} locale={locale} />
       <TranslationFields
         fields={["title", "description"]}
         idPrefix={key}
@@ -418,86 +233,423 @@ async function CourseForm({ course, locale }: { course: TrainingCourse | null; l
   );
 }
 
-export default async function AdminTrainingPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale: localeParam } = await params;
+async function ModuleEditor({
+  courseId,
+  locale,
+  module,
+}: {
+  courseId: string;
+  locale: AppLocale;
+  module: TrainingModule | null;
+}) {
+  const t = await getTranslations({ locale, namespace: "adminTraining" });
+  const key = module?.id ?? `new-module-${courseId}`;
+  return (
+    <ActionForm
+      action={saveTrainingModuleAction.bind(null, locale)}
+      key={key}
+      pendingLabel={t("saving")}
+      submitLabel={t("saveModule")}
+    >
+      <input name="id" type="hidden" value={module?.id ?? ""} />
+      <input name="courseId" type="hidden" value={courseId} />
+      <div className="space-y-1.5">
+        <Label htmlFor={`${key}-title`}>{t("moduleTitle")}</Label>
+        <Input defaultValue={module?.title} id={`${key}-title`} maxLength={160} name="title" required />
+      </div>
+      <div className="space-y-1.5">
+        <Label htmlFor={`${key}-description`}>{t("summary")}</Label>
+        <Textarea
+          defaultValue={module?.description ?? ""}
+          id={`${key}-description`}
+          name="description"
+          rows={2}
+        />
+      </div>
+      <StatusChoice defaultValue={(module?.status as Status) ?? "draft"} locale={locale} />
+      <TranslationFields
+        fields={["title", "description"]}
+        idPrefix={key}
+        locale={locale}
+        localized={module?.localized}
+      />
+    </ActionForm>
+  );
+}
+
+async function LessonEditor({
+  lesson,
+  locale,
+  moduleId,
+}: {
+  lesson: TrainingLesson | null;
+  locale: AppLocale;
+  moduleId: string;
+}) {
+  const t = await getTranslations({ locale, namespace: "adminTraining" });
+  const key = lesson?.id ?? `new-lesson-${moduleId}`;
+  return (
+    <div className="space-y-6">
+      <ActionForm
+        action={saveTrainingLessonAction.bind(null, locale)}
+        key={key}
+        pendingLabel={t("saving")}
+        submitLabel={t("saveLesson")}
+      >
+        <input name="id" type="hidden" value={lesson?.id ?? ""} />
+        <input name="moduleId" type="hidden" value={moduleId} />
+        <FormSection title={t("sectionBasics")}>
+          <div className="space-y-1.5">
+            <Label htmlFor={`${key}-title`}>{t("lessonTitle")}</Label>
+            <Input defaultValue={lesson?.title} id={`${key}-title`} maxLength={160} name="title" required />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor={`${key}-description`}>{t("summary")}</Label>
+            <Textarea
+              defaultValue={lesson?.description ?? ""}
+              id={`${key}-description`}
+              maxLength={4000}
+              name="description"
+              rows={2}
+            />
+          </div>
+        </FormSection>
+        <FormSection title={t("sectionVideo")}>
+          <div className="grid gap-3 sm:grid-cols-[1fr_9rem]">
+            <div className="space-y-1.5">
+              <Label htmlFor={`${key}-video`}>{t("videoUrl")}</Label>
+              <Input
+                defaultValue={lesson?.video_url ?? ""}
+                id={`${key}-video`}
+                name="videoUrl"
+                placeholder="https://www.youtube.com/watch?v=…"
+                type="url"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor={`${key}-duration`}>{t("durationMinutes")}</Label>
+              <Input
+                defaultValue={lesson?.duration_minutes ?? ""}
+                id={`${key}-duration`}
+                max={600}
+                min={1}
+                name="durationMinutes"
+                type="number"
+              />
+            </div>
+          </div>
+          {lesson?.video_storage_path ? (
+            <p className="text-xs text-muted-foreground">{t("uploadedVideoInUse")}</p>
+          ) : null}
+        </FormSection>
+        <FormSection title={t("sectionResource")}>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label htmlFor={`${key}-resource`}>{t("resourceUrl")}</Label>
+              <Input
+                defaultValue={lesson?.resource_url ?? ""}
+                id={`${key}-resource`}
+                name="resourceUrl"
+                placeholder="https://… or /training/rbt"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor={`${key}-resource-label`}>{t("resourceLabel")}</Label>
+              <Input
+                defaultValue={lesson?.resource_label ?? ""}
+                id={`${key}-resource-label`}
+                maxLength={160}
+                name="resourceLabel"
+              />
+            </div>
+          </div>
+          {lesson?.resource_storage_path ? (
+            <p className="text-xs text-muted-foreground">{t("uploadedResourceInUse")}</p>
+          ) : null}
+        </FormSection>
+        <FormSection title={t("sectionNotes")}>
+          <div className="space-y-1.5">
+            <Label htmlFor={`${key}-body`}>{t("lessonNotes")}</Label>
+            <Textarea
+              defaultValue={lesson?.body ?? ""}
+              id={`${key}-body`}
+              maxLength={20000}
+              name="body"
+              rows={5}
+            />
+          </div>
+        </FormSection>
+        <FormSection title={t("sectionPublishing")}>
+          <StatusChoice defaultValue={(lesson?.status as Status) ?? "draft"} locale={locale} />
+          <TranslationFields
+            fields={["title", "description", "body"]}
+            idPrefix={key}
+            locale={locale}
+            localized={lesson?.localized}
+          />
+        </FormSection>
+      </ActionForm>
+      {lesson ? (
+        <section className="space-y-2 rounded-lg border bg-slate-50 p-4">
+          <h3 className="text-sm font-semibold">{t("privateMedia")}</h3>
+          <p className="text-xs text-muted-foreground">{t("privateMediaHelp")}</p>
+          <TrainingMediaUpload kind="video" lessonId={lesson.id} locale={locale} />
+          <TrainingMediaUpload kind="resource" lessonId={lesson.id} locale={locale} />
+        </section>
+      ) : (
+        <p className="text-xs text-muted-foreground">{t("uploadAfterSave")}</p>
+      )}
+    </div>
+  );
+}
+
+function lessonMeta(lesson: TrainingLesson, t: (key: string, values?: Record<string, number>) => string) {
+  return (
+    [
+      lesson.video_url || lesson.video_storage_path ? t("hasVideo") : null,
+      lesson.resource_url || lesson.resource_storage_path ? t("hasResource") : null,
+      lesson.duration_minutes ? t("minutes", { count: lesson.duration_minutes }) : null,
+    ]
+      .filter(Boolean)
+      .join(" · ") || t("textOnly")
+  );
+}
+
+export default async function AdminTrainingPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const [{ locale: localeParam }, search] = await Promise.all([params, searchParams]);
   const locale = localeParam as AppLocale;
   const t = await getTranslations({ locale, namespace: "adminTraining" });
   const { courses, modules, lessons } = await getAdminTrainingTree();
 
+  const course = courses.find((row) => row.id === param(search, "course")) ?? courses[0] ?? null;
+  const courseModules = course ? modules.filter((row) => row.course_id === course.id) : [];
+  const editKind = param(search, "edit");
+  const newKind = param(search, "new");
+  const itemId = param(search, "id");
+
+  let target: EditorTarget = { kind: "none" };
+  if (newKind === "course" || (!course && courses.length === 0)) {
+    target = { kind: "course", course: null };
+  } else if (course && editKind === "course") {
+    target = { kind: "course", course };
+  } else if (course && newKind === "module") {
+    target = { kind: "module", module: null, courseId: course.id };
+  } else if (course && editKind === "module") {
+    const found = courseModules.find((row) => row.id === itemId);
+    if (found) target = { kind: "module", module: found, courseId: course.id };
+  } else if (course && newKind === "lesson") {
+    const parent = courseModules.find((row) => row.id === param(search, "module"));
+    if (parent) target = { kind: "lesson", lesson: null, moduleId: parent.id };
+  } else if (course && editKind === "lesson") {
+    const lesson = lessons.find((row) => row.id === itemId);
+    if (lesson && courseModules.some((row) => row.id === lesson.module_id)) {
+      target = { kind: "lesson", lesson, moduleId: lesson.module_id };
+    }
+  }
+
+  const selectedId =
+    target.kind === "course"
+      ? target.course?.id
+      : target.kind === "module"
+        ? target.module?.id
+        : target.kind === "lesson"
+          ? target.lesson?.id
+          : undefined;
+  const editorTitle =
+    target.kind === "course"
+      ? target.course
+        ? t("editCourse")
+        : t("addCourse")
+      : target.kind === "module"
+        ? target.module
+          ? t("editModule")
+          : t("addModule")
+        : target.kind === "lesson"
+          ? target.lesson
+            ? t("editLesson")
+            : t("addLesson")
+          : "";
+  const closeHref = href(course?.id ?? null);
+
   return (
     <section className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">{t("title")}</h1>
-        <p className="mt-2 text-muted-foreground">{t("description")}</p>
-        <p className="mt-2 text-sm text-muted-foreground">{t("progressNotice")}</p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
+          <p className="mt-2 text-muted-foreground">{t("description")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t("progressNotice")}</p>
+        </div>
+        <Link
+          className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
+          href={href(course?.id ?? null, { new: "course" })}
+        >
+          <Plus aria-hidden="true" className="size-4" />
+          {t("addCourse")}
+        </Link>
       </div>
-      <ul className="space-y-6">
-        {courses.map((course) => (
-          <li className="rounded-2xl border bg-white p-5" key={course.id}>
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
+
+      {courses.length > 0 ? (
+        <nav aria-label={t("coursesLabel")} className="flex flex-wrap gap-2">
+          {courses.map((row) => (
+            <Link
+              aria-current={row.id === course?.id ? "page" : undefined}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold",
+                row.id === course?.id
+                  ? "border-slate-900 bg-slate-900 text-white"
+                  : "bg-white hover:bg-secondary",
+              )}
+              href={href(row.id)}
+              key={row.id}
+            >
+              {row.title}
+              <span className="text-xs font-normal opacity-80">{t(`status.${row.status as Status}`)}</span>
+            </Link>
+          ))}
+        </nav>
+      ) : null}
+
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]">
+        {course ? (
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-start justify-between gap-3 rounded-2xl border bg-white p-5">
+              <div className="min-w-0">
                 <h2 className="text-xl font-bold">{course.title}</h2>
                 <p className="text-sm text-muted-foreground">/{course.slug}</p>
-              </div>
-              <ItemControls entity="course" id={course.id} locale={locale} status={course.status as Status} />
-            </div>
-            <details className="mt-2">
-              <summary className="cursor-pointer text-sm font-semibold underline">{t("editCourse")}</summary>
-              <div className="mt-3">
-                <CourseForm course={course} locale={locale} />
-              </div>
-            </details>
-            <ul className="mt-4 space-y-4">
-              {modules
-                .filter((module) => module.course_id === course.id)
-                .map((module) => (
-                  <ModuleBlock
-                    key={module.id}
-                    lessons={lessons.filter((lesson) => lesson.module_id === module.id)}
-                    locale={locale}
-                    module={module}
-                  />
-                ))}
-            </ul>
-            <details className="mt-4">
-              <summary className="cursor-pointer text-sm font-semibold text-primary underline">
-                {t("addModule")}
-              </summary>
-              <div className="mt-3">
-                <ActionForm
-                  action={saveTrainingModuleAction.bind(null, locale)}
-                  pendingLabel={t("saving")}
-                  submitLabel={t("saveModule")}
+                <Link
+                  className="mt-2 inline-block text-sm font-semibold text-primary underline"
+                  href={href(course.id, { edit: "course" })}
                 >
-                  <input name="id" type="hidden" value="" />
-                  <input name="courseId" type="hidden" value={course.id} />
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div className="space-y-1.5 sm:col-span-2">
-                      <Label htmlFor={`new-module-${course.id}`}>{t("moduleTitle")}</Label>
-                      <Input id={`new-module-${course.id}`} maxLength={160} name="title" required />
-                    </div>
-                    <StatusSelect
-                      defaultValue="draft"
-                      id={`new-module-status-${course.id}`}
-                      locale={locale}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor={`new-module-description-${course.id}`}>{t("summary")}</Label>
-                    <Textarea id={`new-module-description-${course.id}`} name="description" rows={2} />
-                  </div>
-                </ActionForm>
+                  {t("editCourseDetails")}
+                </Link>
               </div>
-            </details>
-          </li>
-        ))}
-      </ul>
-      <details className="rounded-2xl border bg-white p-5">
-        <summary className="cursor-pointer font-semibold text-primary">{t("addCourse")}</summary>
-        <div className="mt-3">
-          <CourseForm course={null} locale={locale} />
-        </div>
-      </details>
+              <QuickControls
+                entity="course"
+                id={course.id}
+                locale={locale}
+                status={course.status as Status}
+              />
+            </div>
+
+            <ol className="space-y-4">
+              {courseModules.map((module, moduleIndex) => {
+                const moduleLessons = lessons.filter((lesson) => lesson.module_id === module.id);
+                return (
+                  <li
+                    className={cn(
+                      "rounded-2xl border bg-white",
+                      selectedId === module.id && "ring-2 ring-primary/40",
+                    )}
+                    key={module.id}
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-3 border-b p-4">
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                          {t("moduleNumber", { number: moduleIndex + 1 })}
+                        </p>
+                        <h3 className="font-bold">{module.title}</h3>
+                        <Link
+                          className="text-sm font-semibold text-primary underline"
+                          href={href(course.id, { edit: "module", id: module.id })}
+                        >
+                          {t("edit")}
+                        </Link>
+                      </div>
+                      <QuickControls
+                        entity="module"
+                        id={module.id}
+                        locale={locale}
+                        status={module.status as Status}
+                      />
+                    </div>
+                    {moduleLessons.length === 0 ? (
+                      <p className="px-4 py-3 text-sm text-muted-foreground">{t("noLessons")}</p>
+                    ) : (
+                      <ol className="divide-y">
+                        {moduleLessons.map((lesson, lessonIndex) => (
+                          <li
+                            className={cn(
+                              "flex flex-wrap items-center justify-between gap-3 px-4 py-3",
+                              selectedId === lesson.id && "bg-primary/5",
+                            )}
+                            key={lesson.id}
+                          >
+                            <Link
+                              className="min-w-0 flex-1 rounded-md focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+                              href={href(course.id, { edit: "lesson", id: lesson.id })}
+                            >
+                              <span className="font-semibold">
+                                {moduleIndex + 1}.{lessonIndex + 1} {lesson.title}
+                              </span>
+                              <span className="block text-xs text-muted-foreground">
+                                {lessonMeta(lesson, t)}
+                              </span>
+                            </Link>
+                            <QuickControls
+                              entity="lesson"
+                              id={lesson.id}
+                              locale={locale}
+                              status={lesson.status as Status}
+                            />
+                          </li>
+                        ))}
+                      </ol>
+                    )}
+                    <div className="border-t px-4 py-2">
+                      <Link
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-primary"
+                        href={href(course.id, { new: "lesson", module: module.id })}
+                      >
+                        <Plus aria-hidden="true" className="size-4" />
+                        {t("addLesson")}
+                      </Link>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+            <Link
+              className="flex items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed p-4 text-sm font-semibold text-primary hover:bg-white"
+              href={href(course.id, { new: "module" })}
+            >
+              <Plus aria-hidden="true" className="size-4" />
+              {t("addModule")}
+            </Link>
+          </div>
+        ) : (
+          <p className="rounded-2xl border bg-white p-6 text-muted-foreground">{t("noCourses")}</p>
+        )}
+
+        <aside aria-label={t("editorLabel")} className="xl:sticky xl:top-6 xl:self-start">
+          {target.kind === "none" ? (
+            <div className="rounded-2xl border border-dashed bg-white p-6 text-sm text-muted-foreground">
+              {t("editorEmpty")}
+            </div>
+          ) : (
+            <div className="rounded-2xl border bg-white p-5">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <h2 className="text-lg font-bold">{editorTitle}</h2>
+                <Link className="text-sm font-semibold underline" href={closeHref}>
+                  {t("close")}
+                </Link>
+              </div>
+              {target.kind === "course" ? <CourseEditor course={target.course} locale={locale} /> : null}
+              {target.kind === "module" ? (
+                <ModuleEditor courseId={target.courseId} locale={locale} module={target.module} />
+              ) : null}
+              {target.kind === "lesson" ? (
+                <LessonEditor lesson={target.lesson} locale={locale} moduleId={target.moduleId} />
+              ) : null}
+            </div>
+          )}
+        </aside>
+      </div>
     </section>
   );
 }
