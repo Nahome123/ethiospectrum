@@ -46,6 +46,14 @@ function isEmailConfirmationRequiredError(error: { code?: string }): boolean {
   return error.code === "email_not_confirmed";
 }
 
+/** Maps the Supabase sign-up failures a person can act on to a message key. */
+function signUpErrorKey(error: { status?: number; code?: string }): string {
+  if (isEmailRateLimitError(error)) return "emailRateLimit";
+  if (error.code === "user_already_exists" || error.code === "email_exists") return "accountExists";
+  if (error.code === "weak_password") return "weakPassword";
+  return "genericError";
+}
+
 export async function signUpAction(
   localeValue: string,
   _previousState: AuthActionState,
@@ -95,11 +103,16 @@ export async function signUpAction(
     },
   });
   if (error) {
-    return {
-      status: "error",
-      message: isEmailRateLimitError(error) ? t("emailRateLimit") : t("genericError"),
-      email: parsed.data.email,
-    };
+    const key = signUpErrorKey(error);
+    if (key === "genericError") {
+      // Provider codes only; the address and password are never logged.
+      console.error("Supabase sign-up failed", {
+        status: error.status,
+        code: error.code,
+        message: error.message,
+      });
+    }
+    return { status: "error", message: t(key), email: parsed.data.email };
   }
   // With email confirmation disabled, Supabase returns a live session: skip the
   // "check your email" screen and continue where the confirmation link would go.

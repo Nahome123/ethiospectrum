@@ -628,7 +628,9 @@
     "needAccount": "¿Necesitas una cuenta?",
     "backToLogin": "Volver a iniciar sesión",
     "signupCaregiverDescription": "Cree su cuenta de cuidador con el correo que invitó el propietario del hogar. Después de confirmar su correo, se unirá a su hogar.",
-    "roleChangedNotice": "Su rol cambió. Inicie sesión de nuevo para continuar con su nuevo acceso."
+    "roleChangedNotice": "Su rol cambió. Inicie sesión de nuevo para continuar con su nuevo acceso.",
+    "accountExists": "Ya existe una cuenta con este correo. Inicie sesión o restablezca su contraseña.",
+    "weakPassword": "Esa contraseña es demasiado débil o común. Elija una contraseña más larga y difícil de adivinar."
   },
   "dashboard": {
     "welcome": "Bienvenido a tu espacio familiar",

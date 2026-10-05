@@ -258,6 +258,29 @@ describe("authentication actions", () => {
     });
   });
 
+  it.each([
+    [{ status: 422, code: "user_already_exists" }, "accountExists"],
+    [{ status: 422, code: "weak_password" }, "weakPassword"],
+    [{ status: 500, code: "unexpected_failure", message: "Database error saving new user" }, "genericError"],
+  ])("explains a sign-up failure (%o)", async (error, message) => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    mocks.signUp.mockResolvedValue({ data: { session: null }, error });
+    await expect(
+      signUpAction(
+        "en",
+        idle,
+        formData({
+          firstName: "Ada",
+          lastName: "Lovelace",
+          email: "member@example.test",
+          password: "long-enough",
+          confirmPassword: "long-enough",
+          termsAccepted: "on",
+        }),
+      ),
+    ).resolves.toEqual({ status: "error", message, email: "member@example.test" });
+  });
+
   it("returns a neutral response for password recovery", async () => {
     await expect(
       forgotPasswordAction("es", idle, formData({ email: "member@example.test" })),
