@@ -41,7 +41,7 @@ async function parseItem(locale: AppLocale, formData: FormData) {
 }
 
 function isStaleError(error: { code?: string } | null): boolean {
-  return error?.code === "40001";
+  return error?.code === "40001" || error?.code === "ES412";
 }
 
 function revalidateRoadmap(locale: AppLocale, itemId?: string) {

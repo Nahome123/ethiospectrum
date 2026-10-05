@@ -20,7 +20,7 @@ function formValue(formData: FormData, name: string): string {
 type SafeRpcError = { code?: string } | null;
 
 function isStaleError(error: SafeRpcError): boolean {
-  return error?.code === "40001";
+  return error?.code === "40001" || error?.code === "ES412";
 }
 
 function isDuplicateError(error: SafeRpcError): boolean {

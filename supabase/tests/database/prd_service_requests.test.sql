@@ -96,7 +96,7 @@ select is((select is_match from public.admin_list_matching_specialists((select i
 select throws_ok($$select public.admin_assign_service_specialist((select id from ids where name = 'consult'), (select id from ids where name = 'spec_es'), 1)$$,
   '22023', null, 'assignment requires a matching capability');
 select throws_ok($$select public.admin_assign_service_specialist((select id from ids where name = 'consult'), (select id from ids where name = 'spec_am'), 99)$$,
-  '40001', null, 'a stale version is rejected');
+  'ES412', null, 'a stale version is rejected');
 select lives_ok($$select public.admin_assign_service_specialist((select id from ids where name = 'consult'), (select id from ids where name = 'spec_am'),
   (select version from public.service_requests where id = (select id from ids where name = 'consult')))$$, 'admin assigns the matching specialist');
 select is((select status from public.service_requests where id = (select id from ids where name = 'consult')), 'assigned', 'the request is assigned');

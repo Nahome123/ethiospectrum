@@ -46,7 +46,7 @@ function paths(locale: AppLocale, id?: string) {
 }
 
 function stale(error: { code?: string } | null) {
-  return error?.code === "40001";
+  return error?.code === "40001" || error?.code === "ES412";
 }
 
 export async function createResource(

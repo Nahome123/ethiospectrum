@@ -255,7 +255,7 @@ set local role authenticated;
 set local request.jwt.claim.sub = '81000000-0000-0000-0000-000000000001';
 select throws_ok($$
   select * from public.close_support_request((select id from public.support_threads where subject = 'Second member support request'), 99)
-$$, '40001', null, 'a stale expected version is rejected');
+$$, 'ES412', null, 'a stale expected version is rejected');
 reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = '81000000-0000-0000-0000-000000000003';

@@ -23,6 +23,7 @@ type SafeRpcError = { code?: string } | null;
 
 const errorKeyByCode: Record<string, string> = {
   "40001": "staleError",
+  ES412: "staleError",
   "23505": "activeAppointmentError",
   "23P01": "conflictError",
   "22007": "nonexistentTimeError",

@@ -182,7 +182,7 @@ select throws_ok($$
   select * from public.assign_specialist_to_support_request(
     (select id from public.support_threads where subject = 'Assignment request one'),
     'a3000000-0000-4000-8000-000000000001', 5)
-$$, '40001', null, 'a stale expected assignment version is rejected');
+$$, 'ES412', null, 'a stale expected assignment version is rejected');
 select lives_ok($$
   select * from public.assign_specialist_to_support_request(
     (select id from public.support_threads where subject = 'Assignment request one'),
@@ -294,7 +294,7 @@ set local request.jwt.claim.sub = 'a1000000-0000-4000-8000-000000000005';
 select ok((select count(*) > 0 from public.support_request_assignment_events), 'a platform administrator reads assignment history');
 select throws_ok($$
   select * from public.revoke_specialist_from_support_request((select id from public.support_threads where subject = 'Assignment request two'), 9)
-$$, '40001', null, 'a stale revocation version is rejected');
+$$, 'ES412', null, 'a stale revocation version is rejected');
 select lives_ok($$
   select * from public.revoke_specialist_from_support_request((select id from public.support_threads where subject = 'Assignment request two'), 1)
 $$, 'a platform administrator revokes an assignment');
@@ -313,7 +313,7 @@ $$, '55000', null, 'revoking an unassigned request is rejected');
 -- assignment changed elsewhere, not that it never existed.
 select throws_ok($$
   select * from public.revoke_specialist_from_support_request((select id from public.support_threads where subject = 'Assignment request two'), 1)
-$$, '40001', null, 'a concurrent revocation reports the stale assignment version');
+$$, 'ES412', null, 'a concurrent revocation reports the stale assignment version');
 reset role;
 
 set local role authenticated;

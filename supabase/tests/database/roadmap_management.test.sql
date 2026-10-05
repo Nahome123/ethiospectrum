@@ -162,7 +162,7 @@ select throws_ok($$
     (select id from public.roadmap_items where title = 'Owner action'),
     '2000-01-01T00:00:00+00', 'Stale action', null, 'healthcare', 'high', 'blocked', null, null, null
   )
-$$, '40001', null, 'stale edits are rejected');
+$$, 'ES412', null, 'stale edits are rejected');
 reset role;
 select is((select count(*) from public.reminders), 0::bigint, 'roadmap operations do not create or mutate reminders');
 select ok(position('search_path' in pg_get_functiondef('public.create_roadmap_item(text,text,text,text,text,date,uuid,uuid,uuid)'::regprocedure)) > 0, 'create function fixes its search path');

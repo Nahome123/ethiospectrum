@@ -19,6 +19,7 @@ export function serviceErrorKey(code: string | undefined): string {
     case "42501":
       return "denied";
     case "40001":
+    case "ES412":
       return "stale";
     case "55000":
       return "state";

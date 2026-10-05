@@ -178,7 +178,7 @@ reset role;
 set local role authenticated;
 set local request.jwt.claim.sub = 'd1000000-0000-4000-8000-000000000002';
 select throws_ok($$select * from public.accept_support_appointment((select id from public.appointments where duration_minutes = 45), 1, 'eth-027.v1', false)$$, '22023', null, 'consent must be acknowledged');
-select throws_ok($$select * from public.accept_support_appointment((select id from public.appointments where duration_minutes = 45), 9, 'eth-027.v1', true)$$, '40001', null, 'a stale appointment version is rejected');
+select throws_ok($$select * from public.accept_support_appointment((select id from public.appointments where duration_minutes = 45), 9, 'eth-027.v1', true)$$, 'ES412', null, 'a stale appointment version is rejected');
 select lives_ok($$select * from public.accept_support_appointment((select id from public.appointments where duration_minutes = 45), 1, 'eth-027.v1', true)$$, 'a household member consents to the appointment');
 select is((select status from public.appointments where duration_minutes = 45), 'scheduled', 'consent schedules the appointment');
 select is((select consented_by from public.appointments where duration_minutes = 45), 'd1000000-0000-4000-8000-000000000002'::uuid, 'the consent actor is derived server-side');

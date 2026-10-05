@@ -44,7 +44,7 @@ function message(
   error: { code?: string; message?: string } | null,
   t: Awaited<ReturnType<typeof getTranslations>>,
 ) {
-  if (error?.code === "40001")
+  if (error?.code === "40001" || error?.code === "ES412")
     return error.message?.includes("English source")
       ? t("englishSourceChanged")
       : t("translationUpdatedElsewhere");

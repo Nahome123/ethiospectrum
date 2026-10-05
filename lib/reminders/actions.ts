@@ -147,7 +147,7 @@ export async function updateReminderAction(
     return {
       status: "error",
       message:
-        error.code === "40001"
+        error.code === "40001" || error.code === "ES412"
           ? t("errors.unavailable")
           : error.code === "23505"
             ? t("errors.duplicate")
