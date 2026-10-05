@@ -1867,7 +1867,13 @@
           "description": "ይህ አገልግሎት የሚሰጠውን ልጅ፣ የአገልግሎት ፍላጎቶቹን ጨምሮ ያክሉ።",
           "action": "ልጅ ያክሉ"
         }
-      }
+      },
+      "schedulingTitle": "የቀጠሮ ሰዓት",
+      "schedulingMode": "ቀጠሮውን እንዴት መያዝ ይፈልጋሉ?",
+      "schedulingDirect": "በቀጥታ ይያዙ (አንድ ሰዓት ይምረጡ)",
+      "schedulingPropose": "የቀጠሮ ሰዓቶችን ያቅርቡ (አማራጮችን ይጠቁሙ)",
+      "schedulingDirectHelp": "የሚፈልጉትን ሰዓት ይምረጡ። ባለሙያዎ ያረጋግጣል፣ ካልተመቸ ሌላ ሰዓት ይጠቁማል።",
+      "schedulingProposeHelp": "የሚመቹዎትን ሁለት ወይም ሶስት ሰዓቶች ይጠቁሙ። ባለሙያዎ አንዱን ይመርጣል፣ እርስዎም ይነገርዎታል።"
     },
     "requests": {
       "title": "የአገልግሎት ጥያቄዎች",
@@ -1977,7 +1983,10 @@
         "specialist": "ባለሙያ",
         "administrator": "Ethiospectrum",
         "system": "Ethiospectrum"
-      }
+      },
+      "requestedTimes": "የተጠየቁ ሰዓቶች",
+      "requestedDirect": "ቤተሰቡ ይህን ሰዓት ጠይቋል።",
+      "requestedPropose": "ቤተሰቡ እነዚህን አማራጮች አቅርቧል፤ አንዱ ይመረጣል።"
     },
     "household": {
       "created": "ጥያቄዎ ደርሷል። አስተዳዳሪ ገምግሞ ባለሙያ ይመድባል።",
@@ -2008,7 +2017,8 @@
       "cancelConfirm": "ይህን ጥያቄ ይሰርዙ? ይህ ሊቀለበስ አይችልም።",
       "cancelling": "በመሰረዝ ላይ…",
       "cancelRequest": "ጥያቄውን ይሰርዙ",
-      "reasonOptional": "ምክንያት (አማራጭ)"
+      "reasonOptional": "ምክንያት (አማራጭ)",
+      "scheduleNotSaved": "ጥያቄዎ ተልኳል፣ ነገር ግን የመረጡት ሰዓት ሊቀመጥ አልቻለም (ለምሳሌ በሰዓት ለውጥ ምክንያት)። ባለሙያዎ ሌሎች ሰዓቶችን ይጠቁማል።"
     },
     "slots": {
       "option": "አማራጭ {number}",
@@ -2150,7 +2160,11 @@
       "refundPercentUnavailable": "ለዚህ ክፍያ ሊመለስ ከሚችለው በላይ ነው",
       "refundPercentSummary": "{amount} ይመለሳል (ከ{original} {percent}%)",
       "refundPercentFallback": "{amount} ይመለሳል፣ ለዚህ ክፍያ ሊመለስ የሚችለው ከፍተኛ መጠን",
-      "refundPercentLimit": "ሊመለስ የሚችል ከፍተኛ መጠን: {max}"
+      "refundPercentLimit": "ሊመለስ የሚችል ከፍተኛ መጠን: {max}",
+      "familyTimes": "ቤተሰቡ የጠየቃቸው ሰዓቶች",
+      "familyTimesHelp": "ቤተሰቡ ከጠየቃቸው ሰዓቶች አንዱን ይያዙ። ለሌላ ሰዓት ከታች ያለውን ቅጽ ይጠቀሙ።",
+      "scheduleThisTime": "ይህን ሰዓት ይያዙ",
+      "scheduleThisTimeConfirm": "ቀጠሮውን በዚህ ሰዓት ይያዙ?"
     }
   },
   "adminConsole": {

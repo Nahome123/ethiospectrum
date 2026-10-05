@@ -338,6 +338,22 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
 
       {panel}
 
+      {bundle.requestedTimes ? (
+        <Section id="requested-times-heading" title={t("requestedTimes")}>
+          <p className="text-sm text-muted-foreground">
+            {bundle.requestedTimes.mode === "direct" ? t("requestedDirect") : t("requestedPropose")}
+          </p>
+          <ul className="mt-3 space-y-2">
+            {bundle.requestedTimes.slots.map((slot, index) => (
+              <li className="rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium" key={slot.start_at}>
+                {bundle.requestedTimes?.mode === "propose" ? `${index + 1}. ` : ""}
+                {formatDateTime(slot.start_at, locale, slot.timezone)}
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
       <Section id="appointments-heading" title={t("appointments")}>
         {visibleAppointments.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("noAppointments")}</p>

@@ -1867,7 +1867,13 @@
           "description": "Agregue al niño para quien es este servicio, incluidas sus necesidades de servicio.",
           "action": "Agregar un niño"
         }
-      }
+      },
+      "schedulingTitle": "Programación",
+      "schedulingMode": "¿Cómo desea programar?",
+      "schedulingDirect": "Programar directamente (elegir una hora)",
+      "schedulingPropose": "Proponer horarios (sugerir opciones)",
+      "schedulingDirectHelp": "Elija la hora que desea. Su especialista la confirma o sugiere otra si no está disponible.",
+      "schedulingProposeHelp": "Sugiera dos o tres horas que le convengan. Su especialista elige una y se le notificará."
     },
     "requests": {
       "title": "Solicitudes de servicio",
@@ -1977,7 +1983,10 @@
         "specialist": "Especialista",
         "administrator": "Ethiospectrum",
         "system": "Ethiospectrum"
-      }
+      },
+      "requestedTimes": "Horarios solicitados",
+      "requestedDirect": "La familia pidió esta hora específica.",
+      "requestedPropose": "La familia propuso estas opciones; se elegirá una."
     },
     "household": {
       "created": "Recibimos su solicitud. Un administrador la revisará y asignará un especialista.",
@@ -2008,7 +2017,8 @@
       "cancelConfirm": "¿Cancelar esta solicitud? Esto no se puede deshacer.",
       "cancelling": "Cancelando…",
       "cancelRequest": "Cancelar solicitud",
-      "reasonOptional": "Motivo (opcional)"
+      "reasonOptional": "Motivo (opcional)",
+      "scheduleNotSaved": "Su solicitud se envió, pero la hora elegida no se pudo guardar (por ejemplo, por un cambio de horario). Su especialista propondrá horarios."
     },
     "slots": {
       "option": "Opción {number}",
@@ -2150,7 +2160,11 @@
       "refundPercentUnavailable": "Supera lo que se puede reembolsar de este pago",
       "refundPercentSummary": "Reembolsar {amount} ({percent}% de {original})",
       "refundPercentFallback": "Reembolsar {amount}, el máximo que se puede reembolsar de este pago",
-      "refundPercentLimit": "Máximo reembolsable: {max}"
+      "refundPercentLimit": "Máximo reembolsable: {max}",
+      "familyTimes": "Horarios solicitados por la familia",
+      "familyTimesHelp": "Programe una de las horas que pidió la familia. Use el formulario de abajo para otra hora.",
+      "scheduleThisTime": "Programar esta hora",
+      "scheduleThisTimeConfirm": "¿Programar la cita a esta hora?"
     }
   },
   "adminConsole": {

@@ -20,9 +20,17 @@ type Props = {
   locale: AppLocale;
   paymentReturn: "return" | "cancelled" | null;
   justCreated: boolean;
+  scheduleNotSaved?: boolean;
 };
 
-export async function HouseholdRequestPanel({ bundle, fees, locale, paymentReturn, justCreated }: Props) {
+export async function HouseholdRequestPanel({
+  bundle,
+  fees,
+  locale,
+  paymentReturn,
+  justCreated,
+  scheduleNotSaved = false,
+}: Props) {
   const { request, appointments } = bundle;
   const t = await getTranslations({ locale, namespace: "services.household" });
   const tiers = await getTranslations({ locale, namespace: "services.refundTiers" });
@@ -51,6 +59,14 @@ export async function HouseholdRequestPanel({ bundle, fees, locale, paymentRetur
           role="status"
         >
           {request.service_type === "iep_language_assistance" ? t("createdIep") : t("created")}
+        </p>
+      ) : null}
+      {scheduleNotSaved ? (
+        <p
+          className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900"
+          role="status"
+        >
+          {t("scheduleNotSaved")}
         </p>
       ) : null}
       {paymentReturn === "return" ? (

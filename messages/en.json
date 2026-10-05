@@ -1867,7 +1867,13 @@
           "description": "Add the child this service is for, including any service needs.",
           "action": "Add a child"
         }
-      }
+      },
+      "schedulingTitle": "Scheduling",
+      "schedulingMode": "How would you like to schedule?",
+      "schedulingDirect": "Schedule directly (pick a specific time)",
+      "schedulingPropose": "Propose appointment times (suggest options)",
+      "schedulingDirectHelp": "Choose the time you want. Your specialist confirms it, or suggests another time if it is unavailable.",
+      "schedulingProposeHelp": "Suggest two or three times that work for you. Your specialist picks one, and you are notified."
     },
     "requests": {
       "title": "Service requests",
@@ -1977,7 +1983,10 @@
         "specialist": "Specialist",
         "administrator": "Ethiospectrum",
         "system": "Ethiospectrum"
-      }
+      },
+      "requestedTimes": "Requested times",
+      "requestedDirect": "The family asked for this specific time.",
+      "requestedPropose": "The family proposed these options; one will be chosen."
     },
     "household": {
       "created": "Your request was received. An administrator will review it and assign a specialist.",
@@ -2008,7 +2017,8 @@
       "cancelConfirm": "Cancel this request? This cannot be undone.",
       "cancelling": "Cancelling…",
       "cancelRequest": "Cancel request",
-      "reasonOptional": "Reason (optional)"
+      "reasonOptional": "Reason (optional)",
+      "scheduleNotSaved": "Your request was sent, but the time you chose could not be saved (for example, it falls in a daylight-saving change). Your specialist will propose times instead."
     },
     "slots": {
       "option": "Option {number}",
@@ -2150,7 +2160,11 @@
       "refundPercentUnavailable": "More than can be refunded for this payment",
       "refundPercentSummary": "Refund {amount} ({percent}% of {original})",
       "refundPercentFallback": "Refund {amount}, the most that can be refunded for this payment",
-      "refundPercentLimit": "Maximum refundable: {max}"
+      "refundPercentLimit": "Maximum refundable: {max}",
+      "familyTimes": "Family's requested times",
+      "familyTimesHelp": "Schedule one of the times the family asked for. Use the form below for a different time.",
+      "scheduleThisTime": "Schedule this time",
+      "scheduleThisTimeConfirm": "Schedule the appointment at this time?"
     }
   },
   "adminConsole": {

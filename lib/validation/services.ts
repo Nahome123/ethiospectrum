@@ -114,6 +114,29 @@ export const appointmentSlotSchema = z.object({
 });
 export type AppointmentSlotInput = z.infer<typeof appointmentSlotSchema>;
 
+/** A family's requested time(s) when booking: one direct time, or two to three options. */
+export const requestedScheduleSchema = z
+  .object({
+    mode: z.enum(["direct", "propose"]),
+    slots: z
+      .array(
+        z.object({
+          localStart: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/),
+          timezone: z
+            .string()
+            .trim()
+            .min(1)
+            .max(64)
+            .regex(/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)*$/),
+        }),
+      )
+      .min(1)
+      .max(3),
+  })
+  .refine(({ mode, slots }) => (mode === "direct" ? slots.length === 1 : slots.length >= 2), {
+    path: ["slots"],
+  });
+
 export const appointmentSlotsSchema = z.array(appointmentSlotSchema).min(1).max(MAX_PROPOSED_SLOTS);
 
 export function toDatabaseSlot(slot: AppointmentSlotInput) {

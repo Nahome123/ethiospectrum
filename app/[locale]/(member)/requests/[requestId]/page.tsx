@@ -80,6 +80,7 @@ export default async function RequestDetailPage({
             bundle={bundle}
             fees={fees}
             justCreated={search.created === "1"}
+            scheduleNotSaved={search.scheduleError === "1"}
             locale={locale}
             paymentReturn={payment === "return" ? "return" : payment === "cancelled" ? "cancelled" : null}
           />

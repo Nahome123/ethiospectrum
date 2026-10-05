@@ -3178,6 +3178,38 @@ export type Database = {
           },
         ];
       };
+      service_request_requested_times: {
+        Row: {
+          created_at: string;
+          created_by: string | null;
+          scheduling_mode: string;
+          service_request_id: string;
+          slots: Json;
+        };
+        Insert: {
+          created_at?: string;
+          created_by?: string | null;
+          scheduling_mode: string;
+          service_request_id: string;
+          slots: Json;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string | null;
+          scheduling_mode?: string;
+          service_request_id?: string;
+          slots?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "service_request_requested_times_service_request_id_fkey";
+            columns: ["service_request_id"];
+            isOneToOne: true;
+            referencedRelation: "service_requests";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       service_requests: {
         Row: {
           appointment_status: string;
@@ -5789,6 +5821,10 @@ export type Database = {
           policy_tier: string;
           refund_percent: number;
         }[];
+      };
+      set_requested_schedule: {
+        Args: { input_mode: string; input_slots: Json; target_request_id: string };
+        Returns: undefined;
       };
       set_resource_account_access: {
         Args: { expected_version: number; input_user_ids: string[]; target_resource_id: string };

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { AppLocale } from "@/i18n/routing";
 import { formatCents, overridableStatusValues } from "@/lib/services/constants";
+import { formatDateTime } from "@/lib/services/display";
 import {
   createRefundExceptionAction,
   processRefundAction,
@@ -289,6 +290,40 @@ export async function AdminRequestPanel({
 
       {kinds.length > 0 ? (
         <ProposeCard audience="administrator" bundle={bundle} kinds={kinds} locale={locale} />
+      ) : null}
+
+      {bundle.requestedTimes && kinds.includes("primary") ? (
+        <Card description={t("familyTimesHelp")} title={t("familyTimes")}>
+          <ul className="space-y-3">
+            {bundle.requestedTimes.slots.map((slot) => (
+              <li className="rounded-lg border p-3" key={slot.start_at}>
+                <p className="text-sm font-semibold">
+                  {formatDateTime(slot.start_at, locale, slot.timezone)}
+                </p>
+                <ActionForm
+                  action={scheduleAppointmentAction.bind(null, locale, request.id)}
+                  className="mt-2"
+                  confirmMessage={t("scheduleThisTimeConfirm")}
+                  inline
+                  pendingLabel={t("saving")}
+                  size="sm"
+                  submitLabel={t("scheduleThisTime")}
+                  variant="outline"
+                >
+                  <input name="expectedVersion" type="hidden" value={request.version} />
+                  <input name="kind" type="hidden" value="primary" />
+                  <input name="slotCount" type="hidden" value="1" />
+                  <input name="slot.0.localStart" type="hidden" value={slot.local_start} />
+                  <input name="timezone" type="hidden" value={slot.timezone} />
+                  <input name="locationType" type="hidden" value="remote" />
+                  <input name="locationDetails" type="hidden" value="" />
+                  <input name="meetingUrl" type="hidden" value="" />
+                  <input name="instructions" type="hidden" value="" />
+                </ActionForm>
+              </li>
+            ))}
+          </ul>
+        </Card>
       ) : null}
 
       {kinds.length > 0 || (request.status === "no_show" && request.specialist_id) ? (

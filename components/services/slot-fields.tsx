@@ -69,6 +69,10 @@ type SlotFieldsProps = {
   idPrefix: string;
   deliveryMethod: "remote" | "in_person";
   maxSlots: 1 | 3;
+  /** Options shown from the start, which cannot be removed (default 1). */
+  minSlots?: number;
+  /** A family's requested time(s): date, time and time zone only. */
+  familyRequest?: boolean;
   defaults?: {
     localStart?: string;
     timezone?: string;
@@ -84,10 +88,17 @@ type SlotFieldsProps = {
  * pair to one instant and rejects nonexistent or ambiguous daylight-saving
  * times rather than guessing.
  */
-export function SlotFields({ idPrefix, deliveryMethod, maxSlots, defaults }: SlotFieldsProps) {
+export function SlotFields({
+  idPrefix,
+  deliveryMethod,
+  maxSlots,
+  minSlots = 1,
+  familyRequest = false,
+  defaults,
+}: SlotFieldsProps) {
   const t = useTranslations("services.slots");
   const locations = useTranslations("services.locations");
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(minSlots);
   const [location, setLocation] = useState(defaults?.locationType ?? "");
   const zones = useClientValue(supportedZones, fallbackZones);
   const detectedZone = useClientValue(browserZone, "America/Chicago");
@@ -126,7 +137,7 @@ export function SlotFields({ idPrefix, deliveryMethod, maxSlots, defaults }: Slo
                 {t("addOption")}
               </Button>
             ) : null}
-            {count > 1 ? (
+            {count > minSlots ? (
               <Button onClick={() => setCount((value) => value - 1)} size="sm" type="button" variant="ghost">
                 {t("removeOption")}
               </Button>
@@ -151,67 +162,71 @@ export function SlotFields({ idPrefix, deliveryMethod, maxSlots, defaults }: Slo
           ))}
         </select>
       </div>
-      {deliveryMethod === "in_person" ? (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-1.5">
-            <Label htmlFor={`${idPrefix}-location`}>{t("location")} *</Label>
-            <select
-              className="h-10 w-full rounded-md border border-input bg-background px-3"
-              id={`${idPrefix}-location`}
-              name="locationType"
-              onChange={(event) => setLocation(event.target.value)}
-              required
-              value={location}
-            >
-              <option value="">{t("chooseLocation")}</option>
-              {inPersonLocationValues.map((value) => (
-                <option key={value} value={value}>
-                  {locations(value)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor={`${idPrefix}-details`}>{t("locationDetails")}</Label>
-            <Input
-              defaultValue={defaults?.locationDetails ?? undefined}
-              id={`${idPrefix}-details`}
-              maxLength={LOCATION_DETAILS_MAX}
-              name="locationDetails"
-              required={location === "school_meeting" || location === "mutually_agreed"}
-            />
-          </div>
-        </div>
-      ) : (
+      {familyRequest ? null : (
         <>
-          <input name="locationType" type="hidden" value="remote" />
-          <input name="locationDetails" type="hidden" value="" />
+          {deliveryMethod === "in_person" ? (
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label htmlFor={`${idPrefix}-location`}>{t("location")} *</Label>
+                <select
+                  className="h-10 w-full rounded-md border border-input bg-background px-3"
+                  id={`${idPrefix}-location`}
+                  name="locationType"
+                  onChange={(event) => setLocation(event.target.value)}
+                  required
+                  value={location}
+                >
+                  <option value="">{t("chooseLocation")}</option>
+                  {inPersonLocationValues.map((value) => (
+                    <option key={value} value={value}>
+                      {locations(value)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor={`${idPrefix}-details`}>{t("locationDetails")}</Label>
+                <Input
+                  defaultValue={defaults?.locationDetails ?? undefined}
+                  id={`${idPrefix}-details`}
+                  maxLength={LOCATION_DETAILS_MAX}
+                  name="locationDetails"
+                  required={location === "school_meeting" || location === "mutually_agreed"}
+                />
+              </div>
+            </div>
+          ) : (
+            <>
+              <input name="locationType" type="hidden" value="remote" />
+              <input name="locationDetails" type="hidden" value="" />
+              <div className="space-y-1.5">
+                <Label htmlFor={`${idPrefix}-url`}>{t("meetingUrl")}</Label>
+                <Input
+                  defaultValue={defaults?.meetingUrl ?? undefined}
+                  id={`${idPrefix}-url`}
+                  name="meetingUrl"
+                  pattern="https://.*"
+                  placeholder="https://"
+                  type="url"
+                />
+                <p className="text-xs text-muted-foreground">{t("meetingUrlHelp")}</p>
+              </div>
+            </>
+          )}
+          {deliveryMethod === "in_person" ? <input name="meetingUrl" type="hidden" value="" /> : null}
           <div className="space-y-1.5">
-            <Label htmlFor={`${idPrefix}-url`}>{t("meetingUrl")}</Label>
-            <Input
-              defaultValue={defaults?.meetingUrl ?? undefined}
-              id={`${idPrefix}-url`}
-              name="meetingUrl"
-              pattern="https://.*"
-              placeholder="https://"
-              type="url"
+            <Label htmlFor={`${idPrefix}-instructions`}>{t("instructions")}</Label>
+            <Textarea
+              defaultValue={defaults?.instructions ?? undefined}
+              id={`${idPrefix}-instructions`}
+              maxLength={INSTRUCTIONS_MAX}
+              name="instructions"
+              placeholder={t("instructionsPlaceholder")}
+              rows={2}
             />
-            <p className="text-xs text-muted-foreground">{t("meetingUrlHelp")}</p>
           </div>
         </>
       )}
-      {deliveryMethod === "in_person" ? <input name="meetingUrl" type="hidden" value="" /> : null}
-      <div className="space-y-1.5">
-        <Label htmlFor={`${idPrefix}-instructions`}>{t("instructions")}</Label>
-        <Textarea
-          defaultValue={defaults?.instructions ?? undefined}
-          id={`${idPrefix}-instructions`}
-          maxLength={INSTRUCTIONS_MAX}
-          name="instructions"
-          placeholder={t("instructionsPlaceholder")}
-          rows={2}
-        />
-      </div>
     </div>
   );
 }

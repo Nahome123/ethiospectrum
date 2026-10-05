@@ -9,6 +9,7 @@ import {
   createIepRequestSchema,
   messageSchema,
   optionalReasonSchema,
+  requestedScheduleSchema,
   uuidSchema,
 } from "@/lib/validation/services";
 import { serviceErrorKey, type ServiceActionState } from "./action-state";
@@ -22,6 +23,18 @@ function field(formData: FormData, name: string): string {
 async function failure(locale: AppLocale, code?: string): Promise<ServiceActionState> {
   const t = await getTranslations({ locale, namespace: "services.errors" });
   return { status: "error", message: t(serviceErrorKey(code)) };
+}
+
+/** Requested times arrive as `slot.N.localStart` entries with one shared time zone. */
+function readRequestedSlots(formData: FormData) {
+  const count = Math.min(Number(field(formData, "slotCount")) || 1, 3);
+  const timezone = field(formData, "timezone");
+  const slots = [];
+  for (let index = 0; index < count; index += 1) {
+    const localStart = field(formData, `slot.${index}.localStart`);
+    if (localStart) slots.push({ localStart, timezone });
+  }
+  return slots;
 }
 
 export async function createConsultationRequestAction(
@@ -42,7 +55,11 @@ export async function createConsultationRequestAction(
     preferredLanguage: field(formData, "preferredLanguage"),
   });
   const idempotencyKey = uuidSchema.safeParse(field(formData, "idempotencyKey"));
-  if (!parsed.success || !idempotencyKey.success) return failure(locale, "22023");
+  const schedule = requestedScheduleSchema.safeParse({
+    mode: field(formData, "schedulingMode"),
+    slots: readRequestedSlots(formData),
+  });
+  if (!parsed.success || !idempotencyKey.success || !schedule.success) return failure(locale, "22023");
 
   const supabase = await createServerActionSupabaseClient();
   const { data, error } = await supabase.rpc("create_service_request", {
@@ -62,8 +79,18 @@ export async function createConsultationRequestAction(
     input_idempotency_key: idempotencyKey.data,
   });
   if (error || !data) return failure(locale, error?.code);
+  // The request stands on its own; if the times are refused (for example a
+  // daylight-saving gap), staff propose times instead and the family is told.
+  const scheduled = await supabase.rpc("set_requested_schedule", {
+    target_request_id: data,
+    input_mode: schedule.data.mode,
+    input_slots: schedule.data.slots.map((slot) => ({
+      local_start: slot.localStart,
+      timezone: slot.timezone,
+    })),
+  });
   revalidateServiceRequest(locale, data);
-  redirect(`/${locale}/requests/${data}?created=1`);
+  redirect(`/${locale}/requests/${data}?created=1${scheduled.error ? "&scheduleError=1" : ""}`);
 }
 
 export async function createIepRequestAction(

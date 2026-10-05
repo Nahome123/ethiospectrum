@@ -108,21 +108,30 @@ export async function getServiceRequestDetail(requestId: string): Promise<Servic
 }
 
 /** Everything the shared request detail view needs, loaded in parallel. */
+/** A family's requested time, as stored by set_requested_schedule. */
+export type RequestedSlot = { local_start: string; timezone: string; start_at: string };
+
 export async function getServiceRequestBundle(requestId: string) {
   const supabase = await client();
-  const [detail, appointments, timeline, payments, refunds, documents, activities] = await Promise.all([
-    supabase.rpc("get_service_request_detail", { target_request_id: requestId }),
-    supabase.rpc("list_service_request_appointments", { target_request_id: requestId }),
-    supabase.rpc("list_service_request_timeline", { target_request_id: requestId }),
-    supabase.rpc("list_service_request_payments", { target_request_id: requestId }),
-    supabase.rpc("list_service_request_refunds", { target_request_id: requestId }),
-    supabase.rpc("list_service_request_documents", { target_request_id: requestId }),
-    supabase
-      .from("service_request_activities")
-      .select("*")
-      .eq("service_request_id", requestId)
-      .order("activity_type"),
-  ]);
+  const [detail, appointments, timeline, payments, refunds, documents, activities, requestedTimes] =
+    await Promise.all([
+      supabase.rpc("get_service_request_detail", { target_request_id: requestId }),
+      supabase.rpc("list_service_request_appointments", { target_request_id: requestId }),
+      supabase.rpc("list_service_request_timeline", { target_request_id: requestId }),
+      supabase.rpc("list_service_request_payments", { target_request_id: requestId }),
+      supabase.rpc("list_service_request_refunds", { target_request_id: requestId }),
+      supabase.rpc("list_service_request_documents", { target_request_id: requestId }),
+      supabase
+        .from("service_request_activities")
+        .select("*")
+        .eq("service_request_id", requestId)
+        .order("activity_type"),
+      supabase
+        .from("service_request_requested_times")
+        .select("scheduling_mode, slots")
+        .eq("service_request_id", requestId)
+        .maybeSingle(),
+    ]);
   const request = detail.data?.[0];
   if (detail.error || !request) return null;
   return {
@@ -133,6 +142,14 @@ export async function getServiceRequestBundle(requestId: string) {
     refunds: refunds.data ?? [],
     documents: documents.data ?? [],
     activities: activities.data ?? [],
+    requestedTimes: requestedTimes.data
+      ? {
+          mode: requestedTimes.data.scheduling_mode as "direct" | "propose",
+          slots: (Array.isArray(requestedTimes.data.slots)
+            ? requestedTimes.data.slots
+            : []) as RequestedSlot[],
+        }
+      : null,
   };
 }
 export type ServiceRequestBundle = NonNullable<Awaited<ReturnType<typeof getServiceRequestBundle>>>;

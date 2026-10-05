@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
+import { SlotFields } from "@/components/services/slot-fields";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,6 +37,7 @@ export function ConsultationRequestForm({
   const languages = useTranslations("services.languages");
   const [idempotencyKey] = useState(() => crypto.randomUUID());
   const [category, setCategory] = useState<ConsultationCategory>("general_guidance");
+  const [schedulingMode, setSchedulingMode] = useState<"direct" | "propose">("direct");
   const [state, action, pending] = useActionState(
     createConsultationRequestAction.bind(null, locale),
     initialServiceActionState,
@@ -127,6 +129,34 @@ export function ConsultationRequestForm({
           {t("relevantInformationHelp")}
         </p>
       </div>
+      <fieldset className="space-y-4 rounded-xl border p-4">
+        <legend className="px-1 text-sm font-medium">{t("schedulingTitle")}</legend>
+        <div className="space-y-1.5">
+          <Label htmlFor="consultation-scheduling">{t("schedulingMode")} *</Label>
+          <select
+            aria-describedby="consultation-scheduling-help"
+            className={selectClass}
+            id="consultation-scheduling"
+            name="schedulingMode"
+            onChange={(event) => setSchedulingMode(event.target.value === "propose" ? "propose" : "direct")}
+            value={schedulingMode}
+          >
+            <option value="direct">{t("schedulingDirect")}</option>
+            <option value="propose">{t("schedulingPropose")}</option>
+          </select>
+          <p className="text-sm text-muted-foreground" id="consultation-scheduling-help">
+            {schedulingMode === "direct" ? t("schedulingDirectHelp") : t("schedulingProposeHelp")}
+          </p>
+        </div>
+        <SlotFields
+          deliveryMethod="remote"
+          familyRequest
+          idPrefix={`consultation-${schedulingMode}`}
+          key={schedulingMode}
+          maxSlots={schedulingMode === "direct" ? 1 : 3}
+          minSlots={schedulingMode === "direct" ? 1 : 2}
+        />
+      </fieldset>
       <p className="rounded-xl border bg-secondary/40 p-4 text-sm leading-6">{t("nextStepsConsultation")}</p>
       {state.status === "error" ? (
         <p className="text-sm text-destructive" role="alert">
