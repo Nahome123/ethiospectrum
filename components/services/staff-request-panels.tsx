@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { ActionForm } from "@/components/services/action-form";
+import { RefundPercentPicker } from "@/components/services/refund-percent-picker";
 import { SlotFields } from "@/components/services/slot-fields";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { AppLocale } from "@/i18n/routing";
@@ -183,6 +183,14 @@ export async function AdminRequestPanel({
   const refundablePayment = payments.find(
     (payment) => payment.status === "paid" || payment.status === "partially_refunded",
   );
+  // The most a refund may return: its policy-eligible amount, less anything
+  // already refunded from the same payment.
+  const refundLimit = (eligibleCents: number, paymentId: string) => {
+    const payment = payments.find((row) => row.id === paymentId);
+    return payment
+      ? Math.min(eligibleCents, payment.amount_total_cents - payment.refunded_amount_cents)
+      : eligibleCents;
+  };
 
   return (
     <div className="grid gap-4 lg:grid-cols-2">
@@ -198,17 +206,11 @@ export async function AdminRequestPanel({
             pendingLabel={t("processing")}
             submitLabel={t("processRefund")}
           >
-            <Label htmlFor={`refund-amount-${refund.id}`}>{t("refundAmountCents")}</Label>
-            <Input
-              defaultValue={refund.eligible_amount_cents}
-              id={`refund-amount-${refund.id}`}
-              max={refund.eligible_amount_cents}
-              min={1}
-              name="amountCents"
-              required
-              type="number"
+            <RefundPercentPicker
+              locale={locale}
+              maxCents={refundLimit(refund.eligible_amount_cents, refund.payment_id)}
+              originalCents={refund.original_amount_cents}
             />
-            <p className="text-xs text-muted-foreground">{t("refundAmountHelp")}</p>
           </ActionForm>
           <details className="mt-3">
             <summary className="cursor-pointer text-sm font-semibold underline">{t("rejectRefund")}</summary>
@@ -318,14 +320,10 @@ export async function AdminRequestPanel({
             submitLabel={t("createException")}
             variant="outline"
           >
-            <Label htmlFor="exception-amount">{t("refundAmountCents")}</Label>
-            <Input
-              id="exception-amount"
-              max={refundablePayment.amount_total_cents - refundablePayment.refunded_amount_cents}
-              min={1}
-              name="amountCents"
-              required
-              type="number"
+            <RefundPercentPicker
+              locale={locale}
+              maxCents={refundablePayment.amount_total_cents - refundablePayment.refunded_amount_cents}
+              originalCents={refundablePayment.amount_total_cents}
             />
             <Label htmlFor="exception-reason">{t("reason")}</Label>
             <Textarea id="exception-reason" maxLength={1000} name="reason" required rows={2} />

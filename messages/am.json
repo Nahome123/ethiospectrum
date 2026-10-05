@@ -2145,7 +2145,12 @@
       "cancelConfirm": "ይህን ጥያቄ በEthiospectrum ስም ይሰርዙ?",
       "fullRefund": "ለማንኛውም ክፍያ የ100% ተመላሽ ጥያቄ ይፍጠሩ",
       "specialistWaiting": "አሁን ከእርስዎ ምንም ተግባር አያስፈልግም። አስተዳዳሪው የሚገኙበትን ጊዜ ሲጠይቅ ወይም ክትትል ሲጠየቅ ይነገርዎታል።",
-      "specialistDone": "ይህ አገልግሎት ተጠናቋል። እናመሰግናለን!"
+      "specialistDone": "ይህ አገልግሎት ተጠናቋል። እናመሰግናለን!",
+      "refundPercentLabel": "የተመላሽ መጠን",
+      "refundPercentUnavailable": "ለዚህ ክፍያ ሊመለስ ከሚችለው በላይ ነው",
+      "refundPercentSummary": "{amount} ይመለሳል (ከ{original} {percent}%)",
+      "refundPercentFallback": "{amount} ይመለሳል፣ ለዚህ ክፍያ ሊመለስ የሚችለው ከፍተኛ መጠን",
+      "refundPercentLimit": "ሊመለስ የሚችል ከፍተኛ መጠን: {max}"
     }
   },
   "adminConsole": {

@@ -2145,7 +2145,12 @@
       "cancelConfirm": "¿Cancelar esta solicitud en nombre de Ethiospectrum?",
       "fullRefund": "Crear una solicitud de reembolso del 100 % para cualquier pago",
       "specialistWaiting": "Por ahora no se necesita ninguna acción de su parte. Se le avisará cuando el administrador pida su disponibilidad o se solicite un seguimiento.",
-      "specialistDone": "Este servicio está completo. ¡Gracias!"
+      "specialistDone": "Este servicio está completo. ¡Gracias!",
+      "refundPercentLabel": "Monto del reembolso",
+      "refundPercentUnavailable": "Supera lo que se puede reembolsar de este pago",
+      "refundPercentSummary": "Reembolsar {amount} ({percent}% de {original})",
+      "refundPercentFallback": "Reembolsar {amount}, el máximo que se puede reembolsar de este pago",
+      "refundPercentLimit": "Máximo reembolsable: {max}"
     }
   },
   "adminConsole": {

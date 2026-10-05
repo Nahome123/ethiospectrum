@@ -2145,7 +2145,12 @@
       "cancelConfirm": "Cancel this request on behalf of Ethiospectrum?",
       "fullRefund": "Create a 100% refund request for any payment",
       "specialistWaiting": "No action is needed from you right now. You'll be notified when the administrator asks for your availability or a follow-up is requested.",
-      "specialistDone": "This service is complete. Thank you!"
+      "specialistDone": "This service is complete. Thank you!",
+      "refundPercentLabel": "Refund amount",
+      "refundPercentUnavailable": "More than can be refunded for this payment",
+      "refundPercentSummary": "Refund {amount} ({percent}% of {original})",
+      "refundPercentFallback": "Refund {amount}, the most that can be refunded for this payment",
+      "refundPercentLimit": "Maximum refundable: {max}"
     }
   },
   "adminConsole": {
