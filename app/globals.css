@@ -6,6 +6,9 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-nav: var(--nav);
+  --color-nav-hover: var(--nav-hover);
+  --color-nav-foreground: var(--nav-foreground);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
@@ -49,29 +52,34 @@
 }
 
 :root {
-  --background: #f7f8f5;
-  --foreground: #1e293b;
+  --background: #f5f9fb;
+  --foreground: #10283f;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #355c7d;
+  /* Blue and teal brand palette. */
+  --primary: #1f5fa8;
   --primary-foreground: #ffffff;
-  --secondary: #e5f0ef;
-  --secondary-foreground: #1e4e4f;
-  --muted: #edf0ed;
+  --secondary: #e2f4f3;
+  --secondary-foreground: #0d4f57;
+  --muted: #eaf1f5;
   --muted-foreground: #475569;
-  --accent: #f2b880;
-  --accent-foreground: #3f2c17;
+  --accent: #20b2aa;
+  --accent-foreground: #04302d;
   --destructive: #c53030;
-  --border: #dce2dc;
-  --input: #dce2dc;
-  --ring: #4f8a8b;
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --border: #d5e2ea;
+  --input: #d5e2ea;
+  --ring: #1a9e9a;
+  /* Dark navigation surfaces (admin console). */
+  --nav: #0f2f57;
+  --nav-hover: #18467d;
+  --nav-foreground: #ffffff;
+  --chart-1: #1f5fa8;
+  --chart-2: #20b2aa;
+  --chart-3: #4f8fd1;
+  --chart-4: #0d7f7b;
+  --chart-5: #9cc9e8;
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -151,7 +159,7 @@
   overflow: hidden;
   border: 0.5rem solid rgba(255, 255, 255, 0.9);
   border-radius: 1.5rem;
-  background: linear-gradient(135deg, #d4e6df, #f4c99d);
+  background: linear-gradient(135deg, var(--secondary), #cfe2f5);
   box-shadow: 0 1.25rem 2.5rem rgba(30, 41, 59, 0.16);
   transition:
     transform 300ms ease,
@@ -215,7 +223,7 @@
   justify-content: center;
   gap: 0.75rem;
   padding: 1.5rem;
-  color: #355c7d;
+  color: var(--primary);
   font-weight: 700;
   text-align: center;
 }
@@ -224,7 +232,7 @@
   min-height: 19rem;
   overflow: hidden;
   border-radius: 1.5rem;
-  background: #d8e8d8;
+  background: var(--secondary);
   box-shadow: 0 1.25rem 2.5rem rgba(30, 41, 59, 0.12);
 }
 .journey-photo {
@@ -249,7 +257,7 @@
 }
 .family-orbit {
   position: absolute;
-  border: 1px solid rgba(53, 92, 125, 0.12);
+  border: 1px solid rgba(31, 95, 168, 0.12);
   border-radius: 9999px;
   pointer-events: none;
 }

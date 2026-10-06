@@ -23,7 +23,7 @@ export async function EducationGuidePage() {
           description={t("educationGuide.description")}
         />
       </div>
-      <p className="mt-6 rounded-xl border border-accent bg-amber-50 px-5 py-4 text-sm leading-6 text-slate-700">
+      <p className="mt-6 rounded-xl border border-accent bg-secondary px-5 py-4 text-sm leading-6 text-slate-700">
         {t("educationGuide.disclaimer")}
       </p>
       <div className="mt-10 space-y-5">
@@ -34,7 +34,7 @@ export async function EducationGuidePage() {
             key={key}
           >
             <Icon aria-hidden="true" className="size-7 text-primary" />
-            <h2 className="mt-4 text-2xl font-bold text-slate-900">
+            <h2 className="mt-4 text-2xl font-bold text-foreground">
               {t(`educationGuide.topics.${key}.title`)}
             </h2>
             <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">

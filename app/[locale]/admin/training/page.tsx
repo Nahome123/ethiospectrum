@@ -502,7 +502,7 @@ export default async function AdminTrainingPage({
               className={cn(
                 "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold",
                 row.id === course?.id
-                  ? "border-slate-900 bg-slate-900 text-white"
+                  ? "border-primary bg-primary text-primary-foreground"
                   : "bg-white hover:bg-secondary",
               )}
               href={href(row.id)}

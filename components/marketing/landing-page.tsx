@@ -10,13 +10,13 @@ export async function LandingPage() {
   const t = await getTranslations();
   return (
     <>
-      <section className="border-b border-border bg-[radial-gradient(circle_at_top_right,_#e5f0ef,_#f7f8f5_55%)]">
+      <section className="border-b border-border bg-[radial-gradient(circle_at_top_right,_var(--secondary),_var(--background)_55%)]">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_.9fr] lg:px-8 lg:py-24">
           <div className="self-center">
             <p className="text-sm font-bold uppercase tracking-[0.14em] text-secondary-foreground">
               {t("hero.eyebrow")}
             </p>
-            <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               {t("hero.title")}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">{t("hero.description")}</p>
@@ -70,7 +70,7 @@ export async function LandingPage() {
             <p className="text-sm font-bold uppercase tracking-[0.14em] text-secondary-foreground">
               {t("hero.journeyLabel")}
             </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {t("hero.journeyTitle")}
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">{t("hero.journeyDescription")}</p>

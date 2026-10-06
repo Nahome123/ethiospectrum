@@ -61,7 +61,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
           {["one", "two", "three", "four"].map((step, index) => (
             <li className="min-w-0 rounded-xl border border-border bg-white p-5 shadow-sm" key={step}>
               <p className="text-sm font-bold text-primary">0{index + 1}</p>
-              <h3 className="mt-3 text-lg font-bold text-slate-900">
+              <h3 className="mt-3 text-lg font-bold text-foreground">
                 {t(`educationSupport.steps.${step}.title`)}
               </h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -104,7 +104,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
                   <p className="text-xs font-bold uppercase tracking-[0.12em] text-secondary-foreground">
                     {t(`educationSupport.articles.${key}.category`)}
                   </p>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">
+                  <h3 className="mt-3 text-lg font-bold text-foreground">
                     {t(`educationSupport.articles.${key}.title`)}
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
@@ -148,7 +148,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
             <p className="text-sm font-bold text-secondary-foreground">
               {t("educationSupport.membership.eyebrow")}
             </p>
-            <h3 className="mt-2 text-xl font-bold text-slate-900">
+            <h3 className="mt-2 text-xl font-bold text-foreground">
               {t("educationSupport.membership.title")}
             </h3>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">

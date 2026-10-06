@@ -66,7 +66,7 @@ export default async function AdminUsersPage({
             aria-current={role === value ? "page" : undefined}
             className={
               role === value
-                ? "rounded-full bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white"
+                ? "rounded-full bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                 : "rounded-full border bg-white px-3 py-1.5 text-sm font-semibold"
             }
             href={href({ role: value })}

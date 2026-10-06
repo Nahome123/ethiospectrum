@@ -30,7 +30,7 @@ export function FamilyPhotoGallery() {
   const [unavailable, setUnavailable] = useState<string[]>([]);
 
   return (
-    <section aria-label={t("galleryLabel")} className="relative overflow-hidden bg-[#e5f0ef] py-16 sm:py-20">
+    <section aria-label={t("galleryLabel")} className="relative overflow-hidden bg-secondary py-16 sm:py-20">
       <div className="family-orbit family-orbit-one" aria-hidden="true" />
       <div className="family-orbit family-orbit-two" aria-hidden="true" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
@@ -38,7 +38,7 @@ export function FamilyPhotoGallery() {
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-secondary-foreground">
             {t("galleryLabel")}
           </p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {t("galleryTitle")}
           </h2>
           <p className="mt-4 text-lg leading-8 text-muted-foreground">{t("galleryDescription")}</p>

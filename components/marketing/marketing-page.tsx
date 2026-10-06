@@ -80,7 +80,7 @@ export async function MarketingPage({
         title={privacy ? t("privacy.title") : t("marketingPages.termsTitle")}
         description={privacy ? t("privacy.pageIntro") : t("marketingPages.termsIntro")}
       />
-      <div className="mt-10 rounded-xl border border-accent bg-amber-50 p-5 text-sm font-medium text-slate-700">
+      <div className="mt-10 rounded-xl border border-accent bg-secondary p-5 text-sm font-medium text-slate-700">
         {t("legal.draftNotice")}
       </div>
       <article className="mt-5 rounded-xl border border-border bg-white p-7">

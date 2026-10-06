@@ -22,7 +22,7 @@ export async function AdminViewSwitcher({ current }: Readonly<{ current: AdminVi
           aria-current={view === current ? "page" : undefined}
           className={
             view === current
-              ? "rounded-full bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white"
+              ? "rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
               : "rounded-full px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
           }
           href={href}

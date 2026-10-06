@@ -113,7 +113,7 @@ export default async function AdminPaymentsPage({
               aria-current={status === value ? "page" : undefined}
               className={
                 status === value
-                  ? "rounded-full bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white"
+                  ? "rounded-full bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   : "rounded-full border bg-white px-3 py-1.5 text-sm font-semibold"
               }
               href={value === "all" ? "/admin/payments" : `/admin/payments?status=${value}`}

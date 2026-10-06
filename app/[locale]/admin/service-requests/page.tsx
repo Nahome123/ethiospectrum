@@ -53,7 +53,7 @@ export default async function AdminServiceRequestsPage({
             aria-current={queue === value ? "page" : undefined}
             className={
               queue === value
-                ? "rounded-full bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white"
+                ? "rounded-full bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                 : "rounded-full border bg-white px-3 py-1.5 text-sm font-semibold"
             }
             href={query({ queue: value })}
