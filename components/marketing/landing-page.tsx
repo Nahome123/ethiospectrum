@@ -1,4 +1,4 @@
-import { ShieldCheck, Sparkles } from "lucide-react";
+import { BookOpenCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { FeatureCard } from "./feature-card";
@@ -74,6 +74,24 @@ export async function LandingPage() {
               {t("hero.journeyTitle")}
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">{t("hero.journeyDescription")}</p>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="eligibility-heading" className="border-y border-border bg-secondary/50">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14 lg:px-8">
+          <div>
+            <BookOpenCheck aria-hidden="true" className="size-9 text-primary" />
+            <h2
+              className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+              id="eligibility-heading"
+            >
+              {t("autismEligibility.title")}
+            </h2>
+          </div>
+          <div className="space-y-5 text-lg leading-8 text-muted-foreground">
+            {(t.raw("autismEligibility.paragraphs") as string[]).map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
         </div>
       </section>

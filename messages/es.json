@@ -2892,5 +2892,13 @@
     "specialist": "Vista de especialista",
     "memberPreviewTitle": "Vista de miembro (solo lectura)",
     "memberPreviewDescription": "Está viendo lo que ven los miembros. Los administradores no pueden enviar solicitudes, hacer pagos ni cambiar datos del hogar aquí."
+  },
+  "autismEligibility": {
+    "title": "Comprender el autismo y la elegibilidad para educación especial",
+    "paragraphs": [
+      "Calificar para servicios de educación especial bajo la elegibilidad de autismo no es lo mismo que recibir un diagnóstico médico de autismo. Las escuelas pueden determinar si un estudiante cumple los criterios para un Programa de Educación Individualizado (IEP), pero no pueden dar un diagnóstico médico; eso requiere la evaluación de un especialista, como un pediatra del desarrollo, un psicólogo infantil o un neurólogo pediátrico.",
+      "Es posible que un niño tenga un diagnóstico médico de autismo sin calificar para servicios escolares bajo esa categoría, y también puede ocurrir lo contrario: que la escuela determine que un estudiante es elegible antes de que reciba un diagnóstico médico formal. Muchos niños con autismo también tienen afecciones concurrentes, como TDAH, trastornos del sueño y ansiedad, que pueden hacer la situación más compleja.",
+      "Una vez que un niño califica, las adaptaciones, como tiempo adicional o tecnología de asistencia, ayudan a eliminar barreras para participar sin cambiar lo que se espera que el estudiante aprenda, mientras que las modificaciones ajustan el material en sí. Ambas deben quedar documentadas claramente en el IEP o el plan 504 del niño para asegurar que reciba el apoyo que necesita."
+    ]
   }
 }
