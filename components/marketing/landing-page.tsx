@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { FeatureCard } from "./feature-card";
 import { ServicesOverview } from "./services-overview";
+import { AboutUsSection } from "./about-us-section";
 import { FamilyPhotoGallery } from "./family-photo-gallery";
 import { SectionHeading } from "./section-heading";
 
@@ -146,6 +147,7 @@ export async function LandingPage() {
           </ul>
         </div>
       </section>
+      <AboutUsSection />
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <FeatureCard

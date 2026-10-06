@@ -13,6 +13,7 @@ const links = [
   { key: "howItWorks", href: "/how-it-works" },
   { key: "resources", href: "/resources/education" },
   { key: "pricing", href: "/pricing" },
+  { key: "about", href: "/#about" },
 ] as const;
 
 export function PublicHeader() {

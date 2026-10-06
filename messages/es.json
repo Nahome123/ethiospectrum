@@ -147,7 +147,8 @@
     "services": "Servicios",
     "requests": "Solicitudes de servicio",
     "household": "Hogar",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "about": "Sobre nosotros"
   },
   "common": {
     "learnMore": "Más información",
@@ -2900,5 +2901,15 @@
       "Es posible que un niño tenga un diagnóstico médico de autismo sin calificar para servicios escolares bajo esa categoría, y también puede ocurrir lo contrario: que la escuela determine que un estudiante es elegible antes de que reciba un diagnóstico médico formal. Muchos niños con autismo también tienen afecciones concurrentes, como TDAH, trastornos del sueño y ansiedad, que pueden hacer la situación más compleja.",
       "Una vez que un niño califica, las adaptaciones, como tiempo adicional o tecnología de asistencia, ayudan a eliminar barreras para participar sin cambiar lo que se espera que el estudiante aprenda, mientras que las modificaciones ajustan el material en sí. Ambas deben quedar documentadas claramente en el IEP o el plan 504 del niño para asegurar que reciba el apoyo que necesita."
     ]
+  },
+  "aboutUs": {
+    "eyebrow": "Sobre nosotros",
+    "title": "Conozca a nuestra fundadora",
+    "founderName": "Yamrot",
+    "founderRole": "Fundadora",
+    "founderTitle": "",
+    "founderBio": "",
+    "bioPlaceholder": "Biografía próximamente.",
+    "photoAlt": "Retrato de Yamrot, fundadora de Ethiospectrum"
   }
 }

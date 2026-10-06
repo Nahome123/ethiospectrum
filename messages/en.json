@@ -147,7 +147,8 @@
     "services": "Services",
     "requests": "Service requests",
     "household": "Household",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "about": "About us"
   },
   "common": {
     "learnMore": "Learn more",
@@ -2900,5 +2901,15 @@
       "It's possible for a child to hold a medical diagnosis of autism without qualifying for school-based services under that category, and the reverse can also happen, where a student is found eligible at school before ever receiving a formal medical diagnosis. Many children with autism also have co-occurring conditions, including ADHD, sleep disorders, and anxiety, which can add complexity to the picture.",
       "Once a child qualifies, accommodations, like extended time or assistive technology, help remove barriers to participation without changing what a student is expected to learn, while modifications adjust the material itself. Both should be clearly documented in a child's IEP or 504 plan to ensure they receive the support they need."
     ]
+  },
+  "aboutUs": {
+    "eyebrow": "About us",
+    "title": "Meet our founder",
+    "founderName": "Yamrot",
+    "founderRole": "Founder",
+    "founderTitle": "",
+    "founderBio": "",
+    "bioPlaceholder": "Bio coming soon.",
+    "photoAlt": "Portrait of Yamrot, founder of Ethiospectrum"
   }
 }
