@@ -6,15 +6,15 @@ import { useTranslations } from "next-intl";
 
 const photos = [
   {
-    id: "classroom",
-    src: "/images/family/classroom.jpg",
-    alt: "classroomAlt",
+    id: "coloring",
+    src: "/images/family/coloring.jpg",
+    alt: "coloringAlt",
     className: "family-photo-main",
   },
   {
-    id: "outdoors",
-    src: "/images/family/outdoors.jpg",
-    alt: "outdoorsAlt",
+    id: "sensory-wall",
+    src: "/images/family/sensory-wall.jpg",
+    alt: "sensoryWallAlt",
     className: "family-photo-outdoors",
   },
   {

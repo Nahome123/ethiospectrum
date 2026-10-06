@@ -1,9 +1,8 @@
 # Family photo assets
 
-Place the supplied photos at these paths to populate the landing-page motion gallery:
+Photos used by the landing page:
 
-- `classroom.jpg`
-- `outdoors.jpg`
-- `learning.jpg`
+- `coloring.jpg` and `sensory-wall.jpg` and `learning.jpg`: the motion gallery
+- `running-girl.jpeg`: the journey section
 
 The gallery includes accessible image descriptions and reduced-motion fallbacks. Add photos only with documented permission to use them.
