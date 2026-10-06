@@ -163,7 +163,7 @@ export async function DocumentSummaryPanel({
             </select>
           </div>
           <button
-            className="inline-flex h-9 items-center justify-center rounded-4xl border border-border bg-background px-3 text-sm font-medium hover:bg-muted"
+            className="inline-flex h-9 items-center justify-center rounded-lg border border-border bg-background px-3 text-sm font-medium hover:bg-muted"
             type="submit"
           >
             {t("viewSummary")}

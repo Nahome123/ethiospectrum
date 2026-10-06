@@ -65,14 +65,14 @@ export default async function LessonPage({
   return (
     <article className="mx-auto max-w-4xl space-y-6">
       <Link
-        className="text-sm font-semibold text-primary underline underline-offset-4"
+        className="text-sm font-semibold text-link underline underline-offset-4"
         href={withLearner("/training")}
       >
         {t("backToLibrary")}
       </Link>
       <header>
         {current ? (
-          <p className="text-sm font-semibold text-primary">
+          <p className="text-sm font-semibold text-link">
             {localizedField(current.module_localized, locale, "title", current.module_title)}
           </p>
         ) : null}

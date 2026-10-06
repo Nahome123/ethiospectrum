@@ -143,14 +143,14 @@ export function AuthForm({
       </Button>
       {!signup && (
         <p className="text-center text-sm">
-          <Link className="font-semibold text-primary underline" href="/forgot-password">
+          <Link className="font-semibold text-link underline" href="/forgot-password">
             {t("forgotPassword")}
           </Link>
         </p>
       )}
       <p className="text-center text-sm text-muted-foreground">
         {t(signup ? "haveAccount" : "needAccount")}{" "}
-        <Link className="font-semibold text-primary underline" href={signup ? "/login" : "/signup"}>
+        <Link className="font-semibold text-link underline" href={signup ? "/login" : "/signup"}>
           {t(signup ? "submitLogin" : "submitSignup")}
         </Link>
       </p>

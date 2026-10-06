@@ -60,7 +60,7 @@ export default async function TrainingPage({
     return (
       <section className="mx-auto max-w-3xl space-y-6">
         <div className="rounded-2xl border bg-white p-8">
-          <Lock aria-hidden="true" className="size-9 text-primary" />
+          <Lock aria-hidden="true" className="size-9 text-link" />
           <h1 className="mt-4 text-3xl font-bold">{t("lockedTitle")}</h1>
           <p className="mt-3 leading-7 text-muted-foreground">{t("lockedDescription")}</p>
           <ul className="mt-4 list-disc space-y-1 pl-5 text-sm">
@@ -162,7 +162,7 @@ export default async function TrainingPage({
                     return (
                       <li key={lesson.lesson_id}>
                         <Link
-                          className="flex items-center justify-between gap-3 py-3 hover:text-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+                          className="flex items-center justify-between gap-3 py-3 hover:text-link focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
                           href={lessonHref(lesson.lesson_id)}
                         >
                           <span className="flex items-center gap-3">

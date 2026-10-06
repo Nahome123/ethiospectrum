@@ -8,7 +8,7 @@ function formatDate(value: string, locale: AppLocale): string {
 }
 
 const statusStyles: Record<string, string> = {
-  open: "bg-primary/10 text-primary",
+  open: "bg-secondary text-link",
   closed: "bg-secondary text-secondary-foreground",
   cancelled: "bg-muted text-muted-foreground",
 };

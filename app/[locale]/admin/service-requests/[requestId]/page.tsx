@@ -24,7 +24,7 @@ export default async function AdminServiceRequestPage({
   return (
     <section className="mx-auto max-w-5xl space-y-4">
       <Link
-        className="text-sm font-semibold text-primary underline underline-offset-4"
+        className="text-sm font-semibold text-link underline underline-offset-4"
         href="/admin/service-requests"
       >
         {t("backToQueue")}

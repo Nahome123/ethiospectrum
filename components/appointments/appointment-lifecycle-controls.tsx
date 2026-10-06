@@ -45,7 +45,7 @@ function ConfirmedAction({
         </p>
       ) : null}
       {state.status === "success" ? (
-        <p className="mt-2 text-sm font-semibold text-primary" role="status">
+        <p className="mt-2 text-sm font-semibold text-link" role="status">
           {state.message}
         </p>
       ) : null}

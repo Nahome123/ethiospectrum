@@ -79,23 +79,19 @@ async function QuickControls({
       <StatusPill label={t(`status.${status}`)} tone={statusTone[status]} />
       <form action={setTrainingStatusAction.bind(null, locale, entity, id, next)}>
         <button
-          className="rounded-full border px-2.5 py-0.5 text-xs font-semibold hover:bg-secondary"
+          className="rounded-lg border px-2.5 py-0.5 text-xs font-semibold hover:bg-secondary"
           type="submit"
         >
           {label}
         </button>
       </form>
       <form action={moveTrainingItemAction.bind(null, locale, entity, id, "up")}>
-        <button aria-label={t("moveUp")} className="rounded-full border p-1 hover:bg-secondary" type="submit">
+        <button aria-label={t("moveUp")} className="rounded-lg border p-1 hover:bg-secondary" type="submit">
           <ArrowUp aria-hidden="true" className="size-3.5" />
         </button>
       </form>
       <form action={moveTrainingItemAction.bind(null, locale, entity, id, "down")}>
-        <button
-          aria-label={t("moveDown")}
-          className="rounded-full border p-1 hover:bg-secondary"
-          type="submit"
-        >
+        <button aria-label={t("moveDown")} className="rounded-lg border p-1 hover:bg-secondary" type="submit">
           <ArrowDown aria-hidden="true" className="size-3.5" />
         </button>
       </form>
@@ -486,7 +482,7 @@ export default async function AdminTrainingPage({
           <p className="mt-1 text-sm text-muted-foreground">{t("progressNotice")}</p>
         </div>
         <Link
-          className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
+          className="inline-flex min-h-10 items-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground"
           href={href(course?.id ?? null, { new: "course" })}
         >
           <Plus aria-hidden="true" className="size-4" />
@@ -500,7 +496,7 @@ export default async function AdminTrainingPage({
             <Link
               aria-current={row.id === course?.id ? "page" : undefined}
               className={cn(
-                "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold",
+                "inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-semibold",
                 row.id === course?.id
                   ? "border-primary bg-primary text-primary-foreground"
                   : "bg-white hover:bg-secondary",
@@ -523,7 +519,7 @@ export default async function AdminTrainingPage({
                 <h2 className="text-xl font-bold">{course.title}</h2>
                 <p className="text-sm text-muted-foreground">/{course.slug}</p>
                 <Link
-                  className="mt-2 inline-block text-sm font-semibold text-primary underline"
+                  className="mt-2 inline-block text-sm font-semibold text-link underline"
                   href={href(course.id, { edit: "course" })}
                 >
                   {t("editCourseDetails")}
@@ -555,7 +551,7 @@ export default async function AdminTrainingPage({
                         </p>
                         <h3 className="font-bold">{module.title}</h3>
                         <Link
-                          className="text-sm font-semibold text-primary underline"
+                          className="text-sm font-semibold text-link underline"
                           href={href(course.id, { edit: "module", id: module.id })}
                         >
                           {t("edit")}
@@ -576,7 +572,7 @@ export default async function AdminTrainingPage({
                           <li
                             className={cn(
                               "flex flex-wrap items-center justify-between gap-3 px-4 py-3",
-                              selectedId === lesson.id && "bg-primary/5",
+                              selectedId === lesson.id && "bg-tint",
                             )}
                             key={lesson.id}
                           >
@@ -603,7 +599,7 @@ export default async function AdminTrainingPage({
                     )}
                     <div className="border-t px-4 py-2">
                       <Link
-                        className="inline-flex items-center gap-1 text-sm font-semibold text-primary"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-link"
                         href={href(course.id, { new: "lesson", module: module.id })}
                       >
                         <Plus aria-hidden="true" className="size-4" />
@@ -615,7 +611,7 @@ export default async function AdminTrainingPage({
               })}
             </ol>
             <Link
-              className="flex items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed p-4 text-sm font-semibold text-primary hover:bg-white"
+              className="flex items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed p-4 text-sm font-semibold text-link hover:bg-white"
               href={href(course.id, { new: "module" })}
             >
               <Plus aria-hidden="true" className="size-4" />

@@ -18,7 +18,7 @@ export default async function AuthErrorPage({
     <section className="mx-auto max-w-md px-4 py-16 text-center sm:px-6">
       <h1 className="text-3xl font-bold">{t("authErrorTitle")}</h1>
       <p className="mt-3 text-muted-foreground">{message}</p>
-      <Link href="/login" className="mt-6 inline-block font-semibold text-primary underline">
+      <Link href="/login" className="mt-6 inline-block font-semibold text-link underline">
         {t("backToLogin")}
       </Link>
     </section>

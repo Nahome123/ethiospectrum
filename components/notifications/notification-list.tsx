@@ -86,7 +86,7 @@ export async function NotificationList({
                 ) : null}
                 <div className="mt-2 flex flex-wrap items-center gap-4">
                   {path ? (
-                    <Link className="text-sm font-semibold text-primary underline" href={path}>
+                    <Link className="text-sm font-semibold text-link underline" href={path}>
                       {t("open")}
                     </Link>
                   ) : null}

@@ -34,7 +34,7 @@ export async function AboutUsSection() {
           </h2>
           <div className="mt-8 border-l-4 border-accent pl-5">
             <p className="text-2xl font-bold text-foreground">{t("founderName")}</p>
-            {title ? <p className="mt-1 font-semibold text-primary">{title}</p> : null}
+            {title ? <p className="mt-1 font-semibold text-link">{title}</p> : null}
             <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {t("founderRole")}
             </p>

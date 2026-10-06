@@ -33,9 +33,9 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
     <div className="min-h-screen bg-slate-100 lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b border-nav-hover bg-nav p-5 text-nav-foreground lg:border-b-0 lg:border-r">
         <Link href="/admin" aria-label={brandConfig.name} className="inline-block">
-          <BrandLogo onDark className="h-10 w-48" />
+          <BrandLogo className="h-10 w-48" />
         </Link>
-        <p className="mt-1 text-sm text-slate-300">{t("navigation.admin")}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t("navigation.admin")}</p>
         <nav aria-label={t("navigation.admin")} className="mt-6 flex gap-2 overflow-x-auto lg:flex-col">
           {links.map(([key, href]) => (
             <Link
@@ -51,7 +51,7 @@ export async function AdminShell({ children }: Readonly<{ children: React.ReactN
       <div>
         <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b border-border bg-white px-4 py-3 sm:px-6">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-sm font-bold text-primary">{t("adminConsole.roleLabel")}</p>
+            <p className="text-sm font-bold text-link">{t("adminConsole.roleLabel")}</p>
             <AdminViewSwitcher current="admin" />
           </div>
           <div className="flex items-center gap-3">

@@ -25,7 +25,7 @@ export default async function MemberResourceDetailPage({
 
   return (
     <section className="mx-auto max-w-4xl">
-      <Link className="text-sm font-semibold text-primary hover:underline" href="/member/resources">
+      <Link className="text-sm font-semibold text-link hover:underline" href="/member/resources">
         {t("backToHub")}
       </Link>
       <article className="mt-5 overflow-hidden rounded-xl border border-border bg-white shadow-sm">
@@ -43,7 +43,7 @@ export default async function MemberResourceDetailPage({
               </span>
             ) : null}
           </div>
-          <BookOpen aria-hidden="true" className="mt-8 size-10 text-primary" />
+          <BookOpen aria-hidden="true" className="mt-8 size-10 text-link" />
           <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">{resource.title}</h1>
           <p className="mt-4 max-w-3xl text-lg leading-8 text-muted-foreground">{resource.summary}</p>
           {fallbackKey ? (

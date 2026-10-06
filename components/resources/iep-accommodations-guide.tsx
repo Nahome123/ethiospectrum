@@ -32,31 +32,26 @@ export function IepAccommodationsGuide({ labels }: { labels: IepAccommodationsLa
         title={content.title}
       />
 
-      <header className="overflow-hidden rounded-3xl bg-primary px-6 py-10 text-primary-foreground shadow-sm sm:px-10 sm:py-14">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground/80">
-          {labels.eyebrow}
-        </p>
+      <header className="overflow-hidden rounded-3xl bg-deep px-6 py-10 text-on-deep shadow-sm sm:px-10 sm:py-14">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-on-deep/80">{labels.eyebrow}</p>
         <h1 className="mt-5 max-w-4xl font-heading text-3xl font-bold tracking-tight sm:text-5xl">
           {content.title}
         </h1>
-        <p className="mt-3 max-w-4xl text-xl font-semibold text-primary-foreground/85" lang="am">
+        <p className="mt-3 max-w-4xl text-xl font-semibold text-on-deep/85" lang="am">
           {content.titleAm}
         </p>
-        <div className="my-6 h-px max-w-2xl bg-primary-foreground/30" />
+        <div className="my-6 h-px max-w-2xl bg-on-deep/30" />
         <p className="max-w-3xl text-lg italic">{content.tagline}</p>
-        <p className="mt-2 max-w-3xl text-base text-primary-foreground/85" lang="am">
+        <p className="mt-2 max-w-3xl text-base text-on-deep/85" lang="am">
           {content.taglineAm}
         </p>
-        <p className="mt-7 max-w-3xl leading-7 text-primary-foreground/90">{content.introduction}</p>
-        <p className="mt-3 max-w-3xl leading-7 text-primary-foreground/80" lang="am">
+        <p className="mt-7 max-w-3xl leading-7 text-on-deep/90">{content.introduction}</p>
+        <p className="mt-3 max-w-3xl leading-7 text-on-deep/80" lang="am">
           {content.introductionAm}
         </p>
         <ul className="mt-7 flex flex-wrap gap-2">
           {content.stats.map((stat) => (
-            <li
-              className="rounded-full border border-primary-foreground/35 px-3 py-1 text-sm font-semibold"
-              key={stat}
-            >
+            <li className="rounded-full border border-on-deep/35 px-3 py-1 text-sm font-semibold" key={stat}>
               {stat}
             </li>
           ))}
@@ -97,7 +92,7 @@ export function IepAccommodationsGuide({ labels }: { labels: IepAccommodationsLa
                 {labels.sectionSummary(section.index, section.items.length)}
               </p>
               <h2 className="mt-2 font-heading text-2xl font-bold sm:text-3xl">{section.title}</h2>
-              <p className="mt-1 text-lg font-semibold text-primary" lang="am">
+              <p className="mt-1 text-lg font-semibold text-link" lang="am">
                 {section.titleAm}
               </p>
             </header>

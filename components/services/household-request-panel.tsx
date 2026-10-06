@@ -97,7 +97,7 @@ export async function HouseholdRequestPanel({
           className="rounded-2xl border-2 border-primary/40 bg-white p-5 sm:p-6"
         >
           <h2 className="flex items-center gap-2 text-lg font-bold" id="payment-heading">
-            <CreditCard aria-hidden="true" className="size-5 text-primary" />
+            <CreditCard aria-hidden="true" className="size-5 text-link" />
             {request.status === "payment_failed" ? t("retryPaymentTitle") : t("paymentTitle")}
           </h2>
           {request.status === "payment_failed" ? (

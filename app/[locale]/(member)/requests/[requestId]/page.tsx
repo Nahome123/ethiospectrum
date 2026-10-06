@@ -68,7 +68,7 @@ export default async function RequestDetailPage({
 
   return (
     <section className="mx-auto max-w-4xl space-y-4">
-      <Link className="text-sm font-semibold text-primary underline underline-offset-4" href="/requests">
+      <Link className="text-sm font-semibold text-link underline underline-offset-4" href="/requests">
         {t("backToRequests")}
       </Link>
       <RequestDetailView

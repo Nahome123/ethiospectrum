@@ -70,7 +70,7 @@ export default async function AdminPaymentsPage({
                   <tr className="align-top" key={refund.id}>
                     <td className="px-4 py-3">
                       <Link
-                        className="font-semibold text-primary underline"
+                        className="font-semibold text-link underline"
                         href={`/admin/service-requests/${refund.service_request_id}`}
                       >
                         {refund.household_name}
@@ -113,8 +113,8 @@ export default async function AdminPaymentsPage({
               aria-current={status === value ? "page" : undefined}
               className={
                 status === value
-                  ? "rounded-full bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
-                  : "rounded-full border bg-white px-3 py-1.5 text-sm font-semibold"
+                  ? "rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
+                  : "rounded-lg border bg-white px-3 py-1.5 text-sm font-semibold"
               }
               href={value === "all" ? "/admin/payments" : `/admin/payments?status=${value}`}
               key={value}
@@ -153,7 +153,7 @@ export default async function AdminPaymentsPage({
                   <tr className="align-top" key={payment.id}>
                     <td className="px-4 py-3">
                       <Link
-                        className="font-semibold text-primary underline"
+                        className="font-semibold text-link underline"
                         href={`/admin/service-requests/${payment.service_request_id}`}
                       >
                         {payment.household_name}

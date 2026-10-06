@@ -30,7 +30,7 @@ export async function LearnerPicker({
           ))}
         </select>
       </label>
-      <button className="h-9 rounded-4xl border px-3 text-sm font-semibold" type="submit">
+      <button className="h-9 rounded-lg border px-3 text-sm font-semibold" type="submit">
         {t("switchLearner")}
       </button>
     </form>

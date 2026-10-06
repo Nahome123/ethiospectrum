@@ -23,7 +23,7 @@ export function ReminderCancelForm({
       </Button>
       {state.status !== "idle" ? (
         <p
-          className={state.status === "error" ? "text-sm text-destructive" : "text-sm text-primary"}
+          className={state.status === "error" ? "text-sm text-destructive" : "text-sm text-link"}
           role={state.status === "error" ? "alert" : "status"}
         >
           {state.message}

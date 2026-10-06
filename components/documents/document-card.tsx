@@ -94,14 +94,14 @@ export async function DocumentCard({
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
-          className="font-semibold text-primary underline underline-offset-4"
+          className="font-semibold text-link underline underline-offset-4"
           href={`/documents/${document.id}`}
         >
           {t("viewDetails")}
         </Link>
         {isUploaded ? (
           <a
-            className="font-semibold text-primary underline underline-offset-4"
+            className="font-semibold text-link underline underline-offset-4"
             href={`/api/documents/${document.id}/download`}
           >
             {t("download")}

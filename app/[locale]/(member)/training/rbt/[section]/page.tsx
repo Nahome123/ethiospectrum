@@ -48,7 +48,7 @@ export default async function RbtTrainingSectionPage({
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <p className="font-heading text-2xl font-bold">{t("rbtTitle")}</p>
         <Link
-          className="rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
+          className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
           href={`/training/rbt/${rbtRouteBySection[resumeSection]}`}
         >
           {t("resume")}
@@ -86,7 +86,7 @@ export default async function RbtTrainingSectionPage({
         <nav aria-label={t("sequenceNavigation")} className="mt-8 flex flex-wrap justify-between gap-3">
           {previousSection ? (
             <Link
-              className="rounded-full border border-border px-4 py-2 font-semibold hover:bg-muted"
+              className="rounded-lg border border-border px-4 py-2 font-semibold hover:bg-muted"
               href={`/training/rbt/${rbtRouteBySection[previousSection]}`}
             >
               {t("previousSection")}
@@ -96,7 +96,7 @@ export default async function RbtTrainingSectionPage({
           )}
           {nextSection ? (
             <Link
-              className="rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground hover:bg-primary/80"
+              className="rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground hover:bg-primary-hover"
               href={`/training/rbt/${rbtRouteBySection[nextSection]}`}
             >
               {t("nextSection")}

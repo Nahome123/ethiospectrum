@@ -136,7 +136,7 @@ export function CitationEvidenceTrigger({
       <Button
         aria-haspopup="dialog"
         aria-label={sourceLabel}
-        className={cn("h-8 rounded-full px-3 text-xs", className)}
+        className={cn("h-8 rounded-lg px-3 text-xs", className)}
         onClick={openCitation}
         ref={triggerRef}
         type="button"
@@ -219,7 +219,7 @@ export function CitationEvidenceTrigger({
                 </section>
                 {evidence.canOpenOriginal ? (
                   <a
-                    className="inline-flex min-h-11 items-center justify-center rounded-4xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+                    className="inline-flex min-h-11 items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
                     href={viewerHref}
                     rel="noreferrer"
                     target="_blank"

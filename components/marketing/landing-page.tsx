@@ -24,13 +24,13 @@ export async function LandingPage() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/signup"
-                className="rounded-md bg-primary px-5 py-3 font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+                className="rounded-md bg-primary px-5 py-3 font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover"
               >
                 {t("hero.primaryAction")}
               </Link>
               <Link
                 href="/pricing"
-                className="rounded-md border border-primary px-5 py-3 font-semibold text-primary hover:bg-white"
+                className="rounded-md border border-primary px-5 py-3 font-semibold text-link hover:bg-white"
               >
                 {t("publicServices.seePricing")}
               </Link>
@@ -48,7 +48,7 @@ export async function LandingPage() {
                   key={key}
                 >
                   <span className="font-semibold">{t(`publicServices.${key}.name`)}</span>
-                  <span className="text-sm font-bold text-primary">{t(`publicServices.${key}.price`)}</span>
+                  <span className="text-sm font-bold text-link">{t(`publicServices.${key}.price`)}</span>
                 </li>
               ))}
             </ul>
@@ -81,7 +81,7 @@ export async function LandingPage() {
       <section aria-labelledby="eligibility-heading" className="border-y border-border bg-secondary/50">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14 lg:px-8">
           <div>
-            <BookOpenCheck aria-hidden="true" className="size-9 text-primary" />
+            <BookOpenCheck aria-hidden="true" className="size-9 text-link" />
             <h2
               className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
               id="eligibility-heading"
@@ -107,7 +107,7 @@ export async function LandingPage() {
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {["One", "Two", "Three"].map((step, index) => (
             <article className="rounded-xl border border-border bg-white p-6" key={step}>
-              <p className="text-sm font-bold text-primary">0{index + 1}</p>
+              <p className="text-sm font-bold text-link">0{index + 1}</p>
               <h3 className="mt-4 text-xl font-bold">{t(`howItWorks.step${step}Title`)}</h3>
               <p className="mt-3 leading-7 text-muted-foreground">{t(`howItWorks.step${step}Description`)}</p>
             </article>
@@ -124,7 +124,7 @@ export async function LandingPage() {
           <div className="mt-7 flex flex-wrap gap-3">
             {["english", "amharic", "spanish"].map((language) => (
               <span
-                className="rounded-full border border-border bg-white px-4 py-2 font-semibold"
+                className="rounded-lg border border-border bg-white px-4 py-2 font-semibold"
                 key={language}
               >
                 {t(`multilingual.${language}`)}
@@ -132,12 +132,10 @@ export async function LandingPage() {
             ))}
           </div>
         </div>
-        <div className="rounded-2xl bg-primary p-7 text-primary-foreground">
-          <Sparkles aria-hidden="true" className="size-8 text-accent" />
+        <div className="rounded-2xl bg-deep p-7 text-on-deep">
+          <Sparkles aria-hidden="true" className="size-8 text-primary" />
           <h2 className="mt-6 text-2xl font-bold">{t("publicServices.languageTitle")}</h2>
-          <p className="mt-3 leading-7 text-primary-foreground/85">
-            {t("publicServices.languageDescription")}
-          </p>
+          <p className="mt-3 leading-7 text-on-deep/80">{t("publicServices.languageDescription")}</p>
           <ul className="mt-6 space-y-3">
             {(t.raw("publicServices.languageItems") as string[]).map((item) => (
               <li className="rounded-md bg-white/10 px-4 py-3" key={item}>
@@ -158,13 +156,13 @@ export async function LandingPage() {
           />
         </div>
       </section>
-      <section className="bg-primary">
-        <div className="mx-auto max-w-7xl px-4 py-16 text-center text-primary-foreground sm:px-6 lg:px-8">
+      <section className="bg-deep">
+        <div className="mx-auto max-w-7xl px-4 py-20 text-center text-on-deep sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold">{t("callToAction.title")}</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-primary-foreground/85">{t("callToAction.description")}</p>
+          <p className="mx-auto mt-4 max-w-2xl text-on-deep/80">{t("callToAction.description")}</p>
           <Link
             href="/signup"
-            className="mt-7 inline-block rounded-md bg-white px-5 py-3 font-semibold text-primary hover:bg-secondary"
+            className="mt-8 inline-flex h-12 items-center rounded-lg bg-primary px-6 font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover"
           >
             {t("callToAction.action")}
           </Link>

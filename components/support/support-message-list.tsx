@@ -33,7 +33,7 @@ export async function SupportMessageList({
         return (
           <li
             className={`rounded-xl border bg-white p-4 ${
-              isSpecialist ? "border-primary/40 bg-primary/5" : "border-border"
+              isSpecialist ? "border-input bg-tint" : "border-border"
             }`}
             key={message.id}
           >

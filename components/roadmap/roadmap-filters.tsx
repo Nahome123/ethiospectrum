@@ -143,7 +143,7 @@ export async function RoadmapFilters({
       </div>
       {canManageArchived ? (
         <a
-          className="text-sm font-semibold text-primary underline underline-offset-4 sm:col-span-2"
+          className="text-sm font-semibold text-link underline underline-offset-4 sm:col-span-2"
           href={`/${locale}/roadmap${roadmapQueryString({ ...query, archived: !query.archived, page: 1 })}`}
         >
           {query.archived ? t("activeItems") : t("archivedItems")}

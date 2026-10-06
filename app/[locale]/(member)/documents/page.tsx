@@ -41,7 +41,7 @@ export default async function DocumentsPage({
         <div className="mt-8 rounded-2xl border bg-card p-6">
           <h2 className="font-bold">{t("binderErrorTitle")}</h2>
           <p className="mt-2 text-muted-foreground">{t("binderErrorDescription")}</p>
-          <Link className="mt-4 inline-block font-semibold text-primary underline" href="/documents">
+          <Link className="mt-4 inline-block font-semibold text-link underline" href="/documents">
             {t("retry")}
           </Link>
         </div>
@@ -92,7 +92,7 @@ export default async function DocumentsPage({
         </div>
         {binder.context.canUpload ? (
           <Link
-            className="rounded-4xl bg-primary px-4 py-2 font-semibold text-primary-foreground"
+            className="rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground"
             href="/documents/upload"
           >
             {t("uploadDocument")}
@@ -124,7 +124,7 @@ export default async function DocumentsPage({
               ))}
             </ul>
             <a
-              className="font-semibold text-primary underline underline-offset-4"
+              className="font-semibold text-link underline underline-offset-4"
               href={getDocumentBinderClearHref(locale)}
             >
               {t("clearFilters")}

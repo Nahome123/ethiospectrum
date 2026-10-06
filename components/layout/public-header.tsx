@@ -23,16 +23,12 @@ export function PublicHeader() {
   return (
     <header className="border-b border-border bg-white">
       <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="text-lg font-bold tracking-tight text-primary"
-          aria-label={brandConfig.name}
-        >
+        <Link href="/" className="text-lg font-bold tracking-tight text-link" aria-label={brandConfig.name}>
           <BrandLogo priority className="h-11 w-52 sm:w-56" />
         </Link>
         <nav aria-label={t("navigation.home")} className="hidden items-center gap-6 lg:flex">
           {links.map(({ key, href }) => (
-            <Link className="text-sm font-medium text-slate-700 hover:text-primary" href={href} key={key}>
+            <Link className="text-sm font-medium text-slate-700 hover:text-link" href={href} key={key}>
               {t(`navigation.${key}`)}
             </Link>
           ))}
@@ -40,13 +36,13 @@ export function PublicHeader() {
         <div className="hidden items-center gap-3 lg:flex">
           <LanguageSelector />
           <Link
-            className="rounded-md px-3 py-2 text-sm font-semibold text-primary hover:bg-secondary"
+            className="rounded-md px-3 py-2 text-sm font-semibold text-link hover:bg-secondary"
             href="/login"
           >
             {t("navigation.login")}
           </Link>
           <Link
-            className="rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+            className="rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover"
             href="/signup"
           >
             {t("navigation.signup")}
@@ -56,7 +52,7 @@ export function PublicHeader() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen(!open)}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border text-primary lg:hidden"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border text-link lg:hidden"
         >
           <span className="sr-only">{open ? t("accessibility.closeMenu") : t("common.openMenu")}</span>
           {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
@@ -83,7 +79,7 @@ export function PublicHeader() {
               <LanguageSelector />
               <Link
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 font-semibold text-primary"
+                className="rounded-md px-3 py-2 font-semibold text-link"
                 href="/login"
               >
                 {t("navigation.login")}

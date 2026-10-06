@@ -78,7 +78,7 @@ export function IepAccommodationsProgress({
         </div>
         <span className="text-sm font-semibold tabular-nums text-muted-foreground">{percentage}%</span>
         <button
-          className="hidden min-h-10 rounded-full border border-border px-3 text-sm font-semibold hover:bg-muted sm:inline-flex sm:items-center"
+          className="hidden min-h-10 rounded-lg border border-border px-3 text-sm font-semibold hover:bg-muted sm:inline-flex sm:items-center"
           onClick={() =>
             window.scrollTo({
               behavior:

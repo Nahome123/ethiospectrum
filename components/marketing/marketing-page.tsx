@@ -33,7 +33,7 @@ export async function MarketingPage({
         <ol className="mt-10 space-y-5">
           {["One", "Two", "Three"].map((step, index) => (
             <li className="rounded-xl border border-border bg-white p-6" key={step}>
-              <p className="text-sm font-bold text-primary">0{index + 1}</p>
+              <p className="text-sm font-bold text-link">0{index + 1}</p>
               <h3 className="mt-2 text-xl font-bold">{t(`howItWorks.step${step}Title`)}</h3>
               <p className="mt-2 leading-7 text-muted-foreground">{t(`howItWorks.step${step}Description`)}</p>
             </li>
@@ -80,11 +80,11 @@ export async function MarketingPage({
         title={privacy ? t("privacy.title") : t("marketingPages.termsTitle")}
         description={privacy ? t("privacy.pageIntro") : t("marketingPages.termsIntro")}
       />
-      <div className="mt-10 rounded-xl border border-accent bg-secondary p-5 text-sm font-medium text-slate-700">
+      <div className="mt-10 rounded-xl border border-border bg-secondary p-5 text-sm font-medium text-slate-700">
         {t("legal.draftNotice")}
       </div>
       <article className="mt-5 rounded-xl border border-border bg-white p-7">
-        <ShieldCheck aria-hidden="true" className="size-7 text-primary" />
+        <ShieldCheck aria-hidden="true" className="size-7 text-link" />
         <p className="mt-5 leading-8 text-muted-foreground">
           {t(privacy ? "legal.privacyBody" : "legal.termsBody")}
         </p>

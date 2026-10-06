@@ -43,11 +43,11 @@ function Panel({
     <section aria-labelledby={id} className="rounded-2xl border bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <h2 className="flex items-center gap-2 text-lg font-bold" id={id}>
-          <Icon aria-hidden="true" className="size-5 text-primary" />
+          <Icon aria-hidden="true" className="size-5 text-link" />
           {title}
         </h2>
         {href && linkLabel ? (
-          <Link className="inline-flex items-center gap-1 text-sm font-semibold text-primary" href={href}>
+          <Link className="inline-flex items-center gap-1 text-sm font-semibold text-link" href={href}>
             {linkLabel}
             <ChevronRight aria-hidden="true" className="size-4" />
           </Link>
@@ -76,7 +76,7 @@ export default async function DashboardPage({
     return (
       <section className="mx-auto max-w-3xl">
         <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
-          <HousePlus aria-hidden="true" className="size-9 text-primary" />
+          <HousePlus aria-hidden="true" className="size-9 text-link" />
           <h1 className="mt-5 text-3xl font-bold tracking-tight">{onboardingT("title")}</h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{onboardingT("description")}</p>
           <p className="mt-3 text-sm text-muted-foreground">{t("caregiverHint")}</p>
@@ -108,7 +108,7 @@ export default async function DashboardPage({
     <section className="mx-auto max-w-7xl space-y-6">
       <div className="flex flex-col gap-4 border-b pb-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-semibold text-primary">{access.household.name}</p>
+          <p className="text-sm font-semibold text-link">{access.household.name}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{t("welcome")}</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">{t("intro")}</p>
         </div>
@@ -170,7 +170,7 @@ export default async function DashboardPage({
               {upcoming.map((appointment) => (
                 <li className="py-3" key={appointment.appointment_id}>
                   <Link
-                    className="font-semibold text-primary underline"
+                    className="font-semibold text-link underline"
                     href={`/requests/${appointment.service_request_id}`}
                   >
                     {types(appointment.service_type)} · {appointment.dependent_name}
@@ -250,7 +250,7 @@ export default async function DashboardPage({
             <ul className="divide-y">
               {activeRequests.slice(0, 5).map((request) => (
                 <li className="flex flex-wrap items-center justify-between gap-2 py-3" key={request.id}>
-                  <Link className="font-semibold text-primary underline" href={`/requests/${request.id}`}>
+                  <Link className="font-semibold text-link underline" href={`/requests/${request.id}`}>
                     {types(request.service_type)} · {request.dependent_name}
                   </Link>
                   <span className="flex gap-2">
@@ -273,7 +273,7 @@ export default async function DashboardPage({
           {dependents.length === 0 ? (
             <div className="text-sm text-muted-foreground">
               <p>{t("noDependents")}</p>
-              <Link className="mt-2 inline-block font-semibold text-primary underline" href="/dependents/new">
+              <Link className="mt-2 inline-block font-semibold text-link underline" href="/dependents/new">
                 {t("addDependent")}
               </Link>
             </div>
@@ -282,7 +282,7 @@ export default async function DashboardPage({
               {dependents.map((dependent) => (
                 <li key={dependent.id}>
                   <Link
-                    className="inline-block rounded-full border px-3 py-1 text-sm font-medium hover:border-primary"
+                    className="inline-block rounded-lg border px-3 py-1 text-sm font-medium hover:border-primary"
                     href={`/dependents/${dependent.id}`}
                   >
                     {dependent.name}
@@ -324,7 +324,7 @@ export default async function DashboardPage({
           <ul className="divide-y">
             {(history ?? []).slice(0, 5).map((request) => (
               <li className="flex flex-wrap items-center justify-between gap-2 py-3 text-sm" key={request.id}>
-                <Link className="font-semibold text-primary underline" href={`/requests/${request.id}`}>
+                <Link className="font-semibold text-link underline" href={`/requests/${request.id}`}>
                   {types(request.service_type)} · {request.dependent_name}
                 </Link>
                 <span className="flex items-center gap-2 text-muted-foreground">

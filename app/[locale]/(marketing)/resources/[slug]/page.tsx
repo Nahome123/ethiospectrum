@@ -29,7 +29,7 @@ export default async function ResourceDetailPage({
       </Link>
       <article className="mt-6 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <header className="p-6 sm:p-10">
-          <p className="text-sm font-semibold text-primary">{t(`categories.${category}`)}</p>
+          <p className="text-sm font-semibold text-link">{t(`categories.${category}`)}</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{resource.title}</h1>
           <p className="mt-4 text-lg leading-7 text-muted-foreground">{resource.summary}</p>
         </header>

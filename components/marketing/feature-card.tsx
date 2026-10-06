@@ -18,13 +18,13 @@ export function FeatureCard({
 }) {
   return (
     <article className="rounded-xl border border-border bg-white p-6 shadow-sm">
-      <Icon aria-hidden="true" className="size-7 text-primary" />
+      <Icon aria-hidden="true" className="size-7 text-link" />
       <h3 className="mt-5 text-xl font-bold">{title}</h3>
       <p className="mt-3 leading-7 text-muted-foreground">{description}</p>
       {label && <p className="mt-5 text-sm font-semibold text-secondary-foreground">{label}</p>}
       {actionHref && actionLabel && (
         <Link
-          className="mt-5 inline-flex min-h-11 items-center rounded-md font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="mt-5 inline-flex min-h-11 items-center rounded-md font-semibold text-link underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
           href={actionHref}
         >
           {actionLabel}

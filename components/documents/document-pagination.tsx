@@ -24,25 +24,25 @@ export async function DocumentPagination({
       <div className="flex items-center gap-3">
         {pagination.hasPreviousPage ? (
           <a
-            className="rounded-4xl border px-4 py-2 font-semibold text-primary underline-offset-4 hover:underline"
+            className="rounded-lg border px-4 py-2 font-semibold text-link underline-offset-4 hover:underline"
             href={buildDocumentBinderHref(locale, filters, { page: pagination.page - 1 })}
           >
             {t("previousPage")}
           </a>
         ) : (
-          <span aria-disabled="true" className="rounded-4xl border px-4 py-2 text-muted-foreground">
+          <span aria-disabled="true" className="rounded-lg border px-4 py-2 text-muted-foreground">
             {t("previousPage")}
           </span>
         )}
         {pagination.hasNextPage ? (
           <a
-            className="rounded-4xl border px-4 py-2 font-semibold text-primary underline-offset-4 hover:underline"
+            className="rounded-lg border px-4 py-2 font-semibold text-link underline-offset-4 hover:underline"
             href={buildDocumentBinderHref(locale, filters, { page: pagination.page + 1 })}
           >
             {t("nextPage")}
           </a>
         ) : (
-          <span aria-disabled="true" className="rounded-4xl border px-4 py-2 text-muted-foreground">
+          <span aria-disabled="true" className="rounded-lg border px-4 py-2 text-muted-foreground">
             {t("nextPage")}
           </span>
         )}

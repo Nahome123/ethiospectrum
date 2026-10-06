@@ -79,7 +79,7 @@ export function SpecialistAssignmentControls({
           </p>
         ) : null}
         {assignState.status === "success" ? (
-          <p className="text-sm font-semibold text-primary" role="status">
+          <p className="text-sm font-semibold text-link" role="status">
             {assignState.message}
           </p>
         ) : null}
@@ -112,7 +112,7 @@ export function SpecialistAssignmentControls({
         </p>
       ) : null}
       {revokeState.status === "success" ? (
-        <p className="text-sm font-semibold text-primary" role="status">
+        <p className="text-sm font-semibold text-link" role="status">
           {revokeState.message}
         </p>
       ) : null}

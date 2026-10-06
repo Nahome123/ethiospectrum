@@ -19,7 +19,7 @@ export async function ServicesOverview({ showPolicy = false }: { showPolicy?: bo
       <ul className="grid gap-5 lg:grid-cols-3">
         {services.map(({ key, icon: Icon }) => (
           <li className="flex flex-col rounded-2xl border border-border bg-white p-6 shadow-sm" key={key}>
-            <Icon aria-hidden="true" className="size-9 text-primary" />
+            <Icon aria-hidden="true" className="size-9 text-link" />
             <h3 className="mt-4 text-xl font-bold">{t(`${key}.name`)}</h3>
             <p className="mt-2 text-2xl font-bold">{t(`${key}.price`)}</p>
             <p className="text-sm font-semibold text-muted-foreground">{t(`${key}.billing`)}</p>
@@ -27,7 +27,7 @@ export async function ServicesOverview({ showPolicy = false }: { showPolicy?: bo
             <ul className="mt-4 space-y-2 text-sm">
               {(t.raw(`${key}.features`) as string[]).map((feature) => (
                 <li className="flex gap-2" key={feature}>
-                  <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" />
+                  <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-link" />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -43,7 +43,7 @@ export async function ServicesOverview({ showPolicy = false }: { showPolicy?: bo
           </li>
         ))}
       </ul>
-      <p className="rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm font-semibold">
+      <p className="rounded-xl border border-input bg-tint p-4 text-sm font-semibold">
         {t("independentNotice")}
       </p>
       {showPolicy ? (

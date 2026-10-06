@@ -56,7 +56,7 @@ export default async function BillingPage({
   return (
     <section className="mx-auto max-w-5xl space-y-6">
       <header className="space-y-2">
-        <p className="text-sm font-bold uppercase tracking-[0.12em] text-primary">{t("eyebrow")}</p>
+        <p className="text-sm font-bold uppercase tracking-[0.12em] text-link">{t("eyebrow")}</p>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("title")}</h1>
         <p className="max-w-3xl leading-7 text-muted-foreground">{t("description")}</p>
       </header>
@@ -252,7 +252,7 @@ export default async function BillingPage({
               >
                 <div>
                   <Link
-                    className="font-semibold text-primary underline"
+                    className="font-semibold text-link underline"
                     href={`/requests/${payment.service_request_id}`}
                   >
                     {serviceTypes(payment.service_type)}

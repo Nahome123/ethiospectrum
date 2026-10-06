@@ -19,7 +19,7 @@ export function LanguageSelector() {
 
   return (
     <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-700">
-      <Languages aria-hidden="true" className="size-4 text-primary" />
+      <Languages aria-hidden="true" className="size-4 text-link" />
       <span className="sr-only">{t("languageSelectorLabel")}</span>
       <select
         aria-label={t("languageSelectorLabel")}

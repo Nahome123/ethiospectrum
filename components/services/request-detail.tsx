@@ -117,7 +117,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
             <p className="flex items-center gap-2 font-semibold">
-              <CalendarClock aria-hidden="true" className="size-4 text-primary" />
+              <CalendarClock aria-hidden="true" className="size-4 text-link" />
               {formatDateTime(appointment.start_at, locale, appointment.timezone)}
             </p>
             <p className="text-sm text-muted-foreground">
@@ -140,7 +140,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
             </p>
             {appointment.meeting_url ? (
               <a
-                className="text-sm font-semibold text-primary underline"
+                className="text-sm font-semibold text-link underline"
                 href={appointment.meeting_url}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -301,7 +301,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
   return (
     <div className="space-y-6">
       <header className="space-y-3">
-        <p className="text-sm font-semibold text-primary">
+        <p className="text-sm font-semibold text-link">
           {types(request.service_type)} · {request.dependent_name}
           {isStaff ? ` · ${request.household_name}` : ""}
         </p>
@@ -323,7 +323,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
               aria-current={index === lifecycleIndex ? "step" : undefined}
               className={
                 index < lifecycleIndex
-                  ? "rounded-full bg-primary/15 px-3 py-1 font-medium text-primary"
+                  ? "rounded-full bg-secondary px-3 py-1 font-medium text-link"
                   : index === lifecycleIndex
                     ? "rounded-full bg-primary px-3 py-1 font-semibold text-primary-foreground"
                     : "rounded-full bg-secondary px-3 py-1 text-muted-foreground"
@@ -532,7 +532,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
             {documents.map((document) => (
               <li className="flex flex-wrap items-center justify-between gap-3 p-3" key={document.id}>
                 <div className="flex min-w-0 items-center gap-2">
-                  <FileText aria-hidden="true" className="size-4 shrink-0 text-primary" />
+                  <FileText aria-hidden="true" className="size-4 shrink-0 text-link" />
                   <div className="min-w-0">
                     <p className="truncate font-medium">{document.title}</p>
                     <p className="text-xs text-muted-foreground">
@@ -542,7 +542,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
                   </div>
                 </div>
                 <a
-                  className="inline-flex items-center gap-1 text-sm font-semibold text-primary underline"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-link underline"
                   href={`/api/service-requests/${request.id}/documents/${document.id}`}
                 >
                   <Download aria-hidden="true" className="size-4" />
@@ -616,7 +616,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
               <li
                 className={
                   item.item_type === "message"
-                    ? `rounded-xl border p-3 ${item.is_self ? "border-primary/30 bg-primary/5" : "bg-white"}`
+                    ? `rounded-xl border p-3 ${item.is_self ? "border-input bg-tint" : "bg-white"}`
                     : "flex flex-wrap gap-x-2 text-sm text-muted-foreground"
                 }
                 key={`${item.item_type}-${item.id}`}

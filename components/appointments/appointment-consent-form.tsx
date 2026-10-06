@@ -65,7 +65,7 @@ export function AppointmentConsentForm({
           </p>
         ) : null}
         {acceptState.status === "success" ? (
-          <p className="text-sm font-semibold text-primary" role="status">
+          <p className="text-sm font-semibold text-link" role="status">
             {acceptState.message}
           </p>
         ) : null}

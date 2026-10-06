@@ -35,10 +35,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         <h1 className="mt-2 text-3xl font-bold">{t("title")}</h1>
         <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">{t("intro")}</p>
       </div>
-      <p
-        className="rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm font-semibold leading-6"
-        role="note"
-      >
+      <p className="rounded-xl border border-input bg-tint p-4 text-sm font-semibold leading-6" role="note">
         {t("independentNotice")}
       </p>
       {!access ? (
@@ -56,7 +53,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
             const features = t.raw(`features.${type}`) as string[];
             return (
               <li className="flex flex-col rounded-2xl border bg-white p-6 shadow-sm" key={service.id}>
-                <Icon aria-hidden="true" className="size-9 text-primary" />
+                <Icon aria-hidden="true" className="size-9 text-link" />
                 <h2 className="mt-4 text-xl font-bold">{types(type)}</h2>
                 <p className="mt-2 text-2xl font-bold">
                   {isSubscription
@@ -82,7 +79,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 <ul className="mt-4 space-y-2 text-sm">
                   {features.map((feature) => (
                     <li className="flex gap-2" key={feature}>
-                      <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-link" />
                       <span>{feature}</span>
                     </li>
                   ))}

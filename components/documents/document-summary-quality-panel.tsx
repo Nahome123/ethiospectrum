@@ -95,7 +95,7 @@ export async function DocumentSummaryQualityPanel({
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">{t("summaryQualityExplanation")}</p>
         </div>
-        <span className="rounded-full border px-3 py-1 text-sm font-semibold" role="status">
+        <span className="rounded-lg border px-3 py-1 text-sm font-semibold" role="status">
           {evaluation?.status === "completed"
             ? t("summaryQualityCompleted")
             : t("summaryQualityNotEvaluated")}

@@ -28,12 +28,12 @@ export default async function ResourcesPage({
         <p className="mt-3 text-muted-foreground">{t("description")}</p>
       </header>
       <nav aria-label={t("category")} className="mt-7 flex flex-wrap gap-2">
-        <Link className="rounded-full border px-3 py-1.5 text-sm" href="/resources">
+        <Link className="rounded-lg border px-3 py-1.5 text-sm" href="/resources">
           {t("categories.general")}
         </Link>
         {resourceCategoryValues.map((item) => (
           <Link
-            className="rounded-full border px-3 py-1.5 text-sm"
+            className="rounded-lg border px-3 py-1.5 text-sm"
             href={`/resources?category=${item}`}
             key={item}
           >

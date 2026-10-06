@@ -72,7 +72,7 @@ export default async function SpecialistSupportRequestPage({
           <h1 className="min-w-0 break-words text-3xl font-bold [overflow-wrap:anywhere]">
             {request.subject}
           </h1>
-          <span className="inline-flex rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+          <span className="inline-flex rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-link">
             {supportTranslations(`statuses.${request.status}`)}
           </span>
         </div>

@@ -137,7 +137,7 @@ function ResourceSection({
           <p className="mt-1 text-sm text-muted-foreground">{description}</p>
         </div>
         <Link
-          className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          className="text-sm font-semibold text-link underline-offset-4 hover:underline"
           href={viewAllHref}
         >
           {viewAllLabel}
@@ -256,7 +256,7 @@ export async function MemberResourceHub({
           <Button type="submit">{t("searchAction")}</Button>
         </div>
         <div className="mt-3 flex flex-wrap gap-4 text-sm">
-          <Link className="font-semibold text-primary hover:underline" href="/member/resources?bookmarked=1">
+          <Link className="font-semibold text-link hover:underline" href="/member/resources?bookmarked=1">
             {t("myBookmarks")}
           </Link>
           {isCatalogView ? (
@@ -302,7 +302,7 @@ export async function MemberResourceHub({
             <nav aria-label={t("paginationLabel")} className="mt-8 flex items-center justify-between gap-4">
               {catalog.page > 1 ? (
                 <Link
-                  className="rounded-full border px-4 py-2 text-sm font-semibold"
+                  className="rounded-lg border px-4 py-2 text-sm font-semibold"
                   href={catalogHref(query, catalog.page - 1)}
                 >
                   {t("previousPage")}
@@ -315,7 +315,7 @@ export async function MemberResourceHub({
               </span>
               {catalog.page < catalog.totalPages ? (
                 <Link
-                  className="rounded-full border px-4 py-2 text-sm font-semibold"
+                  className="rounded-lg border px-4 py-2 text-sm font-semibold"
                   href={catalogHref(query, catalog.page + 1)}
                 >
                   {t("nextPage")}
@@ -407,24 +407,24 @@ export async function MemberResourceHub({
 
           <div className="mt-12 grid gap-5 lg:grid-cols-2">
             <article className="rounded-xl border border-border bg-secondary/40 p-6 sm:p-8">
-              <BookOpen aria-hidden="true" className="size-9 text-primary" />
+              <BookOpen aria-hidden="true" className="size-9 text-link" />
               <h2 className="mt-4 text-2xl font-bold">{t("trainingTitle")}</h2>
               <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">{t("rbtTrainingDescription")}</p>
               <Link
-                className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                className="mt-5 inline-flex min-h-10 items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
                 href="/training/rbt"
               >
                 {t("rbtTrainingAction")}
               </Link>
             </article>
             <article className="rounded-xl border border-border bg-secondary/40 p-6 sm:p-8">
-              <ClipboardList aria-hidden="true" className="size-9 text-primary" />
+              <ClipboardList aria-hidden="true" className="size-9 text-link" />
               <h2 className="mt-4 text-2xl font-bold">{t("iepAccommodationsTitle")}</h2>
               <p className="mt-2 max-w-2xl leading-7 text-muted-foreground">
                 {t("iepAccommodationsDescription")}
               </p>
               <Link
-                className="mt-5 inline-flex min-h-10 items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                className="mt-5 inline-flex min-h-10 items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
                 href="/member/resources/iep-504-accommodations"
               >
                 {t("iepAccommodationsAction")}

@@ -21,7 +21,7 @@ export default async function ConsultationRequestPage({ params }: { params: Prom
 
   return (
     <section className="mx-auto max-w-3xl space-y-6">
-      <Link className="text-sm font-semibold text-primary underline underline-offset-4" href="/services">
+      <Link className="text-sm font-semibold text-link underline underline-offset-4" href="/services">
         {t("backToServices")}
       </Link>
       <div>

@@ -9,7 +9,7 @@ export default async function CheckEmailPage() {
       <p className="mt-3 text-muted-foreground">{t("checkEmailDescription")}</p>
       <Link
         href="/resend-confirmation"
-        className="mt-6 inline-block text-sm font-semibold text-primary underline"
+        className="mt-6 inline-block text-sm font-semibold text-link underline"
       >
         {t("resendConfirmation")}
       </Link>

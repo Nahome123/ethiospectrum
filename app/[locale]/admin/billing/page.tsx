@@ -17,7 +17,7 @@ export default async function AdminBillingPage({ params }: { params: Promise<{ l
   return (
     <section className="max-w-6xl space-y-6">
       <header>
-        <p className="text-sm font-bold uppercase tracking-[0.12em] text-primary">{t("admin.eyebrow")}</p>
+        <p className="text-sm font-bold uppercase tracking-[0.12em] text-link">{t("admin.eyebrow")}</p>
         <h1 className="mt-2 text-3xl font-bold">{t("admin.title")}</h1>
         <p className="mt-2 max-w-3xl text-muted-foreground">{t("admin.description")}</p>
       </header>

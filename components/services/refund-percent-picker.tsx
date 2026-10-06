@@ -38,7 +38,7 @@ export function RefundPercentPicker({
           <button
             aria-pressed={chosen?.percent === option.percent}
             className={cn(
-              "min-h-10 rounded-full border px-4 text-sm font-semibold focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
+              "min-h-10 rounded-lg border px-4 text-sm font-semibold focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
               chosen?.percent === option.percent
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border bg-white hover:bg-secondary",

@@ -64,7 +64,7 @@ export default async function RbtTrainingPreviewSectionPage({
         <nav aria-label={t("sequenceNavigation")} className="mt-8 flex flex-wrap justify-between gap-3">
           {previousSection ? (
             <Link
-              className="rounded-full border border-border px-4 py-2 font-semibold hover:bg-muted"
+              className="rounded-lg border border-border px-4 py-2 font-semibold hover:bg-muted"
               href={`/training/rbt-preview/${rbtRouteBySection[previousSection]}`}
             >
               {t("previousSection")}
@@ -74,7 +74,7 @@ export default async function RbtTrainingPreviewSectionPage({
           )}
           {nextSection ? (
             <Link
-              className="rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground hover:bg-primary/80"
+              className="rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground hover:bg-primary-hover"
               href={`/training/rbt-preview/${rbtRouteBySection[nextSection]}`}
             >
               {t("nextSection")}

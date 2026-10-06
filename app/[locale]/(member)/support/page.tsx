@@ -54,7 +54,7 @@ export default async function SupportPage({
     <section className="mx-auto max-w-4xl space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-primary">{context.household.name}</p>
+          <p className="text-sm font-semibold text-link">{context.household.name}</p>
           <h1 className="mt-1 text-3xl font-bold">{t("title")}</h1>
           <p className="mt-2 max-w-3xl text-muted-foreground">{t("listDescription")}</p>
         </div>

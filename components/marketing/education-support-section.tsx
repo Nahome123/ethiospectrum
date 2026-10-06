@@ -33,7 +33,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
               {t(`educationSupport.personalization.${personalizedAction.key}.description`)}
             </p>
             <Link
-              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2.5 font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2.5 font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2"
               href={personalizedAction.href}
             >
               {t(`educationSupport.personalization.${personalizedAction.key}.action`)}
@@ -44,13 +44,13 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-5 py-3 font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-5 py-3 font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2"
             href="/resources/education"
           >
             {t("educationSupport.primaryAction")}
           </Link>
           <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-md border border-primary bg-white px-5 py-3 font-semibold text-primary hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="inline-flex min-h-11 items-center justify-center rounded-md border border-primary bg-white px-5 py-3 font-semibold text-link hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2"
             href="/assistant"
           >
             {t("educationSupport.secondaryAction")}
@@ -60,7 +60,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
         <ol className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {["one", "two", "three", "four"].map((step, index) => (
             <li className="min-w-0 rounded-xl border border-border bg-white p-5 shadow-sm" key={step}>
-              <p className="text-sm font-bold text-primary">0{index + 1}</p>
+              <p className="text-sm font-bold text-link">0{index + 1}</p>
               <h3 className="mt-3 text-lg font-bold text-foreground">
                 {t(`educationSupport.steps.${step}.title`)}
               </h3>
@@ -111,7 +111,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
                     {t(`educationSupport.articles.${key}.summary`)}
                   </p>
                   <Link
-                    className="mt-4 inline-flex min-h-11 items-center font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    className="mt-4 inline-flex min-h-11 items-center font-semibold text-link underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
                     href={href}
                   >
                     {t("educationSupport.articleAction")}
@@ -125,15 +125,15 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
             className="lg:sticky lg:bottom-4 lg:self-end"
             aria-label={t("educationSupport.assistant.label")}
           >
-            <div className="rounded-2xl border border-border bg-primary p-6 text-primary-foreground shadow-md">
-              <MessageCircleQuestion aria-hidden="true" className="size-7 text-accent" />
+            <div className="rounded-2xl bg-deep p-6 text-on-deep shadow-md">
+              <MessageCircleQuestion aria-hidden="true" className="size-7 text-primary" />
               <h3 className="mt-4 text-xl font-bold">{t("educationSupport.assistant.title")}</h3>
-              <p className="mt-2 text-sm leading-6 text-primary-foreground/85">
+              <p className="mt-2 text-sm leading-6 text-on-deep/80">
                 {t("educationSupport.assistant.description")}
               </p>
               <Link
                 aria-label={t("educationSupport.assistant.action")}
-                className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-white px-4 py-2.5 font-semibold text-primary shadow-sm hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 href="/assistant"
               >
                 <Sparkles aria-hidden="true" className="size-4" />
@@ -156,7 +156,7 @@ export async function EducationSupportSection({ state }: { state: EducationLandi
             </p>
           </div>
           <Link
-            className="mt-5 inline-flex min-h-11 shrink-0 items-center justify-center rounded-md border border-primary px-4 py-2.5 font-semibold text-primary hover:bg-secondary sm:mt-0"
+            className="mt-5 inline-flex min-h-11 shrink-0 items-center justify-center rounded-md border border-primary px-4 py-2.5 font-semibold text-link hover:bg-secondary sm:mt-0"
             href="/pricing"
           >
             {t("educationSupport.membership.action")}

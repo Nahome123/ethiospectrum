@@ -37,7 +37,7 @@ export default async function DocumentChatIndexPage({
   return (
     <section className="max-w-3xl">
       <Link
-        className="text-sm font-semibold text-primary underline underline-offset-4"
+        className="text-sm font-semibold text-link underline underline-offset-4"
         href={`/documents/${documentId}`}
       >
         {chatT("backToDocument")}

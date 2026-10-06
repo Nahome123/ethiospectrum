@@ -50,7 +50,7 @@ export async function SpecialistShell({ children }: Readonly<{ children: React.R
           {role === "administrator" ? (
             <AdminViewSwitcher current="specialist" />
           ) : (
-            <p className="text-sm font-semibold text-primary">{t("specialistConsole.workspace")}</p>
+            <p className="text-sm font-semibold text-link">{t("specialistConsole.workspace")}</p>
           )}
           <div className="flex items-center gap-3">
             <NotificationBell audience="specialist" />

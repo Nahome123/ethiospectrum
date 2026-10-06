@@ -210,7 +210,7 @@ function BinderFilterForm({
           {t("applyFilters")}
         </Button>
         <a
-          className="inline-flex min-h-9 items-center rounded-4xl px-3 font-semibold text-primary underline underline-offset-4"
+          className="inline-flex min-h-9 items-center rounded-lg px-3 font-semibold text-link underline underline-offset-4"
           href={getDocumentBinderClearHref(locale)}
         >
           {t("clearFilters")}

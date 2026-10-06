@@ -53,8 +53,8 @@ export default async function AdminServiceRequestsPage({
             aria-current={queue === value ? "page" : undefined}
             className={
               queue === value
-                ? "rounded-full bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
-                : "rounded-full border bg-white px-3 py-1.5 text-sm font-semibold"
+                ? "rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
+                : "rounded-lg border bg-white px-3 py-1.5 text-sm font-semibold"
             }
             href={query({ queue: value })}
             key={value}
@@ -118,7 +118,7 @@ export default async function AdminServiceRequestsPage({
                 <tr className="align-top" key={request.id}>
                   <td className="px-4 py-3">
                     <Link
-                      className="font-semibold text-primary underline"
+                      className="font-semibold text-link underline"
                       href={`/admin/service-requests/${request.id}`}
                     >
                       {types(request.service_type)}

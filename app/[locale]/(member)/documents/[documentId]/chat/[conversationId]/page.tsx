@@ -64,7 +64,7 @@ export default async function DocumentChatConversationPage({
     <section className="max-w-3xl">
       <DocumentStatusRefresher active={hasPendingResponse} />
       <Link
-        className="text-sm font-semibold text-primary underline underline-offset-4"
+        className="text-sm font-semibold text-link underline underline-offset-4"
         href={`/documents/${documentId}/chat`}
       >
         {chatT("conversations")}
@@ -94,7 +94,7 @@ export default async function DocumentChatConversationPage({
           <li
             className={
               message.role === "user"
-                ? "ml-auto max-w-[90%] rounded-2xl bg-primary p-4 text-primary-foreground"
+                ? "ml-auto max-w-[90%] rounded-2xl bg-deep p-4 text-on-deep"
                 : "mr-auto max-w-[90%] rounded-2xl border bg-card p-4"
             }
             key={message.id}

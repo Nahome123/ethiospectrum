@@ -7,8 +7,8 @@ import { isSupportedTimezone } from "@/lib/appointments/scheduling";
 import type { AppointmentEvent, SupportAppointment } from "@/lib/appointments/server";
 
 const statusStyles: Record<string, string> = {
-  proposed: "bg-primary/10 text-primary",
-  scheduled: "bg-primary/15 text-primary",
+  proposed: "bg-secondary text-link",
+  scheduled: "bg-secondary text-link",
   declined: "bg-muted text-muted-foreground",
   cancelled: "bg-muted text-muted-foreground",
   completed: "bg-secondary text-secondary-foreground",

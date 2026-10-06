@@ -15,15 +15,15 @@ export async function AdminViewSwitcher({ current }: Readonly<{ current: AdminVi
   return (
     <nav
       aria-label={t("label")}
-      className="flex items-center gap-1 rounded-full border border-border bg-slate-50 p-1"
+      className="flex items-center gap-1 rounded-xl border border-border bg-tint p-1"
     >
       {views.map(([view, href]) => (
         <Link
           aria-current={view === current ? "page" : undefined}
           className={
             view === current
-              ? "rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
-              : "rounded-full px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+              ? "rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+              : "rounded-lg px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-card focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
           }
           href={href}
           key={view}

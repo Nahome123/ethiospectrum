@@ -99,7 +99,7 @@ export function PasswordRecoveryForm({
           : t(reset ? "submitResetPassword" : resend ? "submitResendConfirmation" : "submitForgotPassword")}
       </Button>
       {reset && state.status === "success" && (
-        <Link href="/login" className="block text-center text-sm font-semibold text-primary underline">
+        <Link href="/login" className="block text-center text-sm font-semibold text-link underline">
           {t("backToLogin")}
         </Link>
       )}

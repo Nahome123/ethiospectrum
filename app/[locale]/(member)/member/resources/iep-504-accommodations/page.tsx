@@ -21,7 +21,7 @@ export default async function IepAccommodationsPage({ params }: { params: Promis
         {accessibility("skipToContent")}
       </a>
       <Link
-        className="mb-5 inline-flex text-sm font-semibold text-primary hover:underline"
+        className="mb-5 inline-flex text-sm font-semibold text-link hover:underline"
         href="/member/resources"
       >
         {t("backToResources")}

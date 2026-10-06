@@ -42,8 +42,8 @@ export function FamilyPhotoGallery() {
             {t("galleryTitle")}
           </h2>
           <p className="mt-4 text-lg leading-8 text-muted-foreground">{t("galleryDescription")}</p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-primary shadow-sm">
-            <Heart aria-hidden="true" className="size-4 fill-accent text-accent" />
+          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-link shadow-sm">
+            <Heart aria-hidden="true" className="size-4 fill-primary text-primary" />
             <span>{t("trust")}</span>
           </div>
         </div>
@@ -54,7 +54,7 @@ export function FamilyPhotoGallery() {
               <article className={`family-photo-card ${photo.className}`} key={photo.id}>
                 {missing ? (
                   <div className="family-photo-fallback">
-                    <Sparkles aria-hidden="true" className="size-7 text-primary" />
+                    <Sparkles aria-hidden="true" className="size-7 text-link" />
                     <span>{t(photo.alt)}</span>
                   </div>
                 ) : (

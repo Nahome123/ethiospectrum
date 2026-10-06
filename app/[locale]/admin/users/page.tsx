@@ -54,7 +54,7 @@ export default async function AdminUsersPage({
           <Input defaultValue={query} id="user-search" name="q" placeholder={t("searchPlaceholder")} />
         </label>
         <button
-          className="h-9 rounded-4xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
+          className="h-9 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground"
           type="submit"
         >
           {t("searchAction")}
@@ -66,8 +66,8 @@ export default async function AdminUsersPage({
             aria-current={role === value ? "page" : undefined}
             className={
               role === value
-                ? "rounded-full bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
-                : "rounded-full border bg-white px-3 py-1.5 text-sm font-semibold"
+                ? "rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
+                : "rounded-lg border bg-white px-3 py-1.5 text-sm font-semibold"
             }
             href={href({ role: value })}
             key={value}

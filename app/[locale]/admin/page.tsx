@@ -53,7 +53,7 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
       </ul>
       <section aria-labelledby="upcoming-heading" className="rounded-2xl border bg-white p-5">
         <h2 className="flex items-center gap-2 text-lg font-bold" id="upcoming-heading">
-          <CalendarClock aria-hidden="true" className="size-5 text-primary" />
+          <CalendarClock aria-hidden="true" className="size-5 text-link" />
           {t("upcomingAppointments")}
         </h2>
         {upcoming.length === 0 ? (
@@ -66,7 +66,7 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
                 key={appointment.appointment_id}
               >
                 <Link
-                  className="font-semibold text-primary underline"
+                  className="font-semibold text-link underline"
                   href={`/admin/service-requests/${appointment.service_request_id}`}
                 >
                   {types(appointment.service_type)} · {appointment.household_name}

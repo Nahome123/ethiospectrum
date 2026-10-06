@@ -19,13 +19,13 @@ export async function MemberPage({
         <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{t("resources.pageIntro")}</p>
 
         <article className="mt-8 rounded-xl border border-border bg-white p-6 shadow-sm sm:p-8">
-          <BookOpen aria-hidden="true" className="size-9 text-primary" />
+          <BookOpen aria-hidden="true" className="size-9 text-link" />
           <h2 className="mt-5 font-heading text-xl font-bold">{t("navigation.training")}</h2>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
             {t("resources.rbtTrainingDescription")}
           </p>
           <Link
-            className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
+            className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30"
             href="/training/rbt"
           >
             {t("resources.rbtTrainingAction")}
@@ -51,7 +51,7 @@ export async function MemberPage({
         {t("common.developmentOnly")}
       </p>
       <div className="mt-4 rounded-xl border border-border bg-white p-8">
-        <Icon aria-hidden="true" className="size-9 text-primary" />
+        <Icon aria-hidden="true" className="size-9 text-link" />
         <h1 className="mt-5 text-3xl font-bold">{t(title)}</h1>
         <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{t(description)}</p>
         <p className="mt-6 inline-block rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-secondary-foreground">

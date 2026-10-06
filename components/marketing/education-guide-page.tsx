@@ -10,7 +10,7 @@ export async function EducationGuidePage() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
       <Link
-        className="inline-flex min-h-11 items-center gap-2 font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
+        className="inline-flex min-h-11 items-center gap-2 font-semibold text-link underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
         href="/resources"
       >
         <ArrowLeft aria-hidden="true" className="size-4" />
@@ -23,7 +23,7 @@ export async function EducationGuidePage() {
           description={t("educationGuide.description")}
         />
       </div>
-      <p className="mt-6 rounded-xl border border-accent bg-secondary px-5 py-4 text-sm leading-6 text-slate-700">
+      <p className="mt-6 rounded-xl border border-border bg-secondary px-5 py-4 text-sm leading-6 text-slate-700">
         {t("educationGuide.disclaimer")}
       </p>
       <div className="mt-10 space-y-5">
@@ -33,7 +33,7 @@ export async function EducationGuidePage() {
             className="scroll-mt-24 rounded-xl border border-border bg-white p-6 shadow-sm sm:p-7"
             key={key}
           >
-            <Icon aria-hidden="true" className="size-7 text-primary" />
+            <Icon aria-hidden="true" className="size-7 text-link" />
             <h2 className="mt-4 text-2xl font-bold text-foreground">
               {t(`educationGuide.topics.${key}.title`)}
             </h2>
@@ -49,7 +49,7 @@ export async function EducationGuidePage() {
           {t("educationGuide.nextStepDescription")}
         </p>
         <Link
-          className="mt-5 inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2.5 font-semibold text-primary-foreground shadow-sm hover:bg-primary/90"
+          className="mt-5 inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2.5 font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover"
           href="/signup"
         >
           {t("educationGuide.nextStepAction")}

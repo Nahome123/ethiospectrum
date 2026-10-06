@@ -21,7 +21,7 @@ export async function AdminPage({
         {t("roleBoundary")}
       </p>
       <div className="mt-4 rounded-xl border border-border bg-white p-8">
-        <ShieldCheck aria-hidden="true" className="size-9 text-primary" />
+        <ShieldCheck aria-hidden="true" className="size-9 text-link" />
         <h1 className="mt-5 text-3xl font-bold">{t(page)}</h1>
         <p className="mt-3 leading-7 text-muted-foreground">{t("description")}</p>
       </div>

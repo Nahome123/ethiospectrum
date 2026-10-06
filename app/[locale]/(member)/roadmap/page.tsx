@@ -39,7 +39,7 @@ export default async function RoadmapPage({
     <section className="mx-auto max-w-6xl space-y-7">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-primary">{context.household.name}</p>
+          <p className="text-sm font-semibold text-link">{context.household.name}</p>
           <h1 className="mt-1 text-3xl font-bold">
             {query.archived ? t("archivedItems") : t("householdRoadmap")}
           </h1>
