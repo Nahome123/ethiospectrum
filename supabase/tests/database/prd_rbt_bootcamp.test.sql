@@ -86,7 +86,7 @@ select throws_ok($$select public.admin_save_training_lesson((select id from publ
 select is(public.admin_attach_training_media((select id from public.training_lessons where title = 'What is neurodivergency?'), 'resource', 'Parent Worksheet.PDF'),
   'lessons/' || (select id from public.training_lessons where title = 'What is neurodivergency?')::text || '/resource/parent-worksheet.pdf', 'uploaded media paths are derived');
 select throws_ok($$select public.admin_attach_training_media((select id from public.training_lessons limit 1), 'video', 'movie.exe')$$, '22023', null, 'unsupported media is rejected');
-select lives_ok($$select public.admin_move_training_item('module', (select id from public.training_modules order by sequence desc limit 1), 'up')$$, 'admin reorders modules');
+select lives_ok($$select public.admin_move_training_item('module', (select id from public.training_modules where title = 'Teaching procedures'), 'up')$$, 'admin reorders modules');
 select is((select title from public.training_modules order by sequence limit 1), 'Teaching procedures', 'module order changed');
 select lives_ok($$select public.admin_set_training_status('lesson', (select id from public.training_lessons where title like 'Errorless%'), 'archived')$$, 'admin archives a lesson');
 select throws_ok($$delete from public.training_lessons$$, '42501', null, 'content cannot be deleted through the browser role');
