@@ -118,6 +118,15 @@ export const adminQueueValues = [
 ] as const;
 export type AdminQueue = (typeof adminQueueValues)[number] | "all" | "declined";
 
+/** The queues most often needing action are tabs; the rest sit in a grouped menu. */
+export const primaryAdminQueues = ["all", "new", "awaiting_payment", "upcoming"] as const;
+export const secondaryAdminQueueGroups = [
+  { key: "assignment", queues: ["unassigned", "assigned"] },
+  { key: "scheduling", queues: ["proposed", "reschedule", "in_progress", "follow_up"] },
+  { key: "payments", queues: ["payment_failed", "refunds"] },
+  { key: "closed", queues: ["completed", "cancelled", "no_show"] },
+] as const satisfies readonly { key: string; queues: readonly AdminQueue[] }[];
+
 export const overridableStatusValues = [
   "pending_review",
   "assigned",

@@ -2355,6 +2355,17 @@
       "pagination": "ገጾች",
       "previous": "ቀዳሚ",
       "next": "ቀጣይ"
+    },
+    "filterMenu": {
+      "more": "ተጨማሪ ማጣሪያዎች",
+      "service": "አገልግሎት",
+      "clear": "ማጣሪያን አጽዳ፡ {filter}",
+      "groups": {
+        "assignment": "ምደባ",
+        "scheduling": "የቀጠሮ ዝግጅት",
+        "payments": "ክፍያዎች",
+        "closed": "የተዘጉ"
+      }
     }
   },
   "specialistConsole": {

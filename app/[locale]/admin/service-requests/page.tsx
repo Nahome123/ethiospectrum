@@ -1,8 +1,11 @@
 import { getTranslations } from "next-intl/server";
 import { PaymentStatusBadge, ServiceStatusBadge, StatusPill } from "@/components/services/status-badge";
+import { X } from "lucide-react";
+import { FilterMenu } from "@/components/ui/filter-menu";
+import { FilterTabs } from "@/components/ui/filter-tabs";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { adminQueueValues, type AdminQueue } from "@/lib/services/constants";
+import { primaryAdminQueues, secondaryAdminQueueGroups, type AdminQueue } from "@/lib/services/constants";
 import { formatShortDateTime } from "@/lib/services/display";
 import { getAdminQueueCounts, listAdminServiceRequests } from "@/lib/services/server";
 import { adminQueueSchema } from "@/lib/validation/services";
@@ -31,6 +34,7 @@ export default async function AdminServiceRequestsPage({
     getAdminQueueCounts(),
   ]);
   const total = Number(requests?.[0]?.total_count ?? 0);
+  const secondaryActive = !(primaryAdminQueues as readonly string[]).includes(queue);
   const query = (next: Record<string, string | number | null>) => {
     const params = new URLSearchParams();
     const merged = { queue, service: serviceType, page: 1, ...next };
@@ -47,42 +51,59 @@ export default async function AdminServiceRequestsPage({
         <h1 className="text-3xl font-bold">{t("queueTitle")}</h1>
         <p className="mt-2 text-muted-foreground">{t("queueDescription")}</p>
       </div>
-      <nav aria-label={t("queues")} className="flex flex-wrap gap-2">
-        {(["all", ...adminQueueValues] as AdminQueue[]).map((value) => (
-          <Link
-            aria-current={queue === value ? "page" : undefined}
-            className={
-              queue === value
-                ? "rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
-                : "rounded-lg border bg-white px-3 py-1.5 text-sm font-semibold"
-            }
-            href={query({ queue: value })}
-            key={value}
-          >
-            {t(`queue.${value}`)}
-            {value !== "all" && counts[value] ? (
-              <span className="ml-1.5 opacity-70">{counts[value]}</span>
-            ) : null}
-          </Link>
-        ))}
-      </nav>
-      <nav aria-label={t("serviceFilter")} className="flex flex-wrap gap-2 text-sm">
+      <FilterTabs
+        actions={
+          <>
+            <FilterMenu
+              activeCount={secondaryActive ? 1 : 0}
+              columns={2}
+              groups={secondaryAdminQueueGroups.map((group) => ({
+                label: t(`filterMenu.groups.${group.key}`),
+                options: group.queues.map((value) => ({
+                  key: value,
+                  label: t(`queue.${value}`),
+                  href: query({ queue: value }),
+                  count: counts[value] || null,
+                  active: queue === value,
+                })),
+              }))}
+              label={t("filterMenu.more")}
+            />
+            <FilterMenu
+              groups={[
+                {
+                  options: [null, ...serviceFilters].map((value) => ({
+                    key: value ?? "all",
+                    label: value ? types(value) : t("allServices"),
+                    href: query({ service: value }),
+                    active: serviceType === value,
+                  })),
+                },
+              ]}
+              label={serviceType ? types(serviceType) : t("allServices")}
+              prefix={t("filterMenu.service")}
+            />
+          </>
+        }
+        label={t("queues")}
+        tabs={primaryAdminQueues.map((value) => ({
+          key: value,
+          label: t(`queue.${value}`),
+          href: query({ queue: value }),
+          count: value === "all" ? null : counts[value] || null,
+          active: queue === value,
+        }))}
+      />
+      {secondaryActive ? (
         <Link
-          className={serviceType === null ? "font-bold underline" : "underline"}
-          href={query({ service: null })}
+          aria-label={t("filterMenu.clear", { filter: t(`queue.${queue}`) })}
+          className="inline-flex h-8 items-center gap-2 rounded-lg bg-tint pl-3 pr-2 text-sm font-semibold hover:bg-accent"
+          href={query({ queue: "all" })}
         >
-          {t("allServices")}
+          {t(`queue.${queue}`)}
+          <X aria-hidden="true" className="size-4 text-muted-foreground" />
         </Link>
-        {serviceFilters.map((value) => (
-          <Link
-            className={serviceType === value ? "font-bold underline" : "underline"}
-            href={query({ service: value })}
-            key={value}
-          >
-            {types(value)}
-          </Link>
-        ))}
-      </nav>
+      ) : null}
       {requests === null ? (
         <p role="alert">{t("loadError")}</p>
       ) : requests.length === 0 ? (

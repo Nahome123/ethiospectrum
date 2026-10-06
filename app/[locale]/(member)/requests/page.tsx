@@ -5,6 +5,7 @@ import type { AppLocale } from "@/i18n/routing";
 import { getHouseholdAccess } from "@/lib/households/server";
 import { formatShortDateTime } from "@/lib/services/display";
 import { listHouseholdServiceRequests } from "@/lib/services/server";
+import { FilterTabs } from "@/components/ui/filter-tabs";
 
 const filters = ["active", "closed", "all"] as const;
 
@@ -42,22 +43,15 @@ export default async function RequestsPage({
           </Link>
         ) : null}
       </div>
-      <nav aria-label={t("filterLabel")} className="flex flex-wrap gap-2">
-        {filters.map((value) => (
-          <Link
-            aria-current={filter === value ? "page" : undefined}
-            className={
-              filter === value
-                ? "rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground"
-                : "rounded-lg border px-4 py-1.5 text-sm font-semibold"
-            }
-            href={`/requests?filter=${value}`}
-            key={value}
-          >
-            {t(`filters.${value}`)}
-          </Link>
-        ))}
-      </nav>
+      <FilterTabs
+        label={t("filterLabel")}
+        tabs={filters.map((value) => ({
+          key: value,
+          label: t(`filters.${value}`),
+          href: `/requests?filter=${value}`,
+          active: filter === value,
+        }))}
+      />
       {requests === null ? (
         <p role="alert">{t("loadError")}</p>
       ) : requests.length === 0 ? (

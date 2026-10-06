@@ -2355,6 +2355,17 @@
       "pagination": "Páginas",
       "previous": "Anterior",
       "next": "Siguiente"
+    },
+    "filterMenu": {
+      "more": "Más filtros",
+      "service": "Servicio",
+      "clear": "Quitar filtro: {filter}",
+      "groups": {
+        "assignment": "Asignación",
+        "scheduling": "Programación",
+        "payments": "Pagos",
+        "closed": "Cerradas"
+      }
     }
   },
   "specialistConsole": {

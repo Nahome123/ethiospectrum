@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { PaymentStatusBadge } from "@/components/services/status-badge";
+import { FilterMenu } from "@/components/ui/filter-menu";
+import { FilterTabs } from "@/components/ui/filter-tabs";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { formatCents } from "@/lib/services/constants";
@@ -7,6 +9,8 @@ import { formatShortDateTime } from "@/lib/services/display";
 import { listAdminPayments, listAdminRefunds } from "@/lib/services/server";
 
 const paymentFilters = ["all", "paid", "failed", "processing", "partially_refunded", "refunded"] as const;
+const primaryPaymentFilters = ["all", "paid", "failed"] as const;
+const secondaryPaymentFilters = ["processing", "partially_refunded", "refunded"] as const;
 
 export default async function AdminPaymentsPage({
   params,
@@ -20,6 +24,7 @@ export default async function AdminPaymentsPage({
   const t = await getTranslations({ locale, namespace: "adminConsole.payments" });
   const types = await getTranslations({ locale, namespace: "services.types" });
   const tiers = await getTranslations({ locale, namespace: "services.refundTiers" });
+  const filterMenu = await getTranslations({ locale, namespace: "adminConsole.filterMenu" });
   const status = paymentFilters.find((value) => value === search.status) ?? "all";
   const [payments, refunds] = await Promise.all([
     listAdminPayments(status === "all" ? null : status, 1),
@@ -107,22 +112,31 @@ export default async function AdminPaymentsPage({
         <h2 className="text-xl font-bold" id="payments-heading">
           {t("payments")}
         </h2>
-        <nav aria-label={t("filter")} className="flex flex-wrap gap-2">
-          {paymentFilters.map((value) => (
-            <Link
-              aria-current={status === value ? "page" : undefined}
-              className={
-                status === value
-                  ? "rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
-                  : "rounded-lg border bg-white px-3 py-1.5 text-sm font-semibold"
-              }
-              href={value === "all" ? "/admin/payments" : `/admin/payments?status=${value}`}
-              key={value}
-            >
-              {t(`filters.${value}`)}
-            </Link>
-          ))}
-        </nav>
+        <FilterTabs
+          actions={
+            <FilterMenu
+              activeCount={(secondaryPaymentFilters as readonly string[]).includes(status) ? 1 : 0}
+              groups={[
+                {
+                  options: secondaryPaymentFilters.map((value) => ({
+                    key: value,
+                    label: t(`filters.${value}`),
+                    href: `/admin/payments?status=${value}`,
+                    active: status === value,
+                  })),
+                },
+              ]}
+              label={filterMenu("more")}
+            />
+          }
+          label={t("filter")}
+          tabs={primaryPaymentFilters.map((value) => ({
+            key: value,
+            label: t(`filters.${value}`),
+            href: value === "all" ? "/admin/payments" : `/admin/payments?status=${value}`,
+            active: status === value,
+          }))}
+        />
         {payments.length === 0 ? (
           <p className="rounded-2xl border bg-white p-5 text-muted-foreground">{t("noPayments")}</p>
         ) : (

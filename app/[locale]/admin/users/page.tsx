@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { ActionForm } from "@/components/services/action-form";
+import { FilterTabs } from "@/components/ui/filter-tabs";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -60,22 +61,15 @@ export default async function AdminUsersPage({
           {t("searchAction")}
         </button>
       </form>
-      <nav aria-label={t("roleFilter")} className="flex flex-wrap gap-2">
-        {roleFilters.map((value) => (
-          <Link
-            aria-current={role === value ? "page" : undefined}
-            className={
-              role === value
-                ? "rounded-lg bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
-                : "rounded-lg border bg-white px-3 py-1.5 text-sm font-semibold"
-            }
-            href={href({ role: value })}
-            key={value}
-          >
-            {t(`roles.${value}`)}
-          </Link>
-        ))}
-      </nav>
+      <FilterTabs
+        label={t("roleFilter")}
+        tabs={roleFilters.map((value) => ({
+          key: value,
+          label: t(`roles.${value}`),
+          href: href({ role: value }),
+          active: role === value,
+        }))}
+      />
       {error ? (
         <p role="alert">{t("loadError")}</p>
       ) : users.length === 0 ? (
