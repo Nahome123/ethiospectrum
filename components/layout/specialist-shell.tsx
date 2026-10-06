@@ -9,11 +9,12 @@ import { getCurrentMemberProfile, getCurrentSupabaseUser, getCurrentUserRole } f
 import { AdminViewSwitcher } from "./admin-view-switcher";
 import type { AppLocale } from "@/i18n/routing";
 
+/** The specialist workspace has exactly these four destinations, none shared with the family workspace. */
 const links = [
   ["dashboard", "/specialist"],
   ["closed", "/specialist?scope=closed"],
+  ["settings", "/specialist/settings"],
   ["notifications", "/specialist/notifications"],
-  ["settings", "/settings"],
 ] as const;
 
 export async function SpecialistShell({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -233,6 +233,7 @@ export async function updateProfileAction(
     .eq("id", userId);
   if (updateError) return error(locale, updateError.code);
   revalidatePath(`/${locale}/settings`);
+  revalidatePath(`/${locale}/specialist/settings`);
   const t = await getTranslations({ locale, namespace: "household" });
   return { status: "success", message: t("profileSaved") };
 }

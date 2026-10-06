@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { MemberShell } from "@/components/layout/member-shell";
 import { requireUser } from "@/lib/auth/guards";
 import { getLocaleDashboardPath, getSafeLocaleRedirect } from "@/lib/auth/redirects";
@@ -11,6 +12,9 @@ export default async function MemberLayout({
   const locale = localeParam as AppLocale;
   const pathname = (await headers()).get("x-ethiospectrum-pathname");
   const returnTo = getSafeLocaleRedirect(pathname, getLocaleDashboardPath(locale), locale);
-  await requireUser(locale, returnTo);
+  const user = await requireUser(locale, returnTo);
+  // The family workspace is not shared with specialists; administrators keep
+  // their read-only member preview.
+  if (user.role === "specialist") redirect(`/${locale}/specialist`);
   return <MemberShell>{children}</MemberShell>;
 }

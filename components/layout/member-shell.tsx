@@ -35,15 +35,7 @@ export async function MemberShell({ children }: Readonly<{ children: React.React
   const displayName = profile?.first_name || user?.email || t("member.profile");
   // Administrators see the household area as a read-only preview.
   const isAdministrator = role === "administrator";
-  // Staff accounts reach shared pages (notifications, settings) from their own workspace.
-  const links =
-    role === "specialist"
-      ? ([
-          ["specialistWorkspace", "/specialist"],
-          ["notifications", "/notifications"],
-          ["settings", "/settings"],
-        ] as const)
-      : householdLinks;
+  const links = householdLinks;
 
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">

@@ -147,8 +147,7 @@
     "services": "Services",
     "requests": "Service requests",
     "household": "Household",
-    "notifications": "Notifications",
-    "specialistWorkspace": "Specialist workspace"
+    "notifications": "Notifications"
   },
   "common": {
     "learnMore": "Learn more",
@@ -2360,8 +2359,8 @@
   "specialistConsole": {
     "workspace": "Specialist workspace",
     "nav": {
-      "dashboard": "Assigned services",
-      "closed": "Completed services",
+      "dashboard": "Assigned Services",
+      "closed": "Completed Services",
       "notifications": "Notifications",
       "settings": "Settings"
     },
