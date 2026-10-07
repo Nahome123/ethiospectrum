@@ -65,7 +65,9 @@
   --popover: #ffffff;
   --popover-foreground: #18293b;
   /* Neutral, airy base; baby blue tints; neon orange for actions only. */
-  --primary: #f2600c;
+  /* --primary: #f2600c; */
+  --primary: #16a34a; 
+  
   --primary-foreground: #ffffff;
   --secondary: #eef6fc;
   --secondary-foreground: #1d3d5c;
@@ -76,7 +78,8 @@
   --destructive: #b3261e;
   --border: #e3eaf0;
   --input: #d8e2ea;
-  --ring: #f2600c;
+  /* --ring: #f2600c; */
+  --ring: #16a34a;
   /* Navigation panels. */
   --nav: #f7fbfe;
   --nav-hover: #e4f1fb;
@@ -95,7 +98,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --primary-hover: #d9520a;
+  /* --primary-hover: #d9520a; */
+  --primary-hover: #15803d;
   /* Text links and quiet emphasis stay dark navy so orange is reserved for actions. */
   --link: #1d4f7a;
   --tint: #eef6fc;
