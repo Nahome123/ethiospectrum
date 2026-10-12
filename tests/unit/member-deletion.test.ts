@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { deleteMember, MemberDeletionError, type MemberDeletionPreview } from "@/lib/admin/member-deletion";
 
 const calls: string[] = [];
@@ -7,11 +7,11 @@ function adminClient(
   options: { auditError?: boolean; storageError?: boolean; deleteError?: boolean; remains?: boolean } = {},
 ) {
   return {
-    from: (table: string) => ({
-      insert: async () => {
-        calls.push(`insert:${table}`);
-        return { error: options.auditError ? { message: "no" } : null };
-      },
+    rpc: async (name: string) => {
+      calls.push(`rpc:${name}`);
+      return { error: options.auditError ? { code: "42501", message: "no" } : null };
+    },
+    from: () => ({
       select: () => ({
         eq: async () => ({ count: options.remains ? 1 : 0 }),
       }),
@@ -111,7 +111,7 @@ describe("deleting a member", () => {
   it("audits, stops billing, removes files, then deletes the account", async () => {
     await run(adminClient(), stripeClient());
     expect(calls).toEqual([
-      "insert:audit_logs",
+      "rpc:record_admin_audit_event",
       "stripe.cancel:sub_live",
       "stripe.delete:cus_TEST123",
       "storage.remove:households/22222222-2222-4222-8222-222222222222/dependents/report.pdf",
@@ -119,9 +119,18 @@ describe("deleting a member", () => {
     ]);
   });
 
+  it("deletes nothing when the audit entry cannot be saved", async () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    await expect(run(adminClient({ auditError: true }), stripeClient())).rejects.toMatchObject({
+      step: "audit",
+    });
+    expect(calls).toEqual(["rpc:record_admin_audit_event"]);
+    expect(error).toHaveBeenCalledWith("member deletion audit failed", { code: "42501", message: "no" });
+  });
+
   it("deletes nothing when Stripe cannot be updated", async () => {
     await expect(run(adminClient(), stripeClient({ fail: true }))).rejects.toMatchObject({ step: "stripe" });
-    expect(calls).toEqual(["insert:audit_logs"]);
+    expect(calls).toEqual(["rpc:record_admin_audit_event"]);
   });
 
   it("refuses to delete a household with a Stripe customer when Stripe is not configured", async () => {
@@ -144,6 +153,6 @@ describe("deleting a member", () => {
 
   it("skips billing and files for someone who owns no household", async () => {
     await run(adminClient(), stripeClient(), { ...owner, ownedHousehold: null, role: "specialist" });
-    expect(calls).toEqual(["insert:audit_logs", "auth.deleteUser"]);
+    expect(calls).toEqual(["rpc:record_admin_audit_event", "auth.deleteUser"]);
   });
 });

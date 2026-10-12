@@ -5689,6 +5689,17 @@ export type Database = {
         }[];
       };
       queue_service_appointment_reminders: { Args: never; Returns: number };
+      record_admin_audit_event: {
+        Args: {
+          input_action: string;
+          input_actor_id: string;
+          input_entity_id?: string;
+          input_entity_type: string;
+          input_household_id?: string;
+          input_metadata?: Json;
+        };
+        Returns: string;
+      };
       record_billing_checkout_started: {
         Args: { input_billing_interval: string; target_actor_id: string; target_household_id: string };
         Returns: undefined;

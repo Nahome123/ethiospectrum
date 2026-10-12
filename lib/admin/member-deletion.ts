@@ -171,12 +171,12 @@ export async function deleteMember({
 }): Promise<void> {
   const household = preview.ownedHousehold;
 
-  const audit = await admin.from("audit_logs").insert({
-    actor_id: actorId,
-    action: "user_deleted",
-    entity_type: "user",
-    entity_id: preview.userId,
-    metadata: {
+  const audit = await admin.rpc("record_admin_audit_event", {
+    input_actor_id: actorId,
+    input_action: "user_deleted",
+    input_entity_type: "user",
+    input_entity_id: preview.userId,
+    input_metadata: {
       role: preview.role,
       owned_household: Boolean(household),
       dependents: household?.dependents ?? 0,
@@ -186,7 +186,11 @@ export async function deleteMember({
       ...(reason ? { reason } : {}),
     },
   });
-  if (audit.error) throw new MemberDeletionError("audit");
+  if (audit.error) {
+    // Codes and messages only, so the cause can be found in the server logs.
+    console.error("member deletion audit failed", { code: audit.error.code, message: audit.error.message });
+    throw new MemberDeletionError("audit");
+  }
 
   if (household?.stripeCustomerId) {
     if (!stripe) throw new MemberDeletionError("stripe");

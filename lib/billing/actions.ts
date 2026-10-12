@@ -178,14 +178,15 @@ async function recordBillingAudit(
   admin: ReturnType<typeof createSupabaseAdminClient>,
   entry: { actorId: string; householdId: string; action: string; metadata: Record<string, string | boolean> },
 ) {
-  await admin.from("audit_logs").insert({
-    actor_id: entry.actorId,
-    household_id: entry.householdId,
-    action: entry.action,
-    entity_type: "subscription",
-    entity_id: entry.householdId,
-    metadata: entry.metadata,
+  const { error } = await admin.rpc("record_admin_audit_event", {
+    input_actor_id: entry.actorId,
+    input_action: entry.action,
+    input_entity_type: "subscription",
+    input_entity_id: entry.householdId,
+    input_household_id: entry.householdId,
+    input_metadata: entry.metadata,
   });
+  if (error) console.error("billing audit failed", { code: error.code, message: error.message });
 }
 
 /**

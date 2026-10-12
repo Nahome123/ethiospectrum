@@ -19,7 +19,7 @@ vi.mock("@/lib/supabase/server", () => ({
   getCurrentUserRole: mocks.getCurrentUserRole,
 }));
 vi.mock("@/lib/supabase/admin", () => ({
-  createSupabaseAdminClient: () => ({ from: () => ({ insert: mocks.insert }) }),
+  createSupabaseAdminClient: () => ({ rpc: mocks.insert }),
 }));
 vi.mock("@/lib/billing/provider", () => ({
   getStripeClient: () => ({}),
@@ -73,7 +73,11 @@ describe("ending a subscription in the app", () => {
       expect.objectContaining({ subscriptionId: "sub_live123", cancel: true }),
     );
     expect(mocks.insert).toHaveBeenCalledWith(
-      expect.objectContaining({ action: "subscription_cancellation_scheduled", household_id: householdId }),
+      "record_admin_audit_event",
+      expect.objectContaining({
+        input_action: "subscription_cancellation_scheduled",
+        input_household_id: householdId,
+      }),
     );
   });
 
