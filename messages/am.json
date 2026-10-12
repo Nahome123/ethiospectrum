@@ -1566,7 +1566,19 @@
       "webhookFailures": "የWebhook ሂደት ስህተቶች",
       "webhookFailuresDescription": "ደህንነቱ የተጠበቀ የክስተት መረጃ ብቻ ይታያል።",
       "noWebhookFailures": "ያልተሳካ የክፍያ ክስተት የለም።",
-      "failureSummary": "{attempts} ሙከራ · ስህተት {code}"
+      "failureSummary": "{attempts} ሙከራ · ስህተት {code}",
+      "endMembership": "አባልነትን አቁም",
+      "endTitle": "ይህን አባልነት ያቆማሉ?",
+      "endDescription": "ለ{household} የRBT ቡት ካምፕን ያቆማል። ተመላሽ አይደረግም።",
+      "endWhen": "አባልነቱ መቼ ይቁም?",
+      "endAtPeriodEnd": "በተከፈለበት ጊዜ መጨረሻ",
+      "endAtPeriodEndHelp": "መዳረሻ እስከ ጊዜው መጨረሻ ይቀጥላል፤ ተጨማሪ ክፍያ የለም።",
+      "endNow": "አሁኑኑ",
+      "endNowHelp": "መዳረሻ አሁን ይቆማል፤ ለቀሩት ቀናት ተመላሽ የለም።",
+      "endConfirm": "አባልነትን አቁም",
+      "endsOn": "አባልነቱ በ{date} ያበቃል።",
+      "endsAtPeriodEnd": "አባልነቱ በተከፈለበት ጊዜ መጨረሻ ያበቃል።",
+      "endedNow": "አባልነቱ አብቅቷል።"
     },
     "errors": {
       "validation": "የክፍያ ምርጫውን ያረጋግጡ እና እንደገና ይሞክሩ።",
@@ -1578,7 +1590,8 @@
       "reconciliation": "ክፍያን አሁን ማስታረቅ አልተቻለም።",
       "updatedElsewhere": "ክፍያ በሌላ ቦታ ተዘምኗል። እንደገና ከመሞከርዎ በፊት ገጹን ያድሱ።",
       "load": "ክፍያን መጫን አልተቻለም",
-      "tryAgain": "ገጹን ያድሱ እና እንደገና ይሞክሩ።"
+      "tryAgain": "ገጹን ያድሱ እና እንደገና ይሞክሩ።",
+      "cancel": "ምዝገባው ሊቀየር አልቻለም። እባክዎ እንደገና ይሞክሩ።"
     },
     "monthlyPrice": "{price} በወር",
     "certificationDisclaimer": "ኮርሱን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም።",
@@ -1592,6 +1605,27 @@
       "description": "ለምክክር እና ለIEP የቋንቋ ድጋፍ የአንድ ጊዜ ክፍያዎች።",
       "empty": "እስካሁን የአገልግሎት ክፍያዎች የሉም።",
       "refunded": "{amount} ተመላሽ ተደርጓል"
+    },
+    "cancel": {
+      "title": "የደንበኝነት ምዝገባን ሰርዝ",
+      "description": "በማንኛውም ጊዜ መሰረዝ ይችላሉ። እስከ ከፈሉበት ጊዜ መጨረሻ ድረስ የRBT ቡት ካምፕ መዳረሻ ይኖርዎታል።",
+      "trigger": "የደንበኝነት ምዝገባን ሰርዝ",
+      "confirmTitle": "የRBT ቡት ካምፕ ምዝገባዎን ይሰርዛሉ?",
+      "confirmDescription": "መዳረሻዎ እስከ {date} ይቀጥላል። ዳግም አይከፍሉም፣ እና ከዚያ በፊት መቀጠል ይችላሉ።",
+      "periodEnd": "የአሁኑ ጊዜ መጨረሻ",
+      "confirm": "በጊዜው መጨረሻ ሰርዝ",
+      "keep": "ምዝገባውን አቆይ",
+      "back": "ተመለስ",
+      "saving": "በማስቀመጥ ላይ…",
+      "scheduled": "ምዝገባዎ በተከፈለበት ጊዜ መጨረሻ ያበቃል።",
+      "scheduledTitle": "መሰረዝ ታቅዷል",
+      "scheduledDescription": "መዳረሻዎ እስከ {date} ይቀጥላል። ሃሳብዎን ቀይረዋል? ምዝገባዎን ለማቆየት ይቀጥሉ።",
+      "resume": "ምዝገባን ቀጥል",
+      "resumeTitle": "ምዝገባዎን ይቀጥላሉ?",
+      "resumeDescription": "ምዝገባዎ ይቀጥላል እና እንደተለመደው ይታደሳል።",
+      "resumeConfirm": "ምዝገባን ቀጥል",
+      "resumed": "ምዝገባዎ ይቀጥላል።",
+      "noSubscription": "የሚቀየር ንቁ ምዝገባ የለም።"
     }
   },
   "admin": {
@@ -2365,6 +2399,53 @@
         "scheduling": "የቀጠሮ ዝግጅት",
         "payments": "ክፍያዎች",
         "closed": "የተዘጉ"
+      }
+    },
+    "deleteMember": {
+      "link": "አባልን ሰርዝ…",
+      "back": "ወደ ተጠቃሚዎች ተመለስ",
+      "eyebrow": "አባልን ሰርዝ",
+      "title": "{name}ን ሰርዝ",
+      "whatIsDeleted": "የሚሰረዘው",
+      "items": {
+        "household": "\"{name}\" ቤተሰብ እና ዝርዝሮቹ",
+        "dependents": "{count, plural, =0 {ልጆች የሉም} one {# ልጅ} other {# ልጆች}}",
+        "requests": "{count, plural, =0 {የአገልግሎት ጥያቄዎች የሉም} one {# የአገልግሎት ጥያቄ} other {# የአገልግሎት ጥያቄዎች}}፣ ከቀጠሮዎች እና መልዕክቶች ጋር",
+        "payments": "{count, plural, =0 {የክፍያ መዝገቦች የሉም} one {# የክፍያ መዝገብ} other {# የክፍያ መዝገቦች}} እና ተመላሾች",
+        "documents": "{count, plural, =0 {ሰነዶች የሉም} one {# ሰነድ} other {# ሰነዶች}} ({files} የተቀመጡ ፋይሎች)",
+        "billing": "የክፍያ መዝገቦች፤ ማንኛውም ምዝገባ ይሰረዛል እና የStripe ደንበኛው ይሰረዛል",
+        "personal": "መለያው፣ መገለጫው፣ ሚናው፣ ማሳወቂያዎች እና አስታዋሾች"
+      },
+      "keptNote": "Stripe በሕግ የሚጠበቅበትን የክፍያ ታሪክ ያቆያል። ይህ ሰው በሌላ ቦታ የወሰዳቸው እርምጃዎች ያለ ስሙ ይቆያሉ።",
+      "beforeYouDelete": "ከመሰረዝዎ በፊት",
+      "warnings": {
+        "subscription": "ይህ ቤተሰብ ንቁ የRBT ቡት ካምፕ ምዝገባ አለው። ያለ ተመላሽ ወዲያውኑ ይሰረዛል።",
+        "stripeCustomer": "የተቀመጡ ካርዶችን ጨምሮ የStripe ደንበኛቸው ይሰረዛል።",
+        "refunds": "{count, plural, one {# ተመላሽ} other {# ተመላሾች}} ገና ክፍት ናቸው። ገንዘብ የሚገባ ከሆነ መጀመሪያ በክፍያዎች ውስጥ ያስተናግዱ።",
+        "caregivers": "{count, plural, one {# ተንከባካቢ} other {# ተንከባካቢዎች}} የዚህን ቤተሰብ መዳረሻ ያጣሉ። የራሳቸው መለያዎች ይቆያሉ።",
+        "caregiverOf": "በእነዚህ ቤተሰቦች ውስጥ ተንከባካቢ ናቸው፡ {households}። እነዚያ ቤተሰቦች ይቆያሉ።",
+        "specialist": "ባለሙያ ናቸው። ያለፉ ጥያቄዎች ማን እንደተመደበ እንዲያሳዩ የባለሙያ መዝገባቸው ያለ ስማቸው ይቆያል።"
+      },
+      "permanent": "ይህ ዘላቂ ነው እና ሊቀለበስ አይችልም።",
+      "typeEmail": "ለማረጋገጥ {email} ይጻፉ",
+      "reason": "ምክንያት (አማራጭ)",
+      "reasonPlaceholder": "ለምሳሌ፡ አባሉ መለያው እንዲሰረዝ ጠይቋል",
+      "reasonHelp": "በኦዲት መዝገብ ውስጥ ይቀመጣል።",
+      "submit": "እስከመጨረሻው ሰርዝ",
+      "deleting": "በመሰረዝ ላይ…",
+      "deleted": "አባሉ እና ሁሉም መረጃዎቻቸው ተሰርዘዋል።",
+      "errors": {
+        "invalid": "ይህ ጥያቄ ልክ አይደለም።",
+        "denied": "አባላትን መሰረዝ የሚችሉት አስተዳዳሪዎች ብቻ ናቸው።",
+        "self": "የራስዎን መለያ መሰረዝ አይችሉም።",
+        "administrator": "አስተዳዳሪዎች ሊሰረዙ አይችሉም። መጀመሪያ ሚናቸውን ወደ አባል ይቀይሩ።",
+        "notFound": "ይህ አባል ከአሁን በኋላ የለም።",
+        "emailMismatch": "የኢሜይል አድራሻው አይዛመድም።",
+        "audit": "ምንም አልተሰረዘም፡ የኦዲት መዝገቡ ሊቀመጥ አልቻለም። እንደገና ይሞክሩ።",
+        "stripe": "ምንም አልተሰረዘም፡ Stripe ሊዘመን አልቻለም። እንደገና ይሞክሩ፣ ወይም ምዝገባውን በStripe ውስጥ ይሰርዙ።",
+        "storage": "ክፍያው ተሰርዟል፣ ነገር ግን የተቀመጡ ፋይሎች ሊሰረዙ አልቻሉም። እንደገና ይሞክሩ።",
+        "account": "ክፍያ እና ፋይሎች ተወግደዋል፣ ነገር ግን መለያው ሊሰረዝ አልቻለም። እንደገና ይሞክሩ።",
+        "verify": "መሰረዙ ተጠናቅቋል ግን አንዳንድ መረጃዎች ቀርተዋል። እንደገና ይሞክሩ ወይም Supabaseን ያረጋግጡ።"
       }
     }
   },

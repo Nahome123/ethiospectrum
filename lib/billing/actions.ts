@@ -12,6 +12,11 @@ import type { BillingActionState } from "./action-state";
 import { ensureStripeCustomer } from "./customer";
 import { getConfiguredBillingInterval, getRbtMonthlyPriceId, getStripeClient } from "./provider";
 import { reconcileBillingHousehold } from "./sync";
+import {
+  cancelSubscriptionNow,
+  findLiveHouseholdSubscription,
+  setCancelAtPeriodEnd,
+} from "./subscription-control";
 
 function value(formData: FormData, key: string): string {
   const candidate = formData.get(key);
@@ -165,5 +170,115 @@ export async function reconcileBillingHouseholdAction(
     return { status: "success", message: t("admin.reconciled") };
   } catch {
     return { status: "error", message: t("errors.reconciliation") };
+  }
+}
+
+/** Best-effort audit entry; billing changes are also recorded by Stripe. */
+async function recordBillingAudit(
+  admin: ReturnType<typeof createSupabaseAdminClient>,
+  entry: { actorId: string; householdId: string; action: string; metadata: Record<string, string | boolean> },
+) {
+  await admin.from("audit_logs").insert({
+    actor_id: entry.actorId,
+    household_id: entry.householdId,
+    action: entry.action,
+    entity_type: "subscription",
+    entity_id: entry.householdId,
+    metadata: entry.metadata,
+  });
+}
+
+/**
+ * Lets the household's subscription manager cancel at the end of the paid
+ * period (`cancel` true) or withdraw a scheduled cancellation (`cancel` false).
+ * Access continues until the period ends; nothing is refunded.
+ */
+export async function setSubscriptionCancellationAction(
+  locale: AppLocale,
+  cancel: boolean,
+  _state: BillingActionState,
+  _formData: FormData,
+): Promise<BillingActionState> {
+  void _state;
+  void _formData;
+  const t = await getTranslations({ locale, namespace: "billing" });
+  const context = await getSubscriptionManagerContext();
+  if (!context) return { status: "error", message: t("errors.ownerRequired") };
+  try {
+    const admin = createSupabaseAdminClient();
+    const subscription = await findLiveHouseholdSubscription(admin, context.household.id);
+    if (!subscription) return { status: "error", message: t("cancel.noSubscription") };
+    if (subscription.cancelAtPeriodEnd !== cancel) {
+      await setCancelAtPeriodEnd({
+        admin,
+        stripe: getStripeClient(),
+        subscriptionId: subscription.subscriptionId,
+        cancel,
+      });
+      await recordBillingAudit(admin, {
+        actorId: context.userId,
+        householdId: context.household.id,
+        action: cancel ? "subscription_cancellation_scheduled" : "subscription_resumed",
+        metadata: { by: "member" },
+      });
+    }
+    revalidateBilling(locale);
+    return { status: "success", message: t(cancel ? "cancel.scheduled" : "cancel.resumed") };
+  } catch {
+    return { status: "error", message: t("errors.cancel") };
+  }
+}
+
+/**
+ * Administrator: end a household's membership at the end of the paid period
+ * or immediately (no refund). The form sends `mode` = "period_end" | "now".
+ */
+export async function adminEndMembershipAction(
+  locale: AppLocale,
+  householdId: string,
+  _state: BillingActionState,
+  formData: FormData,
+): Promise<BillingActionState> {
+  void _state;
+  const t = await getTranslations({ locale, namespace: "billing" });
+  const parsed = billingReconciliationSchema.safeParse({ householdId });
+  const mode = value(formData, "mode");
+  const claims = await getCurrentSupabaseClaims();
+  if (
+    !parsed.success ||
+    (mode !== "period_end" && mode !== "now") ||
+    !claims ||
+    typeof claims.sub !== "string"
+  ) {
+    return { status: "error", message: t("errors.validation") };
+  }
+  if ((await getCurrentUserRole(claims.sub)) !== "administrator") {
+    return { status: "error", message: t("errors.adminRequired") };
+  }
+  try {
+    const admin = createSupabaseAdminClient();
+    const stripe = getStripeClient();
+    const subscription = await findLiveHouseholdSubscription(admin, parsed.data.householdId);
+    if (!subscription) return { status: "error", message: t("cancel.noSubscription") };
+    if (mode === "now") {
+      await cancelSubscriptionNow({ admin, stripe, subscriptionId: subscription.subscriptionId });
+    } else {
+      await setCancelAtPeriodEnd({
+        admin,
+        stripe,
+        subscriptionId: subscription.subscriptionId,
+        cancel: true,
+      });
+    }
+    await recordBillingAudit(admin, {
+      actorId: claims.sub,
+      householdId: parsed.data.householdId,
+      action: mode === "now" ? "membership_ended" : "subscription_cancellation_scheduled",
+      metadata: { by: "administrator", mode },
+    });
+    revalidateBilling(locale);
+    return { status: "success", message: t(mode === "now" ? "admin.endedNow" : "admin.endsAtPeriodEnd") };
+  } catch {
+    return { status: "error", message: t("errors.cancel") };
   }
 }

@@ -11,7 +11,8 @@ describe("ETH-028 security architecture", () => {
   it("exports only async Server Actions", () => {
     expect(actionSource.startsWith('"use server"')).toBe(true);
     const exports = [...actionSource.matchAll(/^export\s+([^\n]+)/gm)].map((match) => match[1]);
-    expect(exports).toHaveLength(3);
+    // Checkout, portal, reconcile, member cancel/resume, and administrator end membership.
+    expect(exports).toHaveLength(5);
     expect(exports.every((statement) => statement.startsWith("async function"))).toBe(true);
   });
 
@@ -19,6 +20,8 @@ describe("ETH-028 security architecture", () => {
     for (const file of [
       "components/billing/billing-action-form.tsx",
       "components/billing/billing-reconcile-form.tsx",
+      "components/billing/confirm-billing-action.tsx",
+      "components/admin/delete-member-form.tsx",
     ]) {
       const source = read(file);
       expect(source).toContain('"use client"');

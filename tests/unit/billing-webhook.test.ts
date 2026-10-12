@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@/lib/billing/sync", () => ({
   syncStripeSubscription: mocks.syncStripeSubscription,
   syncStripeInvoice: mocks.syncStripeInvoice,
+  UnknownBillingCustomerError: class UnknownBillingCustomerError extends Error {},
 }));
 
 import { handleStripeWebhookRequest } from "@/lib/billing/webhook";
@@ -147,5 +148,23 @@ describe("Stripe webhook boundary", () => {
       target_household_id: undefined,
     });
     expect(JSON.stringify(rpc.mock.calls)).not.toContain("private provider detail");
+  });
+
+  it("acknowledges events for a customer whose household was deleted", async () => {
+    const { UnknownBillingCustomerError } = await import("@/lib/billing/sync");
+    const rpc = vi
+      .fn()
+      .mockResolvedValueOnce({ data: "process", error: null })
+      .mockResolvedValueOnce({ data: null, error: null });
+    mocks.syncStripeInvoice.mockRejectedValue(new UnknownBillingCustomerError());
+    const response = await handleStripeWebhookRequest(request(), {
+      stripe: stripeWithEvent(event("invoice.payment_failed", { id: "in_synthetic123" })),
+      admin: { rpc } as never,
+      webhookSecret: "whsec_test",
+    });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenLastCalledWith("complete_stripe_webhook_event", {
+      input_stripe_event_id: "evt_synthetic123",
+    });
   });
 });

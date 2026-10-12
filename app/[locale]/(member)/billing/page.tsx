@@ -2,11 +2,16 @@ import { CheckCircle2, ExternalLink, ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
 import { BillingActionForm } from "@/components/billing/billing-action-form";
+import { ConfirmBillingAction } from "@/components/billing/confirm-billing-action";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireHouseholdBillingAccess } from "@/lib/billing/access";
-import { createBillingCheckoutSessionAction, createBillingPortalSessionAction } from "@/lib/billing/actions";
+import {
+  createBillingCheckoutSessionAction,
+  createBillingPortalSessionAction,
+  setSubscriptionCancellationAction,
+} from "@/lib/billing/actions";
 import { getHouseholdBillingSummary, listHouseholdBillingInvoices } from "@/lib/billing/server";
 import { PaymentStatusBadge } from "@/components/services/status-badge";
 import { Link } from "@/i18n/navigation";
@@ -159,6 +164,49 @@ export default async function BillingPage({
             </Card>
           </div>
         </section>
+      ) : null}
+
+      {summary && isBillingManager && summary.plan_key === "rbt_bootcamp" && active ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              {summary.cancel_at_period_end ? t("cancel.scheduledTitle") : t("cancel.title")}
+            </CardTitle>
+            <CardDescription>
+              {summary.cancel_at_period_end
+                ? t("cancel.scheduledDescription", {
+                    date: formatDate(summary.current_period_end, locale) ?? "",
+                  })
+                : t("cancel.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {summary.cancel_at_period_end ? (
+              <ConfirmBillingAction
+                action={setSubscriptionCancellationAction.bind(null, locale, false)}
+                confirmLabel={t("cancel.resumeConfirm")}
+                description={t("cancel.resumeDescription")}
+                keepLabel={t("cancel.back")}
+                pendingLabel={t("cancel.saving")}
+                title={t("cancel.resumeTitle")}
+                triggerLabel={t("cancel.resume")}
+                triggerVariant="default"
+              />
+            ) : (
+              <ConfirmBillingAction
+                action={setSubscriptionCancellationAction.bind(null, locale, true)}
+                confirmLabel={t("cancel.confirm")}
+                description={t("cancel.confirmDescription", {
+                  date: formatDate(summary.current_period_end, locale) ?? t("cancel.periodEnd"),
+                })}
+                keepLabel={t("cancel.keep")}
+                pendingLabel={t("cancel.saving")}
+                title={t("cancel.confirmTitle")}
+                triggerLabel={t("cancel.trigger")}
+              />
+            )}
+          </CardContent>
+        </Card>
       ) : null}
 
       {summary && isBillingManager && summary.has_stripe_customer ? (

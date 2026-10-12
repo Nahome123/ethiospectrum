@@ -6,13 +6,25 @@ import { mapStripeInvoice, mapStripeSubscription } from "./mapping";
 
 type BillingAdminClient = ReturnType<typeof createSupabaseAdminClient>;
 
+/**
+ * The Stripe customer has no household in the app, for example after the
+ * member was deleted. Webhooks acknowledge such events instead of retrying.
+ */
+export class UnknownBillingCustomerError extends Error {
+  constructor() {
+    super("billing_customer_unavailable");
+    this.name = "UnknownBillingCustomerError";
+  }
+}
+
 async function findHouseholdId(admin: BillingAdminClient, customerId: string): Promise<string> {
   const { data, error } = await admin
     .from("billing_customers")
     .select("household_id")
     .eq("stripe_customer_id", customerId)
     .maybeSingle();
-  if (error || !data) throw new Error("billing_customer_unavailable");
+  if (error) throw new Error("billing_customer_lookup_failed");
+  if (!data) throw new UnknownBillingCustomerError();
   return data.household_id;
 }
 

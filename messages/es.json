@@ -1566,7 +1566,19 @@
       "webhookFailures": "Fallos de procesamiento de webhooks",
       "webhookFailuresDescription": "Solo se muestran metadatos seguros; nunca se muestran cargas de pago ni datos privados del hogar.",
       "noWebhookFailures": "No hay eventos de facturación fallidos.",
-      "failureSummary": "{attempts, plural, one {# intento} other {# intentos}} · Error {code}"
+      "failureSummary": "{attempts, plural, one {# intento} other {# intentos}} · Error {code}",
+      "endMembership": "Terminar membresía",
+      "endTitle": "¿Terminar esta membresía?",
+      "endDescription": "Termina RBT Boot Camp para {household}. No se emite reembolso.",
+      "endWhen": "¿Cuándo debe terminar la membresía?",
+      "endAtPeriodEnd": "Al final del período pagado",
+      "endAtPeriodEndHelp": "El acceso continúa hasta que termine el período; no hay más cobros.",
+      "endNow": "Inmediatamente",
+      "endNowHelp": "El acceso termina ahora; no hay reembolso por los días restantes.",
+      "endConfirm": "Terminar membresía",
+      "endsOn": "La membresía termina el {date}.",
+      "endsAtPeriodEnd": "La membresía terminará al final del período pagado.",
+      "endedNow": "La membresía ha terminado."
     },
     "errors": {
       "validation": "Revisa la selección de facturación e inténtalo de nuevo.",
@@ -1578,7 +1590,8 @@
       "reconciliation": "No se puede reconciliar la facturación ahora.",
       "updatedElsewhere": "La facturación se actualizó en otro lugar. Actualiza antes de intentarlo de nuevo.",
       "load": "No se pudo cargar la facturación",
-      "tryAgain": "Actualiza la página e inténtalo de nuevo."
+      "tryAgain": "Actualiza la página e inténtalo de nuevo.",
+      "cancel": "No se pudo cambiar la suscripción. Inténtelo de nuevo."
     },
     "monthlyPrice": "{price} al mes",
     "certificationDisclaimer": "Completar el curso no es una certificación RBT.",
@@ -1592,6 +1605,27 @@
       "description": "Pagos únicos de consultas y asistencia lingüística con el IEP.",
       "empty": "Aún no hay pagos de servicios.",
       "refunded": "{amount} reembolsado"
+    },
+    "cancel": {
+      "title": "Cancelar suscripción",
+      "description": "Puede cancelar en cualquier momento. Conserva el acceso a RBT Boot Camp hasta el final del período pagado.",
+      "trigger": "Cancelar suscripción",
+      "confirmTitle": "¿Cancelar su suscripción a RBT Boot Camp?",
+      "confirmDescription": "Su acceso continúa hasta el {date}. No se le cobrará de nuevo y puede reanudar antes de esa fecha.",
+      "periodEnd": "el final del período actual",
+      "confirm": "Cancelar al final del período",
+      "keep": "Mantener suscripción",
+      "back": "Volver",
+      "saving": "Guardando…",
+      "scheduled": "Su suscripción terminará al final del período pagado.",
+      "scheduledTitle": "Cancelación programada",
+      "scheduledDescription": "Su acceso continúa hasta el {date}. ¿Cambió de opinión? Reanude para mantener su suscripción.",
+      "resume": "Reanudar suscripción",
+      "resumeTitle": "¿Reanudar su suscripción?",
+      "resumeDescription": "Su suscripción continuará y se renovará como de costumbre.",
+      "resumeConfirm": "Reanudar suscripción",
+      "resumed": "Su suscripción continuará.",
+      "noSubscription": "No hay una suscripción activa para cambiar."
     }
   },
   "admin": {
@@ -2365,6 +2399,53 @@
         "scheduling": "Programación",
         "payments": "Pagos",
         "closed": "Cerradas"
+      }
+    },
+    "deleteMember": {
+      "link": "Eliminar miembro…",
+      "back": "Volver a usuarios",
+      "eyebrow": "Eliminar miembro",
+      "title": "Eliminar a {name}",
+      "whatIsDeleted": "Qué se eliminará",
+      "items": {
+        "household": "El hogar \"{name}\" y sus datos",
+        "dependents": "{count, plural, =0 {Sin hijos} one {# hijo} other {# hijos}}",
+        "requests": "{count, plural, =0 {Sin solicitudes de servicio} one {# solicitud de servicio} other {# solicitudes de servicio}}, con citas y mensajes",
+        "payments": "{count, plural, =0 {Sin registros de pago} one {# registro de pago} other {# registros de pago}} y reembolsos",
+        "documents": "{count, plural, =0 {Sin documentos} one {# documento} other {# documentos}} ({files} archivos guardados)",
+        "billing": "Registros de facturación; se cancela cualquier suscripción y se elimina el cliente de Stripe",
+        "personal": "La cuenta, el perfil, el rol, las notificaciones y los recordatorios"
+      },
+      "keptNote": "Stripe conserva el historial de pagos que la ley exige. Las acciones de esta persona en otros lugares, como registros de auditoría, se conservan sin su nombre.",
+      "beforeYouDelete": "Antes de eliminar",
+      "warnings": {
+        "subscription": "Este hogar tiene una suscripción activa a RBT Boot Camp. Se cancelará de inmediato sin reembolso.",
+        "stripeCustomer": "Se eliminará su cliente de Stripe, incluidas las tarjetas guardadas.",
+        "refunds": "{count, plural, one {# reembolso sigue} other {# reembolsos siguen}} abiertos. Procéselos primero en Pagos si se debe dinero.",
+        "caregivers": "{count, plural, one {# cuidador perderá} other {# cuidadores perderán}} el acceso a este hogar. Sus cuentas se conservan.",
+        "caregiverOf": "Es cuidador en: {households}. Esos hogares se conservan.",
+        "specialist": "Es especialista. Su registro de especialista se conserva sin su nombre para que las solicitudes anteriores muestren a quién se asignaron."
+      },
+      "permanent": "Esto es permanente y no se puede deshacer.",
+      "typeEmail": "Escriba {email} para confirmar",
+      "reason": "Motivo (opcional)",
+      "reasonPlaceholder": "Por ejemplo: el miembro pidió eliminar su cuenta",
+      "reasonHelp": "Se guarda en el registro de auditoría.",
+      "submit": "Eliminar permanentemente",
+      "deleting": "Eliminando…",
+      "deleted": "El miembro y todos sus datos fueron eliminados.",
+      "errors": {
+        "invalid": "Esta solicitud no es válida.",
+        "denied": "Solo los administradores pueden eliminar miembros.",
+        "self": "No puede eliminar su propia cuenta.",
+        "administrator": "Los administradores no se pueden eliminar. Cambie primero su rol a Miembro.",
+        "notFound": "Este miembro ya no existe.",
+        "emailMismatch": "El correo electrónico no coincide.",
+        "audit": "No se eliminó nada: no se pudo guardar el registro de auditoría. Inténtelo de nuevo.",
+        "stripe": "No se eliminó nada: no se pudo actualizar Stripe. Inténtelo de nuevo o cancele la suscripción en Stripe.",
+        "storage": "Se canceló la facturación, pero no se pudieron eliminar los archivos guardados. Inténtelo de nuevo.",
+        "account": "Se eliminaron la facturación y los archivos, pero no la cuenta. Inténtelo de nuevo.",
+        "verify": "La eliminación terminó, pero quedan algunos datos. Inténtelo de nuevo o revise Supabase."
       }
     }
   },

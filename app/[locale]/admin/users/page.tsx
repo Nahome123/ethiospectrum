@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { setUserRoleAction } from "@/lib/services/config-actions";
 import { formatDate } from "@/lib/services/display";
-import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
+import { createServerComponentSupabaseClient, getCurrentSupabaseClaims } from "@/lib/supabase/server";
 
 const roleFilters = ["all", "member", "specialist", "administrator"] as const;
 const assignableRoles = ["member", "specialist", "administrator"] as const;
@@ -25,6 +25,8 @@ export default async function AdminUsersPage({
   const query = typeof search.q === "string" ? search.q.slice(0, 120) : "";
   const page = Math.max(1, Number(search.page) || 1);
   const supabase = await createServerComponentSupabaseClient();
+  const claims = await getCurrentSupabaseClaims();
+  const deleteT = await getTranslations({ locale, namespace: "adminConsole.deleteMember" });
   const { data, error } = await supabase.rpc("admin_list_users", {
     input_search: query || undefined,
     input_role: role === "all" ? undefined : role,
@@ -46,6 +48,11 @@ export default async function AdminUsersPage({
     <section className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">{t("title")}</h1>
+        {search.deleted === "1" ? (
+          <p className="mt-4 rounded-xl border border-input bg-tint p-4 text-sm font-semibold" role="status">
+            {deleteT("deleted")}
+          </p>
+        ) : null}
         <p className="mt-2 text-muted-foreground">{t("description")}</p>
       </div>
       <form className="flex flex-wrap items-end gap-3" method="get">
@@ -139,6 +146,14 @@ export default async function AdminUsersPage({
                         ))}
                       </select>
                     </ActionForm>
+                    {user.role !== "administrator" && user.user_id !== claims?.sub ? (
+                      <Link
+                        className="mt-2 inline-block text-xs font-semibold text-destructive underline underline-offset-2"
+                        href={`/admin/users/${user.user_id}/delete`}
+                      >
+                        {deleteT("link")}
+                      </Link>
+                    ) : null}
                   </td>
                 </tr>
               ))}

@@ -10,7 +10,7 @@ import {
 import { BillingProviderDataError } from "./mapping";
 import { getStripeClient, getStripeWebhookSecret } from "./provider";
 import { isStripeBillingEventType } from "./constants";
-import { syncStripeInvoice, syncStripeSubscription } from "./sync";
+import { syncStripeInvoice, syncStripeSubscription, UnknownBillingCustomerError } from "./sync";
 
 type BillingAdminClient = ReturnType<typeof createSupabaseAdminClient>;
 
@@ -140,6 +140,11 @@ export async function handleStripeWebhookRequest(
     if (completed.error) throw new Error("webhook_completion_failed");
     return NextResponse.json({ received: true });
   } catch (error) {
+    if (error instanceof UnknownBillingCustomerError) {
+      // Nothing to update: the customer's household no longer exists here.
+      await admin.rpc("complete_stripe_webhook_event", { input_stripe_event_id: event.id });
+      return NextResponse.json({ received: true, ignored: true });
+    }
     await admin.rpc("fail_stripe_webhook_event", {
       input_stripe_event_id: event.id,
       input_error_code: safeFailureCode(error),

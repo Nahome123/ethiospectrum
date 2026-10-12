@@ -1,10 +1,18 @@
 import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
 import { BillingReconcileForm } from "@/components/billing/billing-reconcile-form";
+import { ConfirmBillingAction } from "@/components/billing/confirm-billing-action";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { reconcileBillingHouseholdAction } from "@/lib/billing/actions";
+import { adminEndMembershipAction, reconcileBillingHouseholdAction } from "@/lib/billing/actions";
 import { listAdminBillingSummaries, listFailedStripeWebhookEvents } from "@/lib/billing/server";
+
+/** Subscriptions that still bill or grant access, and so can be ended. */
+const liveStatuses = ["trialing", "active", "past_due", "unpaid", "paused", "incomplete"];
+
+function formatDay(value: string | null, locale: AppLocale): string {
+  return value ? new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(value)) : "";
+}
 
 export default async function AdminBillingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
@@ -47,6 +55,58 @@ export default async function AdminBillingPage({ params }: { params: Promise<{ l
                 label={t("admin.reconcile")}
                 pendingLabel={t("admin.reconciling")}
               />
+              {household.stripe_status && liveStatuses.includes(household.stripe_status) ? (
+                <div className="border-t border-border pt-4 md:col-span-3">
+                  {household.cancel_at_period_end ? (
+                    <p className="mb-3 text-sm text-muted-foreground">
+                      {t("admin.endsOn", { date: formatDay(household.current_period_end, locale) })}
+                    </p>
+                  ) : null}
+                  <ConfirmBillingAction
+                    action={adminEndMembershipAction.bind(null, locale, household.household_id)}
+                    confirmLabel={t("admin.endConfirm")}
+                    description={t("admin.endDescription", { household: household.household_name })}
+                    keepLabel={t("cancel.back")}
+                    pendingLabel={t("cancel.saving")}
+                    title={t("admin.endTitle")}
+                    triggerLabel={t("admin.endMembership")}
+                  >
+                    <fieldset className="space-y-2 text-sm">
+                      <legend className="sr-only">{t("admin.endWhen")}</legend>
+                      {household.cancel_at_period_end ? null : (
+                        <label className="flex items-start gap-2">
+                          <input
+                            className="mt-1 size-4"
+                            defaultChecked
+                            name="mode"
+                            type="radio"
+                            value="period_end"
+                          />
+                          <span>
+                            <span className="font-semibold">{t("admin.endAtPeriodEnd")}</span>
+                            <span className="block text-muted-foreground">
+                              {t("admin.endAtPeriodEndHelp")}
+                            </span>
+                          </span>
+                        </label>
+                      )}
+                      <label className="flex items-start gap-2">
+                        <input
+                          className="mt-1 size-4"
+                          defaultChecked={household.cancel_at_period_end}
+                          name="mode"
+                          type="radio"
+                          value="now"
+                        />
+                        <span>
+                          <span className="font-semibold">{t("admin.endNow")}</span>
+                          <span className="block text-muted-foreground">{t("admin.endNowHelp")}</span>
+                        </span>
+                      </label>
+                    </fieldset>
+                  </ConfirmBillingAction>
+                </div>
+              ) : null}
             </CardContent>
           </Card>
         ))}

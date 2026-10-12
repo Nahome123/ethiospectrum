@@ -1566,7 +1566,19 @@
       "webhookFailures": "Webhook processing failures",
       "webhookFailuresDescription": "Safe event metadata only; payment and household-private payloads are never displayed.",
       "noWebhookFailures": "No failed billing events.",
-      "failureSummary": "{attempts, plural, one {# attempt} other {# attempts}} · Error {code}"
+      "failureSummary": "{attempts, plural, one {# attempt} other {# attempts}} · Error {code}",
+      "endMembership": "End membership",
+      "endTitle": "End this membership?",
+      "endDescription": "Ends RBT Boot Camp for {household}. No refund is issued.",
+      "endWhen": "When should the membership end?",
+      "endAtPeriodEnd": "At the end of the paid period",
+      "endAtPeriodEndHelp": "Access continues until the period ends; no further charges.",
+      "endNow": "Immediately",
+      "endNowHelp": "Access stops now; no refund for the remaining days.",
+      "endConfirm": "End membership",
+      "endsOn": "Membership ends on {date}.",
+      "endsAtPeriodEnd": "The membership will end at the end of the paid period.",
+      "endedNow": "The membership has ended."
     },
     "errors": {
       "validation": "Check the billing selection and try again.",
@@ -1578,7 +1590,8 @@
       "reconciliation": "Unable to reconcile billing right now.",
       "updatedElsewhere": "Billing was updated elsewhere. Refresh before trying again.",
       "load": "Unable to load billing",
-      "tryAgain": "Refresh the page and try again."
+      "tryAgain": "Refresh the page and try again.",
+      "cancel": "The subscription could not be changed. Please try again."
     },
     "monthlyPrice": "{price} per month",
     "certificationDisclaimer": "Completing the course is not an RBT certification.",
@@ -1592,6 +1605,27 @@
       "description": "One-time payments for consultations and IEP language assistance.",
       "empty": "No service payments yet.",
       "refunded": "{amount} refunded"
+    },
+    "cancel": {
+      "title": "Cancel subscription",
+      "description": "You can cancel anytime. You keep RBT Boot Camp access until the end of the period you've paid for.",
+      "trigger": "Cancel subscription",
+      "confirmTitle": "Cancel your RBT Boot Camp subscription?",
+      "confirmDescription": "Your access continues until {date}. You won't be charged again, and you can resume before then.",
+      "periodEnd": "the end of the current period",
+      "confirm": "Cancel at end of period",
+      "keep": "Keep subscription",
+      "back": "Go back",
+      "saving": "Saving…",
+      "scheduled": "Your subscription will end at the end of the paid period.",
+      "scheduledTitle": "Cancellation scheduled",
+      "scheduledDescription": "Your access continues until {date}. Changed your mind? Resume to keep your subscription.",
+      "resume": "Resume subscription",
+      "resumeTitle": "Resume your subscription?",
+      "resumeDescription": "Your subscription will continue and renew as usual.",
+      "resumeConfirm": "Resume subscription",
+      "resumed": "Your subscription will continue.",
+      "noSubscription": "There is no active subscription to change."
     }
   },
   "admin": {
@@ -2365,6 +2399,53 @@
         "scheduling": "Scheduling",
         "payments": "Payments",
         "closed": "Closed"
+      }
+    },
+    "deleteMember": {
+      "link": "Delete member…",
+      "back": "Back to users",
+      "eyebrow": "Delete member",
+      "title": "Delete {name}",
+      "whatIsDeleted": "What will be deleted",
+      "items": {
+        "household": "The household \"{name}\" and its details",
+        "dependents": "{count, plural, =0 {No children} one {# child} other {# children}}",
+        "requests": "{count, plural, =0 {No service requests} one {# service request} other {# service requests}}, with appointments and messages",
+        "payments": "{count, plural, =0 {No payment records} one {# payment record} other {# payment records}} and any refunds",
+        "documents": "{count, plural, =0 {No documents} one {# document} other {# documents}} ({files} stored files)",
+        "billing": "Billing records; any subscription is canceled and the Stripe customer is deleted",
+        "personal": "The account, profile, role, notifications and reminders"
+      },
+      "keptNote": "Stripe keeps the payment history it is legally required to hold. Actions this person took elsewhere, such as audit entries, stay without their name.",
+      "beforeYouDelete": "Before you delete",
+      "warnings": {
+        "subscription": "This household has an active RBT Boot Camp subscription. It will be canceled immediately with no refund.",
+        "stripeCustomer": "Their Stripe customer, including saved cards, will be deleted.",
+        "refunds": "{count, plural, one {# refund is} other {# refunds are}} still open. Process them in Payments first if money is owed.",
+        "caregivers": "{count, plural, one {# caregiver} other {# caregivers}} will lose access to this household. Their own accounts stay.",
+        "caregiverOf": "They are a caregiver in: {households}. Those households stay.",
+        "specialist": "They are a specialist. Their specialist record stays, without their name, so past requests still show who was assigned."
+      },
+      "permanent": "This is permanent and cannot be undone.",
+      "typeEmail": "Type {email} to confirm",
+      "reason": "Reason (optional)",
+      "reasonPlaceholder": "For example: member requested account deletion",
+      "reasonHelp": "Saved in the audit log.",
+      "submit": "Permanently delete",
+      "deleting": "Deleting…",
+      "deleted": "The member and all their data were deleted.",
+      "errors": {
+        "invalid": "This request is invalid.",
+        "denied": "Only administrators can delete members.",
+        "self": "You cannot delete your own account.",
+        "administrator": "Administrators cannot be deleted. Change their role to Member first.",
+        "notFound": "This member no longer exists.",
+        "emailMismatch": "The email address does not match.",
+        "audit": "Nothing was deleted: the audit entry could not be saved. Try again.",
+        "stripe": "Nothing was deleted: Stripe could not be updated. Try again, or cancel the subscription in Stripe.",
+        "storage": "Billing was canceled, but the stored files could not be deleted. Try again.",
+        "account": "Billing and files were removed, but the account could not be deleted. Try again.",
+        "verify": "The deletion finished but some data remains. Try again or check Supabase."
       }
     }
   },
