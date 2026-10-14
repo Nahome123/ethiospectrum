@@ -2636,7 +2636,11 @@
     "lessonCompleted": "Lesson completed",
     "markIncomplete": "Mark as not completed",
     "markComplete": "Mark lesson complete",
-    "lessonNavigation": "Lesson navigation"
+    "lessonNavigation": "Lesson navigation",
+    "lessonsInModule": "Lessons in this module",
+    "lessonContent": "Lesson notes",
+    "lessonMaterial": "Lesson material",
+    "downloadFile": "Download"
   },
   "household": {
     "title": "Household",

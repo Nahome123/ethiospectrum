@@ -1,6 +1,11 @@
-import { FileDown } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { LessonPlayer } from "@/components/training/lesson-player";
+import {
+  LessonBody,
+  LessonHero,
+  LessonModuleNav,
+  LessonResource,
+} from "@/components/training/lesson-study-guide";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -60,7 +65,19 @@ export default async function LessonPage({
   const title = localizedField(lesson.localized, locale, "title", lesson.title) ?? lesson.title;
   const description = localizedField(lesson.localized, locale, "description", lesson.description);
   const body = localizedField(lesson.localized, locale, "body", lesson.body);
-  const isInternalResource = detail.resourceHref?.startsWith("/training/") ?? false;
+  const moduleTitle = current
+    ? localizedField(current.module_localized, locale, "title", current.module_title)
+    : null;
+  const moduleLessons = current
+    ? outline
+        .filter((row) => row.module_id === current.module_id)
+        .map((row) => ({
+          id: row.lesson_id,
+          href: withLearner(`/training/lessons/${row.lesson_id}`),
+          title: localizedField(row.lesson_localized, locale, "title", row.lesson_title) ?? row.lesson_title,
+          completed: row.completed,
+        }))
+    : [];
 
   return (
     <article className="mx-auto max-w-4xl space-y-6">
@@ -70,18 +87,13 @@ export default async function LessonPage({
       >
         {t("backToLibrary")}
       </Link>
-      <header>
-        {current ? (
-          <p className="text-sm font-semibold text-link">
-            {localizedField(current.module_localized, locale, "title", current.module_title)}
-          </p>
-        ) : null}
-        <h1 className="mt-1 text-3xl font-bold">{title}</h1>
-        {description ? <p className="mt-2 text-muted-foreground">{description}</p> : null}
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t("trackingProgressFor", { name: learnerName ?? t("me") })}
-        </p>
-      </header>
+      <LessonHero
+        badge={moduleTitle}
+        description={description}
+        note={t("trackingProgressFor", { name: learnerName ?? t("me") })}
+        title={title}
+      />
+      <LessonModuleNav current={lesson.id} label={t("lessonsInModule")} lessons={moduleLessons} />
       <LessonPlayer
         initialPercentage={current?.progress_percentage ?? 0}
         learner={learnerParam}
@@ -91,29 +103,18 @@ export default async function LessonPage({
         videoEmbed={detail.videoEmbed}
         videoSrc={detail.videoSrc}
       />
-      {body ? (
-        <div className="whitespace-pre-line rounded-2xl border bg-white p-5 leading-7">{body}</div>
-      ) : null}
+      {body ? <LessonBody body={body} title={t("lessonContent")} /> : null}
       {detail.resourceHref ? (
-        isInternalResource ? (
-          <Link
-            className="inline-flex items-center gap-2 rounded-md border bg-white px-4 py-2 font-semibold hover:border-primary"
-            href={detail.resourceHref}
-          >
-            <FileDown aria-hidden="true" className="size-4" />
-            {lesson.resource_label ?? t("openResource")}
-          </Link>
-        ) : (
-          <a
-            className="inline-flex items-center gap-2 rounded-md border bg-white px-4 py-2 font-semibold hover:border-primary"
-            href={detail.resourceHref}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <FileDown aria-hidden="true" className="size-4" />
-            {lesson.resource_label ?? t("openResource")}
-          </a>
-        )
+        <LessonResource
+          downloadHref={detail.resourceHref}
+          downloadLabel={
+            detail.resourceIsPdf ? t("downloadFile") : (lesson.resource_label ?? t("openResource"))
+          }
+          isPdf={detail.resourceIsPdf}
+          label={lesson.resource_label ?? t("lessonMaterial")}
+          viewHref={detail.resourceViewHref ?? detail.resourceHref}
+          viewerTitle={title}
+        />
       ) : null}
       <div className="flex flex-wrap items-center gap-3 rounded-2xl border bg-white p-5">
         {current?.completed ? (

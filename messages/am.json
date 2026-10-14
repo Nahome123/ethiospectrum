@@ -2636,7 +2636,11 @@
     "lessonCompleted": "ትምህርቱ ተጠናቋል",
     "markIncomplete": "እንዳልተጠናቀቀ ምልክት አድርግ",
     "markComplete": "ትምህርቱን እንደተጠናቀቀ ምልክት አድርግ",
-    "lessonNavigation": "የትምህርት መዳሰሻ"
+    "lessonNavigation": "የትምህርት መዳሰሻ",
+    "lessonsInModule": "በዚህ ሞጁል ያሉ ትምህርቶች",
+    "lessonContent": "የትምህርት ማስታወሻ",
+    "lessonMaterial": "የትምህርት ጽሑፍ",
+    "downloadFile": "አውርድ"
   },
   "household": {
     "title": "ቤተሰብ",

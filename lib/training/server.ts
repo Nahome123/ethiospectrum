@@ -69,6 +69,9 @@ export type LessonDetail = {
   videoSrc: string | null;
   videoEmbed: string | null;
   resourceHref: string | null;
+  /** The same file for showing in the page (no download prompt). */
+  resourceViewHref: string | null;
+  resourceIsPdf: boolean;
 };
 
 /** Converts a YouTube or Vimeo watch URL into a privacy-preserving embed URL. */
@@ -121,15 +124,21 @@ export async function getLessonDetail(lessonId: string): Promise<LessonDetail | 
   }
 
   let resourceHref: string | null = null;
+  let resourceViewHref: string | null = null;
+  const resourceIsPdf = /\.pdf(\?|#|$)/i.test(lesson.resource_storage_path ?? lesson.resource_url ?? "");
   if (lesson.resource_storage_path) {
-    const signed = await supabase.storage
-      .from(TRAINING_MEDIA_BUCKET)
-      .createSignedUrl(lesson.resource_storage_path, 600, { download: true });
-    resourceHref = signed.data?.signedUrl ?? null;
+    const bucket = supabase.storage.from(TRAINING_MEDIA_BUCKET);
+    const [download, view] = await Promise.all([
+      bucket.createSignedUrl(lesson.resource_storage_path, 3600, { download: true }),
+      resourceIsPdf ? bucket.createSignedUrl(lesson.resource_storage_path, 3600) : null,
+    ]);
+    resourceHref = download.data?.signedUrl ?? null;
+    resourceViewHref = view?.data?.signedUrl ?? resourceHref;
   } else if (lesson.resource_url) {
     resourceHref = lesson.resource_url;
+    resourceViewHref = lesson.resource_url;
   }
-  return { lesson, videoSrc, videoEmbed, resourceHref };
+  return { lesson, videoSrc, videoEmbed, resourceHref, resourceViewHref, resourceIsPdf };
 }
 
 /** Administrator content tree, including drafts and archived items. */

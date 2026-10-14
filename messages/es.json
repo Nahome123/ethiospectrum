@@ -2636,7 +2636,11 @@
     "lessonCompleted": "Lección completada",
     "markIncomplete": "Marcar como no completada",
     "markComplete": "Marcar la lección como completada",
-    "lessonNavigation": "Navegación de lecciones"
+    "lessonNavigation": "Navegación de lecciones",
+    "lessonsInModule": "Lecciones de este módulo",
+    "lessonContent": "Notas de la lección",
+    "lessonMaterial": "Material de la lección",
+    "downloadFile": "Descargar"
   },
   "household": {
     "title": "Hogar",
