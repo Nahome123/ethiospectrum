@@ -168,7 +168,11 @@ export async function reconcileBillingHouseholdAction(
     });
     revalidateBilling(locale);
     return { status: "success", message: t("admin.reconciled") };
-  } catch {
+  } catch (error) {
+    // The message only (no customer data), so failures can be traced in the logs.
+    console.error("billing reconciliation failed", {
+      message: error instanceof Error ? error.message : "unknown",
+    });
     return { status: "error", message: t("errors.reconciliation") };
   }
 }

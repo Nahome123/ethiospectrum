@@ -64,21 +64,26 @@ export async function syncStripeInvoice({
   stripe,
   invoiceId,
   providerUpdatedAt,
+  syncSubscription = true,
 }: {
   admin: BillingAdminClient;
   stripe: Stripe;
   invoiceId: string;
   providerUpdatedAt: string;
+  /** Reconciliation syncs the current subscription itself and skips this. */
+  syncSubscription?: boolean;
 }): Promise<string> {
   const invoice = await stripe.invoices.retrieve(invoiceId);
   const mapped = mapStripeInvoice(invoice);
   const householdId = await findHouseholdId(admin, mapped.customerId);
-  await syncStripeSubscription({
-    admin,
-    stripe,
-    subscriptionId: mapped.subscriptionId,
-    providerUpdatedAt,
-  });
+  if (syncSubscription) {
+    await syncStripeSubscription({
+      admin,
+      stripe,
+      subscriptionId: mapped.subscriptionId,
+      providerUpdatedAt,
+    });
+  }
   const { error } = await admin.rpc("sync_billing_invoice", {
     target_household_id: householdId,
     input_stripe_invoice_id: mapped.invoiceId,
@@ -142,11 +147,14 @@ export async function reconcileBillingHousehold({
   });
   for (const invoice of invoices.data) {
     if (!invoice.parent?.subscription_details?.subscription) continue;
+    // Invoices of an earlier, ended subscription must not replace the
+    // current subscription, which was synchronized above.
     await syncStripeInvoice({
       admin,
       stripe,
       invoiceId: invoice.id,
       providerUpdatedAt: new Date().toISOString(),
+      syncSubscription: false,
     });
   }
   const { error } = await admin.rpc("record_billing_reconciliation", {
