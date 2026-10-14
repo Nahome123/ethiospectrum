@@ -1,5 +1,6 @@
 import { BookOpen, Check, Languages, MessagesSquare } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
 import { Link } from "@/i18n/navigation";
 
 const services = [
@@ -9,11 +10,13 @@ const services = [
 ] as const;
 
 /**
- * Public service and price summary (PRD section 33). Static copy keeps the
- * marketing site credential-free; launch prices are fixed by the PRD.
+ * Public service and price summary (PRD section 33). Consultation and IEP
+ * prices are fixed by the PRD; the RBT Boot Camp amount comes from the
+ * configured Stripe Price.
  */
 export async function ServicesOverview({ showPolicy = false }: { showPolicy?: boolean }) {
   const t = await getTranslations("publicServices");
+  const rbtPrice = await getRbtMonthlyPriceLabel(await getLocale(), t);
   return (
     <div className="space-y-6">
       <ul className="grid gap-5 lg:grid-cols-3">
@@ -21,7 +24,7 @@ export async function ServicesOverview({ showPolicy = false }: { showPolicy?: bo
           <li className="flex flex-col rounded-2xl border border-border bg-white p-6 shadow-sm" key={key}>
             <Icon aria-hidden="true" className="size-9 text-link" />
             <h3 className="mt-4 text-xl font-bold">{t(`${key}.name`)}</h3>
-            <p className="mt-2 text-2xl font-bold">{t(`${key}.price`)}</p>
+            <p className="mt-2 text-2xl font-bold">{key === "rbt" ? rbtPrice : t(`${key}.price`)}</p>
             <p className="text-sm font-semibold text-muted-foreground">{t(`${key}.billing`)}</p>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">{t(`${key}.description`)}</p>
             <ul className="mt-4 space-y-2 text-sm">

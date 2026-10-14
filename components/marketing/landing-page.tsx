@@ -1,5 +1,6 @@
 import { BookOpenCheck, ShieldCheck, Sparkles } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
 import { Link } from "@/i18n/navigation";
 import { FeatureCard } from "./feature-card";
 import { ServicesOverview } from "./services-overview";
@@ -9,6 +10,7 @@ import { SectionHeading } from "./section-heading";
 
 export async function LandingPage() {
   const t = await getTranslations();
+  const rbtPrice = await getRbtMonthlyPriceLabel(await getLocale(), await getTranslations("publicServices"));
   return (
     <>
       <section className="border-b border-border bg-[radial-gradient(circle_at_top_right,_var(--secondary),_var(--background)_55%)]">
@@ -48,7 +50,9 @@ export async function LandingPage() {
                   key={key}
                 >
                   <span className="font-semibold">{t(`publicServices.${key}.name`)}</span>
-                  <span className="text-sm font-bold text-link">{t(`publicServices.${key}.price`)}</span>
+                  <span className="text-sm font-bold text-link">
+                    {key === "rbt" ? rbtPrice : t(`publicServices.${key}.price`)}
+                  </span>
                 </li>
               ))}
             </ul>
