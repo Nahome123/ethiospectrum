@@ -2,10 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import type { AppLocale } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
+import { ConfirmPicker } from "@/components/ui/confirm-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -103,6 +104,36 @@ export function DependentForm({
       {textFields.map(({ key, label, type }) => {
         const error = form.formState.errors[key];
         const errorId = `${key}-error`;
+
+        if (key === "birthYear") {
+          return (
+            <div className="space-y-1.5" key={key}>
+              <Label htmlFor={key}>{t(label)}</Label>
+              <Controller
+                control={form.control}
+                name="birthYear"
+                render={({ field }) => (
+                  <ConfirmPicker
+                    describedBy={error ? errorId : undefined}
+                    id={key}
+                    invalid={Boolean(error)}
+                    max={String(new Date().getFullYear())}
+                    min="1900"
+                    mode="year"
+                    onChange={(year) => field.onChange(year)}
+                    placeholder={t("chooseBirthYear")}
+                    value={field.value ?? ""}
+                  />
+                )}
+              />
+              {error?.message ? (
+                <p className="text-sm text-destructive" id={errorId} role="alert">
+                  {error.message}
+                </p>
+              ) : null}
+            </div>
+          );
+        }
 
         return (
           <div className="space-y-1.5" key={key}>

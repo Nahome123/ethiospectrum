@@ -166,7 +166,14 @@
     "openMenu": "Open navigation menu",
     "language": "Language",
     "selectLanguage": "Select language",
-    "status": "Status"
+    "status": "Status",
+    "picker": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "earlierYears": "Earlier years",
+      "laterYears": "Later years"
+    }
   },
   "hero": {
     "eyebrow": "A calmer way forward",
@@ -781,7 +788,8 @@
       "en": "English",
       "am": "Amharic",
       "es": "Spanish"
-    }
+    },
+    "chooseBirthYear": "Select a year"
   },
   "reminders": {
     "title": "Reminders",
@@ -1131,7 +1139,8 @@
     "partialDocument": "Partial document",
     "onlyProcessedContent": "Only processed content is represented.",
     "readOnlyEvidence": "Read-only evidence",
-    "backToAnswer": "Back to answer"
+    "backToAnswer": "Back to answer",
+    "chooseDate": "Choose a date"
   },
   "chat": {
     "availableAfterProcessing": "Chat with this document will be available when processing is complete.",
@@ -1909,7 +1918,8 @@
       "schedulingDirect": "Schedule directly (pick a specific time)",
       "schedulingPropose": "Propose appointment times (suggest options)",
       "schedulingDirectHelp": "Choose the time you want. Your specialist confirms it, or suggests another time if it is unavailable.",
-      "schedulingProposeHelp": "Suggest two or three times that work for you. Your specialist picks one, and you are notified."
+      "schedulingProposeHelp": "Suggest two or three times that work for you. Your specialist picks one, and you are notified.",
+      "chooseDate": "Choose a date"
     },
     "requests": {
       "title": "Service requests",
@@ -2068,7 +2078,8 @@
       "meetingUrl": "Online meeting link",
       "meetingUrlHelp": "HTTPS only. Shared with the household once the appointment is confirmed.",
       "instructions": "Appointment-specific instructions",
-      "instructionsPlaceholder": "For example: Please check in at the school's main office upon arrival."
+      "instructionsPlaceholder": "For example: Please check in at the school's main office upon arrival.",
+      "chooseDateTime": "Choose a date and time"
     },
     "documents": {
       "title": "Document title",

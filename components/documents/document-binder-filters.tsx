@@ -3,6 +3,7 @@
 import { SlidersHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { ConfirmPicker } from "@/components/ui/confirm-picker";
 import {
   Sheet,
   SheetClose,
@@ -145,24 +146,24 @@ function BinderFilterFields({
         <label className="font-semibold" htmlFor={`${idPrefix}-from`}>
           {t("dateFrom")}
         </label>
-        <input
-          className="flex h-10 w-full rounded-3xl border border-transparent bg-input/50 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30"
+        <ConfirmPicker
           defaultValue={filters.from ?? ""}
           id={`${idPrefix}-from`}
+          mode="date"
           name="from"
-          type="date"
+          placeholder={t("chooseDate")}
         />
       </div>
       <div className="space-y-1.5">
         <label className="font-semibold" htmlFor={`${idPrefix}-to`}>
           {t("dateTo")}
         </label>
-        <input
-          className="flex h-10 w-full rounded-3xl border border-transparent bg-input/50 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30"
+        <ConfirmPicker
           defaultValue={filters.to ?? ""}
           id={`${idPrefix}-to`}
+          mode="date"
           name="to"
-          type="date"
+          placeholder={t("chooseDate")}
         />
       </div>
       <div className="space-y-1.5 sm:col-span-2">

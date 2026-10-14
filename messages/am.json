@@ -166,7 +166,14 @@
     "openMenu": "የአሰሳ ምናሌ ክፈት",
     "language": "ቋንቋ",
     "selectLanguage": "ቋንቋ ይምረጡ",
-    "status": "ሁኔታ"
+    "status": "ሁኔታ",
+    "picker": {
+      "confirm": "አረጋግጥ",
+      "cancel": "ሰርዝ",
+      "clear": "አጽዳ",
+      "earlierYears": "ቀደምት ዓመታት",
+      "laterYears": "ቀጣይ ዓመታት"
+    }
   },
   "hero": {
     "eyebrow": "የተረጋጋ የወደፊት መንገድ",
@@ -781,7 +788,8 @@
       "en": "እንግሊዝኛ",
       "am": "አማርኛ",
       "es": "ስፓኒሽ"
-    }
+    },
+    "chooseBirthYear": "ዓመት ይምረጡ"
   },
   "reminders": {
     "title": "አስታዋሾች",
@@ -1131,7 +1139,8 @@
     "partialDocument": "ከፊል ሰነድ",
     "onlyProcessedContent": "የተሰራው ይዘት ብቻ ተወክሏል።",
     "readOnlyEvidence": "ለማንበብ ብቻ የሚሆን ማስረጃ",
-    "backToAnswer": "ወደ መልስ ተመለስ"
+    "backToAnswer": "ወደ መልስ ተመለስ",
+    "chooseDate": "ቀን ይምረጡ"
   },
   "chat": {
     "availableAfterProcessing": "የሰነዱ ማስኬድ ሲጠናቀቅ በዚህ ሰነድ ዙሪያ መወያየት ይቻላል።",
@@ -1909,7 +1918,8 @@
       "schedulingDirect": "በቀጥታ ይያዙ (አንድ ሰዓት ይምረጡ)",
       "schedulingPropose": "የቀጠሮ ሰዓቶችን ያቅርቡ (አማራጮችን ይጠቁሙ)",
       "schedulingDirectHelp": "የሚፈልጉትን ሰዓት ይምረጡ። ባለሙያዎ ያረጋግጣል፣ ካልተመቸ ሌላ ሰዓት ይጠቁማል።",
-      "schedulingProposeHelp": "የሚመቹዎትን ሁለት ወይም ሶስት ሰዓቶች ይጠቁሙ። ባለሙያዎ አንዱን ይመርጣል፣ እርስዎም ይነገርዎታል።"
+      "schedulingProposeHelp": "የሚመቹዎትን ሁለት ወይም ሶስት ሰዓቶች ይጠቁሙ። ባለሙያዎ አንዱን ይመርጣል፣ እርስዎም ይነገርዎታል።",
+      "chooseDate": "ቀን ይምረጡ"
     },
     "requests": {
       "title": "የአገልግሎት ጥያቄዎች",
@@ -2068,7 +2078,8 @@
       "meetingUrl": "የኦንላይን ስብሰባ ሊንክ",
       "meetingUrlHelp": "HTTPS ብቻ። ቀጠሮው ሲረጋገጥ ለቤተሰቡ ይጋራል።",
       "instructions": "የቀጠሮው ልዩ መመሪያዎች",
-      "instructionsPlaceholder": "ለምሳሌ፦ ሲደርሱ እባክዎ በትምህርት ቤቱ ዋና ቢሮ ይመዝገቡ።"
+      "instructionsPlaceholder": "ለምሳሌ፦ ሲደርሱ እባክዎ በትምህርት ቤቱ ዋና ቢሮ ይመዝገቡ።",
+      "chooseDateTime": "ቀን እና ሰዓት ይምረጡ"
     },
     "documents": {
       "title": "የሰነድ ርዕስ",

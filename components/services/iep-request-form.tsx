@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { ConfirmPicker } from "@/components/ui/confirm-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -143,7 +144,13 @@ export function IepRequestForm({ dependents, locale }: { dependents: Option[]; l
       )}
       <div className="space-y-1.5 sm:max-w-xs">
         <Label htmlFor="iep-meeting-date">{t("meetingDate")}</Label>
-        <Input id="iep-meeting-date" min={today} name="meetingDate" type="date" />
+        <ConfirmPicker
+          id="iep-meeting-date"
+          min={today}
+          mode="date"
+          name="meetingDate"
+          placeholder={t("chooseDate")}
+        />
         <p className="text-sm text-muted-foreground">{t("meetingDateHelp")}</p>
       </div>
       <div className="space-y-1.5">

@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { ConfirmPicker } from "@/components/ui/confirm-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -115,13 +116,14 @@ export function SlotFields({
             <Label htmlFor={`${idPrefix}-slot-${index}`}>
               {maxSlots > 1 ? t("option", { number: index + 1 }) : t("dateTime")} *
             </Label>
-            <Input
-              defaultValue={index === 0 ? defaults?.localStart : undefined}
+            <ConfirmPicker
+              defaultValue={index === 0 ? (defaults?.localStart ?? "") : ""}
               id={`${idPrefix}-slot-${index}`}
               min={minimum}
+              mode="datetime"
               name={`slot.${index}.localStart`}
+              placeholder={t("chooseDateTime")}
               required
-              type="datetime-local"
             />
           </div>
         ))}

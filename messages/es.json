@@ -166,7 +166,14 @@
     "openMenu": "Abrir menú de navegación",
     "language": "Idioma",
     "selectLanguage": "Seleccionar idioma",
-    "status": "Estado"
+    "status": "Estado",
+    "picker": {
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "clear": "Borrar",
+      "earlierYears": "Años anteriores",
+      "laterYears": "Años posteriores"
+    }
   },
   "hero": {
     "eyebrow": "Un camino más tranquilo",
@@ -781,7 +788,8 @@
       "en": "Inglés",
       "am": "Amárico",
       "es": "Español"
-    }
+    },
+    "chooseBirthYear": "Seleccione un año"
   },
   "reminders": {
     "title": "Recordatorios",
@@ -1131,7 +1139,8 @@
     "partialDocument": "Documento parcial",
     "onlyProcessedContent": "Solo se representa el contenido procesado.",
     "readOnlyEvidence": "Evidencia de solo lectura",
-    "backToAnswer": "Volver a la respuesta"
+    "backToAnswer": "Volver a la respuesta",
+    "chooseDate": "Elija una fecha"
   },
   "chat": {
     "availableAfterProcessing": "Podrás conversar sobre este documento cuando termine el procesamiento.",
@@ -1909,7 +1918,8 @@
       "schedulingDirect": "Programar directamente (elegir una hora)",
       "schedulingPropose": "Proponer horarios (sugerir opciones)",
       "schedulingDirectHelp": "Elija la hora que desea. Su especialista la confirma o sugiere otra si no está disponible.",
-      "schedulingProposeHelp": "Sugiera dos o tres horas que le convengan. Su especialista elige una y se le notificará."
+      "schedulingProposeHelp": "Sugiera dos o tres horas que le convengan. Su especialista elige una y se le notificará.",
+      "chooseDate": "Elija una fecha"
     },
     "requests": {
       "title": "Solicitudes de servicio",
@@ -2068,7 +2078,8 @@
       "meetingUrl": "Enlace de la reunión en línea",
       "meetingUrlHelp": "Solo HTTPS. Se comparte con el hogar cuando se confirma la cita.",
       "instructions": "Instrucciones específicas de la cita",
-      "instructionsPlaceholder": "Por ejemplo: Preséntese en la oficina principal de la escuela al llegar."
+      "instructionsPlaceholder": "Por ejemplo: Preséntese en la oficina principal de la escuela al llegar.",
+      "chooseDateTime": "Elija fecha y hora"
     },
     "documents": {
       "title": "Título del documento",
