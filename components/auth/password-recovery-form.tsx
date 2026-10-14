@@ -15,6 +15,7 @@ import {
 import type { AppLocale } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { Link } from "@/i18n/navigation";
 
@@ -66,12 +67,11 @@ export function PasswordRecoveryForm({
       {reset && (
         <>
           <Field label={t("newPassword")} error={errors.password?.message}>
-            <Input id="password" type="password" autoComplete="new-password" {...form.register("password")} />
+            <PasswordInput id="password" autoComplete="new-password" {...form.register("password")} />
           </Field>
           <Field label={t("confirmPassword")} error={errors.confirmPassword?.message}>
-            <Input
+            <PasswordInput
               id="confirmPassword"
-              type="password"
               autoComplete="new-password"
               {...form.register("confirmPassword")}
             />

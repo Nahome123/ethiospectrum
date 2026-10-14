@@ -16,6 +16,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 
 export function AuthForm({
@@ -89,9 +90,8 @@ export function AuthForm({
         <Input id="email" type="email" autoComplete="email" {...form.register("email")} />
       </Field>
       <Field label={t("password")} error={errors.password?.message}>
-        <Input
+        <PasswordInput
           id="password"
-          type="password"
           autoComplete={signup ? "new-password" : "current-password"}
           {...form.register("password")}
         />
@@ -99,9 +99,8 @@ export function AuthForm({
       {signup && (
         <>
           <Field label={t("confirmPassword")} error={signupErrors.confirmPassword?.message}>
-            <Input
+            <PasswordInput
               id="confirmPassword"
-              type="password"
               autoComplete="new-password"
               {...form.register("confirmPassword")}
             />

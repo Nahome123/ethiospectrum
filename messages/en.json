@@ -630,7 +630,9 @@
     "signupCaregiverDescription": "Create your caregiver account with the email address the household owner invited. After confirming your email you'll join their household.",
     "roleChangedNotice": "Your role was changed. Please sign in again to continue with your new access.",
     "accountExists": "An account with this email already exists. Log in instead, or reset your password.",
-    "weakPassword": "That password is too weak or too common. Choose a longer password that is harder to guess."
+    "weakPassword": "That password is too weak or too common. Choose a longer password that is harder to guess.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "dashboard": {
     "welcome": "Welcome to your family workspace",
