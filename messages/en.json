@@ -2954,7 +2954,11 @@
       "price": "$9.99",
       "billing": "One-time payment · 60 minutes",
       "description": "General household and service guidance, or specific behavioral and educational guidance, with a matched specialist.",
-      "features": ["60-minute session", "One follow-up included", "English, Amharic, or Spanish"],
+      "features": [
+        "60-minute session",
+        "One follow-up included",
+        "English, Amharic, or Spanish"
+      ],
       "action": "Request a consultation"
     },
     "iep": {
@@ -3016,6 +3020,22 @@
     "founderTitle": "",
     "founderBio": "",
     "bioPlaceholder": "Bio coming soon.",
-    "photoAlt": "Portrait of Yamrot, founder of Ethiospectrum"
+    "photoAlt": "Portrait of Yamrot, founder of Ethiospectrum",
+    "teamHeading": "Our team",
+    "namePlaceholder": "Name coming soon",
+    "memberPhotoAlt": "Portrait of {name}, Ethiospectrum team member",
+    "memberPhotoAltUnnamed": "Portrait of an Ethiospectrum team member",
+    "team": {
+      "second": {
+        "name": "",
+        "title": "",
+        "bio": ""
+      },
+      "third": {
+        "name": "",
+        "title": "",
+        "bio": ""
+      }
+    }
   }
 }

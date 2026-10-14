@@ -2954,7 +2954,11 @@
       "price": "$9.99",
       "billing": "Pago único · 60 minutos",
       "description": "Orientación general sobre el hogar y los servicios, u orientación conductual y educativa específica, con un especialista asignado.",
-      "features": ["Sesión de 60 minutos", "Un seguimiento incluido", "Inglés, amárico o español"],
+      "features": [
+        "Sesión de 60 minutos",
+        "Un seguimiento incluido",
+        "Inglés, amárico o español"
+      ],
       "action": "Solicitar una consulta"
     },
     "iep": {
@@ -3016,6 +3020,22 @@
     "founderTitle": "",
     "founderBio": "",
     "bioPlaceholder": "Biografía próximamente.",
-    "photoAlt": "Retrato de Yamrot, fundadora de Ethiospectrum"
+    "photoAlt": "Retrato de Yamrot, fundadora de Ethiospectrum",
+    "teamHeading": "Nuestro equipo",
+    "namePlaceholder": "Nombre próximamente",
+    "memberPhotoAlt": "Retrato de {name}, miembro del equipo de Ethiospectrum",
+    "memberPhotoAltUnnamed": "Retrato de un miembro del equipo de Ethiospectrum",
+    "team": {
+      "second": {
+        "name": "",
+        "title": "",
+        "bio": ""
+      },
+      "third": {
+        "name": "",
+        "title": "",
+        "bio": ""
+      }
+    }
   }
 }
