@@ -701,9 +701,12 @@
     "termsTitle": "Draft terms and product boundaries"
   },
   "legal": {
-    "draftNotice": "Draft content for professional review — it does not state legal compliance.",
-    "privacyBody": "Ethiospectrum is intended to collect only what is needed for its services, protect private family information, and provide meaningful controls. Final policies, retention periods, and legal obligations will be reviewed before launch.",
-    "termsBody": "Ethiospectrum provides educational, informational, and organizational support. It does not provide legal, medical, immigration, or professional advice, representation, eligibility decisions, or guaranteed outcomes."
+    "draftNotice": "Draft for legal review. Bracketed items, such as the company name and contact details, are placeholders that must be completed before launch.",
+    "contents": "On this page",
+    "lastUpdated": "Last updated {date}",
+    "termsTitle": "Terms of Use",
+    "privacyTitle": "Privacy Policy",
+    "englishOnly": ""
   },
   "member": {
     "workspace": "Family workspace",

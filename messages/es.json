@@ -701,9 +701,12 @@
     "termsTitle": "Términos preliminares y límites del producto"
   },
   "legal": {
-    "draftNotice": "Contenido preliminar para revisión profesional; no declara cumplimiento legal.",
-    "privacyBody": "Ethiospectrum busca recopilar solo lo necesario para sus servicios, proteger la información familiar privada y brindar controles significativos. Las políticas finales, periodos de retención y obligaciones legales se revisarán antes del lanzamiento.",
-    "termsBody": "Ethiospectrum brinda apoyo educativo, informativo y organizativo. No brinda asesoramiento legal, médico, migratorio o profesional, representación, decisiones de elegibilidad ni resultados garantizados."
+    "draftNotice": "Borrador para revisión legal. Los elementos entre corchetes, como el nombre de la empresa y los datos de contacto, deben completarse antes del lanzamiento.",
+    "contents": "En esta página",
+    "lastUpdated": "Última actualización: {date}",
+    "termsTitle": "Términos de uso",
+    "privacyTitle": "Política de privacidad",
+    "englishOnly": "Por ahora este documento solo está disponible en inglés, y el texto en inglés es el que rige. Estamos preparando la traducción al español. Si tiene preguntas, contáctenos."
   },
   "member": {
     "workspace": "Espacio familiar",

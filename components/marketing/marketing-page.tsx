@@ -1,5 +1,6 @@
-import { getTranslations } from "next-intl/server";
-import { ShieldCheck } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
+import { privacyPolicy, termsOfUse } from "@/lib/legal/documents";
+import { LegalDocumentView } from "./legal-document";
 import { SectionHeading } from "./section-heading";
 import { ServicesOverview } from "./services-overview";
 
@@ -73,22 +74,16 @@ export async function MarketingPage({
       </div>
     );
   const privacy = type === "privacy";
+  const document = privacy ? privacyPolicy : termsOfUse;
+  const locale = await getLocale();
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <SectionHeading
-        eyebrow={privacy ? t("privacy.eyebrow") : t("marketingPages.termsTitle")}
-        title={privacy ? t("privacy.title") : t("marketingPages.termsTitle")}
-        description={privacy ? t("privacy.pageIntro") : t("marketingPages.termsIntro")}
-      />
-      <div className="mt-10 rounded-xl border border-border bg-secondary p-5 text-sm font-medium text-slate-700">
-        {t("legal.draftNotice")}
-      </div>
-      <article className="mt-5 rounded-xl border border-border bg-white p-7">
-        <ShieldCheck aria-hidden="true" className="size-7 text-link" />
-        <p className="mt-5 leading-8 text-muted-foreground">
-          {t(privacy ? "legal.privacyBody" : "legal.termsBody")}
-        </p>
-      </article>
-    </div>
+    <LegalDocumentView
+      contentsLabel={t("legal.contents")}
+      document={document}
+      draftNotice={t("legal.draftNotice")}
+      englishOnlyNotice={locale === "en" ? undefined : t("legal.englishOnly")}
+      lastUpdatedLabel={t("legal.lastUpdated", { date: document.lastUpdated })}
+      title={privacy ? t("legal.privacyTitle") : t("legal.termsTitle")}
+    />
   );
 }
