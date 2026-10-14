@@ -1869,7 +1869,7 @@
       "descriptionError": "Please describe your need in 10 to 3,000 characters.",
       "relevantInformation": "Relevant service information",
       "relevantInformationHelp": "Optional: diagnoses, current services, or anything the specialist should know. Share only what is needed.",
-      "nextStepsConsultation": "What happens next: an administrator reviews your request and assigns a specialist. You'll receive proposed times, pay $9.99 securely, and then confirm the time that works for you.",
+      "nextStepsConsultation": "What happens next: an administrator reviews your request and assigns a specialist, who confirms the time you picked. You then pay $9.99 securely before the session.",
       "submitConsultation": "Submit consultation request",
       "submitting": "Submitting…",
       "language": "Language",
@@ -1895,7 +1895,7 @@
       "requestedServiceHelp": "Tell us what you need, for example which parts of the IEP to explain or the meeting details.",
       "relevantIepInformation": "Relevant IEP information",
       "relevantIepInformationHelp": "Optional: school, grade, goals, accommodations, or deadlines. You can upload the IEP document after submitting.",
-      "nextStepsIep": "What happens next: an administrator reviews your request and assigns a specialist who speaks your language. You can upload IEP documents on the request page. You'll receive proposed times, pay $19.99 securely, and then confirm.",
+      "nextStepsIep": "What happens next: an administrator reviews your request and assigns a specialist who speaks your language and confirms the time you picked. You can upload IEP documents on the request page and pay $19.99 securely before the session.",
       "submitIep": "Submit IEP assistance request",
       "guard": {
         "household": {
@@ -1914,12 +1914,9 @@
         }
       },
       "schedulingTitle": "Scheduling",
-      "schedulingMode": "How would you like to schedule?",
-      "schedulingDirect": "Schedule directly (pick a specific time)",
-      "schedulingPropose": "Propose appointment times (suggest options)",
-      "schedulingDirectHelp": "Choose the time you want. Your specialist confirms it, or suggests another time if it is unavailable.",
-      "schedulingProposeHelp": "Suggest two or three times that work for you. Your specialist picks one, and you are notified.",
-      "chooseDate": "Choose a date"
+      "schedulingDirectHelp": "Pick a date and time that works for you. Your specialist will confirm it, or suggest another time if it is unavailable.",
+      "chooseDate": "Choose a date",
+      "schedulingIepHelp": "Pick a date and time that works for you for the session with your specialist. They will confirm it, or suggest another time if it is unavailable."
     },
     "requests": {
       "title": "Service requests",
@@ -2030,8 +2027,8 @@
         "administrator": "Ethiospectrum",
         "system": "Ethiospectrum"
       },
-      "requestedTimes": "Requested times",
-      "requestedDirect": "The family asked for this specific time.",
+      "requestedTimes": "Your requested time",
+      "requestedDirect": "We'll confirm this time, or suggest another if it is unavailable.",
       "requestedPropose": "The family proposed these options; one will be chosen."
     },
     "household": {
@@ -2208,10 +2205,13 @@
       "refundPercentSummary": "Refund {amount} ({percent}% of {original})",
       "refundPercentFallback": "Refund {amount}, the most that can be refunded for this payment",
       "refundPercentLimit": "Maximum refundable: {max}",
-      "familyTimes": "Family's requested times",
-      "familyTimesHelp": "Schedule one of the times the family asked for. Use the form below for a different time.",
-      "scheduleThisTime": "Schedule this time",
-      "scheduleThisTimeConfirm": "Schedule the appointment at this time?"
+      "requestedTime": "Requested time",
+      "requestedTimeHelp": "The family picked this time. Confirm it to schedule the session.",
+      "requestedTimeAssignFirst": "The family picked this time. Assign a specialist, then confirm it here.",
+      "confirmThisTime": "Confirm this time",
+      "meetingLinkOptional": "Meeting link (optional)",
+      "needDifferentTime": "Need a different time?",
+      "needDifferentTimeHelp": "Propose other times for the family to choose from, or schedule a different time directly."
     }
   },
   "adminConsole": {
@@ -2954,11 +2954,7 @@
       "price": "$9.99",
       "billing": "One-time payment · 60 minutes",
       "description": "General household and service guidance, or specific behavioral and educational guidance, with a matched specialist.",
-      "features": [
-        "60-minute session",
-        "One follow-up included",
-        "English, Amharic, or Spanish"
-      ],
+      "features": ["60-minute session", "One follow-up included", "English, Amharic, or Spanish"],
       "action": "Request a consultation"
     },
     "iep": {

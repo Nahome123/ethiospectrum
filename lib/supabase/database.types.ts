@@ -432,13 +432,6 @@ export type Database = {
             referencedRelation: "households";
             referencedColumns: ["id"];
           },
-          {
-            foreignKeyName: "billing_invoices_stripe_subscription_id_fkey";
-            columns: ["stripe_subscription_id"];
-            isOneToOne: false;
-            referencedRelation: "billing_subscriptions";
-            referencedColumns: ["stripe_subscription_id"];
-          },
         ];
       };
       billing_subscriptions: {
@@ -4649,6 +4642,15 @@ export type Database = {
           id: string;
           version: number;
         }[];
+      };
+      confirm_requested_time: {
+        Args: {
+          expected_version: number;
+          input_meeting_url: string;
+          input_slot_index: number;
+          target_request_id: string;
+        };
+        Returns: string;
       };
       confirm_service_appointment: { Args: { target_appointment_id: string }; Returns: undefined };
       create_caregiver_invitation: {

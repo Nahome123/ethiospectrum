@@ -117,7 +117,11 @@ export async function createIepRequestAction(
     meetingDate: field(formData, "meetingDate"),
   });
   const idempotencyKey = uuidSchema.safeParse(field(formData, "idempotencyKey"));
-  if (!parsed.success || !idempotencyKey.success) return failure(locale, "22023");
+  const schedule = requestedScheduleSchema.safeParse({
+    mode: field(formData, "schedulingMode"),
+    slots: readRequestedSlots(formData),
+  });
+  if (!parsed.success || !idempotencyKey.success || !schedule.success) return failure(locale, "22023");
 
   const supabase = await createServerActionSupabaseClient();
   const { data, error } = await supabase.rpc("create_service_request", {
@@ -138,8 +142,16 @@ export async function createIepRequestAction(
     input_idempotency_key: idempotencyKey.data,
   });
   if (error || !data) return failure(locale, error?.code);
+  const scheduled = await supabase.rpc("set_requested_schedule", {
+    target_request_id: data,
+    input_mode: schedule.data.mode,
+    input_slots: schedule.data.slots.map((slot) => ({
+      local_start: slot.localStart,
+      timezone: slot.timezone,
+    })),
+  });
   revalidateServiceRequest(locale, data);
-  redirect(`/${locale}/requests/${data}?created=1`);
+  redirect(`/${locale}/requests/${data}?created=1${scheduled.error ? "&scheduleError=1" : ""}`);
 }
 
 async function runHouseholdRpc(

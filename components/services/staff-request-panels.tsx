@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { ActionForm } from "@/components/services/action-form";
 import { RefundPercentPicker } from "@/components/services/refund-percent-picker";
 import { SlotFields } from "@/components/services/slot-fields";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { AppLocale } from "@/i18n/routing";
@@ -17,6 +18,7 @@ import {
   adminCancelRequestAction,
   assignSpecialistAction,
   completeServiceAction,
+  confirmRequestedTimeAction,
   declineRequestAction,
   overrideStatusAction,
   proposeAppointmentsAction,
@@ -67,6 +69,95 @@ function schedulingKinds(bundle: ServiceRequestBundle): ("primary" | "follow_up"
     kinds.push("follow_up");
   }
   return kinds;
+}
+
+/**
+ * The time the family picked when booking. Staff only confirm it; the forms
+ * for a different time sit behind "Need a different time?". Shown read-only
+ * until a specialist is assigned.
+ */
+async function RequestedTimeCard({ bundle, locale }: { bundle: ServiceRequestBundle; locale: AppLocale }) {
+  const t = await getTranslations({ locale, namespace: "services.staff" });
+  const locations = await getTranslations({ locale, namespace: "services.locations" });
+  const { request, requestedTimes } = bundle;
+  if (!requestedTimes) return null;
+  const remote = request.delivery_method === "remote";
+  return (
+    <Card
+      description={request.specialist_id ? t("requestedTimeHelp") : t("requestedTimeAssignFirst")}
+      title={t("requestedTime")}
+    >
+      <ul className="space-y-3">
+        {requestedTimes.slots.map((slot, index) => (
+          <li className="rounded-xl border bg-tint/40 p-4" key={slot.start_at}>
+            <p className="text-lg font-bold">{formatDateTime(slot.start_at, locale, slot.timezone)}</p>
+            {!remote && request.preferred_location_type ? (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {locations(request.preferred_location_type)}
+                {request.preferred_location_details ? ` — ${request.preferred_location_details}` : ""}
+              </p>
+            ) : null}
+            {request.specialist_id ? (
+              <ActionForm
+                action={confirmRequestedTimeAction.bind(null, locale, request.id)}
+                className="mt-3"
+                pendingLabel={t("saving")}
+                submitLabel={t("confirmThisTime")}
+              >
+                <input name="expectedVersion" type="hidden" value={request.version} />
+                <input name="slotIndex" type="hidden" value={index} />
+                {remote ? (
+                  <div className="space-y-1.5">
+                    <Label htmlFor={`requested-url-${index}`}>{t("meetingLinkOptional")}</Label>
+                    <Input
+                      id={`requested-url-${index}`}
+                      name="meetingUrl"
+                      pattern="https://.*"
+                      placeholder="https://"
+                      type="url"
+                    />
+                  </div>
+                ) : (
+                  <input name="meetingUrl" type="hidden" value="" />
+                )}
+              </ActionForm>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
+}
+
+/** Whether the family's requested time is still waiting for staff to confirm it. */
+function awaitingRequestedTime(bundle: ServiceRequestBundle): boolean {
+  const { request, appointments, requestedTimes } = bundle;
+  return (
+    Boolean(requestedTimes?.slots.length) &&
+    ["pending_review", ...primaryProposalStatuses].includes(request.status) &&
+    !appointments.some((item) => item.kind === "primary" && item.status === "confirmed")
+  );
+}
+
+/** Wraps the propose / schedule-directly forms when a requested time is the main path. */
+async function DifferentTime({
+  children,
+  collapsed,
+  locale,
+}: {
+  children: React.ReactNode;
+  collapsed: boolean;
+  locale: AppLocale;
+}) {
+  if (!collapsed) return <>{children}</>;
+  const t = await getTranslations({ locale, namespace: "services.staff" });
+  return (
+    <details className="rounded-2xl border bg-white p-5 lg:col-span-2">
+      <summary className="cursor-pointer font-bold">{t("needDifferentTime")}</summary>
+      <p className="mt-1 text-sm text-muted-foreground">{t("needDifferentTimeHelp")}</p>
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">{children}</div>
+    </details>
+  );
 }
 
 async function ProposeCard({
@@ -180,6 +271,7 @@ export async function AdminRequestPanel({
     "reschedule_requested",
   ].includes(request.status);
   const kinds = schedulingKinds(bundle);
+  const requestedPending = awaitingRequestedTime(bundle);
   const openRefunds = refunds.filter((refund) => refund.status === "requested" || refund.status === "failed");
   const refundablePayment = payments.find(
     (payment) => payment.status === "paid" || payment.status === "partially_refunded",
@@ -288,62 +380,32 @@ export async function AdminRequestPanel({
         </Card>
       ) : null}
 
-      {kinds.length > 0 ? (
-        <ProposeCard audience="administrator" bundle={bundle} kinds={kinds} locale={locale} />
-      ) : null}
+      {requestedPending ? <RequestedTimeCard bundle={bundle} locale={locale} /> : null}
 
-      {bundle.requestedTimes && kinds.includes("primary") ? (
-        <Card description={t("familyTimesHelp")} title={t("familyTimes")}>
-          <ul className="space-y-3">
-            {bundle.requestedTimes.slots.map((slot) => (
-              <li className="rounded-lg border p-3" key={slot.start_at}>
-                <p className="text-sm font-semibold">
-                  {formatDateTime(slot.start_at, locale, slot.timezone)}
-                </p>
-                <ActionForm
-                  action={scheduleAppointmentAction.bind(null, locale, request.id)}
-                  className="mt-2"
-                  confirmMessage={t("scheduleThisTimeConfirm")}
-                  inline
-                  pendingLabel={t("saving")}
-                  size="sm"
-                  submitLabel={t("scheduleThisTime")}
-                  variant="outline"
-                >
-                  <input name="expectedVersion" type="hidden" value={request.version} />
-                  <input name="kind" type="hidden" value="primary" />
-                  <input name="slotCount" type="hidden" value="1" />
-                  <input name="slot.0.localStart" type="hidden" value={slot.local_start} />
-                  <input name="timezone" type="hidden" value={slot.timezone} />
-                  <input name="locationType" type="hidden" value="remote" />
-                  <input name="locationDetails" type="hidden" value="" />
-                  <input name="meetingUrl" type="hidden" value="" />
-                  <input name="instructions" type="hidden" value="" />
-                </ActionForm>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      ) : null}
+      <DifferentTime collapsed={requestedPending} locale={locale}>
+        {kinds.length > 0 ? (
+          <ProposeCard audience="administrator" bundle={bundle} kinds={kinds} locale={locale} />
+        ) : null}
 
-      {kinds.length > 0 || (request.status === "no_show" && request.specialist_id) ? (
-        <Card description={t("scheduleHelp")} title={t("scheduleDirectly")}>
-          <ActionForm
-            action={scheduleAppointmentAction.bind(null, locale, request.id)}
-            pendingLabel={t("saving")}
-            submitLabel={t("schedule")}
-            variant="outline"
-          >
-            <input name="expectedVersion" type="hidden" value={request.version} />
-            <KindPicker kinds={kinds.length ? kinds : ["primary"]} name="schedule" t={t} />
-            <SlotFields
-              deliveryMethod={request.delivery_method as "remote" | "in_person"}
-              idPrefix="admin-schedule"
-              maxSlots={1}
-            />
-          </ActionForm>
-        </Card>
-      ) : null}
+        {kinds.length > 0 || (request.status === "no_show" && request.specialist_id) ? (
+          <Card description={t("scheduleHelp")} title={t("scheduleDirectly")}>
+            <ActionForm
+              action={scheduleAppointmentAction.bind(null, locale, request.id)}
+              pendingLabel={t("saving")}
+              submitLabel={t("schedule")}
+              variant="outline"
+            >
+              <input name="expectedVersion" type="hidden" value={request.version} />
+              <KindPicker kinds={kinds.length ? kinds : ["primary"]} name="schedule" t={t} />
+              <SlotFields
+                deliveryMethod={request.delivery_method as "remote" | "in_person"}
+                idPrefix="admin-schedule"
+                maxSlots={1}
+              />
+            </ActionForm>
+          </Card>
+        ) : null}
+      </DifferentTime>
 
       <CompleteCard bundle={bundle} locale={locale} />
 
@@ -452,10 +514,11 @@ export async function SpecialistRequestPanel({
 }) {
   const t = await getTranslations({ locale, namespace: "services.staff" });
   const { request } = bundle;
+  const requestedPending = Boolean(request.specialist_id) && awaitingRequestedTime(bundle);
   const kinds = schedulingKinds(bundle).filter((kind) =>
     kind === "primary" ? request.availability_requested : request.follow_up_status === "requested",
   );
-  if (kinds.length === 0 && request.status !== "in_progress") {
+  if (kinds.length === 0 && !requestedPending && request.status !== "in_progress") {
     return (
       <p className="rounded-xl border bg-secondary/40 p-4 text-sm" role="status">
         {request.status === "completed" ? t("specialistDone") : t("specialistWaiting")}
@@ -464,8 +527,11 @@ export async function SpecialistRequestPanel({
   }
   return (
     <div className="grid gap-4 lg:grid-cols-2">
+      {requestedPending ? <RequestedTimeCard bundle={bundle} locale={locale} /> : null}
       {kinds.length > 0 ? (
-        <ProposeCard audience="specialist" bundle={bundle} kinds={kinds} locale={locale} />
+        <DifferentTime collapsed={requestedPending} locale={locale}>
+          <ProposeCard audience="specialist" bundle={bundle} kinds={kinds} locale={locale} />
+        </DifferentTime>
       ) : null}
       <CompleteCard bundle={bundle} locale={locale} />
     </div>

@@ -37,7 +37,6 @@ export function ConsultationRequestForm({
   const languages = useTranslations("services.languages");
   const [idempotencyKey] = useState(() => crypto.randomUUID());
   const [category, setCategory] = useState<ConsultationCategory>("general_guidance");
-  const [schedulingMode, setSchedulingMode] = useState<"direct" | "propose">("direct");
   const [state, action, pending] = useActionState(
     createConsultationRequestAction.bind(null, locale),
     initialServiceActionState,
@@ -131,31 +130,9 @@ export function ConsultationRequestForm({
       </div>
       <fieldset className="space-y-4 rounded-xl border p-4">
         <legend className="px-1 text-sm font-medium">{t("schedulingTitle")}</legend>
-        <div className="space-y-1.5">
-          <Label htmlFor="consultation-scheduling">{t("schedulingMode")} *</Label>
-          <select
-            aria-describedby="consultation-scheduling-help"
-            className={selectClass}
-            id="consultation-scheduling"
-            name="schedulingMode"
-            onChange={(event) => setSchedulingMode(event.target.value === "propose" ? "propose" : "direct")}
-            value={schedulingMode}
-          >
-            <option value="direct">{t("schedulingDirect")}</option>
-            <option value="propose">{t("schedulingPropose")}</option>
-          </select>
-          <p className="text-sm text-muted-foreground" id="consultation-scheduling-help">
-            {schedulingMode === "direct" ? t("schedulingDirectHelp") : t("schedulingProposeHelp")}
-          </p>
-        </div>
-        <SlotFields
-          deliveryMethod="remote"
-          familyRequest
-          idPrefix={`consultation-${schedulingMode}`}
-          key={schedulingMode}
-          maxSlots={schedulingMode === "direct" ? 1 : 3}
-          minSlots={schedulingMode === "direct" ? 1 : 2}
-        />
+        <input name="schedulingMode" type="hidden" value="direct" />
+        <p className="text-sm text-muted-foreground">{t("schedulingDirectHelp")}</p>
+        <SlotFields deliveryMethod="remote" familyRequest idPrefix="consultation" maxSlots={1} />
       </fieldset>
       <p className="rounded-xl border bg-secondary/40 p-4 text-sm leading-6">{t("nextStepsConsultation")}</p>
       {state.status === "error" ? (

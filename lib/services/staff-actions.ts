@@ -8,6 +8,7 @@ import {
   appointmentKindSchema,
   appointmentSlotSchema,
   appointmentSlotsSchema,
+  confirmRequestedTimeSchema,
   expectedVersionSchema,
   notesSchema,
   optionalNotesSchema,
@@ -149,6 +150,29 @@ export async function scheduleAppointmentAction(
       input_kind: kind.data,
       input_slot: toDatabaseSlot(slot.data),
       expected_version: version.data,
+    }),
+  );
+}
+
+/** Confirms the time the family asked for, as the administrator or the assigned specialist. */
+export async function confirmRequestedTimeAction(
+  locale: AppLocale,
+  requestId: string,
+  _state: ServiceActionState,
+  formData: FormData,
+): Promise<ServiceActionState> {
+  const parsed = confirmRequestedTimeSchema.safeParse({
+    slotIndex: field(formData, "slotIndex"),
+    meetingUrl: field(formData, "meetingUrl"),
+    expectedVersion: field(formData, "expectedVersion"),
+  });
+  if (!uuidSchema.safeParse(requestId).success || !parsed.success) return invalid(locale);
+  return respond(locale, requestId, "appointmentScheduled", (supabase) =>
+    supabase.rpc("confirm_requested_time", {
+      target_request_id: requestId,
+      input_slot_index: parsed.data.slotIndex,
+      input_meeting_url: parsed.data.meetingUrl ?? "",
+      expected_version: parsed.data.expectedVersion,
     }),
   );
 }

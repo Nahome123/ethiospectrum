@@ -1869,7 +1869,7 @@
       "descriptionError": "Describa su necesidad en 10 a 3000 caracteres.",
       "relevantInformation": "Información relevante del servicio",
       "relevantInformationHelp": "Opcional: diagnósticos, servicios actuales o cualquier cosa que el especialista deba saber. Comparta solo lo necesario.",
-      "nextStepsConsultation": "Qué sigue: un administrador revisa su solicitud y asigna un especialista. Recibirá horarios propuestos, pagará $9.99 de forma segura y luego confirmará el horario que le convenga.",
+      "nextStepsConsultation": "Próximos pasos: un administrador revisa su solicitud y asigna un especialista, que confirma la hora que eligió. Luego paga $9.99 de forma segura antes de la sesión.",
       "submitConsultation": "Enviar solicitud de consulta",
       "submitting": "Enviando…",
       "language": "Idioma",
@@ -1895,7 +1895,7 @@
       "requestedServiceHelp": "Díganos qué necesita, por ejemplo qué partes del IEP explicar o los detalles de la reunión.",
       "relevantIepInformation": "Información relevante del IEP",
       "relevantIepInformationHelp": "Opcional: escuela, grado, metas, adaptaciones o fechas límite. Puede subir el documento del IEP después de enviar.",
-      "nextStepsIep": "Qué sigue: un administrador revisa su solicitud y asigna un especialista que hable su idioma. Puede subir documentos del IEP en la página de la solicitud. Recibirá horarios propuestos, pagará $19.99 de forma segura y luego confirmará.",
+      "nextStepsIep": "Próximos pasos: un administrador revisa su solicitud y asigna un especialista que habla su idioma y confirma la hora que eligió. Puede subir documentos del IEP en la página de la solicitud y pagar $19.99 de forma segura antes de la sesión.",
       "submitIep": "Enviar solicitud de asistencia con el IEP",
       "guard": {
         "household": {
@@ -1914,12 +1914,9 @@
         }
       },
       "schedulingTitle": "Programación",
-      "schedulingMode": "¿Cómo desea programar?",
-      "schedulingDirect": "Programar directamente (elegir una hora)",
-      "schedulingPropose": "Proponer horarios (sugerir opciones)",
-      "schedulingDirectHelp": "Elija la hora que desea. Su especialista la confirma o sugiere otra si no está disponible.",
-      "schedulingProposeHelp": "Sugiera dos o tres horas que le convengan. Su especialista elige una y se le notificará.",
-      "chooseDate": "Elija una fecha"
+      "schedulingDirectHelp": "Elija una fecha y hora que le convenga. Su especialista la confirmará o le sugerirá otra si no está disponible.",
+      "chooseDate": "Elija una fecha",
+      "schedulingIepHelp": "Elija una fecha y hora que le convenga para la sesión con su especialista. La confirmará o le sugerirá otra si no está disponible."
     },
     "requests": {
       "title": "Solicitudes de servicio",
@@ -2030,8 +2027,8 @@
         "administrator": "Ethiospectrum",
         "system": "Ethiospectrum"
       },
-      "requestedTimes": "Horarios solicitados",
-      "requestedDirect": "La familia pidió esta hora específica.",
+      "requestedTimes": "Su hora solicitada",
+      "requestedDirect": "Confirmaremos esta hora o le sugeriremos otra si no está disponible.",
       "requestedPropose": "La familia propuso estas opciones; se elegirá una."
     },
     "household": {
@@ -2208,10 +2205,13 @@
       "refundPercentSummary": "Reembolsar {amount} ({percent}% de {original})",
       "refundPercentFallback": "Reembolsar {amount}, el máximo que se puede reembolsar de este pago",
       "refundPercentLimit": "Máximo reembolsable: {max}",
-      "familyTimes": "Horarios solicitados por la familia",
-      "familyTimesHelp": "Programe una de las horas que pidió la familia. Use el formulario de abajo para otra hora.",
-      "scheduleThisTime": "Programar esta hora",
-      "scheduleThisTimeConfirm": "¿Programar la cita a esta hora?"
+      "requestedTime": "Hora solicitada",
+      "requestedTimeHelp": "La familia eligió esta hora. Confírmela para programar la sesión.",
+      "requestedTimeAssignFirst": "La familia eligió esta hora. Asigne un especialista y luego confírmela aquí.",
+      "confirmThisTime": "Confirmar esta hora",
+      "meetingLinkOptional": "Enlace de la reunión (opcional)",
+      "needDifferentTime": "¿Necesita otra hora?",
+      "needDifferentTimeHelp": "Proponga otras horas para que la familia elija, o programe otra hora directamente."
     }
   },
   "adminConsole": {
@@ -2954,11 +2954,7 @@
       "price": "$9.99",
       "billing": "Pago único · 60 minutos",
       "description": "Orientación general sobre el hogar y los servicios, u orientación conductual y educativa específica, con un especialista asignado.",
-      "features": [
-        "Sesión de 60 minutos",
-        "Un seguimiento incluido",
-        "Inglés, amárico o español"
-      ],
+      "features": ["Sesión de 60 minutos", "Un seguimiento incluido", "Inglés, amárico o español"],
       "action": "Solicitar una consulta"
     },
     "iep": {

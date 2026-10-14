@@ -137,6 +137,13 @@ export const requestedScheduleSchema = z
     path: ["slots"],
   });
 
+/** Staff confirming one of the family's requested times, with an optional meeting link. */
+export const confirmRequestedTimeSchema = z.object({
+  slotIndex: z.coerce.number().int().min(0).max(2),
+  meetingUrl: appointmentSlotSchema.shape.meetingUrl,
+  expectedVersion: expectedVersionSchema,
+});
+
 export const appointmentSlotsSchema = z.array(appointmentSlotSchema).min(1).max(MAX_PROPOSED_SLOTS);
 
 export function toDatabaseSlot(slot: AppointmentSlotInput) {

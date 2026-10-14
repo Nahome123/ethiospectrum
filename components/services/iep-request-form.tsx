@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
+import { SlotFields } from "@/components/services/slot-fields";
 import { Button } from "@/components/ui/button";
 import { ConfirmPicker } from "@/components/ui/confirm-picker";
 import { Input } from "@/components/ui/input";
@@ -175,6 +176,12 @@ export function IepRequestForm({ dependents, locale }: { dependents: Option[]; l
         />
         <p className="text-sm text-muted-foreground">{t("relevantIepInformationHelp")}</p>
       </div>
+      <fieldset className="space-y-4 rounded-xl border p-4">
+        <legend className="px-1 text-sm font-medium">{t("schedulingTitle")}</legend>
+        <input name="schedulingMode" type="hidden" value="direct" />
+        <p className="text-sm text-muted-foreground">{t("schedulingIepHelp")}</p>
+        <SlotFields deliveryMethod={delivery} familyRequest idPrefix="iep" maxSlots={1} />
+      </fieldset>
       <p className="rounded-xl border bg-secondary/40 p-4 text-sm leading-6">{t("nextStepsIep")}</p>
       {state.status === "error" ? (
         <p className="text-sm text-destructive" role="alert">
