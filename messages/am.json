@@ -2641,9 +2641,13 @@
     "markComplete": "ትምህርቱን እንደተጠናቀቀ ምልክት አድርግ",
     "lessonNavigation": "የትምህርት መዳሰሻ",
     "lessonsInModule": "በዚህ ሞጁል ያሉ ትምህርቶች",
-    "lessonContent": "የትምህርት ማስታወሻ",
     "lessonMaterial": "የትምህርት ጽሑፍ",
-    "downloadFile": "አውርድ"
+    "downloadFile": "አውርድ",
+    "studyGuideTitle": "የሁለት ቋንቋ የጥናት መመሪያ",
+    "studyGuideDescription": "ይህን ትምህርት በእንግሊዝኛ እና በአማርኛ ጎን ለጎን ያንብቡ።",
+    "openStudyGuide": "የሁለት ቋንቋ የጥናት መመሪያውን ክፈት",
+    "backToLesson": "ወደ ትምህርቱ ተመለስ",
+    "amharicMissing": "የዚህ ትምህርት የአማርኛ ትርጉም በቅርቡ ይቀርባል።"
   },
   "household": {
     "title": "ቤተሰብ",

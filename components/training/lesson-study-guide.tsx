@@ -1,4 +1,4 @@
-import { FileDown, FileText } from "lucide-react";
+import { ArrowRight, BookOpen, FileDown, FileText } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
 /*
@@ -85,12 +85,9 @@ function LabelledLine({ line }: { line: string }) {
   );
 }
 
-/**
- * Lesson text becomes section blocks: bullet groups become a ruled list,
- * other groups paragraphs, and a short closing line a highlight box.
- */
-export function LessonBody({ body, title }: { body: string; title: string }) {
-  const blocks = body
+/** Splits lesson text into blocks (separated by blank lines) of trimmed lines. */
+export function toBlocks(text: string | null | undefined): string[][] {
+  return (text ?? "")
     .replace(/\r\n/g, "\n")
     .split(/\n\s*\n/)
     .map((block) =>
@@ -100,62 +97,119 @@ export function LessonBody({ body, title }: { body: string; title: string }) {
         .filter(Boolean),
     )
     .filter((lines) => lines.length > 0);
+}
 
+function GuideLine({ line, lang }: { line: string; lang: "en" | "am" }) {
+  const isBullet = bullet.test(line);
+  return (
+    <span className="flex gap-2.5" lang={lang}>
+      {isBullet ? (
+        <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-[#2d9a5a]" />
+      ) : null}
+      <span>
+        <LabelledLine line={line.replace(bullet, "")} />
+      </span>
+    </span>
+  );
+}
+
+/**
+ * The lesson in English and Amharic side by side, like the module 2.1 guide.
+ * Blocks pair up by position; lines pair up row by row when both blocks have
+ * the same number of lines, otherwise the two blocks sit side by side whole.
+ */
+export function BilingualGuide({
+  amharic,
+  amharicMissing,
+  english,
+  title,
+  titleAmharic,
+}: {
+  amharic: string | null;
+  amharicMissing: string;
+  english: string;
+  title: string;
+  titleAmharic: string;
+}) {
+  const en = toBlocks(english);
+  const am = toBlocks(amharic);
+  const count = Math.max(en.length, am.length);
   return (
     <section className="rounded-3xl border border-[#dde8e2] border-l-5 border-l-[#1a6b3c] bg-white p-5 shadow-sm sm:p-8">
       <h2 className="font-heading text-2xl font-bold text-[#1a6b3c]">{title}</h2>
-      <div className="mt-4 space-y-4 leading-7">
-        {blocks.map((lines, index) => {
-          const key = `${index}-${lines[0]}`;
-          const bulletLines = lines.filter((line) => bullet.test(line));
-          if (
-            bulletLines.length > 0 &&
-            (bulletLines.length === lines.length ||
-              (bulletLines.length === lines.length - 1 && !bullet.test(lines[0])))
-          ) {
-            const heading = bullet.test(lines[0]) ? null : lines[0];
-            return (
-              <div key={key}>
-                {heading ? <p className="font-semibold">{heading}</p> : null}
-                <ul className="mt-1">
-                  {bulletLines.map((line) => (
-                    <li
-                      className="flex gap-3 border-b border-dashed border-[#dde8e2] py-2.5 last:border-0"
-                      key={line}
-                    >
-                      <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-[#2d9a5a]" />
-                      <span>
-                        <LabelledLine line={line.replace(bullet, "")} />
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          }
-          if (
-            index === blocks.length - 1 &&
-            blocks.length > 1 &&
-            lines.length === 1 &&
-            lines[0].length <= 200
-          ) {
-            return (
-              <p className="rounded-2xl border border-[#b2d8c2] bg-[#e8f5ee] p-5 font-semibold" key={key}>
-                {lines[0]}
-              </p>
-            );
-          }
+      <p className="mb-5 mt-1 text-base font-semibold text-muted-foreground" lang="am">
+        {titleAmharic}
+      </p>
+      {am.length === 0 ? (
+        <p className="mb-4 rounded-xl bg-muted px-4 py-2 text-sm text-muted-foreground">{amharicMissing}</p>
+      ) : null}
+      <div className="space-y-6">
+        {Array.from({ length: count }, (_, index) => {
+          const enLines = en[index] ?? [];
+          const amLines = am[index] ?? [];
+          const closing = index === count - 1 && count > 1 && enLines.length <= 1 && amLines.length <= 1;
+          const rows =
+            enLines.length === amLines.length
+              ? enLines.map((line, row) => [[line], [amLines[row]]])
+              : [[enLines, amLines]];
           return (
-            <p key={key}>
-              {lines.map((line, lineIndex) => (
-                <span className="block" key={`${lineIndex}-${line}`}>
-                  <LabelledLine line={line} />
-                </span>
+            <div
+              className={closing ? "rounded-2xl border border-[#b2d8c2] bg-[#e8f5ee] p-5 font-semibold" : ""}
+              key={`${index}-${enLines[0] ?? amLines[0]}`}
+            >
+              {rows.map(([enRow, amRow], row) => (
+                <div
+                  className="grid gap-2 border-b border-[#dde8e2] py-3 last:border-0 sm:grid-cols-2 sm:gap-5"
+                  key={`${row}-${enRow[0] ?? amRow[0]}`}
+                >
+                  <div className="space-y-1.5 font-medium text-foreground">
+                    {enRow.map((line) => (
+                      <GuideLine key={line} lang="en" line={line} />
+                    ))}
+                  </div>
+                  <div className="space-y-1.5 font-medium text-[#1a6b3c]">
+                    {amRow.map((line) => (
+                      <GuideLine key={line} lang="am" line={line} />
+                    ))}
+                  </div>
+                </div>
               ))}
-            </p>
+            </div>
           );
         })}
       </div>
+    </section>
+  );
+}
+
+/** The gold "Open the bilingual study guide" card used by every lesson. */
+export function StudyGuideCard({
+  buttonLabel,
+  description,
+  href,
+  title,
+}: {
+  buttonLabel: string;
+  description: string;
+  href: string;
+  title: string;
+}) {
+  return (
+    <section className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-[#dde8e2] border-l-5 border-l-[#c8982a] bg-white p-5 shadow-sm sm:p-8">
+      <div>
+        <h2 className="flex items-center gap-2 font-heading text-2xl font-bold text-[#9a721f]">
+          <BookOpen aria-hidden="true" className="size-6" />
+          {title}
+        </h2>
+        <p className="mt-1 text-muted-foreground">{description}</p>
+      </div>
+      <Link
+        className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
+        href={href}
+      >
+        {buttonLabel}
+        <ArrowRight aria-hidden="true" className="size-4" />
+      </Link>
     </section>
   );
 }

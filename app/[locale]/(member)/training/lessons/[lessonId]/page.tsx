@@ -1,10 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { LessonPlayer } from "@/components/training/lesson-player";
 import {
-  LessonBody,
   LessonHero,
   LessonModuleNav,
   LessonResource,
+  StudyGuideCard,
 } from "@/components/training/lesson-study-guide";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -64,7 +64,10 @@ export default async function LessonPage({
   const { lesson } = detail;
   const title = localizedField(lesson.localized, locale, "title", lesson.title) ?? lesson.title;
   const description = localizedField(lesson.localized, locale, "description", lesson.description);
-  const body = localizedField(lesson.localized, locale, "body", lesson.body);
+  // Module 2.1 links to the RBT study guide; every other lesson with text
+  // opens its own English / Amharic guide.
+  const internalGuide = detail.resourceHref?.startsWith("/training/") ? detail.resourceHref : null;
+  const guideHref = internalGuide ?? (lesson.body ? `/training/lessons/${lesson.id}/guide` : null);
   const moduleTitle = current
     ? localizedField(current.module_localized, locale, "title", current.module_title)
     : null;
@@ -103,8 +106,15 @@ export default async function LessonPage({
         videoEmbed={detail.videoEmbed}
         videoSrc={detail.videoSrc}
       />
-      {body ? <LessonBody body={body} title={t("lessonContent")} /> : null}
-      {detail.resourceHref ? (
+      {guideHref ? (
+        <StudyGuideCard
+          buttonLabel={t("openStudyGuide")}
+          description={t("studyGuideDescription")}
+          href={guideHref}
+          title={t("studyGuideTitle")}
+        />
+      ) : null}
+      {detail.resourceHref && !internalGuide ? (
         <LessonResource
           downloadHref={detail.resourceHref}
           downloadLabel={

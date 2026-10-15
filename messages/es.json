@@ -2641,9 +2641,13 @@
     "markComplete": "Marcar la lección como completada",
     "lessonNavigation": "Navegación de lecciones",
     "lessonsInModule": "Lecciones de este módulo",
-    "lessonContent": "Notas de la lección",
     "lessonMaterial": "Material de la lección",
-    "downloadFile": "Descargar"
+    "downloadFile": "Descargar",
+    "studyGuideTitle": "Guía de estudio bilingüe",
+    "studyGuideDescription": "Lea esta lección en inglés y amárico, lado a lado.",
+    "openStudyGuide": "Abrir la guía de estudio bilingüe",
+    "backToLesson": "Volver a la lección",
+    "amharicMissing": "La traducción al amárico de esta lección estará disponible pronto."
   },
   "household": {
     "title": "Hogar",

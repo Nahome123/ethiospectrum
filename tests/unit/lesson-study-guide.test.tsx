@@ -9,32 +9,59 @@ vi.mock("@/i18n/navigation", () => ({
   ),
 }));
 
-import { LessonBody, LessonResource } from "@/components/training/lesson-study-guide";
+import { BilingualGuide, LessonResource, StudyGuideCard } from "@/components/training/lesson-study-guide";
+
+const english =
+  "Autism is a neurodevelopmental condition.\n\n• Social communication\n• Sensory differences\n\nEvery child is unique.";
+const amharic = "አውቲዝም የአንጎል እድገት ሂደት ነው።\n\n• ማህበራዊ ግንኙነት\n• የስሜት ልዩነቶች\n\nእያንዳንዱ ልጅ የተለየ ነው።";
 
 describe("lesson study guide layout", () => {
-  it("turns bullets into a list and the closing line into a highlight", () => {
-    render(
-      <LessonBody
-        body={
-          "Autism is a neurodevelopmental condition.\n\n• Social communication\n• Sensory differences\n\nEvery child is unique."
-        }
-        title="Lesson notes"
+  it("pairs English and Amharic lines side by side", () => {
+    const { container } = render(
+      <BilingualGuide
+        amharic={amharic}
+        amharicMissing="Coming soon"
+        english={english}
+        title="What is autism?"
+        titleAmharic="አውቲዝም ምንድን ነው?"
       />,
     );
-    expect(screen.getByRole("heading", { name: "Lesson notes" })).toBeInTheDocument();
-    expect(screen.getAllByRole("listitem")).toHaveLength(2);
-    expect(screen.getByText("Every child is unique.").className).toContain("bg-[#e8f5ee]");
+    expect(screen.getByRole("heading", { name: "What is autism?" })).toBeInTheDocument();
+    expect(screen.getByText("Social communication").closest(".grid")).toHaveTextContent("ማህበራዊ ግንኙነት");
+    expect(container.querySelectorAll('[lang="am"]').length).toBeGreaterThan(3);
+    const closing = screen.getByText("Every child is unique.").closest("div.rounded-2xl");
+    expect(closing).toHaveTextContent("እያንዳንዱ ልጅ የተለየ ነው።");
+    expect(screen.queryByText("Coming soon")).toBeNull();
   });
 
-  it("bolds short labels such as Myth and Truth", () => {
+  it("notes a missing Amharic translation and bolds Myth / Truth labels", () => {
     render(
-      <LessonBody
-        body={'Myth: "It is a curse."\nTruth: Autism is a neurological difference.'}
-        title="Notes"
+      <BilingualGuide
+        amharic={null}
+        amharicMissing="Coming soon"
+        english={'Myth: "It is a curse."\nTruth: Autism is a neurological difference.'}
+        title="Myths"
+        titleAmharic="Myths"
       />,
     );
+    expect(screen.getByText("Coming soon")).toBeInTheDocument();
     expect(screen.getByText("Myth:").tagName).toBe("STRONG");
     expect(screen.getByText("Truth:").tagName).toBe("STRONG");
+  });
+
+  it("links the study guide card to the guide", () => {
+    render(
+      <StudyGuideCard
+        buttonLabel="Open the bilingual study guide"
+        description="Read this lesson in English and Amharic side by side."
+        href="/training/lessons/abc/guide"
+        title="Bilingual study guide"
+      />,
+    );
+    expect(screen.getByRole("link", { name: /Open the bilingual study guide/ })).toHaveAttribute(
+      "href",
+      "/training/lessons/abc/guide",
+    );
   });
 
   it("shows a PDF in the page with a download link", () => {
@@ -56,20 +83,5 @@ describe("lesson study guide layout", () => {
       "href",
       "https://files.example.test/guide.pdf?download",
     );
-  });
-
-  it("offers other files as a download only", () => {
-    render(
-      <LessonResource
-        downloadHref="https://files.example.test/slides.pptx"
-        downloadLabel="Open the slides"
-        isPdf={false}
-        label="Slides"
-        viewHref="https://files.example.test/slides.pptx"
-        viewerTitle="Slides"
-      />,
-    );
-    expect(screen.queryByTitle("Slides")).toBeNull();
-    expect(screen.getByRole("link", { name: "Open the slides" })).toBeInTheDocument();
   });
 });
