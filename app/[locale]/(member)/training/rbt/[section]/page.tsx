@@ -25,8 +25,9 @@ export default async function RbtTrainingSectionPage({
   if (!section) redirect(`/${locale}/training/rbt/overview`);
 
   const user = await requireUser(locale, `/${locale}/training/rbt/${routeSection}`);
-  const [t, accessibility, progress] = await Promise.all([
+  const [t, bootcamp, accessibility, progress] = await Promise.all([
     getTranslations("training"),
+    getTranslations("bootcamp"),
     getTranslations("accessibility"),
     getCurrentRbtTrainingProgress(user.id),
   ]);
@@ -43,6 +44,12 @@ export default async function RbtTrainingSectionPage({
       >
         {accessibility("skipToContent")}
       </a>
+      <Link
+        className="mb-4 inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
+        href="/training"
+      >
+        ← {bootcamp("backToLibrary")}
+      </Link>
       <RbtTrainingHero />
       <RbtTrainingNavigation currentSection={section} label={t("sectionNavigation")} />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
