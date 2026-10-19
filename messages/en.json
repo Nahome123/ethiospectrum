@@ -2647,7 +2647,13 @@
     "studyGuideDescription": "Read this lesson in English and Amharic side by side.",
     "openStudyGuide": "Open the bilingual study guide",
     "backToLesson": "Back to the lesson",
-    "amharicMissing": "The Amharic translation of this lesson is coming soon."
+    "amharicMissing": "The Amharic translation of this lesson is coming soon.",
+    "modulesNavigation": "Modules",
+    "guideNavigation": "Move between lessons and modules",
+    "previousLesson": "Previous lesson",
+    "nextLesson": "Next lesson",
+    "previousModule": "Previous module",
+    "nextModule": "Next module"
   },
   "household": {
     "title": "Household",

@@ -1,7 +1,10 @@
 import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
+import { GuideModuleNav, GuideSequenceNav } from "@/components/training/guide-navigation";
 import { BilingualGuide, LessonHero } from "@/components/training/lesson-study-guide";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { buildGuideSequence } from "@/lib/training/guide-sequence";
 import {
   getLessonDetail,
   getTrainingOutline,
@@ -29,7 +32,7 @@ export default async function LessonGuidePage({
       ← {t("backToLibrary")}
     </Link>
   );
-  if (!detail || !detail.lesson.body) {
+  if (!detail) {
     return (
       <section className="mx-auto max-w-3xl space-y-3">
         <p role="alert">{t("lessonUnavailable")}</p>
@@ -39,7 +42,20 @@ export default async function LessonGuidePage({
   }
 
   const { lesson } = detail;
-  const row = (await getTrainingOutline({ type: "member" })).find((item) => item.lesson_id === lesson.id);
+  // Stepping through guides can land on a lesson without guide text: module
+  // 2.1 has its own RBT guide, and anything else opens the lesson itself.
+  if (!lesson.body) {
+    const internalGuide = detail.resourceHref?.startsWith("/training/") ? detail.resourceHref : null;
+    redirect(`/${locale}${internalGuide ?? `/training/lessons/${lesson.id}`}`);
+  }
+
+  const outline = await getTrainingOutline({ type: "member" });
+  const row = outline.find((item) => item.lesson_id === lesson.id);
+  const sequence = buildGuideSequence(
+    outline,
+    lesson.id,
+    (localized, fallback) => localizedField(localized, locale, "title", fallback) ?? fallback,
+  );
   const amharic = (field: string, fallback: string | null) =>
     localizedField(lesson.localized, "am", field, null) ?? fallback;
   const moduleBadge = row
@@ -47,6 +63,18 @@ export default async function LessonGuidePage({
         .filter(Boolean)
         .join(" · ")
     : null;
+  const sequenceNav = (
+    <GuideSequenceNav
+      label={t("guideNavigation")}
+      labels={{
+        previousLesson: t("previousLesson"),
+        nextLesson: t("nextLesson"),
+        previousModule: t("previousModule"),
+        nextModule: t("nextModule"),
+      }}
+      sequence={sequence}
+    />
+  );
 
   return (
     <article className="mx-auto max-w-5xl space-y-6">
@@ -59,6 +87,11 @@ export default async function LessonGuidePage({
           {t("backToLesson")}
         </Link>
       </div>
+      <GuideModuleNav
+        label={t("modulesNavigation")}
+        moduleLabel={(number) => t("moduleNumber", { number })}
+        sequence={sequence}
+      />
       <LessonHero
         badge={moduleBadge}
         description={amharic("title", null)}
@@ -68,10 +101,11 @@ export default async function LessonGuidePage({
       <BilingualGuide
         amharic={amharic("body", null)}
         amharicMissing={t("amharicMissing")}
-        english={lesson.body ?? ""}
+        english={lesson.body}
         title={lesson.title}
         titleAmharic={amharic("title", lesson.title) ?? lesson.title}
       />
+      {sequenceNav}
       <p className="text-xs text-muted-foreground">{t("certificationDisclaimer")}</p>
     </article>
   );

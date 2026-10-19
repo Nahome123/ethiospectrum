@@ -58,6 +58,19 @@ export async function getTrainingOutline(learner: Learner): Promise<TrainingOutl
   return error || !data ? [] : data;
 }
 
+/** The published lesson that links to an in-app guide (module 2.1 links to /training/rbt). */
+export async function findLessonIdByResourceUrl(resourceUrl: string): Promise<string | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data } = await supabase
+    .from("training_lessons")
+    .select("id")
+    .eq("resource_url", resourceUrl)
+    .eq("status", "published")
+    .limit(1)
+    .maybeSingle();
+  return data?.id ?? null;
+}
+
 export async function getTrainingProgressSummary(): Promise<TrainingProgressSummary[]> {
   const supabase = await createServerComponentSupabaseClient();
   const { data, error } = await supabase.rpc("get_training_progress_summary");

@@ -5,6 +5,7 @@ import {
   RbtTrainingHero,
   RbtTrainingLesson,
 } from "@/components/training/rbt-training-lesson";
+import { GuideModuleNav, GuideSequenceNav } from "@/components/training/guide-navigation";
 import { RbtTrainingNavigation } from "@/components/training/rbt-training-navigation";
 import { TrainingProgress } from "@/components/training/training-progress";
 import { rbtRouteBySection, rbtSectionByRoute } from "@/features/training/rbt/constants";
@@ -13,6 +14,8 @@ import { getCurrentRbtTrainingProgress } from "@/features/training/rbt/server";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth/guards";
+import { buildGuideSequence } from "@/lib/training/guide-sequence";
+import { findLessonIdByResourceUrl, getTrainingOutline, localizedField } from "@/lib/training/server";
 
 export default async function RbtTrainingSectionPage({
   params,
@@ -25,12 +28,20 @@ export default async function RbtTrainingSectionPage({
   if (!section) redirect(`/${locale}/training/rbt/overview`);
 
   const user = await requireUser(locale, `/${locale}/training/rbt/${routeSection}`);
-  const [t, bootcamp, accessibility, progress] = await Promise.all([
+  const [t, bootcamp, accessibility, progress, outline, guideLessonId] = await Promise.all([
     getTranslations("training"),
     getTranslations("bootcamp"),
     getTranslations("accessibility"),
     getCurrentRbtTrainingProgress(user.id),
+    getTrainingOutline({ type: "member" }),
+    findLessonIdByResourceUrl("/training/rbt"),
   ]);
+  // Where this guide sits among the other lessons, for moving between modules.
+  const sequence = buildGuideSequence(
+    outline,
+    guideLessonId,
+    (localized, fallback) => localizedField(localized, locale, "title", fallback) ?? fallback,
+  );
   const sectionIndex = rbtSectionIds.indexOf(section);
   const previousSection = rbtSectionIds[sectionIndex - 1];
   const nextSection = rbtSectionIds[sectionIndex + 1];
@@ -50,6 +61,13 @@ export default async function RbtTrainingSectionPage({
       >
         ← {bootcamp("backToLibrary")}
       </Link>
+      <div className="mb-4">
+        <GuideModuleNav
+          label={bootcamp("modulesNavigation")}
+          moduleLabel={(number) => bootcamp("moduleNumber", { number })}
+          sequence={sequence}
+        />
+      </div>
       <RbtTrainingHero />
       <RbtTrainingNavigation currentSection={section} label={t("sectionNavigation")} />
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -110,6 +128,18 @@ export default async function RbtTrainingSectionPage({
             </Link>
           ) : null}
         </nav>
+        <div className="mt-6">
+          <GuideSequenceNav
+            label={bootcamp("guideNavigation")}
+            labels={{
+              previousLesson: bootcamp("previousLesson"),
+              nextLesson: bootcamp("nextLesson"),
+              previousModule: bootcamp("previousModule"),
+              nextModule: bootcamp("nextModule"),
+            }}
+            sequence={sequence}
+          />
+        </div>
       </main>
       <RbtTrainingFooter />
     </section>

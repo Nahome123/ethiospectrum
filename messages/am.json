@@ -2647,7 +2647,13 @@
     "studyGuideDescription": "ይህን ትምህርት በእንግሊዝኛ እና በአማርኛ ጎን ለጎን ያንብቡ።",
     "openStudyGuide": "የሁለት ቋንቋ የጥናት መመሪያውን ክፈት",
     "backToLesson": "ወደ ትምህርቱ ተመለስ",
-    "amharicMissing": "የዚህ ትምህርት የአማርኛ ትርጉም በቅርቡ ይቀርባል።"
+    "amharicMissing": "የዚህ ትምህርት የአማርኛ ትርጉም በቅርቡ ይቀርባል።",
+    "modulesNavigation": "ሞጁሎች",
+    "guideNavigation": "በትምህርቶች እና ሞጁሎች መካከል ይሂዱ",
+    "previousLesson": "ያለፈው ትምህርት",
+    "nextLesson": "ቀጣይ ትምህርት",
+    "previousModule": "ያለፈው ሞጁል",
+    "nextModule": "ቀጣይ ሞጁል"
   },
   "household": {
     "title": "ቤተሰብ",

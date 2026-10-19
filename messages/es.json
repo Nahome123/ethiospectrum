@@ -2647,7 +2647,13 @@
     "studyGuideDescription": "Lea esta lección en inglés y amárico, lado a lado.",
     "openStudyGuide": "Abrir la guía de estudio bilingüe",
     "backToLesson": "Volver a la lección",
-    "amharicMissing": "La traducción al amárico de esta lección estará disponible pronto."
+    "amharicMissing": "La traducción al amárico de esta lección estará disponible pronto.",
+    "modulesNavigation": "Módulos",
+    "guideNavigation": "Moverse entre lecciones y módulos",
+    "previousLesson": "Lección anterior",
+    "nextLesson": "Lección siguiente",
+    "previousModule": "Módulo anterior",
+    "nextModule": "Módulo siguiente"
   },
   "household": {
     "title": "Hogar",
