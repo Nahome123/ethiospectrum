@@ -1,49 +1,51 @@
-import Image from "next/image";
+import { ChevronDown } from "lucide-react";
+import Image, { type StaticImageData } from "next/image";
 import { getTranslations } from "next-intl/server";
 import founderPhoto from "@/public/images/team/founder-yamrot.jpg";
 import secondMemberPhoto from "@/public/images/team/team-member-2.jpg";
 import thirdMemberPhoto from "@/public/images/team/team-member-3.jpg";
 
-const teamMembers = [
-  { key: "second", photo: secondMemberPhoto },
-  { key: "third", photo: thirdMemberPhoto },
-] as const;
-
-/** A bio may hold several paragraphs, separated by blank lines. */
-function Bio({ className, text }: { className: string; text: string }) {
-  return (
-    <div className={`space-y-4 ${className}`}>
-      {text.split(/\n\s*\n/).map((paragraph) => (
-        <p key={paragraph}>{paragraph}</p>
-      ))}
-    </div>
-  );
-}
+type Member = { id: string; name: string; title: string; bio: string; photo: StaticImageData; alt: string };
 
 /**
- * About Us: Yamrot first, then the rest of the team. Empty titles are not
- * shown; an empty name or bio shows a "coming soon" placeholder.
+ * About Us: three equal cards. Each shows a photo, name, role and the first
+ * paragraph of the bio; "Read more" opens the rest. An empty name or bio
+ * shows a "coming soon" placeholder.
  */
 export async function AboutUsSection() {
   const t = await getTranslations("aboutUs");
-  const title = t("founderTitle").trim();
-  const bio = t("founderBio").trim();
+  const memberAlt = (name: string) => (name ? t("memberPhotoAlt", { name }) : t("memberPhotoAltUnnamed"));
+  const members: Member[] = [
+    {
+      id: "yamrot",
+      name: t("founderName").trim(),
+      title: [t("founderTitle").trim(), t("founderRole").trim()].filter(Boolean).join(" · "),
+      bio: t("founderBio").trim(),
+      photo: founderPhoto,
+      alt: t("photoAlt"),
+    },
+    ...(
+      [
+        ["second", secondMemberPhoto],
+        ["third", thirdMemberPhoto],
+      ] as const
+    ).map(([key, photo]) => {
+      const name = t(`team.${key}.name`).trim();
+      return {
+        id: key,
+        name,
+        title: t(`team.${key}.title`).trim(),
+        bio: t(`team.${key}.bio`).trim(),
+        photo,
+        alt: memberAlt(name),
+      };
+    }),
+  ];
 
   return (
     <section aria-labelledby="about-heading" className="scroll-mt-24 bg-white py-16 sm:py-20" id="about">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-16 lg:px-8">
-        <div className="mx-auto w-full max-w-xs lg:max-w-none">
-          <div className="overflow-hidden rounded-3xl border-8 border-secondary shadow-lg">
-            <Image
-              alt={t("photoAlt")}
-              className="aspect-[4/5] h-auto w-full object-cover object-top"
-              placeholder="blur"
-              sizes="(min-width: 1024px) 22rem, 20rem"
-              src={founderPhoto}
-            />
-          </div>
-        </div>
-        <div className="max-w-2xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-bold uppercase tracking-[0.14em] text-secondary-foreground">
             {t("eyebrow")}
           </p>
@@ -53,50 +55,54 @@ export async function AboutUsSection() {
           >
             {t("title")}
           </h2>
-          <div className="mt-8 border-l-4 border-accent pl-5">
-            <p className="text-2xl font-bold text-foreground">{t("founderName")}</p>
-            {title ? <p className="mt-1 font-semibold text-link">{title}</p> : null}
-            <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              {t("founderRole")}
-            </p>
-          </div>
-          <Bio
-            className={`mt-6 text-lg leading-8 ${bio ? "text-muted-foreground" : "italic text-muted-foreground/80"}`}
-            text={bio || t("bioPlaceholder")}
-          />
         </div>
-      </div>
 
-      <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ul className="grid gap-12 lg:grid-cols-2">
-          {teamMembers.map(({ key, photo }) => {
-            const name = t(`team.${key}.name`).trim();
-            const memberTitle = t(`team.${key}.title`).trim();
-            const memberBio = t(`team.${key}.bio`).trim();
+        <ul className="mt-12 grid items-start gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {members.map((member) => {
+            const [first, ...rest] = (member.bio || t("bioPlaceholder")).split(/\n\s*\n/);
             return (
-              <li className="grid items-start gap-5 sm:grid-cols-[10rem_1fr]" key={key}>
-                <div className="mx-auto w-40 overflow-hidden rounded-3xl border-4 border-secondary shadow-md sm:mx-0">
-                  <Image
-                    alt={name ? t("memberPhotoAlt", { name }) : t("memberPhotoAltUnnamed")}
-                    className="aspect-[4/5] h-auto w-full object-cover object-top"
-                    placeholder="blur"
-                    sizes="10rem"
-                    src={photo}
-                  />
-                </div>
-                <div>
+              <li
+                className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
+                key={member.id}
+              >
+                <Image
+                  alt={member.alt}
+                  className="aspect-[4/5] h-auto w-full object-cover object-top"
+                  placeholder="blur"
+                  sizes="(min-width: 1024px) 24rem, (min-width: 768px) 50vw, 100vw"
+                  src={member.photo}
+                />
+                <div className="flex flex-1 flex-col p-6">
                   <div className="border-l-4 border-accent pl-4">
-                    <p
-                      className={`text-xl font-bold ${name ? "text-foreground" : "italic text-muted-foreground/80"}`}
+                    <h3
+                      className={`text-xl font-bold ${member.name ? "text-foreground" : "italic text-muted-foreground/80"}`}
                     >
-                      {name || t("namePlaceholder")}
-                    </p>
-                    {memberTitle ? <p className="mt-1 font-semibold text-link">{memberTitle}</p> : null}
+                      {member.name || t("namePlaceholder")}
+                    </h3>
+                    {member.title ? <p className="mt-1 font-semibold text-link">{member.title}</p> : null}
                   </div>
-                  <Bio
-                    className={`mt-4 leading-7 ${memberBio ? "text-muted-foreground" : "italic text-muted-foreground/80"}`}
-                    text={memberBio || t("bioPlaceholder")}
-                  />
+                  <p
+                    className={`mt-4 leading-7 ${member.bio ? "text-muted-foreground" : "italic text-muted-foreground/80"}`}
+                  >
+                    {first}
+                  </p>
+                  {rest.length > 0 ? (
+                    <details className="group mt-3">
+                      <summary className="inline-flex cursor-pointer list-none items-center gap-1 rounded-md font-semibold text-link outline-none focus-visible:ring-3 focus-visible:ring-ring/30 [&::-webkit-details-marker]:hidden">
+                        <span className="group-open:hidden">{t("readMore")}</span>
+                        <span className="hidden group-open:inline">{t("showLess")}</span>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="size-4 transition-transform group-open:rotate-180"
+                        />
+                      </summary>
+                      <div className="mt-3 space-y-4 leading-7 text-muted-foreground">
+                        {rest.map((paragraph) => (
+                          <p key={paragraph}>{paragraph}</p>
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
                 </div>
               </li>
             );
