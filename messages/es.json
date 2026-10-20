@@ -639,7 +639,10 @@
     "accountExists": "Ya existe una cuenta con este correo. Inicie sesión o restablezca su contraseña.",
     "weakPassword": "Esa contraseña es demasiado débil o común. Elija una contraseña más larga y difícil de adivinar.",
     "showPassword": "Mostrar contraseña",
-    "hidePassword": "Ocultar contraseña"
+    "hidePassword": "Ocultar contraseña",
+    "continueWithGoogle": "Continuar con Google",
+    "orUseEmail": "o use su correo electrónico",
+    "googleSignInFailed": "No se completó el inicio de sesión con Google. Inténtelo de nuevo o inicie sesión con su correo y contraseña."
   },
   "dashboard": {
     "welcome": "Bienvenido a tu espacio familiar",

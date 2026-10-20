@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/auth/auth-form";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { isGoogleSignInEnabled } from "@/lib/auth/providers";
 import { buttonVariants } from "@/components/ui/button";
 import { getAuthenticatedUser } from "@/lib/auth/guards";
 import { getLocaleDashboardPath, getSafeLocaleRedirect } from "@/lib/auth/redirects";
@@ -42,6 +44,7 @@ export default async function LoginPage({
         </p>
       ) : null}
       <div className="mt-8 rounded-xl border border-border bg-white p-6">
+        {isGoogleSignInEnabled() ? <GoogleSignInButton locale={locale} next={safeNext} /> : null}
         <AuthForm mode="login" locale={locale} next={safeNext} />
       </div>
       {!administratorSignIn && (

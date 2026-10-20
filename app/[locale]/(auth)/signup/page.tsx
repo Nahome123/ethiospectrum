@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/auth/auth-form";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { isGoogleSignInEnabled } from "@/lib/auth/providers";
 import { getAuthenticatedUser } from "@/lib/auth/guards";
 import { getLocaleDashboardPath } from "@/lib/auth/redirects";
 import type { AppLocale } from "@/i18n/routing";
@@ -25,6 +27,7 @@ export default async function SignupPage({
         {invitation ? t("signupCaregiverDescription") : t("signupDescription")}
       </p>
       <div className="mt-8 rounded-xl border border-border bg-white p-6">
+        {isGoogleSignInEnabled() ? <GoogleSignInButton invitation={invitation} locale={locale} /> : null}
         <AuthForm invitation={invitation} locale={locale} mode="signup" />
       </div>
     </section>

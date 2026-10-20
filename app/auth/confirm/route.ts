@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createRouteHandlerSupabaseClient } from "@/lib/supabase/route-handler";
 import { getLocaleDashboardPath, getLocaleFromPath, getSafeLocaleRedirect } from "@/lib/auth/redirects";
 import { passwordRecoveryCookieName, passwordRecoveryCookieOptions } from "@/lib/auth/recovery";
+import { getRoleHomePath } from "@/lib/auth/role-session";
 
 const validOtpTypes = new Set(["signup", "recovery"]);
 
@@ -36,9 +37,32 @@ export async function GET(request: NextRequest) {
   const isResetDestination = destination === `/${locale}/reset-password`;
   const requestedRecoveryFlow = url.searchParams.get("flow") === "recovery";
   const supabase = await createRouteHandlerSupabaseClient();
+  const oauth = url.searchParams.get("flow") === "oauth";
+
+  // Google returns here with ?error=... when the person cancels or it fails.
+  if (oauth && url.searchParams.get("error")) {
+    return NextResponse.redirect(new URL(`/${locale ?? "en"}/auth-error?reason=oauth`, request.url));
+  }
 
   if (code && code.length <= 2048) {
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (oauth) {
+      if (error) {
+        return NextResponse.redirect(new URL(`/${locale ?? "en"}/auth-error?reason=oauth`, request.url));
+      }
+      let target = destination;
+      // Without an explicit destination, staff start in their own workspace,
+      // as after a password sign-in.
+      if (url.searchParams.get("home") === "1" && locale && data.user) {
+        const { data: roleRow } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id)
+          .maybeSingle();
+        target = getRoleHomePath(locale, roleRow?.role ?? null);
+      }
+      return NextResponse.redirect(new URL(target, request.url));
+    }
     return responseForDestination(
       request,
       destination,

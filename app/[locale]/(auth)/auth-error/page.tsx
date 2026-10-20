@@ -11,9 +11,11 @@ export default async function AuthErrorPage({
   const message =
     reason === "access-denied"
       ? t("accessDenied")
-      : reason === "expired"
-        ? t("expiredConfirmationLink")
-        : t("invalidConfirmationLink");
+      : reason === "oauth"
+        ? t("googleSignInFailed")
+        : reason === "expired"
+          ? t("expiredConfirmationLink")
+          : t("invalidConfirmationLink");
   return (
     <section className="mx-auto max-w-md px-4 py-16 text-center sm:px-6">
       <h1 className="text-3xl font-bold">{t("authErrorTitle")}</h1>

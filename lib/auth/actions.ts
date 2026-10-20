@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
@@ -123,6 +124,63 @@ export async function signUpAction(
     );
   }
   redirect(`/${localeValue}/check-email`);
+}
+
+/**
+ * The origin the person is browsing, so the Google round trip returns to the
+ * same deployment (the sign-in cookie lives there). Supabase only redirects to
+ * URLs on its allow list, so an unexpected host falls back to the Site URL.
+ */
+async function requestOrigin(): Promise<string> {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  if (host) {
+    const protocol =
+      requestHeaders.get("x-forwarded-proto") ??
+      (/^(localhost|127\.0\.0\.1)(:|$)/.test(host) ? "http" : "https");
+    try {
+      return new URL(`${protocol}://${host}`).origin;
+    } catch {
+      // Fall through to the configured site URL.
+    }
+  }
+  return getSiteUrl();
+}
+
+/**
+ * "Continue with Google": sends the person to Google through Supabase. New
+ * accounts finish on the dashboard, where a household owner names their
+ * household; an invited caregiver returns to the invitation instead.
+ */
+export async function signInWithGoogleAction(localeValue: string, formData: FormData): Promise<void> {
+  if (!isAppLocale(localeValue)) redirect("/en/login");
+  const invitation = String(formData.get("invitation") ?? "");
+  const requested = String(formData.get("next") ?? "");
+  const callback = new URL("/auth/confirm", await requestOrigin());
+  callback.searchParams.set("flow", "oauth");
+  if (/^[0-9a-f]{64}$/.test(invitation)) {
+    callback.searchParams.set("next", `/${localeValue}/invitations/${invitation}`);
+  } else if (requested) {
+    callback.searchParams.set(
+      "next",
+      getSafeLocaleRedirect(requested, getLocaleDashboardPath(localeValue), localeValue),
+    );
+  } else {
+    // No destination asked for: the callback sends staff to their workspace.
+    callback.searchParams.set("next", getLocaleDashboardPath(localeValue));
+    callback.searchParams.set("home", "1");
+  }
+
+  const supabase = await createServerActionSupabaseClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: callback.toString(), queryParams: { prompt: "select_account" } },
+  });
+  if (error || !data?.url) {
+    console.error("Google sign-in could not start", { status: error?.status, code: error?.code });
+    redirect(`/${localeValue}/auth-error?reason=oauth`);
+  }
+  redirect(data.url);
 }
 
 export async function signInAction(

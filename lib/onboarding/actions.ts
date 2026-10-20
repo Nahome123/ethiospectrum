@@ -16,6 +16,19 @@ function isAppLocale(value: string): value is AppLocale {
   return (routing.locales as readonly string[]).includes(value);
 }
 
+/**
+ * First and last name from sign-up details, or from Google's profile
+ * (given_name / family_name, else the full name split at the first space).
+ */
+function profileNames(metadata: Record<string, unknown>): { firstName: string; lastName: string } {
+  const text = (key: string) => (typeof metadata[key] === "string" ? (metadata[key] as string).trim() : "");
+  if (text("first_name")) return { firstName: text("first_name"), lastName: text("last_name") };
+  if (text("given_name")) return { firstName: text("given_name"), lastName: text("family_name") };
+  const full = text("full_name") || text("name");
+  const [first = "", ...rest] = full.split(/\s+/);
+  return { firstName: first.slice(0, 80), lastName: rest.join(" ").slice(0, 80) };
+}
+
 export async function completeOnboardingAction(
   localeValue: string,
   _previousState: OnboardingActionState,
@@ -48,8 +61,7 @@ export async function completeOnboardingAction(
     return { status: "error", message: t("genericError"), householdName: parsed.data.householdName };
   }
 
-  const firstName = typeof user.user_metadata.first_name === "string" ? user.user_metadata.first_name : "";
-  const lastName = typeof user.user_metadata.last_name === "string" ? user.user_metadata.last_name : "";
+  const { firstName, lastName } = profileNames(user.user_metadata);
   const preferredLocale =
     typeof user.user_metadata.preferred_locale === "string"
       ? user.user_metadata.preferred_locale

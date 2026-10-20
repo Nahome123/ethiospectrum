@@ -86,6 +86,23 @@ describe("onboarding actions", () => {
     expect(mocks.redirect).toHaveBeenCalledWith("/am/dashboard");
   });
 
+  it.each([
+    [{ given_name: "Selam", family_name: "Tadesse", full_name: "Selam Tadesse" }, "Selam", "Tadesse"],
+    [{ full_name: "Selam Mekonnen Tadesse" }, "Selam", "Mekonnen Tadesse"],
+    [{ name: "Selam" }, "Selam", ""],
+  ])("takes the name from a Google profile (%o)", async (metadata, first, last) => {
+    mocks.getUser.mockResolvedValue({ data: { user: { user_metadata: metadata } }, error: null });
+    await completeOnboardingAction(
+      "en",
+      idle,
+      formData({ householdName: "Tadesse family", consentAccepted: "on" }),
+    );
+    expect(mocks.rpc).toHaveBeenCalledWith(
+      "complete_household_onboarding",
+      expect.objectContaining({ raw_first_name: first, raw_last_name: last, raw_preferred_locale: "en" }),
+    );
+  });
+
   it("returns a localized validation error without touching the database when consent is missing", async () => {
     await expect(
       completeOnboardingAction("en", idle, formData({ householdName: "Teshome family" })),

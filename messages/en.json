@@ -639,7 +639,10 @@
     "accountExists": "An account with this email already exists. Log in instead, or reset your password.",
     "weakPassword": "That password is too weak or too common. Choose a longer password that is harder to guess.",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "continueWithGoogle": "Continue with Google",
+    "orUseEmail": "or use your email",
+    "googleSignInFailed": "Google sign-in didn't finish. Please try again, or sign in with your email and password."
   },
   "dashboard": {
     "welcome": "Welcome to your family workspace",

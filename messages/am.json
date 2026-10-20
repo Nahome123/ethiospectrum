@@ -639,7 +639,10 @@
     "accountExists": "በዚህ ኢሜይል መለያ አስቀድሞ አለ። እባክዎ ይግቡ ወይም የይለፍ ቃልዎን ዳግም ያስጀምሩ።",
     "weakPassword": "ይህ የይለፍ ቃል በጣም ደካማ ወይም የተለመደ ነው። ረዘም ያለ እና ለመገመት የሚከብድ የይለፍ ቃል ይምረጡ።",
     "showPassword": "የይለፍ ቃል አሳይ",
-    "hidePassword": "የይለፍ ቃል ደብቅ"
+    "hidePassword": "የይለፍ ቃል ደብቅ",
+    "continueWithGoogle": "በGoogle ይቀጥሉ",
+    "orUseEmail": "ወይም ኢሜይልዎን ይጠቀሙ",
+    "googleSignInFailed": "በGoogle መግባት አልተጠናቀቀም። እባክዎ እንደገና ይሞክሩ፣ ወይም በኢሜይል እና በይለፍ ቃል ይግቡ።"
   },
   "dashboard": {
     "welcome": "ወደ የቤተሰብ የሥራ ቦታዎ እንኳን ደህና መጡ",
