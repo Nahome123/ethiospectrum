@@ -3027,27 +3027,26 @@
   },
   "aboutUs": {
     "eyebrow": "Sobre nosotros",
-    "title": "Conozca a nuestra fundadora",
-    "founderName": "Yamrot",
-    "founderRole": "Fundadora",
-    "founderTitle": "",
-    "founderBio": "",
+    "title": "Conozca a nuestro equipo",
+    "founderName": "Yamrot Bekele",
+    "founderRole": "Proveedora",
+    "founderTitle": "Consultora en desarrollo infantil",
+    "founderBio": "Yamrot Bekele es consultora en desarrollo infantil, residente en desarrollo infantil y profesional de salud pública con formación en epidemiología. Radicada en Las Vegas, y nacida y criada en Etiopía, aporta una perspectiva culturalmente informada al apoyo de niños y familias.\n\nComo exterapeuta ABA e investigadora del desarrollo infantil, a Yamrot le apasiona cerrar las brechas en la investigación sobre el autismo, fortalecer el empoderamiento de los padres y mejorar el acceso a la información y a los servicios de apoyo.\n\nA través de su participación en la comunidad etíope, promueve la conciencia sobre la salud mental y apoya a las familias de niños con necesidades especiales. Su trabajo refleja el compromiso de unir la investigación con orientación práctica para que las familias se sientan informadas, apoyadas y empoderadas.",
     "bioPlaceholder": "Biografía próximamente.",
-    "photoAlt": "Retrato de Yamrot, fundadora de Ethiospectrum",
-    "teamHeading": "Nuestro equipo",
+    "photoAlt": "Retrato de Yamrot Bekele, consultora en desarrollo infantil",
     "namePlaceholder": "Nombre próximamente",
     "memberPhotoAlt": "Retrato de {name}, miembro del equipo de Ethiospectrum",
     "memberPhotoAltUnnamed": "Retrato de un miembro del equipo de Ethiospectrum",
     "team": {
       "second": {
-        "name": "",
-        "title": "",
-        "bio": ""
+        "name": "Milka Abebe",
+        "title": "Candidata a BCBA · Proveedora",
+        "bio": "Milka es Técnica de Conducta Registrada (RBT), candidata a BCBA y Técnica de Apoyo Clínico, y actualmente cursa su maestría en Análisis Aplicado de la Conducta en Buffalo State University. Obtuvo su licenciatura en Ciencias en Promoción de la Salud, con concentración en Principios de Salud Comunitaria, en Daemen University.\n\nA Milka le apasiona ayudar a los niños con autismo a desarrollar habilidades significativas y apoyar a las familias de habla amárica para que comprendan los IEP, los planes de intervención conductual y la terminología de educación especial, de modo que se sientan más informadas y seguras al abogar por sus hijos."
       },
       "third": {
-        "name": "",
-        "title": "",
-        "bio": ""
+        "name": "Yoftahe Mulatu Gebru",
+        "title": "Consultor · Apoyo a padres",
+        "bio": "Yoftahe Mulatu Gebru es el fundador de The Yoftahe Show: Connecting Each Dot, una organización sin fines de lucro enfocada en la comunidad que sirve a la diáspora habesha. Como padre y defensor del autismo, le apasiona crear conciencia, combatir el estigma y ayudar a las familias a sentirse apoyadas y conectadas.\n\nA través de su trabajo, Yoftahe reúne voces de la comunidad y expertos para fomentar conversaciones sobre salud mental, crianza consciente y autismo. Su labor incluye el apoyo a iniciativas como el Joy Autism Center de Etiopía.\n\nCon la gira anual Road 2 Healing (TR2H), crea oportunidades para que comunidades de las principales ciudades de EE. UU. se reúnan en paneles en vivo, talleres y encuentros significativos. Su misión es fomentar la comprensión y crear espacios donde las personas y las familias se sientan escuchadas, valoradas y empoderadas."
       }
     }
   }

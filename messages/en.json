@@ -3027,27 +3027,26 @@
   },
   "aboutUs": {
     "eyebrow": "About us",
-    "title": "Meet our founder",
-    "founderName": "Yamrot",
-    "founderRole": "Founder",
-    "founderTitle": "",
-    "founderBio": "",
+    "title": "Meet our team",
+    "founderName": "Yamrot Bekele",
+    "founderRole": "Provider",
+    "founderTitle": "Child Development Consultant",
+    "founderBio": "Yamrot Bekele is a child development consultant, child development resident, and public health professional with a background in epidemiology. Based in Las Vegas and born and raised in Ethiopia, she brings a culturally informed perspective to supporting children and families.\n\nAs a former ABA therapist and child development researcher, Yamrot is passionate about addressing gaps in autism research, strengthening parent empowerment, and improving access to information and support services.\n\nThrough her involvement in the Ethiopian community, she advocates for mental health awareness and supports families of children with special needs. Her work reflects a commitment to connecting research with practical guidance so families feel informed, supported, and empowered.",
     "bioPlaceholder": "Bio coming soon.",
-    "photoAlt": "Portrait of Yamrot, founder of Ethiospectrum",
-    "teamHeading": "Our team",
+    "photoAlt": "Portrait of Yamrot Bekele, child development consultant",
     "namePlaceholder": "Name coming soon",
     "memberPhotoAlt": "Portrait of {name}, Ethiospectrum team member",
     "memberPhotoAltUnnamed": "Portrait of an Ethiospectrum team member",
     "team": {
       "second": {
-        "name": "",
-        "title": "",
-        "bio": ""
+        "name": "Milka Abebe",
+        "title": "BCBA Candidate · Provider",
+        "bio": "Milka is a Registered Behavior Technician, BCBA candidate, and Clinical Support Technician currently pursuing her Master’s degree in Applied Behavior Analysis at Buffalo State University. She earned her Bachelor of Science in Health Promotion, with a concentration in Community Health Principles, from Daemen University.\n\nMilka is passionate about helping children with autism develop meaningful skills and supporting Amharic-speaking families in understanding IEPs, behavior intervention plans, and special education terminology so they can feel more informed and confident advocating for their children."
       },
       "third": {
-        "name": "",
-        "title": "",
-        "bio": ""
+        "name": "Yoftahe Mulatu Gebru",
+        "title": "Consultant · Parent Support",
+        "bio": "Yoftahe Mulatu Gebru is the founder of The Yoftahe Show: Connecting Each Dot, a community-focused nonprofit serving the Habesha diaspora. As a parent and autism advocate, he is passionate about raising awareness, challenging stigma, and helping families feel supported and connected.\n\nThrough his work, Yoftahe brings together community voices and experts to encourage conversations about mental health, conscious parenting, and autism. His advocacy includes supporting initiatives such as Ethiopia’s Joy Autism Center.\n\nThrough the annual Road 2 Healing (TR2H) Tour, he creates opportunities for communities across major U.S. cities to gather for live panels, workshops, and meaningful connections. His mission is to build understanding and create spaces where individuals and families feel heard, valued, and empowered."
       }
     }
   }

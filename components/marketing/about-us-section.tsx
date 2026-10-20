@@ -9,8 +9,19 @@ const teamMembers = [
   { key: "third", photo: thirdMemberPhoto },
 ] as const;
 
+/** A bio may hold several paragraphs, separated by blank lines. */
+function Bio({ className, text }: { className: string; text: string }) {
+  return (
+    <div className={`space-y-4 ${className}`}>
+      {text.split(/\n\s*\n/).map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+    </div>
+  );
+}
+
 /**
- * About Us: the founder, then the rest of the team. Empty titles are not
+ * About Us: Yamrot first, then the rest of the team. Empty titles are not
  * shown; an empty name or bio shows a "coming soon" placeholder.
  */
 export async function AboutUsSection() {
@@ -49,17 +60,15 @@ export async function AboutUsSection() {
               {t("founderRole")}
             </p>
           </div>
-          <p
+          <Bio
             className={`mt-6 text-lg leading-8 ${bio ? "text-muted-foreground" : "italic text-muted-foreground/80"}`}
-          >
-            {bio || t("bioPlaceholder")}
-          </p>
+            text={bio || t("bioPlaceholder")}
+          />
         </div>
       </div>
 
       <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h3 className="text-2xl font-bold tracking-tight text-foreground">{t("teamHeading")}</h3>
-        <ul className="mt-8 grid gap-10 sm:grid-cols-2">
+        <ul className="grid gap-12 lg:grid-cols-2">
           {teamMembers.map(({ key, photo }) => {
             const name = t(`team.${key}.name`).trim();
             const memberTitle = t(`team.${key}.title`).trim();
@@ -84,11 +93,10 @@ export async function AboutUsSection() {
                     </p>
                     {memberTitle ? <p className="mt-1 font-semibold text-link">{memberTitle}</p> : null}
                   </div>
-                  <p
+                  <Bio
                     className={`mt-4 leading-7 ${memberBio ? "text-muted-foreground" : "italic text-muted-foreground/80"}`}
-                  >
-                    {memberBio || t("bioPlaceholder")}
-                  </p>
+                    text={memberBio || t("bioPlaceholder")}
+                  />
                 </div>
               </li>
             );
