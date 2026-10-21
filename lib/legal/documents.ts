@@ -32,7 +32,7 @@ export const termsOfUse: LegalDocument = {
         `"Ethiospectrum", "we" and "us" mean ${ENTITY}. "You" means the person who uses the service. If you use Ethiospectrum on behalf of a child or another person in your care, "you" includes both you and the person you act for.`,
         "Ethiospectrum is an online service, available in English, Amharic and Spanish, that helps families supporting a neurodivergent child. It lets you:",
         [
-          "keep a household account and invite caregivers with the permissions you choose;",
+          "keep a household account for your family;",
           "add your dependents and keep their information and documents in one place;",
           "request a consultation or IEP language assistance from an Ethiospectrum specialist, choose a time, and pay for it;",
           "subscribe to RBT Boot Camp training and track learning progress;",
@@ -59,19 +59,18 @@ export const termsOfUse: LegalDocument = {
     },
     {
       id: "accounts",
-      title: "4. Accounts, households and security",
+      title: "4. Accounts and security",
       blocks: [
         "You need an account to use most of the Services. Give us accurate information and keep it up to date. Keep your password private, and tell us right away at " +
           CONTACT_EMAIL +
           " if you think someone has used your account without permission. You are responsible for activity under your account.",
-        "The household owner can invite caregivers and decide what each one may see and do. If you invite someone, you are responsible for choosing their permissions and for removing access they should no longer have.",
       ],
     },
     {
       id: "eligibility",
       title: "5. Who can use Ethiospectrum",
       blocks: [
-        "You must be at least 18 years old and able to enter into a binding agreement to create an account. Children do not have their own accounts; a parent, guardian or authorized caregiver adds them as dependents.",
+        "You must be at least 18 years old and able to enter into a binding agreement to create an account. Children do not have their own accounts; a parent or guardian adds them as dependents.",
         "Only add information about a child or another person if you are their parent or legal guardian, or are otherwise allowed to share it and to make decisions about the services they receive.",
       ],
     },
@@ -96,7 +95,7 @@ export const termsOfUse: LegalDocument = {
       id: "your-content",
       title: "7. Your content",
       blocks: [
-        'You keep ownership of the information and documents you add ("your content"). You give Ethiospectrum permission to store, process, display and share your content only as needed to provide the Services to you, for example to show a document to the specialist assigned to your request or to people in your household with access.',
+        'You keep ownership of the information and documents you add ("your content"). You give Ethiospectrum permission to store, process, display and share your content only as needed to provide the Services to you, for example to show a document to the specialist assigned to your request.',
         "You confirm that you have the right to share your content, that it is accurate to the best of your knowledge, and that sharing it does not break any law or anyone else's rights. We do not sell your content.",
       ],
     },
@@ -216,7 +215,7 @@ export const privacyPolicy: LegalDocument = {
         "Information you give us:",
         [
           "Account details: your name, email address, preferred language and, if you add it, your phone number. Your password is handled by our authentication provider and is never visible to us.",
-          "Household details: the people you invite and the permissions you give them.",
+          "Household details: your household's name and contact details.",
           "Dependent details: your child's name, birth year, languages, service needs and other notes you choose to add.",
           "Documents you upload, such as IEPs, school letters or evaluations.",
           "Service requests: what you need help with, the times you choose, messages, and notes from your specialist.",
@@ -236,7 +235,7 @@ export const privacyPolicy: LegalDocument = {
       title: "3. How we use information",
       blocks: [
         [
-          "to provide the Services: run your household, show your child's information to the people you allow, match and schedule specialists, and deliver training;",
+          "to provide the Services: run your household account, match and schedule specialists, and deliver training;",
           "to take payments, issue refunds and manage subscriptions;",
           "to send notifications, receipts, reminders and important notices;",
           "to keep the Services secure, prevent misuse, and fix problems;",
@@ -251,7 +250,7 @@ export const privacyPolicy: LegalDocument = {
       title: "4. Who can see your information",
       blocks: [
         [
-          "People in your household, according to the permissions the household owner sets.",
+          "You, through your household account.",
           "The specialist assigned to a request, who sees the information and documents attached to that request.",
           "A small number of Ethiospectrum administrators, who need access to review requests, assign specialists, handle billing and provide support. Administrative actions are logged.",
           "Service providers that run parts of Ethiospectrum for us, under contracts that limit how they use your information: Supabase (accounts, database and file storage), Vercel (website hosting), Stripe (payments) and Resend (email delivery).",
@@ -263,7 +262,7 @@ export const privacyPolicy: LegalDocument = {
       id: "children",
       title: "5. Children's information",
       blocks: [
-        "Ethiospectrum is for parents, guardians and caregivers. Children do not create accounts; information about a child is provided by an adult who is allowed to share it. If you believe a child's information was added without permission, contact us and we will review and, where appropriate, delete it.",
+        "Ethiospectrum is for parents and guardians. Children do not create accounts; information about a child is provided by an adult who is allowed to share it. If you believe a child's information was added without permission, contact us and we will review and, where appropriate, delete it.",
       ],
     },
     {
@@ -278,7 +277,7 @@ export const privacyPolicy: LegalDocument = {
       title: "7. Keeping and deleting information",
       blocks: [
         "We keep your information while your account is open. You can edit or remove dependents and documents in the app.",
-        `To delete your account and your household's information, email ${CONTACT_EMAIL}. An administrator will remove your household, its members' access, dependents, documents, requests and training progress. We keep payment records and a minimal record of the deletion where the law or legitimate business needs (such as tax and accounting) require it. Backups are overwritten on a regular cycle [CONFIRM BACKUP PERIOD].`,
+        `To delete your account and your household's information, email ${CONTACT_EMAIL}. An administrator will remove your household, dependents, documents, requests and training progress. We keep payment records and a minimal record of the deletion where the law or legitimate business needs (such as tax and accounting) require it. Backups are overwritten on a regular cycle [CONFIRM BACKUP PERIOD].`,
       ],
     },
     {

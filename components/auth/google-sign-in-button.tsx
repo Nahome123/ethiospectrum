@@ -44,21 +44,12 @@ function SubmitButton({ label }: { label: string }) {
 }
 
 /** "Continue with Google" for both sign-in and sign-up. */
-export function GoogleSignInButton({
-  invitation,
-  locale,
-  next,
-}: {
-  invitation?: string;
-  locale: AppLocale;
-  next?: string;
-}) {
+export function GoogleSignInButton({ locale, next }: { locale: AppLocale; next?: string }) {
   const t = useTranslations("authentication");
   return (
     <div className="space-y-4">
       <form action={signInWithGoogleAction.bind(null, locale)}>
         {next ? <input name="next" type="hidden" value={next} /> : null}
-        {invitation ? <input name="invitation" type="hidden" value={invitation} /> : null}
         <SubmitButton label={t("continueWithGoogle")} />
       </form>
       <div className="flex items-center gap-3 text-sm text-muted-foreground">

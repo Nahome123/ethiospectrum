@@ -58,14 +58,8 @@ function Panel({
   );
 }
 
-export default async function DashboardPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const [{ locale: localeValue }, search] = await Promise.all([params, searchParams]);
+export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: localeValue } = await params;
   const locale = localeValue as AppLocale;
   const t = await getTranslations({ locale, namespace: "customerDashboard" });
   const types = await getTranslations({ locale, namespace: "services.types" });
@@ -79,7 +73,6 @@ export default async function DashboardPage({
           <HousePlus aria-hidden="true" className="size-9 text-link" />
           <h1 className="mt-5 text-3xl font-bold tracking-tight">{onboardingT("title")}</h1>
           <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">{onboardingT("description")}</p>
-          <p className="mt-3 text-sm text-muted-foreground">{t("caregiverHint")}</p>
           <div className="mt-8">
             <OnboardingForm locale={locale} />
           </div>
@@ -121,14 +114,6 @@ export default async function DashboardPage({
           </Link>
         ) : null}
       </div>
-      {search.joined === "1" ? (
-        <p
-          className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900"
-          role="status"
-        >
-          {t("joinedHousehold", { household: access.household.name })}
-        </p>
-      ) : null}
 
       {pendingPayments.length > 0 ? (
         <section

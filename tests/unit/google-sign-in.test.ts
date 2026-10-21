@@ -65,11 +65,10 @@ describe("Continue with Google", () => {
     );
   });
 
-  it("returns an invited caregiver to the invitation", async () => {
-    const token = "a".repeat(64);
-    const callback = await startGoogle({ invitation: token });
-    expect(callback.searchParams.get("next")).toBe(`/am/invitations/${token}`);
-    expect(callback.searchParams.get("home")).toBeNull();
+  it("ignores an old invitation token and goes to the dashboard", async () => {
+    const callback = await startGoogle({ invitation: "a".repeat(64) });
+    expect(callback.searchParams.get("next")).toBe("/am/dashboard");
+    expect(callback.searchParams.get("home")).toBe("1");
   });
 
   it("keeps a safe requested destination and drops an unsafe one", async () => {

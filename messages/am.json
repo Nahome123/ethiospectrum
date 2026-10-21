@@ -583,10 +583,6 @@
   "authentication": {
     "loginTitle": "እንኳን ደህና መጡ",
     "loginDescription": "ወደ የቤተሰብ የሥራ ቦታዎ ለመመለስ ይግቡ።",
-    "adminLoginTitle": "የአስተዳዳሪ መግቢያ",
-    "adminLoginDescription": "በተፈቀደ የአስተዳዳሪ መለያዎ ይግቡ።",
-    "adminLogin": "ወደ አስተዳዳሪ ክፍል ይግቡ",
-    "adminLoginHint": "ይህ መግቢያ ለተፈቀደላቸው አስተዳዳሪዎች ብቻ ነው።",
     "signupTitle": "መለያዎን ይፍጠሩ",
     "signupDescription": "የግል የሥራ ቦታዎን ለመጠቀም መለያ ይፍጠሩ።",
     "email": "የኢሜይል አድራሻ",
@@ -634,7 +630,6 @@
     "haveAccount": "መለያ አለዎት?",
     "needAccount": "መለያ ይፈልጋሉ?",
     "backToLogin": "ወደ መግቢያ ተመለስ",
-    "signupCaregiverDescription": "የቤተሰቡ ባለቤት በጋበዘው የኢሜይል አድራሻ የተንከባካቢ መለያዎን ይፍጠሩ። ኢሜይልዎን ካረጋገጡ በኋላ ቤተሰባቸውን ይቀላቀላሉ።",
     "roleChangedNotice": "ሚናዎ ተቀይሯል። በአዲሱ ፈቃድዎ ለመቀጠል እባክዎ እንደገና ይግቡ።",
     "accountExists": "በዚህ ኢሜይል መለያ አስቀድሞ አለ። እባክዎ ይግቡ ወይም የይለፍ ቃልዎን ዳግም ያስጀምሩ።",
     "weakPassword": "ይህ የይለፍ ቃል በጣም ደካማ ወይም የተለመደ ነው። ረዘም ያለ እና ለመገመት የሚከብድ የይለፍ ቃል ይምረጡ።",
@@ -727,7 +722,7 @@
     "title": "ቤተሰብዎን ያዘጋጁ",
     "description": "የቤተሰብዎን የሥራ ቦታ ስም ይስጡ እና Ethiospectrum እርስዎ ለማስቀመጥ የመረጡትን መረጃ እንዴት እንደሚይዝ ያረጋግጡ።",
     "householdNameLabel": "የቤተሰብ ስም",
-    "householdNameHelp": "ይህ ስም የቤተሰብዎን የሥራ ቦታ ለተጋበዙ አባላት ይለያል። እስከ 160 ቁምፊዎች ይጠቀሙ።",
+    "householdNameHelp": "ይህ ስም የቤተሰብዎን የሥራ ቦታ ይለያል። እስከ 160 ፊደላት ይጠቀሙ።",
     "householdNameError": "እስከ 160 ቁምፊዎች የሆነ የቤተሰብ ስም ያስገቡ።",
     "consentNotice": "Ethiospectrum የቤተሰብዎን መረጃ ለማደራጀት እርስዎ የሚያቀርቡትን የቤተሰብ ዝርዝሮች ያስቀምጣል። መዳረሻ ለቤተሰብዎ አባላት ብቻ የተገደበ ነው፣ እና በማንኛውም ጊዜ ስረዛ መጠየቅ ይችላሉ።",
     "consentLabel": "እነዚህ የቤተሰብ ዝርዝሮች እንዲቀመጡ እስማማለሁ።",
@@ -1390,7 +1385,7 @@
     "sending": "በመላክ ላይ…",
     "responseAdded": "ምላሽ ታክሏል።",
     "specialistResponseLabel": "ባለሙያ",
-    "caregiverMessageLabel": "ተንከባካቢ",
+    "caregiverMessageLabel": "ቤተሰብ",
     "accessRemoved": "መዳረሻ ተወግዷል",
     "accessRemovedDescription": "ከእንግዲህ የዚህ ጥያቄ መዳረሻ የለዎትም። እንደገና ተመድቦ፣ ተዘግቶ ወይም ተሰርዞ ሊሆን ይችላል።",
     "validationError": "እባክዎ የተመለከቱትን መስኮች ይገምግሙ።",
@@ -1599,7 +1594,7 @@
     },
     "errors": {
       "validation": "የክፍያ ምርጫውን ያረጋግጡ እና እንደገና ይሞክሩ።",
-      "ownerRequired": "ምዝገባውን ማስተዳደር የሚችሉት የቤተሰቡ ባለቤት ወይም የተፈቀደለት ተንከባካቢ ብቻ ናቸው።",
+      "ownerRequired": "ምዝገባውን ማስተዳደር የሚችለው የቤተሰብ መለያው ባለቤት ብቻ ነው።",
       "adminRequired": "የአስተዳዳሪ መዳረሻ ያስፈልጋል።",
       "checkout": "Checkout መጀመር አልተቻለም። እንደገና ይሞክሩ።",
       "portal": "የክፍያ ፖርታል መክፈት አልተቻለም።",
@@ -2377,7 +2372,7 @@
     },
     "usersPage": {
       "title": "ተጠቃሚዎች እና ሚናዎች",
-      "description": "የቤተሰብ ባለቤቶች እና ተንከባካቢዎች ራሳቸው ይመዘገባሉ። ሠራተኞችን ወደ ባለሙያ ወይም አስተዳዳሪ እዚህ ያሳድጉ።",
+      "description": "ቤተሰቦች ራሳቸው ይመዘገባሉ። ሠራተኞችን እዚህ ወደ ባለሙያ ወይም አስተዳዳሪ ያሳድጉ።",
       "search": "ፈልግ",
       "searchPlaceholder": "ስም ወይም ኢሜይል",
       "searchAction": "ፈልግ",
@@ -2390,7 +2385,7 @@
       },
       "householdRoles": {
         "owner": "የቤተሰብ ባለቤት",
-        "member": "ተንከባካቢ",
+        "member": "የቤተሰብ አባል",
         "administrator": "የቤተሰብ አስተዳዳሪ",
         "viewer": "ተመልካች"
       },
@@ -2441,8 +2436,8 @@
         "subscription": "ይህ ቤተሰብ ንቁ የRBT ቡት ካምፕ ምዝገባ አለው። ያለ ተመላሽ ወዲያውኑ ይሰረዛል።",
         "stripeCustomer": "የተቀመጡ ካርዶችን ጨምሮ የStripe ደንበኛቸው ይሰረዛል።",
         "refunds": "{count, plural, one {# ተመላሽ} other {# ተመላሾች}} ገና ክፍት ናቸው። ገንዘብ የሚገባ ከሆነ መጀመሪያ በክፍያዎች ውስጥ ያስተናግዱ።",
-        "caregivers": "{count, plural, one {# ተንከባካቢ} other {# ተንከባካቢዎች}} የዚህን ቤተሰብ መዳረሻ ያጣሉ። የራሳቸው መለያዎች ይቆያሉ።",
-        "caregiverOf": "በእነዚህ ቤተሰቦች ውስጥ ተንከባካቢ ናቸው፡ {households}። እነዚያ ቤተሰቦች ይቆያሉ።",
+        "caregivers": "{count, plural, one {# ሌላ የቤተሰብ አባል} other {# ሌሎች የቤተሰብ አባላት}} የዚህን ቤተሰብ መዳረሻ ያጣሉ። የራሳቸው መለያዎች ይቆያሉ።",
+        "caregiverOf": "እንዲሁም የሚከተሉት አባል ናቸው፦ {households}። እነዚያ ቤተሰቦች ይቆያሉ።",
         "specialist": "ባለሙያ ናቸው። ያለፉ ጥያቄዎች ማን እንደተመደበ እንዲያሳዩ የባለሙያ መዝገባቸው ያለ ስማቸው ይቆያል።"
       },
       "permanent": "ይህ ዘላቂ ነው እና ሊቀለበስ አይችልም።",
@@ -2578,9 +2573,7 @@
   "customerDashboard": {
     "welcome": "እንኳን ደህና መጡ",
     "intro": "የRBT ቡት ካምፕ እድገትዎ፣ የአገልግሎት ጥያቄዎችዎ እና መጪ ቀጠሮዎችዎ በአንድ ቦታ።",
-    "caregiverHint": "እንደ ተንከባካቢ ተጋብዘዋል? ያንን ቤተሰብ ለመቀላቀል ከኢሜይልዎ የግብዣ ሊንኩን ይክፈቱ።",
     "requestService": "አገልግሎት ይጠይቁ",
-    "joinedHousehold": "{household}ን ተቀላቅለዋል።",
     "pendingPayments": "{count, plural, one {# ጥያቄ} other {# ጥያቄዎች}} ክፍያ በመጠባበቅ ላይ",
     "payNow": "አሁን ይክፈሉ",
     "retryPayment": "ክፍያውን እንደገና ይሞክሩ",
@@ -2660,7 +2653,7 @@
   },
   "household": {
     "title": "ቤተሰብ",
-    "description": "ቤተሰብዎ አንድ ባለቤት አለው፤ አንድ ተንከባካቢም ማከል ይችላል። ልጆች እና የአገልግሎት ጥያቄዎች በሁለቱም ይጋራሉ።",
+    "description": "Ethiospectrum እርስዎን ለማግኘት የሚጠቀምበት የቤተሰብዎ ስም እና የመገናኛ መረጃ።",
     "noHousehold": "እስካሁን የቤተሰብ አባል አይደሉም።",
     "details": "የቤተሰብ ዝርዝሮች",
     "name": "የቤተሰብ ስም",
@@ -2668,82 +2661,15 @@
     "contactEmail": "የመገናኛ ኢሜይል",
     "contactNotes": "የመገናኛ ማስታወሻዎች",
     "contactHelp": "ቀጠሮዎችን ለማቀናጀት ከተመደበው ባለሙያ እና ከEthiospectrum አስተዳዳሪዎች ጋር ይጋራል።",
-    "yourRole": "የእርስዎ ሚና",
     "save": "አስቀምጥ",
     "saving": "በማስቀመጥ ላይ…",
-    "sending": "በመላክ ላይ…",
-    "people": "ሰዎች",
-    "peopleHelp": "ባለቤቱ ክፍያን እና የቤተሰብ ቅንብሮችን ያስተዳድራል። ተንከባካቢው ባለቤቱ የፈቀደውን ማድረግ ይችላል።",
-    "you": "እርስዎ",
-    "owner": "የቤተሰብ ባለቤት",
-    "caregiver": "ተንከባካቢ",
-    "permissionsLegend": "የተንከባካቢ ፈቃዶች",
-    "permissions": {
-      "submit_requests": {
-        "label": "አገልግሎቶችን መጠየቅ",
-        "help": "የአገልግሎት ጥያቄዎችን ማስገባት፣ ስለእነሱ መልእክት መላክ እና መሰረዝ።"
-      },
-      "confirm_appointments": {
-        "label": "ቀጠሮዎችን ማረጋገጥ",
-        "help": "ማረጋገጥ፣ ማሸጋሸግ ወይም ሌሎች ጊዜዎችን መጠየቅ።"
-      },
-      "make_payments": {
-        "label": "ክፍያ መፈጸም",
-        "help": "ለምክክር እና ለIEP የቋንቋ ድጋፍ መክፈል።"
-      },
-      "access_training": {
-        "label": "የRBT ስልጠናን መጠቀም",
-        "help": "ስልጠናውን መመልከት እና እድገትን መከታተል።"
-      },
-      "upload_documents": {
-        "label": "ሰነዶችን መጫን",
-        "help": "IEP እና ደጋፊ ሰነዶችን ወደ ጥያቄዎች ማከል።"
-      },
-      "manage_subscription": {
-        "label": "ምዝገባውን ማስተዳደር",
-        "help": "የRBT ቡት ካምፕ ምዝገባን መጀመር ወይም ማስተዳደር።"
-      }
-    },
-    "noPermissions": "ተጨማሪ ፈቃዶች የሉም",
-    "savePermissions": "ፈቃዶችን አስቀምጥ",
-    "permissionsSaved": "ፈቃዶች ተቀምጠዋል።",
-    "removeCaregiver": "ተንከባካቢውን አስወግድ",
-    "removeConfirm": "ይህን ተንከባካቢ ያስወግዱ? ወዲያውኑ መዳረሻቸውን ያጣሉ።",
-    "caregiverRemoved": "ተንከባካቢው ተወግዷል።",
-    "inviteTitle": "ተንከባካቢ ይጋብዙ",
-    "caregiverLimit": "ቤተሰብዎ ቀድሞውኑ ተንከባካቢ አለው። ሌላ ሰው ለመጋበዝ ያስወግዷቸው።",
-    "inviteHelp": "በ7 ቀናት ውስጥ የሚያልፍ የግብዣ ሊንክ በኢሜይል እንልካለን። ሊንኩን ቀድተው ራስዎ ማጋራትም ይችላሉ።",
-    "caregiverEmail": "የተንከባካቢው ኢሜይል",
-    "sendInvite": "ግብዣ ይላኩ",
-    "inviteSent": "ግብዣው ተፈጥሯል። ኢሜይሉ ካልደረሰ ይህን ሊንክ ያጋሩ፦",
-    "pendingInvitation": "ግብዣ ወደ {email} ተልኳል። {date} ያልፋል።",
-    "revokeInvitation": "ግብዣውን ሰርዝ",
-    "revokeConfirm": "ይህን ግብዣ ይሰርዙ?",
-    "inviteRevoked": "ግብዣው ተሰርዟል።",
     "contactSaved": "የቤተሰብ ዝርዝሮች ተቀምጠዋል።",
     "profileSaved": "መገለጫዎ ተቀምጧል።",
     "errors": {
       "denied": "ይህንን ማድረግ የሚችለው የቤተሰቡ ባለቤት ብቻ ነው።",
-      "limit": "አንድ ቤተሰብ አንድ ባለቤት እና አንድ ተንከባካቢ፣ በአንድ ጊዜ አንድ በመጠባበቅ ላይ ያለ ግብዣ ሊኖረው ይችላል።",
       "state": "ያ ከአሁን በኋላ አይቻልም። ገጹን ያድሱ።",
       "validation": "መረጃውን አረጋግጠው እንደገና ይሞክሩ።",
-      "generic": "የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
-      "wrongAccount": "ግብዣው በተላከበት የኢሜይል አድራሻ ይግቡ።",
-      "alreadyInHousehold": "ይህ መለያ ቀድሞውኑ የቤተሰብ አባል ነው።",
-      "invitationUnavailable": "ይህ ግብዣ ጊዜው አልፏል፣ ተሰርዟል ወይም ጥቅም ላይ ውሏል።"
-    },
-    "invitation": {
-      "title": "የተንከባካቢ ግብዣ",
-      "invalid": "ይህ የግብዣ ሊንክ ትክክል አይደለም።",
-      "signedOutDescription": "በEthiospectrum ላይ ቤተሰብን እንደ ተንከባካቢ እንዲቀላቀሉ ተጋብዘዋል። ለመቀበል መለያ ይፍጠሩ ወይም በተጋበዘው ኢሜይል ይግቡ።",
-      "createAccount": "መለያ ይፍጠሩ",
-      "signIn": "ይግቡ",
-      "alreadyAccepted": "ይህ ግብዣ ቀድሞውኑ ተቀባይነት አግኝቷል።",
-      "unavailable": "ይህ ግብዣ ጊዜው አልፏል ወይም ከአሁን በኋላ አይገኝም። ከቤተሰቡ ባለቤት አዲስ ይጠይቁ።",
-      "description": "{household}ን እንደ ተንከባካቢ እንዲቀላቀሉ ተጋብዘዋል።",
-      "emailNotice": "ግብዣ ለ{email} · {date} ያልፋል",
-      "accept": "ግብዣውን ተቀበል",
-      "accepting": "በመቀላቀል ላይ…"
+      "generic": "የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።"
     }
   },
   "settings": {

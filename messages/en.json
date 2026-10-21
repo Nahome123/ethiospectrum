@@ -583,10 +583,6 @@
   "authentication": {
     "loginTitle": "Welcome back",
     "loginDescription": "Sign in to return to your family workspace.",
-    "adminLoginTitle": "Administrator sign in",
-    "adminLoginDescription": "Sign in with your authorized administrator account.",
-    "adminLogin": "Sign in to the admin area",
-    "adminLoginHint": "This access is available only to authorized administrators.",
     "signupTitle": "Create your account",
     "signupDescription": "Create an account to begin using your private workspace.",
     "email": "Email address",
@@ -634,7 +630,6 @@
     "haveAccount": "Already have an account?",
     "needAccount": "Need an account?",
     "backToLogin": "Back to sign in",
-    "signupCaregiverDescription": "Create your caregiver account with the email address the household owner invited. After confirming your email you'll join their household.",
     "roleChangedNotice": "Your role was changed. Please sign in again to continue with your new access.",
     "accountExists": "An account with this email already exists. Log in instead, or reset your password.",
     "weakPassword": "That password is too weak or too common. Choose a longer password that is harder to guess.",
@@ -727,7 +722,7 @@
     "title": "Set up your household",
     "description": "Name your family workspace and confirm how Ethiospectrum handles the information you choose to store.",
     "householdNameLabel": "Household name",
-    "householdNameHelp": "This name identifies your family workspace to invited members. Use up to 160 characters.",
+    "householdNameHelp": "This name identifies your family workspace. Use up to 160 characters.",
     "householdNameError": "Enter a household name of up to 160 characters.",
     "consentNotice": "Ethiospectrum stores the household details you provide to organize your family's information. Access is limited to your household members, and you can request deletion at any time.",
     "consentLabel": "I agree to the storage of these household details.",
@@ -1390,7 +1385,7 @@
     "sending": "Sending…",
     "responseAdded": "Response added.",
     "specialistResponseLabel": "Specialist",
-    "caregiverMessageLabel": "Caregiver",
+    "caregiverMessageLabel": "Family",
     "accessRemoved": "Access removed",
     "accessRemovedDescription": "You no longer have access to this request. It may have been reassigned, closed, or cancelled.",
     "validationError": "Please review the highlighted fields.",
@@ -1599,7 +1594,7 @@
     },
     "errors": {
       "validation": "Check the billing selection and try again.",
-      "ownerRequired": "Only the household owner or an authorized caregiver can manage the subscription.",
+      "ownerRequired": "Only the household account holder can manage the subscription.",
       "adminRequired": "Administrator access is required.",
       "checkout": "Unable to start checkout. Try again.",
       "portal": "Unable to open the billing portal. Try again.",
@@ -2377,7 +2372,7 @@
     },
     "usersPage": {
       "title": "Users and roles",
-      "description": "Household owners and caregivers register themselves. Promote staff to specialist or administrator here.",
+      "description": "Households register themselves. Promote staff to specialist or administrator here.",
       "search": "Search",
       "searchPlaceholder": "Name or email",
       "searchAction": "Search",
@@ -2390,7 +2385,7 @@
       },
       "householdRoles": {
         "owner": "Household owner",
-        "member": "Caregiver",
+        "member": "Household member",
         "administrator": "Household administrator",
         "viewer": "Viewer"
       },
@@ -2441,8 +2436,8 @@
         "subscription": "This household has an active RBT Boot Camp subscription. It will be canceled immediately with no refund.",
         "stripeCustomer": "Their Stripe customer, including saved cards, will be deleted.",
         "refunds": "{count, plural, one {# refund is} other {# refunds are}} still open. Process them in Payments first if money is owed.",
-        "caregivers": "{count, plural, one {# caregiver} other {# caregivers}} will lose access to this household. Their own accounts stay.",
-        "caregiverOf": "They are a caregiver in: {households}. Those households stay.",
+        "caregivers": "{count, plural, one {# other household member} other {# other household members}} will lose access to this household. Their own accounts stay.",
+        "caregiverOf": "They also belong to: {households}. Those households stay.",
         "specialist": "They are a specialist. Their specialist record stays, without their name, so past requests still show who was assigned."
       },
       "permanent": "This is permanent and cannot be undone.",
@@ -2578,9 +2573,7 @@
   "customerDashboard": {
     "welcome": "Welcome back",
     "intro": "Your RBT Boot Camp progress, service requests, and upcoming appointments in one place.",
-    "caregiverHint": "Were you invited as a caregiver? Open the invitation link from your email to join that household instead.",
     "requestService": "Request a service",
-    "joinedHousehold": "You joined {household}.",
     "pendingPayments": "{count, plural, one {# request is} other {# requests are}} waiting for payment",
     "payNow": "Pay now",
     "retryPayment": "Retry payment",
@@ -2660,7 +2653,7 @@
   },
   "household": {
     "title": "Household",
-    "description": "Your household has one owner and may add one caregiver. Children and service requests are shared by both.",
+    "description": "Your household's name and contact details, used by Ethiospectrum to reach you.",
     "noHousehold": "You are not part of a household yet.",
     "details": "Household details",
     "name": "Household name",
@@ -2668,82 +2661,15 @@
     "contactEmail": "Contact email",
     "contactNotes": "Contact notes",
     "contactHelp": "Shared with the assigned specialist and Ethiospectrum administrators to coordinate appointments.",
-    "yourRole": "Your role",
     "save": "Save",
     "saving": "Saving…",
-    "sending": "Sending…",
-    "people": "People",
-    "peopleHelp": "The owner manages billing and household settings. The caregiver can do what the owner allows.",
-    "you": "you",
-    "owner": "Household owner",
-    "caregiver": "Caregiver",
-    "permissionsLegend": "Caregiver permissions",
-    "permissions": {
-      "submit_requests": {
-        "label": "Request services",
-        "help": "Submit, message about, and cancel service requests."
-      },
-      "confirm_appointments": {
-        "label": "Confirm appointments",
-        "help": "Confirm, reschedule, or ask for other times."
-      },
-      "make_payments": {
-        "label": "Make payments",
-        "help": "Pay for consultations and IEP language assistance."
-      },
-      "access_training": {
-        "label": "Access RBT training",
-        "help": "Watch training and track progress."
-      },
-      "upload_documents": {
-        "label": "Upload documents",
-        "help": "Add IEP and supporting documents to requests."
-      },
-      "manage_subscription": {
-        "label": "Manage the subscription",
-        "help": "Start or manage the RBT Boot Camp subscription."
-      }
-    },
-    "noPermissions": "No additional permissions",
-    "savePermissions": "Save permissions",
-    "permissionsSaved": "Permissions saved.",
-    "removeCaregiver": "Remove caregiver",
-    "removeConfirm": "Remove this caregiver? They lose access immediately.",
-    "caregiverRemoved": "The caregiver was removed.",
-    "inviteTitle": "Invite a caregiver",
-    "caregiverLimit": "Your household already has a caregiver. Remove them to invite someone else.",
-    "inviteHelp": "We'll email an invitation link that expires in 7 days. You can also copy the link and share it yourself.",
-    "caregiverEmail": "Caregiver email",
-    "sendInvite": "Send invitation",
-    "inviteSent": "Invitation created. Share this link if the email doesn't arrive:",
-    "pendingInvitation": "Invitation sent to {email}. It expires {date}.",
-    "revokeInvitation": "Revoke invitation",
-    "revokeConfirm": "Revoke this invitation?",
-    "inviteRevoked": "The invitation was revoked.",
     "contactSaved": "Household details saved.",
     "profileSaved": "Your profile was saved.",
     "errors": {
       "denied": "Only the household owner can do that.",
-      "limit": "A household can have one owner and one caregiver, with one pending invitation at a time.",
       "state": "That is no longer possible. Refresh the page.",
       "validation": "Check the information and try again.",
-      "generic": "Something went wrong. Please try again.",
-      "wrongAccount": "Sign in with the email address the invitation was sent to.",
-      "alreadyInHousehold": "This account already belongs to a household.",
-      "invitationUnavailable": "This invitation has expired, was revoked, or was already used."
-    },
-    "invitation": {
-      "title": "Caregiver invitation",
-      "invalid": "This invitation link is not valid.",
-      "signedOutDescription": "You've been invited to join a household on Ethiospectrum as a caregiver. Create an account or sign in with the invited email address to accept.",
-      "createAccount": "Create an account",
-      "signIn": "Sign in",
-      "alreadyAccepted": "This invitation has already been accepted.",
-      "unavailable": "This invitation has expired or is no longer available. Ask the household owner for a new one.",
-      "description": "You've been invited to join {household} as a caregiver.",
-      "emailNotice": "Invitation for {email} · expires {date}",
-      "accept": "Accept invitation",
-      "accepting": "Joining…"
+      "generic": "Something went wrong. Please try again."
     }
   },
   "settings": {

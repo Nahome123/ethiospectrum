@@ -23,13 +23,10 @@ export function AuthForm({
   mode,
   locale,
   next,
-  invitation,
 }: {
   mode: "login" | "signup";
   locale: AppLocale;
   next?: string;
-  /** Caregiver invitation token carried through signup. */
-  invitation?: string;
 }) {
   const t = useTranslations("authentication");
   const signup = mode === "signup";
@@ -61,7 +58,6 @@ export function AuthForm({
       if (typeof value === "string") data.set(key, value);
     });
     if (next) data.set("next", next);
-    if (invitation) data.set("invitation", invitation);
     startTransition(() => action(data));
   }
 

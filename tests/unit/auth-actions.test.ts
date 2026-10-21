@@ -145,27 +145,6 @@ describe("authentication actions", () => {
     });
   });
 
-  it("registers an invited caregiver without creating a household and returns to the invitation", async () => {
-    const token = "a".repeat(64);
-    await signUpAction(
-      "es",
-      idle,
-      formData({
-        firstName: "Abel",
-        lastName: "Kebede",
-        email: "caregiver@example.test",
-        password: "long-enough",
-        confirmPassword: "long-enough",
-        termsAccepted: "on",
-        invitation: token,
-      }),
-    );
-    expect(mocks.signUp.mock.calls[0][0].options.data.account_intent).toBe("caregiver");
-    expect(mocks.signUp.mock.calls[0][0].options.emailRedirectTo).toContain(
-      encodeURIComponent(`/es/invitations/${token}`),
-    );
-  });
-
   it("sends a signed-in owner to the dashboard when email confirmation is disabled", async () => {
     mocks.signUp.mockResolvedValue({ data: { session: { access_token: "synthetic" } }, error: null });
     await signUpAction(
@@ -181,25 +160,6 @@ describe("authentication actions", () => {
       }),
     );
     expect(mocks.redirect.mock.calls[0][0]).toBe("/es/dashboard");
-  });
-
-  it("sends a signed-in caregiver back to the invitation when confirmation is disabled", async () => {
-    const token = "b".repeat(64);
-    mocks.signUp.mockResolvedValue({ data: { session: { access_token: "synthetic" } }, error: null });
-    await signUpAction(
-      "en",
-      idle,
-      formData({
-        firstName: "Abel",
-        lastName: "Kebede",
-        email: "caregiver@example.test",
-        password: "long-enough",
-        confirmPassword: "long-enough",
-        termsAccepted: "on",
-        invitation: token,
-      }),
-    );
-    expect(mocks.redirect.mock.calls[0][0]).toBe(`/en/invitations/${token}`);
   });
 
   it("asks the user to check email when no session is returned", async () => {
@@ -219,7 +179,7 @@ describe("authentication actions", () => {
     expect(mocks.redirect.mock.calls[0][0]).toBe("/en/check-email");
   });
 
-  it("ignores a malformed invitation token", async () => {
+  it("makes every sign-up a household owner, even with an old invitation link", async () => {
     await signUpAction(
       "en",
       idle,
@@ -230,7 +190,7 @@ describe("authentication actions", () => {
         password: "long-enough",
         confirmPassword: "long-enough",
         termsAccepted: "on",
-        invitation: "not-a-token",
+        invitation: "a".repeat(64),
       }),
     );
     expect(mocks.signUp.mock.calls[0][0].options.data.account_intent).toBe("household_owner");

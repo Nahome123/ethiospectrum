@@ -583,10 +583,6 @@
   "authentication": {
     "loginTitle": "Bienvenido de nuevo",
     "loginDescription": "Inicia sesión para volver a tu espacio familiar.",
-    "adminLoginTitle": "Inicio de sesión de administrador",
-    "adminLoginDescription": "Inicia sesión con tu cuenta autorizada de administrador.",
-    "adminLogin": "Iniciar sesión en el área de administración",
-    "adminLoginHint": "Este acceso está disponible solo para administradores autorizados.",
     "signupTitle": "Crea tu cuenta",
     "signupDescription": "Crea una cuenta para comenzar a usar tu espacio privado.",
     "email": "Correo electrónico",
@@ -634,7 +630,6 @@
     "haveAccount": "¿Ya tienes una cuenta?",
     "needAccount": "¿Necesitas una cuenta?",
     "backToLogin": "Volver a iniciar sesión",
-    "signupCaregiverDescription": "Cree su cuenta de cuidador con el correo que invitó el propietario del hogar. Después de confirmar su correo, se unirá a su hogar.",
     "roleChangedNotice": "Su rol cambió. Inicie sesión de nuevo para continuar con su nuevo acceso.",
     "accountExists": "Ya existe una cuenta con este correo. Inicie sesión o restablezca su contraseña.",
     "weakPassword": "Esa contraseña es demasiado débil o común. Elija una contraseña más larga y difícil de adivinar.",
@@ -727,7 +722,7 @@
     "title": "Configura tu hogar",
     "description": "Asigna un nombre al espacio de trabajo de tu familia y confirma cómo Ethiospectrum maneja la información que decidas guardar.",
     "householdNameLabel": "Nombre del hogar",
-    "householdNameHelp": "Este nombre identifica el espacio de trabajo de tu familia para los miembros invitados. Usa hasta 160 caracteres.",
+    "householdNameHelp": "Este nombre identifica el espacio de su familia. Use hasta 160 caracteres.",
     "householdNameError": "Ingresa un nombre de hogar de hasta 160 caracteres.",
     "consentNotice": "Ethiospectrum guarda los datos del hogar que proporcionas para organizar la información de tu familia. El acceso se limita a los miembros de tu hogar y puedes solicitar su eliminación en cualquier momento.",
     "consentLabel": "Acepto que se guarden estos datos del hogar.",
@@ -1390,7 +1385,7 @@
     "sending": "Enviando…",
     "responseAdded": "Respuesta agregada.",
     "specialistResponseLabel": "Especialista",
-    "caregiverMessageLabel": "Cuidador",
+    "caregiverMessageLabel": "Familia",
     "accessRemoved": "Acceso eliminado",
     "accessRemovedDescription": "Ya no tiene acceso a esta solicitud. Es posible que se haya reasignado, cerrado o cancelado.",
     "validationError": "Revise los campos marcados.",
@@ -1599,7 +1594,7 @@
     },
     "errors": {
       "validation": "Revisa la selección de facturación e inténtalo de nuevo.",
-      "ownerRequired": "Solo el propietario del hogar o un cuidador autorizado puede administrar la suscripción.",
+      "ownerRequired": "Solo el titular de la cuenta del hogar puede administrar la suscripción.",
       "adminRequired": "Se requiere acceso de administrador.",
       "checkout": "No se pudo iniciar Checkout. Inténtalo de nuevo.",
       "portal": "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
@@ -2377,7 +2372,7 @@
     },
     "usersPage": {
       "title": "Usuarios y roles",
-      "description": "Los propietarios y cuidadores del hogar se registran por su cuenta. Asigne aquí los roles de especialista o administrador.",
+      "description": "Los hogares se registran por sí mismos. Asigne aquí al personal como especialista o administrador.",
       "search": "Buscar",
       "searchPlaceholder": "Nombre o correo",
       "searchAction": "Buscar",
@@ -2390,7 +2385,7 @@
       },
       "householdRoles": {
         "owner": "Propietario del hogar",
-        "member": "Cuidador",
+        "member": "Miembro del hogar",
         "administrator": "Administrador del hogar",
         "viewer": "Observador"
       },
@@ -2441,8 +2436,8 @@
         "subscription": "Este hogar tiene una suscripción activa a RBT Boot Camp. Se cancelará de inmediato sin reembolso.",
         "stripeCustomer": "Se eliminará su cliente de Stripe, incluidas las tarjetas guardadas.",
         "refunds": "{count, plural, one {# reembolso sigue} other {# reembolsos siguen}} abiertos. Procéselos primero en Pagos si se debe dinero.",
-        "caregivers": "{count, plural, one {# cuidador perderá} other {# cuidadores perderán}} el acceso a este hogar. Sus cuentas se conservan.",
-        "caregiverOf": "Es cuidador en: {households}. Esos hogares se conservan.",
+        "caregivers": "{count, plural, one {# otro miembro del hogar perderá} other {# otros miembros del hogar perderán}} el acceso a este hogar. Sus propias cuentas se mantienen.",
+        "caregiverOf": "También pertenece a: {households}. Esos hogares se mantienen.",
         "specialist": "Es especialista. Su registro de especialista se conserva sin su nombre para que las solicitudes anteriores muestren a quién se asignaron."
       },
       "permanent": "Esto es permanente y no se puede deshacer.",
@@ -2578,9 +2573,7 @@
   "customerDashboard": {
     "welcome": "Bienvenido de nuevo",
     "intro": "Su progreso en el Campamento RBT, sus solicitudes de servicio y sus próximas citas en un solo lugar.",
-    "caregiverHint": "¿Lo invitaron como cuidador? Abra el enlace de invitación de su correo para unirse a ese hogar.",
     "requestService": "Solicitar un servicio",
-    "joinedHousehold": "Se unió a {household}.",
     "pendingPayments": "{count, plural, one {# solicitud está} other {# solicitudes están}} esperando pago",
     "payNow": "Pagar ahora",
     "retryPayment": "Reintentar el pago",
@@ -2660,7 +2653,7 @@
   },
   "household": {
     "title": "Hogar",
-    "description": "Su hogar tiene un propietario y puede agregar un cuidador. Ambos comparten los niños y las solicitudes de servicio.",
+    "description": "El nombre y los datos de contacto de su hogar, que Ethiospectrum usa para comunicarse con usted.",
     "noHousehold": "Aún no forma parte de un hogar.",
     "details": "Detalles del hogar",
     "name": "Nombre del hogar",
@@ -2668,82 +2661,15 @@
     "contactEmail": "Correo de contacto",
     "contactNotes": "Notas de contacto",
     "contactHelp": "Se comparte con el especialista asignado y los administradores de Ethiospectrum para coordinar citas.",
-    "yourRole": "Su rol",
     "save": "Guardar",
     "saving": "Guardando…",
-    "sending": "Enviando…",
-    "people": "Personas",
-    "peopleHelp": "El propietario administra la facturación y la configuración del hogar. El cuidador puede hacer lo que el propietario permita.",
-    "you": "usted",
-    "owner": "Propietario del hogar",
-    "caregiver": "Cuidador",
-    "permissionsLegend": "Permisos del cuidador",
-    "permissions": {
-      "submit_requests": {
-        "label": "Solicitar servicios",
-        "help": "Enviar solicitudes de servicio, escribir mensajes sobre ellas y cancelarlas."
-      },
-      "confirm_appointments": {
-        "label": "Confirmar citas",
-        "help": "Confirmar, reprogramar o pedir otros horarios."
-      },
-      "make_payments": {
-        "label": "Realizar pagos",
-        "help": "Pagar consultas y asistencia lingüística con el IEP."
-      },
-      "access_training": {
-        "label": "Acceder a la capacitación RBT",
-        "help": "Ver la capacitación y seguir el progreso."
-      },
-      "upload_documents": {
-        "label": "Subir documentos",
-        "help": "Agregar el IEP y documentos de apoyo a las solicitudes."
-      },
-      "manage_subscription": {
-        "label": "Administrar la suscripción",
-        "help": "Iniciar o administrar la suscripción al Campamento RBT."
-      }
-    },
-    "noPermissions": "Sin permisos adicionales",
-    "savePermissions": "Guardar permisos",
-    "permissionsSaved": "Permisos guardados.",
-    "removeCaregiver": "Quitar al cuidador",
-    "removeConfirm": "¿Quitar a este cuidador? Perderá el acceso de inmediato.",
-    "caregiverRemoved": "Se quitó al cuidador.",
-    "inviteTitle": "Invitar a un cuidador",
-    "caregiverLimit": "Su hogar ya tiene un cuidador. Quítelo para invitar a otra persona.",
-    "inviteHelp": "Enviaremos por correo un enlace de invitación que vence en 7 días. También puede copiar el enlace y compartirlo usted mismo.",
-    "caregiverEmail": "Correo del cuidador",
-    "sendInvite": "Enviar invitación",
-    "inviteSent": "Invitación creada. Comparta este enlace si el correo no llega:",
-    "pendingInvitation": "Invitación enviada a {email}. Vence el {date}.",
-    "revokeInvitation": "Revocar la invitación",
-    "revokeConfirm": "¿Revocar esta invitación?",
-    "inviteRevoked": "Se revocó la invitación.",
     "contactSaved": "Se guardaron los detalles del hogar.",
     "profileSaved": "Se guardó su perfil.",
     "errors": {
       "denied": "Solo el propietario del hogar puede hacer eso.",
-      "limit": "Un hogar puede tener un propietario y un cuidador, con una invitación pendiente a la vez.",
       "state": "Eso ya no es posible. Actualice la página.",
       "validation": "Revise la información e inténtelo de nuevo.",
-      "generic": "Algo salió mal. Inténtelo de nuevo.",
-      "wrongAccount": "Inicie sesión con el correo al que se envió la invitación.",
-      "alreadyInHousehold": "Esta cuenta ya pertenece a un hogar.",
-      "invitationUnavailable": "Esta invitación venció, fue revocada o ya se usó."
-    },
-    "invitation": {
-      "title": "Invitación de cuidador",
-      "invalid": "Este enlace de invitación no es válido.",
-      "signedOutDescription": "Lo invitaron a unirse a un hogar en Ethiospectrum como cuidador. Cree una cuenta o inicie sesión con el correo invitado para aceptar.",
-      "createAccount": "Crear una cuenta",
-      "signIn": "Iniciar sesión",
-      "alreadyAccepted": "Esta invitación ya fue aceptada.",
-      "unavailable": "Esta invitación venció o ya no está disponible. Pida una nueva al propietario del hogar.",
-      "description": "Lo invitaron a unirse a {household} como cuidador.",
-      "emailNotice": "Invitación para {email} · vence el {date}",
-      "accept": "Aceptar la invitación",
-      "accepting": "Uniéndose…"
+      "generic": "Algo salió mal. Inténtelo de nuevo."
     }
   },
   "settings": {

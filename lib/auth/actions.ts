@@ -80,12 +80,8 @@ export async function signUpAction(
   if (!parsed.success)
     return { status: "error", message: t("validationError"), email: String(formData.get("email") ?? "") };
 
-  // A caregiver signs up from an invitation link and joins the owner household;
-  // every other registration is a household owner whose household is created
-  // automatically by the database (PRD section 43). The intent only decides
-  // whether to create a household for this new user; it grants nothing else.
-  const invitation = String(formData.get("invitation") ?? "");
-  const hasInvitation = /^[0-9a-f]{64}$/.test(invitation);
+  // Every registration is a household owner whose household the database
+  // creates automatically (PRD section 43).
   const supabase = await createServerActionSupabaseClient();
   const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
@@ -95,12 +91,10 @@ export async function signUpAction(
         first_name: parsed.data.firstName,
         last_name: parsed.data.lastName,
         preferred_locale: localeValue,
-        account_intent: hasInvitation ? "caregiver" : "household_owner",
+        account_intent: "household_owner",
         terms_policy_version: ONBOARDING_POLICY_VERSION,
       },
-      emailRedirectTo: confirmationUrl(
-        hasInvitation ? `/${localeValue}/invitations/${invitation}` : getLocaleDashboardPath(localeValue),
-      ),
+      emailRedirectTo: confirmationUrl(getLocaleDashboardPath(localeValue)),
     },
   });
   if (error) {
@@ -119,9 +113,7 @@ export async function signUpAction(
   // "check your email" screen and continue where the confirmation link would go.
   if (data?.session) {
     revalidatePath("/", "layout");
-    redirect(
-      hasInvitation ? `/${localeValue}/invitations/${invitation}` : getLocaleDashboardPath(localeValue),
-    );
+    redirect(getLocaleDashboardPath(localeValue));
   }
   redirect(`/${localeValue}/check-email`);
 }
@@ -149,18 +141,14 @@ async function requestOrigin(): Promise<string> {
 
 /**
  * "Continue with Google": sends the person to Google through Supabase. New
- * accounts finish on the dashboard, where a household owner names their
- * household; an invited caregiver returns to the invitation instead.
+ * accounts finish on the dashboard, where they name their household.
  */
 export async function signInWithGoogleAction(localeValue: string, formData: FormData): Promise<void> {
   if (!isAppLocale(localeValue)) redirect("/en/login");
-  const invitation = String(formData.get("invitation") ?? "");
   const requested = String(formData.get("next") ?? "");
   const callback = new URL("/auth/confirm", await requestOrigin());
   callback.searchParams.set("flow", "oauth");
-  if (/^[0-9a-f]{64}$/.test(invitation)) {
-    callback.searchParams.set("next", `/${localeValue}/invitations/${invitation}`);
-  } else if (requested) {
+  if (requested) {
     callback.searchParams.set(
       "next",
       getSafeLocaleRedirect(requested, getLocaleDashboardPath(localeValue), localeValue),
