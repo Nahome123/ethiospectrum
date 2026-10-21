@@ -3,11 +3,9 @@ import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/auth/auth-form";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { isGoogleSignInEnabled } from "@/lib/auth/providers";
-import { buttonVariants } from "@/components/ui/button";
 import { getAuthenticatedUser } from "@/lib/auth/guards";
 import { getLocaleDashboardPath, getSafeLocaleRedirect } from "@/lib/auth/redirects";
 import { getRoleHomePath } from "@/lib/auth/role-session";
-import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 
 export default async function LoginPage({
@@ -22,8 +20,6 @@ export default async function LoginPage({
   const { next, notice } = await searchParams;
   const t = await getTranslations("authentication");
   const safeNext = getSafeLocaleRedirect(next, getLocaleDashboardPath(locale), locale);
-  const adminPath = `/${locale}/admin`;
-  const administratorSignIn = safeNext === adminPath;
   const user = await getAuthenticatedUser();
   if (user) {
     redirect(getRoleHomePath(locale, user.role));
@@ -31,10 +27,8 @@ export default async function LoginPage({
 
   return (
     <section className="mx-auto max-w-md px-4 py-16 sm:px-6">
-      <h1 className="text-3xl font-bold">{t(administratorSignIn ? "adminLoginTitle" : "loginTitle")}</h1>
-      <p className="mt-3 text-muted-foreground">
-        {t(administratorSignIn ? "adminLoginDescription" : "loginDescription")}
-      </p>
+      <h1 className="text-3xl font-bold">{t("loginTitle")}</h1>
+      <p className="mt-3 text-muted-foreground">{t("loginDescription")}</p>
       {notice === "role-changed" ? (
         <p
           className="mt-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900"
@@ -47,17 +41,6 @@ export default async function LoginPage({
         {isGoogleSignInEnabled() ? <GoogleSignInButton locale={locale} next={safeNext} /> : null}
         <AuthForm mode="login" locale={locale} next={safeNext} />
       </div>
-      {!administratorSignIn && (
-        <div className="mt-4 space-y-2">
-          <Link
-            className={buttonVariants({ className: "min-h-11 w-full", variant: "outline" })}
-            href={`/login?next=${encodeURIComponent(adminPath)}`}
-          >
-            {t("adminLogin")}
-          </Link>
-          <p className="text-center text-sm text-muted-foreground">{t("adminLoginHint")}</p>
-        </div>
-      )}
     </section>
   );
 }
