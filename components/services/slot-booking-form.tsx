@@ -48,6 +48,7 @@ function useBrowserZone(): string | null {
  */
 export function SlotBookingForm({
   dependents,
+  initialChoice,
   initialSlots,
   locale,
   serviceType,
@@ -55,6 +56,8 @@ export function SlotBookingForm({
   topics = [],
 }: {
   dependents: Option[];
+  /** A time chosen before arriving (for example on the home page). */
+  initialChoice?: { specialistId: string; startAt: string } | null;
   initialSlots: Slot[];
   locale: AppLocale;
   serviceType: "consultation" | "parent_support";
@@ -80,10 +83,22 @@ export function SlotBookingForm({
     offeredLanguages.includes(locale) ? locale : (offeredLanguages[0] ?? "en"),
   );
   const [specialistId, setSpecialistId] = useState<string>(
-    specialists.length === 1 ? specialists[0].id : ANY,
+    specialists.length === 1
+      ? specialists[0].id
+      : initialChoice && specialists.some((item) => item.id === initialChoice.specialistId)
+        ? initialChoice.specialistId
+        : ANY,
   );
   const [slots, setSlots] = useState<Slot[]>(initialSlots);
-  const [chosen, setChosen] = useState<Slot | null>(null);
+  const [chosen, setChosen] = useState<Slot | null>(
+    () =>
+      initialSlots.find(
+        (slot) =>
+          initialChoice &&
+          slot.specialistId === initialChoice.specialistId &&
+          new Date(slot.startAt).getTime() === new Date(initialChoice.startAt).getTime(),
+      ) ?? null,
+  );
   const [loading, startLoading] = useTransition();
   const consultation = serviceType === "consultation";
   const names = useMemo(() => new Map(specialists.map((item) => [item.id, item.name])), [specialists]);

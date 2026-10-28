@@ -5451,6 +5451,10 @@ export type Database = {
         };
         Returns: string;
       };
+      list_public_parent_support_slots: {
+        Args: never;
+        Returns: { end_at: string; specialist_id: string; start_at: string }[];
+      };
       list_assignable_specialists: {
         Args: never;
         Returns: {

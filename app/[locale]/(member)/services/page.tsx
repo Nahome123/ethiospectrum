@@ -6,7 +6,6 @@ import { getHouseholdAccess } from "@/lib/households/server";
 import { formatCents } from "@/lib/services/constants";
 import { localizedText } from "@/lib/services/display";
 import { getRbtCoursePriceCents } from "@/lib/billing/public-price";
-import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { listServices } from "@/lib/services/server";
 import { getTrainingAccess } from "@/lib/training/server";
 
@@ -28,11 +27,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const locale = localeParam as AppLocale;
   const t = await getTranslations({ locale, namespace: "services.catalog" });
   const types = await getTranslations({ locale, namespace: "services.types" });
-  const [services, access, training, offered, coursePrice] = await Promise.all([
+  const [services, access, training, coursePrice] = await Promise.all([
     listServices(),
     getHouseholdAccess(),
     getTrainingAccess(),
-    getOfferedSelfScheduledServices(),
     getRbtCoursePriceCents(),
   ]);
   const canRequest = Boolean(access?.permissions.includes("submit_requests"));
@@ -56,11 +54,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       ) : null}
       <ul className="grid gap-5 lg:grid-cols-3">
         {services
-          // A self-scheduled service nobody currently offers is hidden.
-          .filter(
-            (service) =>
-              service.active && (!service.self_scheduled || offered.includes(service.service_type as never)),
-          )
+          .filter((service) => service.active)
           .map((service) => {
             const type = service.service_type as keyof typeof icons;
             const Icon = icons[type];

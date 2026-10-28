@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import { createSlotBookingSchema, uuidSchema } from "@/lib/validation/services";
 import { serviceErrorKey, initialServiceActionState, type ServiceActionState } from "./action-state";
@@ -18,6 +19,19 @@ import { revalidateServiceRequest } from "./revalidate";
 function field(formData: FormData, name: string): string {
   const value = formData.get(name);
   return typeof value === "string" ? value : "";
+}
+
+/** The next free Parent Support times for the public home page (times only). */
+export async function loadPublicParentSupportSlotsAction(): Promise<
+  { specialistId: string; startAt: string }[]
+> {
+  try {
+    const { data, error } = await createSupabaseAdminClient().rpc("list_public_parent_support_slots");
+    if (error || !data) return [];
+    return data.map((row) => ({ specialistId: row.specialist_id, startAt: row.start_at }));
+  } catch {
+    return [];
+  }
 }
 
 /** Open times for the chosen specialist ("any" for everyone) and language. */

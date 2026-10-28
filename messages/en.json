@@ -1855,7 +1855,7 @@
           "All protected training videos",
           "All supporting resources",
           "Progress tracking for you and each child",
-          "Cancel anytime from billing"
+          "One payment, a full year of access"
         ],
         "consultation": [
           "60-minute session with a matched specialist",
@@ -2271,7 +2271,8 @@
       "bookAndPay": "Book and pay",
       "bookFree": "Book free session",
       "booking": "Booking…",
-      "noSpecialists": "Consultations can't be booked online right now. Please check back soon."
+      "noSpecialists": "Consultations can't be booked online right now. Please check back soon.",
+      "noParentSupport": "Parent Support sessions can't be booked online right now. Please check back soon."
     }
   },
   "adminConsole": {
@@ -3065,5 +3066,20 @@
     },
     "readMore": "Read more",
     "showLess": "Show less"
+  },
+  "parentSupportSpotlight": {
+    "badge": "Free Parent Support",
+    "title": "Talk with {name} — free",
+    "titleUnnamed": "Free Parent Support",
+    "whatItIs": "A free 30-minute, one-on-one online session for parents and caregivers. No payment, no subscription — just pick a time.",
+    "nextTimes": "Next open times",
+    "loading": "Loading open times…",
+    "noTimes": "New times are added regularly — open the booking page to see the latest.",
+    "moreTimes": "See all times",
+    "timesIn": "Times shown in {zone}",
+    "book": "Book a free session",
+    "accountNote": "You'll sign in (or create a free account) to confirm. Your session is confirmed right away.",
+    "photoAlt": "Portrait of {name}",
+    "photoAltUnnamed": "Portrait of our parent support consultant"
   }
 }

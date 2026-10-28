@@ -6,7 +6,7 @@ import { updateSupabaseSession } from "@/lib/supabase/middleware";
 const handleI18nRouting = createMiddleware(routing);
 
 export default async function proxy(request: NextRequest) {
-  request.headers.set("x-ethiospectrum-pathname", request.nextUrl.pathname);
+  request.headers.set("x-ethiospectrum-pathname", request.nextUrl.pathname + request.nextUrl.search);
   const response = handleI18nRouting(request);
   return updateSupabaseSession(request, response);
 }

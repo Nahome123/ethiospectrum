@@ -1855,7 +1855,7 @@
           "Todos los videos de capacitación protegidos",
           "Todos los recursos de apoyo",
           "Seguimiento del progreso para usted y cada niño",
-          "Cancele en cualquier momento desde facturación"
+          "Un solo pago, un año completo de acceso"
         ],
         "consultation": [
           "Sesión de 60 minutos con un especialista asignado",
@@ -2275,7 +2275,8 @@
       "bookAndPay": "Reservar y pagar",
       "bookFree": "Reservar sesión gratuita",
       "booking": "Reservando…",
-      "noSpecialists": "Ahora no se pueden reservar consultas en línea. Vuelva pronto."
+      "noSpecialists": "Ahora no se pueden reservar consultas en línea. Vuelva pronto.",
+      "noParentSupport": "Ahora no se pueden reservar sesiones de apoyo para padres en línea. Vuelva pronto."
     }
   },
   "adminConsole": {
@@ -3069,5 +3070,20 @@
     },
     "readMore": "Leer más",
     "showLess": "Mostrar menos"
+  },
+  "parentSupportSpotlight": {
+    "badge": "Apoyo para padres gratuito",
+    "title": "Hable con {name}, gratis",
+    "titleUnnamed": "Apoyo para padres gratuito",
+    "whatItIs": "Una sesión individual en línea de 30 minutos, gratuita, para padres y cuidadores. Sin pago ni suscripción: solo elija una hora.",
+    "nextTimes": "Próximas horas libres",
+    "loading": "Cargando horas libres…",
+    "noTimes": "Se añaden horas nuevas con frecuencia; abra la página de reservas para ver las más recientes.",
+    "moreTimes": "Ver todas las horas",
+    "timesIn": "Horas mostradas en {zone}",
+    "book": "Reservar sesión gratuita",
+    "accountNote": "Iniciará sesión (o creará una cuenta gratuita) para confirmar. Su sesión se confirma al instante.",
+    "photoAlt": "Retrato de {name}",
+    "photoAltUnnamed": "Retrato de nuestro consultor de apoyo para padres"
   }
 }

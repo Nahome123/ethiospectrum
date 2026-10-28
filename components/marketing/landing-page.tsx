@@ -2,10 +2,10 @@ import { BookOpenCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getRbtCoursePriceLabel } from "@/lib/billing/public-price";
 import { formatCents } from "@/lib/services/constants";
-import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { getPublicServicePrices } from "@/lib/services/public-catalog";
 import { Link } from "@/i18n/navigation";
 import { FeatureCard } from "./feature-card";
+import { ParentSupportSpotlight } from "./parent-support-spotlight";
 import { ServicesOverview } from "./services-overview";
 import { AboutUsSection } from "./about-us-section";
 import { FamilyPhotoGallery } from "./family-photo-gallery";
@@ -15,10 +15,8 @@ export async function LandingPage() {
   const t = await getTranslations();
   const locale = await getLocale();
   const rbtPrice = await getRbtCoursePriceLabel(locale, await getTranslations("publicServices"));
-  const [prices, offered] = await Promise.all([getPublicServicePrices(), getOfferedSelfScheduledServices()]);
-  const heroServices = offered.includes("parent_support")
-    ? (["rbt", "consultation", "iep", "parentSupport"] as const)
-    : (["rbt", "consultation", "iep"] as const);
+  const prices = await getPublicServicePrices();
+  const heroServices = ["rbt", "consultation", "iep", "parentSupport"] as const;
   const sessionPrice = (key: "consultation" | "iep") => {
     const cents = prices[key === "iep" ? "iep_language_assistance" : "consultation"];
     return cents === undefined ? t(`publicServices.${key}.price`) : formatCents(cents, locale);
@@ -122,6 +120,7 @@ export async function LandingPage() {
           <ServicesOverview />
         </div>
       </section>
+      <ParentSupportSpotlight />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t("howItWorks.eyebrow")} title={t("howItWorks.title")} />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
