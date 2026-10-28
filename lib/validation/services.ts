@@ -52,6 +52,41 @@ export function createConsultationRequestSchema(messages: { description: string;
   });
 }
 
+/** A family booking an open time for a self-scheduled service. */
+export function createSlotBookingSchema(messages: { description: string; dependent: string }) {
+  return z
+    .object({
+      serviceType: z.enum(["consultation", "parent_support"]),
+      dependentId: z.uuid(messages.dependent),
+      description: z
+        .string()
+        .trim()
+        .min(DESCRIPTION_MIN, messages.description)
+        .max(DESCRIPTION_MAX, messages.description),
+      relevantInformation: optionalText(RELEVANT_INFORMATION_MAX),
+      category: z
+        .union([z.enum(consultationCategoryValues), z.literal("")])
+        .transform((value) => (value === "" ? null : value)),
+      topicKey: z
+        .string()
+        .trim()
+        .regex(/^([a-z][a-z0-9_]{1,62})?$/)
+        .transform((value) => (value === "" ? null : value)),
+      language: z.enum(sessionLanguageValues),
+      specialistId: z.uuid(),
+      startAt: z.iso.datetime({ offset: true }),
+      timezone: z
+        .string()
+        .trim()
+        .min(1)
+        .max(64)
+        .regex(/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)*$/),
+    })
+    .refine((value) => value.serviceType !== "consultation" || value.category !== null, {
+      path: ["category"],
+    });
+}
+
 export function createIepRequestSchema(messages: {
   description: string;
   dependent: string;

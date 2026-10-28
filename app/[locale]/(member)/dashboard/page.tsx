@@ -14,6 +14,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { getHouseholdBillingSummary } from "@/lib/billing/server";
 import { getHouseholdAccess } from "@/lib/households/server";
+import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { formatCents } from "@/lib/services/constants";
 import { formatShortDateTime } from "@/lib/services/display";
 import {
@@ -114,6 +115,27 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           </Link>
         ) : null}
       </div>
+
+      {(await getOfferedSelfScheduledServices()).includes("parent_support") &&
+      access.permissions.includes("submit_requests") ? (
+        <section
+          aria-labelledby="parent-support-prompt"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-5"
+        >
+          <div>
+            <h2 className="font-bold text-emerald-900" id="parent-support-prompt">
+              {t("parentSupportTitle")}
+            </h2>
+            <p className="text-sm text-emerald-900">{t("parentSupportBody")}</p>
+          </div>
+          <Link
+            className="inline-flex min-h-10 items-center rounded-xl bg-emerald-700 px-4 text-sm font-semibold text-white hover:bg-emerald-800"
+            href="/services/parent-support"
+          >
+            {t("parentSupportAction")}
+          </Link>
+        </section>
+      ) : null}
 
       {pendingPayments.length > 0 ? (
         <section

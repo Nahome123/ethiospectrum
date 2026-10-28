@@ -29,6 +29,8 @@ export function serviceErrorKey(code: string | undefined): string {
       return "paymentRequired";
     case "ES409":
       return "conflict";
+    case "ES429":
+      return "bookingLimit";
     case "ES410":
       return "rescheduleLimit";
     case "ES422":

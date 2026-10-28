@@ -79,6 +79,7 @@ export default async function RequestDetailPage({
           <HouseholdRequestPanel
             bundle={bundle}
             fees={fees}
+            justBooked={search.booked === "1"}
             justCreated={search.created === "1"}
             scheduleNotSaved={search.scheduleError === "1"}
             locale={locale}

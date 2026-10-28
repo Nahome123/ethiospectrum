@@ -124,6 +124,7 @@ export async function startServicePaymentAction(
         automatic_tax: { enabled: false },
         allow_promotion_codes: false,
         submit_type: "auto",
+        expires_at: Math.floor(Date.now() / 1000) + 31 * 60,
         integration_identifier: "hosted_web_0001",
         origin_context: "web",
         success_url: `${siteUrl}/${locale}/requests/${request.data}?payment=return&session={CHECKOUT_SESSION_ID}`,

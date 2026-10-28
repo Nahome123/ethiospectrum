@@ -1665,7 +1665,8 @@
     "types": {
       "rbt_bootcamp": "RBT Boot Camp",
       "consultation": "Consultation",
-      "iep_language_assistance": "IEP Language Assistance"
+      "iep_language_assistance": "IEP Language Assistance",
+      "parent_support": "Parent Support"
     },
     "status": {
       "pending_review": "Pending review",
@@ -1776,7 +1777,10 @@
       "generic": "Something went wrong. Please try again.",
       "paymentsUnavailable": "Online payments are not configured yet. Please contact Ethiospectrum.",
       "checkout": "We couldn't start the secure payment page. Please try again.",
-      "refund": "The refund could not be processed by the payment provider. It is marked failed and can be retried."
+      "refund": "The refund could not be processed by the payment provider. It is marked failed and can be retried.",
+      "slotTaken": "Sorry, that time was just taken. Please choose another time.",
+      "bookingLimit": "You already have an upcoming session for this service. You can book another after it, or cancel it first.",
+      "chooseTime": "Choose a time before booking."
     },
     "success": {
       "appointmentConfirmed": "Your appointment is confirmed.",
@@ -1805,7 +1809,8 @@
       "feeSaved": "The fee was saved.",
       "topicSaved": "The topic was saved.",
       "specialistUpdated": "The specialist was saved.",
-      "roleUpdated": "The role was updated."
+      "roleUpdated": "The role was updated.",
+      "scheduleSaved": "Weekly hours saved."
     },
     "catalog": {
       "eyebrow": "Services",
@@ -1820,7 +1825,8 @@
       "descriptions": {
         "rbt_bootcamp": "A self-paced video library that helps parents understand neurodivergency, complete the Ethiospectrum curriculum, and prepare for an external RBT-related credential or exam. Completing the course is not an RBT certification.",
         "consultation": "A 60-minute consultation for general household and service guidance or specific behavioral and educational guidance.",
-        "iep_language_assistance": "Help understanding an IEP, language assistance during a school meeting, and written translation."
+        "iep_language_assistance": "Help understanding an IEP, language assistance during a school meeting, and written translation.",
+        "parent_support": "A free one-on-one session for parents and caregivers to talk through what your family is facing and find support."
       },
       "features": {
         "rbt_bootcamp": [
@@ -1840,16 +1846,19 @@
           "IEP explanation and school-meeting assistance",
           "Written translation included",
           "Remote or in person · one follow-up included"
-        ]
+        ],
+        "parent_support": ["Free, 30 minutes, online", "Book any open time yourself", "English or Amharic"]
       },
       "subscribe": "Subscribe",
       "openTraining": "Open RBT Boot Camp",
       "request": {
-        "consultation": "Request a consultation",
-        "iep_language_assistance": "Request IEP assistance"
+        "consultation": "Book a consultation",
+        "iep_language_assistance": "Request IEP assistance",
+        "parent_support": "Book a free session"
       },
       "noRequestPermission": "Ask the household owner for permission to request services.",
-      "taxNotice": "Applicable taxes are calculated at checkout where required. Any additional fee is shown for your approval before you pay. No travel fee is charged."
+      "taxNotice": "Applicable taxes are calculated at checkout where required. Any additional fee is shown for your approval before you pay. No travel fee is charged.",
+      "free": "Free"
     },
     "form": {
       "backToServices": "Back to services",
@@ -2030,7 +2039,8 @@
       },
       "requestedTimes": "Your requested time",
       "requestedDirect": "We'll confirm this time, or suggest another if it is unavailable.",
-      "requestedPropose": "The family proposed these options; one will be chosen."
+      "requestedPropose": "The family proposed these options; one will be chosen.",
+      "heldForPayment": "Held for you while you pay. It is confirmed as soon as payment goes through."
     },
     "household": {
       "created": "Your request was received. An administrator will review it and assign a specialist.",
@@ -2062,7 +2072,9 @@
       "cancelling": "Cancelling…",
       "cancelRequest": "Cancel request",
       "reasonOptional": "Reason (optional)",
-      "scheduleNotSaved": "Your request was sent, but the time you chose could not be saved (for example, it falls in a daylight-saving change). Your specialist will propose times instead."
+      "scheduleNotSaved": "Your request was sent, but the time you chose could not be saved (for example, it falls in a daylight-saving change). Your specialist will propose times instead.",
+      "bookedConfirmed": "You're booked! The session details are below, and you'll get a reminder before it starts.",
+      "bookedHeld": "Your time is held for 30 minutes. Complete the payment below to confirm the booking."
     },
     "slots": {
       "option": "Option {number}",
@@ -2213,6 +2225,29 @@
       "meetingLinkOptional": "Meeting link (optional)",
       "needDifferentTime": "Need a different time?",
       "needDifferentTimeHelp": "Propose other times for the family to choose from, or schedule a different time directly."
+    },
+    "booking": {
+      "consultationSummary": "{minutes}-minute session · {price}. Choose who you'd like to meet and pick a time that suits you; it is confirmed as soon as you pay.",
+      "parentSupportTitle": "Parent Support",
+      "parentSupportSummary": "A free {minutes}-minute one-on-one session for parents and caregivers. Pick a time that suits you and it is confirmed right away.",
+      "parentSupportTopic": "What would you like to talk about?",
+      "free": "Free",
+      "whoAndWhen": "Who and when",
+      "chooseSpecialist": "Choose a specialist",
+      "either": "Either — first available",
+      "eitherHelp": "See every open time and meet whoever is free.",
+      "withSpecialist": "Your session is with {name}.",
+      "chooseTime": "Choose a time",
+      "shownIn": "times shown in {zone}",
+      "loadingTimes": "Loading open times…",
+      "noTimes": "No open times in the next three weeks for this choice. Try another specialist or language, or check back soon.",
+      "selected": "Selected: {time} with {name}",
+      "nextStepsPaid": "Next: you'll pay securely with Stripe. We hold this time for 30 minutes while you pay, and your booking is confirmed as soon as payment goes through.",
+      "nextStepsFree": "This session is free. It is confirmed as soon as you book, and you'll get a reminder before it starts.",
+      "bookAndPay": "Book and pay",
+      "bookFree": "Book free session",
+      "booking": "Booking…",
+      "noSpecialists": "Consultations can't be booked online right now. Please check back soon."
     }
   },
   "adminConsole": {
@@ -2352,7 +2387,10 @@
         "en": "Label (English)",
         "am": "Label (Amharic)",
         "es": "Label (Spanish)"
-      }
+      },
+      "bookingLimit": "Upcoming sessions allowed per household",
+      "bookingLimitHelp": "Leave blank for no limit.",
+      "saveLimit": "Save limit"
     },
     "specialistsPage": {
       "title": "Specialists",
@@ -2368,7 +2406,18 @@
       "availability": "Availability",
       "bio": "Bio (internal)",
       "save": "Save",
-      "saving": "Saving…"
+      "saving": "Saving…",
+      "bioHelp": "Shown to families when they choose who to book with.",
+      "scheduleTitle": "Weekly hours for online booking",
+      "scheduleDays": "{count, plural, one {# day a week} other {# days a week}}",
+      "scheduleEmpty": "Not set — no online booking",
+      "scheduleHelp": "Families can book Consultation and Parent Support sessions inside these hours. Leave a day blank to keep it closed. Booked and held times are removed automatically.",
+      "scheduleTimezone": "Time zone of these hours",
+      "meetingLink": "Default meeting link (added to every booked session)",
+      "startsAt": "{day} start",
+      "endsAt": "{day} end",
+      "saveSchedule": "Save hours",
+      "scheduleSaved": "Weekly hours saved."
     },
     "usersPage": {
       "title": "Users and roles",
@@ -2601,7 +2650,10 @@
     "oneTime": "one-time",
     "independentNotice": "Consultation and IEP Language Assistance do not require an RBT Boot Camp subscription.",
     "history": "Recent service history",
-    "noHistory": "Completed and cancelled services will appear here."
+    "noHistory": "Completed and cancelled services will appear here.",
+    "parentSupportTitle": "Free Parent Support",
+    "parentSupportBody": "Talk one-on-one with our parent support consultant — free, 30 minutes, at a time you choose.",
+    "parentSupportAction": "Book a free session"
   },
   "bootcamp": {
     "eyebrow": "RBT Boot Camp",
@@ -2936,7 +2988,15 @@
       "IEP explanation and school-meeting language assistance",
       "Written translation of IEP material",
       "Remote sessions or in person at Ethiospectrum, the school, or an agreed location"
-    ]
+    ],
+    "parentSupport": {
+      "name": "Parent Support",
+      "price": "Free",
+      "billing": "Free · 30-minute session",
+      "description": "A free one-on-one session for parents and caregivers: a space to talk through what your family is facing and find support.",
+      "features": ["One-on-one and online", "Book any open time yourself", "No payment needed"],
+      "action": "Book a free session"
+    }
   },
   "adminView": {
     "label": "Choose view",

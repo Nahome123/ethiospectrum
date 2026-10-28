@@ -8,6 +8,7 @@ import type { AppLocale } from "@/i18n/routing";
 import {
   saveConsultationTopicAction,
   saveServiceFeeAction,
+  setServiceBookingLimitAction,
   updateServiceAction,
 } from "@/lib/services/config-actions";
 import { formatCents, requestableServiceTypes } from "@/lib/services/constants";
@@ -163,6 +164,27 @@ export default async function AdminServicesPage({ params }: { params: Promise<{ 
                 {t("activeLabel")}
               </label>
             </ActionForm>
+            {service.self_scheduled ? (
+              <ActionForm
+                action={setServiceBookingLimitAction.bind(null, locale, service.service_type)}
+                className="mt-4 border-t pt-4"
+                pendingLabel={t("saving")}
+                submitLabel={t("saveLimit")}
+                variant="outline"
+              >
+                <Label htmlFor={`limit-${service.id}`}>{t("bookingLimit")}</Label>
+                <Input
+                  className="max-w-32"
+                  defaultValue={service.max_upcoming_per_household ?? ""}
+                  id={`limit-${service.id}`}
+                  max={20}
+                  min={1}
+                  name="limit"
+                  type="number"
+                />
+                <p className="text-xs text-muted-foreground">{t("bookingLimitHelp")}</p>
+              </ActionForm>
+            ) : null}
           </details>
         ))}
       </section>

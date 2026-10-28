@@ -16,6 +16,7 @@ const mocks = vi.hoisted(() => ({
   getTrainingAccess: vi.fn(),
   getTrainingProgressSummary: vi.fn(),
   getHouseholdBillingSummary: vi.fn(),
+  getOfferedSelfScheduledServices: vi.fn(),
 }));
 
 vi.mock("@/components/onboarding/onboarding-form", () => ({
@@ -45,6 +46,9 @@ vi.mock("@/lib/training/server", () => ({
   getTrainingProgressSummary: mocks.getTrainingProgressSummary,
 }));
 vi.mock("@/lib/billing/server", () => ({ getHouseholdBillingSummary: mocks.getHouseholdBillingSummary }));
+vi.mock("@/lib/services/booking", () => ({
+  getOfferedSelfScheduledServices: mocks.getOfferedSelfScheduledServices,
+}));
 vi.mock("next-intl/server", () => ({
   getTranslations: vi.fn(async () => (key: string) => key),
 }));
@@ -59,6 +63,7 @@ describe("Customer dashboard", () => {
     mocks.listHouseholdServiceRequests.mockResolvedValue([]);
     mocks.listUpcomingAppointments.mockResolvedValue([]);
     mocks.listServices.mockResolvedValue([]);
+    mocks.getOfferedSelfScheduledServices.mockResolvedValue([]);
     mocks.listDependentOptions.mockResolvedValue([]);
     mocks.getTrainingAccess.mockResolvedValue({
       hasAccess: false,
@@ -106,5 +111,22 @@ describe("Customer dashboard", () => {
     expect(screen.getByText("subscriptionInactive")).toBeVisible();
     expect(screen.getByText("independentNotice")).toBeVisible();
     expect(screen.getByRole("link", { name: "requestService" })).toHaveAttribute("href", "/services");
+    expect(screen.queryByRole("link", { name: "parentSupportAction" })).toBeNull();
+  });
+
+  it("invites the family to free Parent Support only while someone offers it", async () => {
+    mocks.getHouseholdAccess.mockResolvedValue({
+      household: { id: "household-id", name: "Teshome household" },
+      permission: "owner",
+      isOwner: true,
+      permissions: ["submit_requests", "make_payments"],
+    });
+    mocks.listHouseholdServiceRequests.mockResolvedValue([]);
+    mocks.getOfferedSelfScheduledServices.mockResolvedValue(["consultation", "parent_support"]);
+    render(await DashboardPage(props));
+    expect(screen.getByRole("link", { name: "parentSupportAction" })).toHaveAttribute(
+      "href",
+      "/services/parent-support",
+    );
   });
 });

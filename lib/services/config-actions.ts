@@ -173,7 +173,7 @@ export async function saveConsultationTopicAction(
 }
 
 const capabilitySchema = z.object({
-  service_type: z.enum(requestableServiceTypes),
+  service_type: z.enum([...requestableServiceTypes, "parent_support"]),
   language: z.enum(sessionLanguageValues),
   delivery_method: z.enum(deliveryMethodValues),
 });
@@ -210,7 +210,69 @@ export async function updateSpecialistAction(
     input_capabilities: capabilities.flatMap((entry) => (entry.success ? [entry.data] : [])),
     input_bio: bio.data || undefined,
   });
-  return result(locale, error, "specialistUpdated", ["/admin/specialists"]);
+  if (!error) revalidateTag("service-catalog", "max");
+  return result(locale, error, "specialistUpdated", ["/admin/specialists", "/services"]);
+}
+
+const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+
+/** Weekly hours (one window per weekday), the schedule time zone and the default meeting link. */
+export async function updateSpecialistScheduleAction(
+  locale: AppLocale,
+  specialistId: string,
+  _state: ServiceActionState,
+  formData: FormData,
+): Promise<ServiceActionState> {
+  const timezone = z
+    .string()
+    .trim()
+    .min(1)
+    .max(64)
+    .regex(/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)*$/)
+    .safeParse(field(formData, "timezone"));
+  const meetingUrl = z
+    .union([z.url({ protocol: /^https$/ }).max(2048), z.literal("")])
+    .safeParse(field(formData, "meetingUrl").trim());
+  const hours: { weekday: number; start: string; end: string }[] = [];
+  for (let weekday = 0; weekday < 7; weekday += 1) {
+    const start = field(formData, `start.${weekday}`);
+    const end = field(formData, `end.${weekday}`);
+    if (!start && !end) continue;
+    if (!timeSchema.safeParse(start).success || !timeSchema.safeParse(end).success || end <= start) {
+      return invalid(locale);
+    }
+    hours.push({ weekday, start, end });
+  }
+  if (!uuidSchema.safeParse(specialistId).success || !timezone.success || !meetingUrl.success) {
+    return invalid(locale);
+  }
+  const supabase = await createServerActionSupabaseClient();
+  const { error } = await supabase.rpc("admin_update_specialist_schedule", {
+    target_specialist_id: specialistId,
+    input_timezone: timezone.data,
+    input_hours: hours,
+    input_meeting_url: meetingUrl.data || undefined,
+  });
+  if (!error) revalidateTag("service-catalog", "max");
+  return result(locale, error, "scheduleSaved", ["/admin/specialists", "/services"]);
+}
+
+/** How many upcoming sessions of a self-scheduled service one household may hold (blank = no limit). */
+export async function setServiceBookingLimitAction(
+  locale: AppLocale,
+  serviceType: string,
+  _state: ServiceActionState,
+  formData: FormData,
+): Promise<ServiceActionState> {
+  const raw = field(formData, "limit").trim();
+  const limit = raw === "" ? null : z.coerce.number().int().min(1).max(20).safeParse(raw);
+  if (limit && !limit.success) return invalid(locale);
+  const supabase = await createServerActionSupabaseClient();
+  const { error } = await supabase.rpc("admin_set_service_booking_limit", {
+    target_service_type: serviceType,
+    input_limit: (limit?.success ? limit.data : null) as number,
+  });
+  return result(locale, error, "serviceUpdated", ["/admin/services"]);
 }
 
 export async function setUserRoleAction(

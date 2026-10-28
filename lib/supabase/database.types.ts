@@ -2734,6 +2734,7 @@ export type Database = {
           customer_confirmed: boolean;
           delivery_method: string;
           end_at: string;
+          hold_expires_at: string | null;
           household_id: string;
           id: string;
           instructions: string | null;
@@ -2767,6 +2768,7 @@ export type Database = {
           customer_confirmed?: boolean;
           delivery_method: string;
           end_at: string;
+          hold_expires_at?: string | null;
           household_id: string;
           id?: string;
           instructions?: string | null;
@@ -2800,6 +2802,7 @@ export type Database = {
           customer_confirmed?: boolean;
           delivery_method?: string;
           end_at?: string;
+          hold_expires_at?: string | null;
           household_id?: string;
           id?: string;
           instructions?: string | null;
@@ -3365,9 +3368,11 @@ export type Database = {
           id: string;
           included_follow_ups: number;
           localized: Json;
+          max_upcoming_per_household: number | null;
           name: string;
           payment_type: string;
           price_cents: number | null;
+          self_scheduled: boolean;
           service_type: string;
           standard_instructions: Json;
           updated_at: string;
@@ -3382,9 +3387,11 @@ export type Database = {
           id?: string;
           included_follow_ups?: number;
           localized?: Json;
+          max_upcoming_per_household?: number | null;
           name: string;
           payment_type: string;
           price_cents?: number | null;
+          self_scheduled?: boolean;
           service_type: string;
           standard_instructions?: Json;
           updated_at?: string;
@@ -3399,9 +3406,11 @@ export type Database = {
           id?: string;
           included_follow_ups?: number;
           localized?: Json;
+          max_upcoming_per_household?: number | null;
           name?: string;
           payment_type?: string;
           price_cents?: number | null;
+          self_scheduled?: boolean;
           service_type?: string;
           standard_instructions?: Json;
           updated_at?: string;
@@ -3444,13 +3453,50 @@ export type Database = {
           },
         ];
       };
+      specialist_weekly_hours: {
+        Row: {
+          created_at: string;
+          end_time: string;
+          id: string;
+          specialist_id: string;
+          start_time: string;
+          weekday: number;
+        };
+        Insert: {
+          created_at?: string;
+          end_time: string;
+          id?: string;
+          specialist_id: string;
+          start_time: string;
+          weekday: number;
+        };
+        Update: {
+          created_at?: string;
+          end_time?: string;
+          id?: string;
+          specialist_id?: string;
+          start_time?: string;
+          weekday?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "specialist_weekly_hours_specialist_id_fkey";
+            columns: ["specialist_id"];
+            isOneToOne: false;
+            referencedRelation: "specialists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       specialists: {
         Row: {
           availability_status: string;
           bio: string | null;
           created_at: string;
+          default_meeting_url: string | null;
           id: string;
           languages: string[];
+          schedule_timezone: string;
           specialties: string[];
           updated_at: string;
           user_id: string | null;
@@ -3459,8 +3505,10 @@ export type Database = {
           availability_status?: string;
           bio?: string | null;
           created_at?: string;
+          default_meeting_url?: string | null;
           id?: string;
           languages?: string[];
+          schedule_timezone?: string;
           specialties?: string[];
           updated_at?: string;
           user_id?: string | null;
@@ -3469,8 +3517,10 @@ export type Database = {
           availability_status?: string;
           bio?: string | null;
           created_at?: string;
+          default_meeting_url?: string | null;
           id?: string;
           languages?: string[];
+          schedule_timezone?: string;
           specialties?: string[];
           updated_at?: string;
           user_id?: string | null;
@@ -5236,6 +5286,63 @@ export type Database = {
           reason: string;
         }[];
       };
+      admin_list_specialist_schedules: {
+        Args: never;
+        Returns: {
+          default_meeting_url: string;
+          hours: Json;
+          schedule_timezone: string;
+          specialist_id: string;
+        }[];
+      };
+      admin_set_service_booking_limit: {
+        Args: { input_limit: number; target_service_type: string };
+        Returns: undefined;
+      };
+      admin_update_specialist_schedule: {
+        Args: {
+          input_hours: Json;
+          input_meeting_url?: string;
+          input_timezone: string;
+          target_specialist_id: string;
+        };
+        Returns: undefined;
+      };
+      book_service_slot: {
+        Args: {
+          input_consultation_category?: string;
+          input_consultation_topic_key?: string;
+          input_dependent_id: string;
+          input_description: string;
+          input_idempotency_key: string;
+          input_language: string;
+          input_relevant_information?: string;
+          input_service_type: string;
+          input_specialist_id: string;
+          input_start_at: string;
+          input_timezone: string;
+        };
+        Returns: string;
+      };
+      list_bookable_specialists: {
+        Args: { input_service_type: string };
+        Returns: {
+          bio: string;
+          display_name: string;
+          languages: string[];
+          specialist_id: string;
+        }[];
+      };
+      list_open_service_slots: {
+        Args: {
+          input_days?: number;
+          input_language?: string;
+          input_service_type: string;
+          input_specialist_id?: string;
+        };
+        Returns: { end_at: string; specialist_id: string; start_at: string }[];
+      };
+      offered_self_scheduled_services: { Args: never; Returns: string[] };
       list_assignable_specialists: {
         Args: never;
         Returns: {

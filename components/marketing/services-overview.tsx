@@ -1,7 +1,8 @@
-import { BookOpen, Check, Languages, MessagesSquare } from "lucide-react";
+import { BookOpen, Check, HeartHandshake, Languages, MessagesSquare } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
 import { formatCents } from "@/lib/services/constants";
+import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { getPublicServicePrices } from "@/lib/services/public-catalog";
 import { Link } from "@/i18n/navigation";
 
@@ -9,6 +10,7 @@ const services = [
   { key: "rbt", icon: BookOpen },
   { key: "consultation", icon: MessagesSquare },
   { key: "iep", icon: Languages },
+  { key: "parentSupport", icon: HeartHandshake },
 ] as const;
 
 /**
@@ -20,16 +22,20 @@ export async function ServicesOverview({ showPolicy = false }: { showPolicy?: bo
   const t = await getTranslations("publicServices");
   const locale = await getLocale();
   const rbtPrice = await getRbtMonthlyPriceLabel(locale, t);
-  const prices = await getPublicServicePrices();
-  const priceLabel = (key: "rbt" | "consultation" | "iep") => {
+  const [prices, offered] = await Promise.all([getPublicServicePrices(), getOfferedSelfScheduledServices()]);
+  const visible = services.filter(
+    (service) => service.key !== "parentSupport" || offered.includes("parent_support"),
+  );
+  const priceLabel = (key: (typeof services)[number]["key"]) => {
     if (key === "rbt") return rbtPrice;
+    if (key === "parentSupport") return t("parentSupport.price");
     const cents = prices[key === "iep" ? "iep_language_assistance" : "consultation"];
     return cents === undefined ? t(`${key}.price`) : formatCents(cents, locale);
   };
   return (
     <div className="space-y-6">
-      <ul className="grid gap-5 lg:grid-cols-3">
-        {services.map(({ key, icon: Icon }) => (
+      <ul className={`grid gap-5 ${visible.length > 3 ? "md:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-3"}`}>
+        {visible.map(({ key, icon: Icon }) => (
           <li className="flex flex-col rounded-2xl border border-border bg-white p-6 shadow-sm" key={key}>
             <Icon aria-hidden="true" className="size-9 text-link" />
             <h3 className="mt-4 text-xl font-bold">{t(`${key}.name`)}</h3>

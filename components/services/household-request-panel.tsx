@@ -20,6 +20,7 @@ type Props = {
   locale: AppLocale;
   paymentReturn: "return" | "cancelled" | null;
   justCreated: boolean;
+  justBooked?: boolean;
   scheduleNotSaved?: boolean;
 };
 
@@ -29,6 +30,7 @@ export async function HouseholdRequestPanel({
   locale,
   paymentReturn,
   justCreated,
+  justBooked = false,
   scheduleNotSaved = false,
 }: Props) {
   const { request, appointments } = bundle;
@@ -59,6 +61,16 @@ export async function HouseholdRequestPanel({
           role="status"
         >
           {request.service_type === "iep_language_assistance" ? t("createdIep") : t("created")}
+        </p>
+      ) : null}
+      {justBooked ? (
+        <p
+          className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900"
+          role="status"
+        >
+          {request.payment_status === "not_required" || request.payment_status === "paid"
+            ? t("bookedConfirmed")
+            : t("bookedHeld")}
         </p>
       ) : null}
       {scheduleNotSaved ? (

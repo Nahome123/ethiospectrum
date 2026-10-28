@@ -1665,7 +1665,8 @@
     "types": {
       "rbt_bootcamp": "Campamento RBT",
       "consultation": "Consulta",
-      "iep_language_assistance": "Asistencia lingüística con el IEP"
+      "iep_language_assistance": "Asistencia lingüística con el IEP",
+      "parent_support": "Apoyo para padres"
     },
     "status": {
       "pending_review": "Pendiente de revisión",
@@ -1776,7 +1777,10 @@
       "generic": "Algo salió mal. Inténtelo de nuevo.",
       "paymentsUnavailable": "Los pagos en línea aún no están configurados. Comuníquese con Ethiospectrum.",
       "checkout": "No pudimos abrir la página de pago segura. Inténtelo de nuevo.",
-      "refund": "El proveedor de pagos no pudo procesar el reembolso. Se marcó como fallido y puede reintentarse."
+      "refund": "El proveedor de pagos no pudo procesar el reembolso. Se marcó como fallido y puede reintentarse.",
+      "slotTaken": "Lo sentimos, esa hora acaba de reservarse. Elija otra hora.",
+      "bookingLimit": "Ya tiene una sesión próxima de este servicio. Puede reservar otra después, o cancelarla primero.",
+      "chooseTime": "Elija una hora antes de reservar."
     },
     "success": {
       "appointmentConfirmed": "Su cita está confirmada.",
@@ -1805,7 +1809,8 @@
       "feeSaved": "El cargo fue guardado.",
       "topicSaved": "El tema fue guardado.",
       "specialistUpdated": "El especialista fue guardado.",
-      "roleUpdated": "El rol fue actualizado."
+      "roleUpdated": "El rol fue actualizado.",
+      "scheduleSaved": "Horario semanal guardado."
     },
     "catalog": {
       "eyebrow": "Servicios",
@@ -1820,7 +1825,8 @@
       "descriptions": {
         "rbt_bootcamp": "Una videoteca a su propio ritmo que ayuda a los padres a comprender la neurodivergencia, completar el plan de estudios de Ethiospectrum y prepararse para una credencial o examen externo relacionado con RBT. Completar el curso no es una certificación RBT.",
         "consultation": "Una consulta de 60 minutos con orientación general sobre el hogar y los servicios, u orientación conductual y educativa específica.",
-        "iep_language_assistance": "Ayuda para comprender un IEP, asistencia lingüística durante una reunión escolar y traducción escrita."
+        "iep_language_assistance": "Ayuda para comprender un IEP, asistencia lingüística durante una reunión escolar y traducción escrita.",
+        "parent_support": "Una sesión individual gratuita para que padres y cuidadores hablen de lo que vive su familia y encuentren apoyo."
       },
       "features": {
         "rbt_bootcamp": [
@@ -1840,16 +1846,23 @@
           "Explicación del IEP y asistencia en reuniones escolares",
           "Traducción escrita incluida",
           "Remota o en persona · un seguimiento incluido"
+        ],
+        "parent_support": [
+          "Gratis, 30 minutos, en línea",
+          "Reserve usted mismo cualquier hora libre",
+          "Inglés o amárico"
         ]
       },
       "subscribe": "Suscribirse",
       "openTraining": "Abrir el Campamento RBT",
       "request": {
-        "consultation": "Solicitar una consulta",
-        "iep_language_assistance": "Solicitar asistencia con el IEP"
+        "consultation": "Reservar una consulta",
+        "iep_language_assistance": "Solicitar asistencia con el IEP",
+        "parent_support": "Reservar sesión gratuita"
       },
       "noRequestPermission": "Pida al propietario del hogar permiso para solicitar servicios.",
-      "taxNotice": "Los impuestos aplicables se calculan al pagar cuando corresponda. Cualquier cargo adicional se muestra para su aprobación antes de pagar. No se cobra cargo por traslado."
+      "taxNotice": "Los impuestos aplicables se calculan al pagar cuando corresponda. Cualquier cargo adicional se muestra para su aprobación antes de pagar. No se cobra cargo por traslado.",
+      "free": "Gratis"
     },
     "form": {
       "backToServices": "Volver a los servicios",
@@ -2030,7 +2043,8 @@
       },
       "requestedTimes": "Su hora solicitada",
       "requestedDirect": "Confirmaremos esta hora o le sugeriremos otra si no está disponible.",
-      "requestedPropose": "La familia propuso estas opciones; se elegirá una."
+      "requestedPropose": "La familia propuso estas opciones; se elegirá una.",
+      "heldForPayment": "Reservada para usted mientras paga. Se confirma en cuanto se completa el pago."
     },
     "household": {
       "created": "Recibimos su solicitud. Un administrador la revisará y asignará un especialista.",
@@ -2062,7 +2076,9 @@
       "cancelling": "Cancelando…",
       "cancelRequest": "Cancelar solicitud",
       "reasonOptional": "Motivo (opcional)",
-      "scheduleNotSaved": "Su solicitud se envió, pero la hora elegida no se pudo guardar (por ejemplo, por un cambio de horario). Su especialista propondrá horarios."
+      "scheduleNotSaved": "Su solicitud se envió, pero la hora elegida no se pudo guardar (por ejemplo, por un cambio de horario). Su especialista propondrá horarios.",
+      "bookedConfirmed": "¡Reserva hecha! Los detalles de la sesión están abajo y recibirá un recordatorio antes de que empiece.",
+      "bookedHeld": "Su hora está reservada durante 30 minutos. Complete el pago abajo para confirmar la cita."
     },
     "slots": {
       "option": "Opción {number}",
@@ -2213,6 +2229,29 @@
       "meetingLinkOptional": "Enlace de la reunión (opcional)",
       "needDifferentTime": "¿Necesita otra hora?",
       "needDifferentTimeHelp": "Proponga otras horas para que la familia elija, o programe otra hora directamente."
+    },
+    "booking": {
+      "consultationSummary": "Sesión de {minutes} minutos · {price}. Elija con quién quiere reunirse y una hora que le convenga; se confirma en cuanto paga.",
+      "parentSupportTitle": "Apoyo para padres",
+      "parentSupportSummary": "Una sesión individual gratuita de {minutes} minutos para padres y cuidadores. Elija una hora que le convenga y se confirma al instante.",
+      "parentSupportTopic": "¿De qué le gustaría hablar?",
+      "free": "Gratis",
+      "whoAndWhen": "Con quién y cuándo",
+      "chooseSpecialist": "Elija un especialista",
+      "either": "Cualquiera — el primero disponible",
+      "eitherHelp": "Vea todas las horas libres y reúnase con quien esté disponible.",
+      "withSpecialist": "Su sesión es con {name}.",
+      "chooseTime": "Elija una hora",
+      "shownIn": "horas mostradas en {zone}",
+      "loadingTimes": "Cargando horas libres…",
+      "noTimes": "No hay horas libres en las próximas tres semanas para esta opción. Pruebe con otro especialista o idioma, o vuelva pronto.",
+      "selected": "Seleccionado: {time} con {name}",
+      "nextStepsPaid": "Siguiente: pagará de forma segura con Stripe. Reservamos esta hora durante 30 minutos mientras paga, y la cita se confirma en cuanto se completa el pago.",
+      "nextStepsFree": "Esta sesión es gratuita. Se confirma en cuanto la reserva y recibirá un recordatorio antes de que empiece.",
+      "bookAndPay": "Reservar y pagar",
+      "bookFree": "Reservar sesión gratuita",
+      "booking": "Reservando…",
+      "noSpecialists": "Ahora no se pueden reservar consultas en línea. Vuelva pronto."
     }
   },
   "adminConsole": {
@@ -2352,7 +2391,10 @@
         "en": "Etiqueta (inglés)",
         "am": "Etiqueta (amárico)",
         "es": "Etiqueta (español)"
-      }
+      },
+      "bookingLimit": "Sesiones próximas permitidas por hogar",
+      "bookingLimitHelp": "Déjelo en blanco para no tener límite.",
+      "saveLimit": "Guardar límite"
     },
     "specialistsPage": {
       "title": "Especialistas",
@@ -2368,7 +2410,18 @@
       "availability": "Disponibilidad",
       "bio": "Biografía (interna)",
       "save": "Guardar",
-      "saving": "Guardando…"
+      "saving": "Guardando…",
+      "bioHelp": "Se muestra a las familias cuando eligen con quién reservar.",
+      "scheduleTitle": "Horario semanal para reservas en línea",
+      "scheduleDays": "{count, plural, one {# día a la semana} other {# días a la semana}}",
+      "scheduleEmpty": "Sin configurar: no hay reservas en línea",
+      "scheduleHelp": "Las familias pueden reservar consultas y sesiones de apoyo para padres dentro de este horario. Deje un día en blanco para cerrarlo. Las horas reservadas se quitan automáticamente.",
+      "scheduleTimezone": "Zona horaria de este horario",
+      "meetingLink": "Enlace de reunión predeterminado (se añade a cada sesión reservada)",
+      "startsAt": "{day} inicio",
+      "endsAt": "{day} fin",
+      "saveSchedule": "Guardar horario",
+      "scheduleSaved": "Horario semanal guardado."
     },
     "usersPage": {
       "title": "Usuarios y roles",
@@ -2601,7 +2654,10 @@
     "oneTime": "pago único",
     "independentNotice": "La Consulta y la Asistencia lingüística con el IEP no requieren una suscripción al Campamento RBT.",
     "history": "Historial reciente de servicios",
-    "noHistory": "Los servicios completados y cancelados aparecerán aquí."
+    "noHistory": "Los servicios completados y cancelados aparecerán aquí.",
+    "parentSupportTitle": "Apoyo para padres gratuito",
+    "parentSupportBody": "Hable a solas con nuestro consultor de apoyo para padres: gratis, 30 minutos, a la hora que elija.",
+    "parentSupportAction": "Reservar sesión gratuita"
   },
   "bootcamp": {
     "eyebrow": "Campamento RBT",
@@ -2936,7 +2992,15 @@
       "Explicación del IEP y asistencia lingüística en reuniones escolares",
       "Traducción escrita del material del IEP",
       "Sesiones remotas o en persona en Ethiospectrum, la escuela o un lugar acordado"
-    ]
+    ],
+    "parentSupport": {
+      "name": "Apoyo para padres",
+      "price": "Gratis",
+      "billing": "Gratis · sesión de 30 minutos",
+      "description": "Una sesión individual gratuita para padres y cuidadores: un espacio para hablar de lo que vive su familia y encontrar apoyo.",
+      "features": ["Individual y en línea", "Reserve usted mismo cualquier hora libre", "Sin pago"],
+      "action": "Reservar sesión gratuita"
+    }
   },
   "adminView": {
     "label": "Elegir vista",

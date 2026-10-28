@@ -94,7 +94,10 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
   const visibleAppointments = appointments.filter(
     (appointment) => appointment.status !== "superseded" && appointment.status !== "declined",
   );
-  const proposed = visibleAppointments.filter((appointment) => appointment.status === "proposed");
+  // Times staff proposed for the family to choose from (not a time the family booked and is paying for).
+  const proposed = visibleAppointments.filter(
+    (appointment) => appointment.status === "proposed" && appointment.proposed_by_role !== "household",
+  );
   const now = new Date();
 
   const renderAppointment = (appointment: ServiceAppointment) => {
@@ -178,7 +181,9 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
           </p>
         ) : null}
 
-        {audience === "household" && appointment.status === "proposed" && request.can_confirm ? (
+        {appointment.status === "proposed" && appointment.proposed_by_role === "household" ? (
+          <p className="mt-3 text-sm font-medium text-amber-800">{t("heldForPayment")}</p>
+        ) : audience === "household" && appointment.status === "proposed" && request.can_confirm ? (
           confirmBlockedByPayment ? (
             <p className="mt-3 text-sm font-medium text-amber-800">{t("payToConfirm")}</p>
           ) : (

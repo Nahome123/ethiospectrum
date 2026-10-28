@@ -1,10 +1,11 @@
-import { BookOpen, Check, Languages, MessagesSquare } from "lucide-react";
+import { BookOpen, Check, HeartHandshake, Languages, MessagesSquare } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { getHouseholdAccess } from "@/lib/households/server";
 import { formatCents } from "@/lib/services/constants";
 import { localizedText } from "@/lib/services/display";
+import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { listServices } from "@/lib/services/server";
 import { getTrainingAccess } from "@/lib/training/server";
 
@@ -12,17 +13,25 @@ const icons = {
   rbt_bootcamp: BookOpen,
   consultation: MessagesSquare,
   iep_language_assistance: Languages,
+  parent_support: HeartHandshake,
 } as const;
+
+const requestPaths: Record<string, string> = {
+  consultation: "/services/consultation",
+  iep_language_assistance: "/services/iep",
+  parent_support: "/services/parent-support",
+};
 
 export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeParam as AppLocale;
   const t = await getTranslations({ locale, namespace: "services.catalog" });
   const types = await getTranslations({ locale, namespace: "services.types" });
-  const [services, access, training] = await Promise.all([
+  const [services, access, training, offered] = await Promise.all([
     listServices(),
     getHouseholdAccess(),
     getTrainingAccess(),
+    getOfferedSelfScheduledServices(),
   ]);
   const canRequest = Boolean(access?.permissions.includes("submit_requests"));
 
@@ -45,7 +54,11 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
       ) : null}
       <ul className="grid gap-5 lg:grid-cols-3">
         {services
-          .filter((service) => service.active)
+          // A self-scheduled service nobody currently offers is hidden.
+          .filter(
+            (service) =>
+              service.active && (!service.self_scheduled || offered.includes(service.service_type as never)),
+          )
           .map((service) => {
             const type = service.service_type as keyof typeof icons;
             const Icon = icons[type];
@@ -60,7 +73,9 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                     ? service.price_cents !== null
                       ? t("monthlyPrice", { price: formatCents(service.price_cents, locale) })
                       : t("monthlySubscription")
-                    : formatCents(service.price_cents, locale)}
+                    : service.price_cents === 0
+                      ? t("free")
+                      : formatCents(service.price_cents, locale)}
                 </p>
                 <p className="text-sm font-semibold text-muted-foreground">
                   {isSubscription
@@ -95,7 +110,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                   ) : canRequest ? (
                     <Link
                       className="inline-flex min-h-10 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-                      href={type === "consultation" ? "/services/consultation" : "/services/iep"}
+                      href={requestPaths[type]}
                     >
                       {t(`request.${type}`)}
                     </Link>
