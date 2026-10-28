@@ -26,7 +26,7 @@ export default async function IepRequestPage({ params }: { params: Promise<{ loc
         <h1 className="text-3xl font-bold">{t("iepTitle")}</h1>
         <p className="mt-2 text-muted-foreground">
           {t("iepSummary", {
-            price: formatCents(service?.price_cents ?? 1999, locale),
+            price: formatCents(service?.price_cents ?? 2999, locale),
             minutes: service?.duration_minutes ?? 60,
           })}
         </p>

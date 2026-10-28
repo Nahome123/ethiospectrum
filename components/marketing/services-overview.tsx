@@ -1,6 +1,8 @@
 import { BookOpen, Check, Languages, MessagesSquare } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
+import { formatCents } from "@/lib/services/constants";
+import { getPublicServicePrices } from "@/lib/services/public-catalog";
 import { Link } from "@/i18n/navigation";
 
 const services = [
@@ -11,12 +13,19 @@ const services = [
 
 /**
  * Public service and price summary (PRD section 33). Consultation and IEP
- * prices are fixed by the PRD; the RBT Boot Camp amount comes from the
- * configured Stripe Price.
+ * prices come from the service catalog (Admin -> Services); the RBT Boot
+ * Camp amount comes from the configured Stripe Price.
  */
 export async function ServicesOverview({ showPolicy = false }: { showPolicy?: boolean }) {
   const t = await getTranslations("publicServices");
-  const rbtPrice = await getRbtMonthlyPriceLabel(await getLocale(), t);
+  const locale = await getLocale();
+  const rbtPrice = await getRbtMonthlyPriceLabel(locale, t);
+  const prices = await getPublicServicePrices();
+  const priceLabel = (key: "rbt" | "consultation" | "iep") => {
+    if (key === "rbt") return rbtPrice;
+    const cents = prices[key === "iep" ? "iep_language_assistance" : "consultation"];
+    return cents === undefined ? t(`${key}.price`) : formatCents(cents, locale);
+  };
   return (
     <div className="space-y-6">
       <ul className="grid gap-5 lg:grid-cols-3">
@@ -24,7 +33,7 @@ export async function ServicesOverview({ showPolicy = false }: { showPolicy?: bo
           <li className="flex flex-col rounded-2xl border border-border bg-white p-6 shadow-sm" key={key}>
             <Icon aria-hidden="true" className="size-9 text-link" />
             <h3 className="mt-4 text-xl font-bold">{t(`${key}.name`)}</h3>
-            <p className="mt-2 text-2xl font-bold">{key === "rbt" ? rbtPrice : t(`${key}.price`)}</p>
+            <p className="mt-2 text-2xl font-bold">{priceLabel(key)}</p>
             <p className="text-sm font-semibold text-muted-foreground">{t(`${key}.billing`)}</p>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">{t(`${key}.description`)}</p>
             <ul className="mt-4 space-y-2 text-sm">

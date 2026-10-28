@@ -56,8 +56,8 @@ select lives_ok($$select public.admin_update_specialist((select id from ids wher
 select is((select count(*) from public.specialist_capabilities), 4::bigint, 'capabilities are stored');
 select throws_ok($$select public.admin_update_specialist((select id from ids where name = 'spec_es'), 'available', '[{"service_type": "iep_language_assistance", "language": "en", "delivery_method": "remote"}]'::jsonb)$$, '23514', null,
   'IEP capabilities must name Amharic or Spanish');
-select is((select price_cents from public.services where service_type = 'consultation'), 999, 'consultation is $9.99');
-select is((select price_cents from public.services where service_type = 'iep_language_assistance'), 1999, 'IEP language assistance is $19.99');
+select is((select price_cents from public.services where service_type = 'consultation'), 4999, 'consultation is $49.99');
+select is((select price_cents from public.services where service_type = 'iep_language_assistance'), 2999, 'IEP language assistance is $29.99');
 select is((select duration_minutes from public.services where service_type = 'iep_language_assistance'), 60, 'IEP sessions are 60 minutes');
 
 -- 2. Consultation: request, review, assignment ----------------------------
@@ -135,7 +135,7 @@ select throws_ok($$select * from public.prepare_service_payment((select id from 
   'a caregiver without payment permission cannot pay');
 set local request.jwt.claim.sub = 'b1000000-0000-4000-8000-000000000001';
 insert into ids select 'payment1', payment_id from public.prepare_service_payment((select id from ids where name = 'consult'), null, false);
-select is((select subtotal_cents from public.service_payments where id = (select id from ids where name = 'payment1')), 999, 'the payment amount is derived server-side');
+select is((select subtotal_cents from public.service_payments where id = (select id from ids where name = 'payment1')), 4999, 'the payment amount is derived server-side');
 select is((select payment_status from public.service_requests where id = (select id from ids where name = 'consult')), 'pending', 'payment is pending');
 select throws_ok($$select public.sync_service_payment((select id from ids where name = 'payment1'), 'cs_test_one', 'paid', now(), null, 999, 0)$$,
   '42501', null, 'browsers cannot synchronize payments');
@@ -373,7 +373,7 @@ select lives_ok($$select public.admin_save_service_fee('consultation', 'Printed 
 set local request.jwt.claim.sub = 'b1000000-0000-4000-8000-000000000001';
 select throws_ok($$select * from public.prepare_service_payment((select id from ids where name = 'retry'), null, false)$$, 'ES422', null, 'unaccepted fees block payment');
 select is((select subtotal_cents from public.prepare_service_payment((select id from ids where name = 'retry'),
-  (select array_agg(id) from public.service_fees where active), true)), 1249, 'accepted fees are included in the total');
+  (select array_agg(id) from public.service_fees where active), true)), 5249, 'accepted fees are included in the total');
 
 reset role;
 set local role service_role;

@@ -1,6 +1,8 @@
 import { BookOpenCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
+import { formatCents } from "@/lib/services/constants";
+import { getPublicServicePrices } from "@/lib/services/public-catalog";
 import { Link } from "@/i18n/navigation";
 import { FeatureCard } from "./feature-card";
 import { ServicesOverview } from "./services-overview";
@@ -10,7 +12,13 @@ import { SectionHeading } from "./section-heading";
 
 export async function LandingPage() {
   const t = await getTranslations();
-  const rbtPrice = await getRbtMonthlyPriceLabel(await getLocale(), await getTranslations("publicServices"));
+  const locale = await getLocale();
+  const rbtPrice = await getRbtMonthlyPriceLabel(locale, await getTranslations("publicServices"));
+  const prices = await getPublicServicePrices();
+  const sessionPrice = (key: "consultation" | "iep") => {
+    const cents = prices[key === "iep" ? "iep_language_assistance" : "consultation"];
+    return cents === undefined ? t(`publicServices.${key}.price`) : formatCents(cents, locale);
+  };
   return (
     <>
       <section className="border-b border-border bg-[radial-gradient(circle_at_top_right,_var(--secondary),_var(--background)_55%)]">
@@ -51,7 +59,7 @@ export async function LandingPage() {
                 >
                   <span className="font-semibold">{t(`publicServices.${key}.name`)}</span>
                   <span className="text-sm font-bold text-link">
-                    {key === "rbt" ? rbtPrice : t(`publicServices.${key}.price`)}
+                    {key === "rbt" ? rbtPrice : sessionPrice(key)}
                   </span>
                 </li>
               ))}

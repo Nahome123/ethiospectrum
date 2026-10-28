@@ -1870,7 +1870,7 @@
       "descriptionError": "Describa su necesidad en 10 a 3000 caracteres.",
       "relevantInformation": "Información relevante del servicio",
       "relevantInformationHelp": "Opcional: diagnósticos, servicios actuales o cualquier cosa que el especialista deba saber. Comparta solo lo necesario.",
-      "nextStepsConsultation": "Próximos pasos: un administrador revisa su solicitud y asigna un especialista, que confirma la hora que eligió. Luego paga $9.99 de forma segura antes de la sesión.",
+      "nextStepsConsultation": "Próximos pasos: un administrador revisa su solicitud y asigna un especialista, que confirma la hora que eligió. Luego paga $49.99 de forma segura antes de la sesión.",
       "submitConsultation": "Enviar solicitud de consulta",
       "submitting": "Enviando…",
       "language": "Idioma",
@@ -1896,7 +1896,7 @@
       "requestedServiceHelp": "Díganos qué necesita, por ejemplo qué partes del IEP explicar o los detalles de la reunión.",
       "relevantIepInformation": "Información relevante del IEP",
       "relevantIepInformationHelp": "Opcional: escuela, grado, metas, adaptaciones o fechas límite. Puede subir el documento del IEP después de enviar.",
-      "nextStepsIep": "Próximos pasos: un administrador revisa su solicitud y asigna un especialista que habla su idioma y confirma la hora que eligió. Puede subir documentos del IEP en la página de la solicitud y pagar $19.99 de forma segura antes de la sesión.",
+      "nextStepsIep": "Próximos pasos: un administrador revisa su solicitud y asigna un especialista que habla su idioma y confirma la hora que eligió. Puede subir documentos del IEP en la página de la solicitud y pagar $29.99 de forma segura antes de la sesión.",
       "submitIep": "Enviar solicitud de asistencia con el IEP",
       "guard": {
         "household": {
@@ -2897,7 +2897,7 @@
     },
     "consultation": {
       "name": "Consulta",
-      "price": "$9.99",
+      "price": "$49.99",
       "billing": "Pago único · 60 minutos",
       "description": "Orientación general sobre el hogar y los servicios, u orientación conductual y educativa específica, con un especialista asignado.",
       "features": ["Sesión de 60 minutos", "Un seguimiento incluido", "Inglés, amárico o español"],
@@ -2905,7 +2905,7 @@
     },
     "iep": {
       "name": "Asistencia lingüística con el IEP",
-      "price": "$19.99",
+      "price": "$29.99",
       "billing": "Pago único · sesión de 60 minutos",
       "description": "Comprenda el IEP de su hijo, reciba asistencia lingüística en reuniones escolares y una traducción escrita.",
       "features": [

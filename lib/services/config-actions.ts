@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 import type { AppLocale } from "@/i18n/routing";
@@ -92,7 +92,8 @@ export async function updateServiceAction(
     input_active: field(formData, "active") === "on",
     input_price_cents: parsed.data.price ?? undefined,
   });
-  return result(locale, error, "serviceUpdated", ["/admin/services", "/services", "/pricing"]);
+  if (!error) revalidateTag("service-catalog", "max");
+  return result(locale, error, "serviceUpdated", ["/admin/services", "/services", "/pricing", ""]);
 }
 
 export async function saveServiceFeeAction(

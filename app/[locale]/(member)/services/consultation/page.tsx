@@ -28,7 +28,7 @@ export default async function ConsultationRequestPage({ params }: { params: Prom
         <h1 className="text-3xl font-bold">{t("consultationTitle")}</h1>
         <p className="mt-2 text-muted-foreground">
           {t("consultationSummary", {
-            price: formatCents(service?.price_cents ?? 999, locale),
+            price: formatCents(service?.price_cents ?? 4999, locale),
             minutes: service?.duration_minutes ?? 60,
           })}
         </p>

@@ -1870,7 +1870,7 @@
       "descriptionError": "Please describe your need in 10 to 3,000 characters.",
       "relevantInformation": "Relevant service information",
       "relevantInformationHelp": "Optional: diagnoses, current services, or anything the specialist should know. Share only what is needed.",
-      "nextStepsConsultation": "What happens next: an administrator reviews your request and assigns a specialist, who confirms the time you picked. You then pay $9.99 securely before the session.",
+      "nextStepsConsultation": "What happens next: an administrator reviews your request and assigns a specialist, who confirms the time you picked. You then pay $49.99 securely before the session.",
       "submitConsultation": "Submit consultation request",
       "submitting": "Submitting…",
       "language": "Language",
@@ -1896,7 +1896,7 @@
       "requestedServiceHelp": "Tell us what you need, for example which parts of the IEP to explain or the meeting details.",
       "relevantIepInformation": "Relevant IEP information",
       "relevantIepInformationHelp": "Optional: school, grade, goals, accommodations, or deadlines. You can upload the IEP document after submitting.",
-      "nextStepsIep": "What happens next: an administrator reviews your request and assigns a specialist who speaks your language and confirms the time you picked. You can upload IEP documents on the request page and pay $19.99 securely before the session.",
+      "nextStepsIep": "What happens next: an administrator reviews your request and assigns a specialist who speaks your language and confirms the time you picked. You can upload IEP documents on the request page and pay $29.99 securely before the session.",
       "submitIep": "Submit IEP assistance request",
       "guard": {
         "household": {
@@ -2897,7 +2897,7 @@
     },
     "consultation": {
       "name": "Consultation",
-      "price": "$9.99",
+      "price": "$49.99",
       "billing": "One-time payment · 60 minutes",
       "description": "General household and service guidance, or specific behavioral and educational guidance, with a matched specialist.",
       "features": ["60-minute session", "One follow-up included", "English, Amharic, or Spanish"],
@@ -2905,7 +2905,7 @@
     },
     "iep": {
       "name": "IEP Language Assistance",
-      "price": "$19.99",
+      "price": "$29.99",
       "billing": "One-time payment · 60-minute session",
       "description": "Understand your child's IEP, get language assistance at school meetings, and receive a written translation.",
       "features": [
