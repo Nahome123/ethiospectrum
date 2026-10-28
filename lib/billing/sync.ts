@@ -1,6 +1,7 @@
 import "server-only";
 import type Stripe from "stripe";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { reconcileTrainingCourse } from "./course";
 import { getConfiguredBillingInterval } from "./provider";
 import { mapStripeInvoice, mapStripeSubscription } from "./mapping";
 
@@ -157,6 +158,9 @@ export async function reconcileBillingHousehold({
       syncSubscription: false,
     });
   }
+  // One-time RBT Boot Camp course purchases and their refunds.
+  await reconcileTrainingCourse({ admin, stripe, customerId: customerResult.data.stripe_customer_id });
+
   const { error } = await admin.rpc("record_billing_reconciliation", {
     target_household_id: householdId,
     target_actor_id: actorId,

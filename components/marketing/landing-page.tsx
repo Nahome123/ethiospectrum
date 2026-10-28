@@ -1,6 +1,6 @@
 import { BookOpenCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
+import { getRbtCoursePriceLabel } from "@/lib/billing/public-price";
 import { formatCents } from "@/lib/services/constants";
 import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { getPublicServicePrices } from "@/lib/services/public-catalog";
@@ -14,7 +14,7 @@ import { SectionHeading } from "./section-heading";
 export async function LandingPage() {
   const t = await getTranslations();
   const locale = await getLocale();
-  const rbtPrice = await getRbtMonthlyPriceLabel(locale, await getTranslations("publicServices"));
+  const rbtPrice = await getRbtCoursePriceLabel(locale, await getTranslations("publicServices"));
   const [prices, offered] = await Promise.all([getPublicServicePrices(), getOfferedSelfScheduledServices()]);
   const heroServices = offered.includes("parent_support")
     ? (["rbt", "consultation", "iep", "parentSupport"] as const)

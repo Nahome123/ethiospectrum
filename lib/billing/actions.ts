@@ -7,10 +7,12 @@ import { getSiteUrl } from "@/lib/auth/site-url";
 import { getHouseholdAccess } from "@/lib/households/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/server";
-import { billingCheckoutSchema, billingReconciliationSchema } from "@/lib/validation/billing";
+import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
+import { billingReconciliationSchema } from "@/lib/validation/billing";
 import type { BillingActionState } from "./action-state";
 import { ensureStripeCustomer } from "./customer";
-import { getConfiguredBillingInterval, getRbtMonthlyPriceId, getStripeClient } from "./provider";
+import { TRAINING_COURSE_METADATA_KEY } from "./course";
+import { getRbtCoursePriceId, getStripeClient } from "./provider";
 import { reconcileBillingHousehold } from "./sync";
 import {
   cancelSubscriptionNow,
@@ -43,19 +45,26 @@ async function getSubscriptionManagerContext() {
   return { household: access.household, userId: claims.sub };
 }
 
-export async function createBillingCheckoutSessionAction(
+/**
+ * Buys (or renews) RBT Boot Camp: a one-time Checkout for the configured
+ * course Price. Whether the household may buy now (no access, or in its last
+ * 30 days) is decided by the database; the Price comes from server config.
+ */
+export async function startTrainingCourseCheckoutAction(
   locale: AppLocale,
   _state: BillingActionState,
-  formData: FormData,
+  _formData: FormData,
 ): Promise<BillingActionState> {
   void _state;
+  void _formData;
   const t = await getTranslations({ locale, namespace: "billing" });
-  const parsed = billingCheckoutSchema.safeParse({
-    billingInterval: value(formData, "billingInterval") || "month",
-  });
-  if (!parsed.success) return { status: "error", message: t("errors.validation") };
   const context = await getSubscriptionManagerContext();
   if (!context) return { status: "error", message: t("errors.ownerRequired") };
+  const supabase = await createServerActionSupabaseClient();
+  const { data: statusRows, error: statusError } = await supabase.rpc("get_training_course_status");
+  const status = statusRows?.[0];
+  if (statusError || !status?.can_purchase) return { status: "error", message: t("errors.ownerRequired") };
+  if (!status.renewable) return { status: "error", message: t("errors.courseActive") };
 
   try {
     const admin = createSupabaseAdminClient();
@@ -66,51 +75,31 @@ export async function createBillingCheckoutSessionAction(
       householdId: context.household.id,
       actorId: context.userId,
     });
-
-    const subscriptions = await stripe.subscriptions.list({
-      customer: customerId,
-      status: "all",
-      limit: 20,
-    });
-    const hasManagedSubscription = subscriptions.data.some((subscription) => {
-      const priceId = subscription.items.data[0]?.price.id;
-      return (
-        Boolean(priceId && getConfiguredBillingInterval(priceId)) &&
-        subscription.status !== "canceled" &&
-        subscription.status !== "incomplete_expired"
-      );
-    });
-    if (hasManagedSubscription) return { status: "error", message: t("errors.updatedElsewhere") };
-
+    const metadata = {
+      [TRAINING_COURSE_METADATA_KEY]: "rbt_bootcamp",
+      ethiospectrum_household_id: context.household.id,
+      ethiospectrum_actor_id: context.userId,
+    };
     const siteUrl = getSiteUrl();
     const session = await stripe.checkout.sessions.create({
       ui_mode: "hosted_page",
-      mode: "subscription",
+      mode: "payment",
       customer: customerId,
       client_reference_id: context.household.id,
-      line_items: [{ price: getRbtMonthlyPriceId(), quantity: 1 }],
-      metadata: { ethiospectrum_household_id: context.household.id },
-      subscription_data: {
-        metadata: { ethiospectrum_household_id: context.household.id },
-      },
+      line_items: [{ price: getRbtCoursePriceId(), quantity: 1 }],
+      metadata,
+      payment_intent_data: { metadata },
       billing_address_collection: "auto",
       phone_number_collection: { enabled: false },
       automatic_tax: { enabled: false },
       allow_promotion_codes: false,
-      payment_method_collection: "always",
-      submit_type: "auto",
+      submit_type: "pay",
       integration_identifier: "hosted_web_0001",
       origin_context: "web",
       success_url: `${siteUrl}/${locale}/billing?checkout=success`,
       cancel_url: `${siteUrl}/${locale}/billing?checkout=cancelled`,
     });
     if (!session.url) throw new Error("checkout_url_missing");
-    const recorded = await admin.rpc("record_billing_checkout_started", {
-      target_household_id: context.household.id,
-      target_actor_id: context.userId,
-      input_billing_interval: parsed.data.billingInterval,
-    });
-    if (recorded.error) throw new Error("checkout_audit_failed");
     revalidateBilling(locale);
     return { status: "success", message: t("checkout.redirecting"), url: session.url };
   } catch {

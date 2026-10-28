@@ -3834,6 +3834,68 @@ export type Database = {
           },
         ];
       };
+      training_access: {
+        Row: {
+          amount_cents: number | null;
+          created_at: string;
+          currency: string | null;
+          expires_at: string | null;
+          household_id: string;
+          id: string;
+          provider_updated_at: string | null;
+          purchased_at: string | null;
+          purchased_by: string | null;
+          refunded_at: string | null;
+          starts_at: string | null;
+          status: string;
+          stripe_checkout_session_id: string | null;
+          stripe_payment_intent_id: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          amount_cents?: number | null;
+          created_at?: string;
+          currency?: string | null;
+          expires_at?: string | null;
+          household_id: string;
+          id?: string;
+          provider_updated_at?: string | null;
+          purchased_at?: string | null;
+          purchased_by?: string | null;
+          refunded_at?: string | null;
+          starts_at?: string | null;
+          status: string;
+          stripe_checkout_session_id?: string | null;
+          stripe_payment_intent_id?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          amount_cents?: number | null;
+          created_at?: string;
+          currency?: string | null;
+          expires_at?: string | null;
+          household_id?: string;
+          id?: string;
+          provider_updated_at?: string | null;
+          purchased_at?: string | null;
+          purchased_by?: string | null;
+          refunded_at?: string | null;
+          starts_at?: string | null;
+          status?: string;
+          stripe_checkout_session_id?: string | null;
+          stripe_payment_intent_id?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "training_access_household_id_fkey";
+            columns: ["household_id"];
+            isOneToOne: false;
+            referencedRelation: "households";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       training_courses: {
         Row: {
           created_at: string;
@@ -5343,6 +5405,52 @@ export type Database = {
         Returns: { end_at: string; specialist_id: string; start_at: string }[];
       };
       offered_self_scheduled_services: { Args: never; Returns: string[] };
+      admin_list_training_access: {
+        Args: never;
+        Returns: {
+          amount_cents: number;
+          expires_at: string;
+          household_id: string;
+          household_name: string;
+          is_current: boolean;
+          purchased_at: string;
+          refunded_at: string;
+          status: string;
+        }[];
+      };
+      get_training_course_status: {
+        Args: never;
+        Returns: {
+          access_expires_at: string | null;
+          can_purchase: boolean;
+          household_id: string;
+          legacy_cancel_at_period_end: boolean;
+          legacy_period_end: string | null;
+          legacy_subscription_active: boolean;
+          renewable: boolean;
+        }[];
+      };
+      grant_training_access: {
+        Args: {
+          input_amount_cents: number;
+          input_currency: string;
+          input_paid_at: string;
+          input_payment_intent_id: string;
+          input_provider_updated_at: string;
+          input_purchased_by?: string;
+          input_session_id: string;
+          target_household_id: string;
+        };
+        Returns: boolean;
+      };
+      revoke_training_access: {
+        Args: {
+          input_payment_intent_id: string;
+          input_provider_updated_at: string;
+          target_household_id?: string;
+        };
+        Returns: string;
+      };
       list_assignable_specialists: {
         Args: never;
         Returns: {

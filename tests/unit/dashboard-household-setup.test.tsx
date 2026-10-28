@@ -44,6 +44,7 @@ vi.mock("@/lib/services/server", () => ({
 vi.mock("@/lib/training/server", () => ({
   getTrainingAccess: mocks.getTrainingAccess,
   getTrainingProgressSummary: mocks.getTrainingProgressSummary,
+  getTrainingCourseStatus: vi.fn(async () => null),
 }));
 vi.mock("@/lib/billing/server", () => ({ getHouseholdBillingSummary: mocks.getHouseholdBillingSummary }));
 vi.mock("@/lib/services/booking", () => ({

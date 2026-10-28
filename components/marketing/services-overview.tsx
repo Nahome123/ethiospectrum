@@ -1,6 +1,6 @@
 import { BookOpen, Check, HeartHandshake, Languages, MessagesSquare } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getRbtMonthlyPriceLabel } from "@/lib/billing/public-price";
+import { getRbtCoursePriceLabel } from "@/lib/billing/public-price";
 import { formatCents } from "@/lib/services/constants";
 import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { getPublicServicePrices } from "@/lib/services/public-catalog";
@@ -16,12 +16,12 @@ const services = [
 /**
  * Public service and price summary (PRD section 33). Consultation and IEP
  * prices come from the service catalog (Admin -> Services); the RBT Boot
- * Camp amount comes from the configured Stripe Price.
+ * Camp course amount comes from the configured one-time Stripe Price.
  */
 export async function ServicesOverview({ showPolicy = false }: { showPolicy?: boolean }) {
   const t = await getTranslations("publicServices");
   const locale = await getLocale();
-  const rbtPrice = await getRbtMonthlyPriceLabel(locale, t);
+  const rbtPrice = await getRbtCoursePriceLabel(locale, t);
   const [prices, offered] = await Promise.all([getPublicServicePrices(), getOfferedSelfScheduledServices()]);
   const visible = services.filter(
     (service) => service.key !== "parentSupport" || offered.includes("parent_support"),

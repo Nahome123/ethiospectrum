@@ -9,7 +9,8 @@ const mocks = vi.hoisted(() => ({
   getCurrentUserRole: vi.fn(),
   createSupabaseAdminClient: vi.fn(),
   getStripeClient: vi.fn(),
-  getRbtMonthlyPriceId: vi.fn(),
+  getRbtCoursePriceId: vi.fn(),
+  courseStatus: vi.fn(),
   isStripeAutomaticTaxEnabled: vi.fn(),
   getConfiguredBillingInterval: vi.fn(),
   reconcileBillingHousehold: vi.fn(),
@@ -30,15 +31,20 @@ vi.mock("@/lib/supabase/admin", () => ({
 }));
 vi.mock("@/lib/billing/provider", () => ({
   getStripeClient: mocks.getStripeClient,
-  getRbtMonthlyPriceId: mocks.getRbtMonthlyPriceId,
+  getRbtCoursePriceId: mocks.getRbtCoursePriceId,
   isStripeAutomaticTaxEnabled: mocks.isStripeAutomaticTaxEnabled,
   getConfiguredBillingInterval: mocks.getConfiguredBillingInterval,
 }));
 vi.mock("@/lib/billing/sync", () => ({ reconcileBillingHousehold: mocks.reconcileBillingHousehold }));
+vi.mock("@/lib/supabase/server-action", () => ({
+  createServerActionSupabaseClient: vi.fn(async () => ({
+    rpc: vi.fn(async () => ({ data: [mocks.courseStatus()], error: null })),
+  })),
+}));
 
 import {
-  createBillingCheckoutSessionAction,
   createBillingPortalSessionAction,
+  startTrainingCourseCheckoutAction,
   reconcileBillingHouseholdAction,
 } from "@/lib/billing/actions";
 
@@ -78,33 +84,37 @@ describe("billing Server Actions", () => {
       permissions: ["submit_requests", "make_payments", "manage_subscription"],
     });
     mocks.getCurrentSupabaseClaims.mockResolvedValue({ sub: userId });
-    mocks.getRbtMonthlyPriceId.mockReturnValue("price_monthly_server");
+    mocks.getRbtCoursePriceId.mockReturnValue("price_course_server");
+    mocks.courseStatus.mockReturnValue({ can_purchase: true, renewable: true, access_expires_at: null });
     mocks.isStripeAutomaticTaxEnabled.mockReturnValue(false);
     mocks.getConfiguredBillingInterval.mockImplementation((price: string) =>
       price === "price_monthly_server" ? "month" : null,
     );
   });
 
-  it("creates hosted Checkout with a server-resolved Price and safe metadata", async () => {
+  it("buys the course with a one-time Checkout for the server-configured Price", async () => {
     const admin = adminClient();
     const checkoutCreate = vi.fn().mockResolvedValue({ url: "https://checkout.stripe.test/session" });
-    const stripe = {
-      subscriptions: { list: vi.fn().mockResolvedValue({ data: [] }) },
-      checkout: { sessions: { create: checkoutCreate } },
-    };
     mocks.createSupabaseAdminClient.mockReturnValue(admin);
-    mocks.getStripeClient.mockReturnValue(stripe);
+    mocks.getStripeClient.mockReturnValue({ checkout: { sessions: { create: checkoutCreate } } });
 
-    await expect(createBillingCheckoutSessionAction("en", idle, checkoutForm())).resolves.toEqual({
+    await expect(startTrainingCourseCheckoutAction("en", idle, checkoutForm())).resolves.toEqual({
       status: "success",
       message: "checkout.redirecting",
       url: "https://checkout.stripe.test/session",
     });
     expect(checkoutCreate).toHaveBeenCalledWith(
       expect.objectContaining({
-        mode: "subscription",
+        mode: "payment",
         customer: "cus_synthetic123",
-        line_items: [{ price: "price_monthly_server", quantity: 1 }],
+        line_items: [{ price: "price_course_server", quantity: 1 }],
+        metadata: expect.objectContaining({
+          ethiospectrum_training_course: "rbt_bootcamp",
+          ethiospectrum_household_id: householdId,
+        }),
+        payment_intent_data: {
+          metadata: expect.objectContaining({ ethiospectrum_training_course: "rbt_bootcamp" }),
+        },
         success_url: "http://localhost:3000/en/billing?checkout=success",
         cancel_url: "http://localhost:3000/en/billing?checkout=cancelled",
       }),
@@ -115,26 +125,21 @@ describe("billing Server Actions", () => {
     expect(calls).not.toMatch(/dependent|diagnos|appointment|support.?request/iu);
   });
 
-  it("lets a caregiver granted manage_subscription start Checkout", async () => {
-    mocks.getHouseholdAccess.mockResolvedValue({
-      household: { id: householdId, name: "Synthetic household" },
-      permission: "member",
-      isOwner: false,
-      permissions: ["manage_subscription"],
+  it("refuses to sell another year while most of the current one is left", async () => {
+    mocks.courseStatus.mockReturnValue({
+      can_purchase: true,
+      renewable: false,
+      access_expires_at: "2027-09-01T00:00:00Z",
     });
-    const checkoutCreate = vi.fn().mockResolvedValue({ url: "https://checkout.stripe.test/session" });
-    mocks.createSupabaseAdminClient.mockReturnValue(adminClient());
-    mocks.getStripeClient.mockReturnValue({
-      subscriptions: { list: vi.fn().mockResolvedValue({ data: [] }) },
-      checkout: { sessions: { create: checkoutCreate } },
+    await expect(startTrainingCourseCheckoutAction("en", idle, checkoutForm())).resolves.toEqual({
+      status: "error",
+      message: "errors.courseActive",
     });
-    await expect(createBillingCheckoutSessionAction("en", idle, checkoutForm())).resolves.toMatchObject({
-      status: "success",
-    });
+    expect(mocks.getStripeClient).not.toHaveBeenCalled();
   });
 
   it.each(["administrator", "member", "viewer"])(
-    "denies a %s without the subscription permission before Stripe access",
+    "denies a %s without the billing permission before Stripe access",
     async (permission) => {
       mocks.getHouseholdAccess.mockResolvedValue({
         household: { id: householdId, name: "Synthetic household" },
@@ -142,20 +147,13 @@ describe("billing Server Actions", () => {
         isOwner: false,
         permissions: ["submit_requests", "access_training"],
       });
-      await expect(createBillingCheckoutSessionAction("en", idle, checkoutForm())).resolves.toEqual({
+      await expect(startTrainingCourseCheckoutAction("en", idle, checkoutForm())).resolves.toEqual({
         status: "error",
         message: "errors.ownerRequired",
       });
       expect(mocks.getStripeClient).not.toHaveBeenCalled();
     },
   );
-
-  it("rejects arbitrary interval and Price input before provider access", async () => {
-    await expect(
-      createBillingCheckoutSessionAction("en", idle, checkoutForm("price_forged_browser")),
-    ).resolves.toEqual({ status: "error", message: "errors.validation" });
-    expect(mocks.getStripeClient).not.toHaveBeenCalled();
-  });
 
   it("opens only the stored customer's Stripe portal", async () => {
     const admin = adminClient();

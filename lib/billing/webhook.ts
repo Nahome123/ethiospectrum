@@ -7,6 +7,7 @@ import {
   syncServicePaymentFromSession,
   syncServiceRefund,
 } from "@/lib/services/payments";
+import { isCourseCheckout, syncTrainingCourseFromSession, syncTrainingCourseRefund } from "./course";
 import { BillingProviderDataError } from "./mapping";
 import { getStripeClient, getStripeWebhookSecret } from "./provider";
 import { isStripeBillingEventType } from "./constants";
@@ -73,7 +74,15 @@ export async function handleStripeWebhookRequest(
       case "checkout.session.async_payment_failed":
       case "checkout.session.expired": {
         const session = event.data.object as Stripe.Checkout.Session;
-        if (session.mode === "payment") {
+        if (session.mode === "payment" && isCourseCheckout(session)) {
+          householdId =
+            (await syncTrainingCourseFromSession({
+              admin,
+              stripe,
+              sessionId: session.id,
+              providerUpdatedAt: providerCreatedAt,
+            })) ?? undefined;
+        } else if (session.mode === "payment") {
           const synced = await syncServicePaymentFromSession({
             admin,
             stripe,
@@ -125,6 +134,16 @@ export async function handleStripeWebhookRequest(
           paymentIntent: intent,
           providerUpdatedAt: providerCreatedAt,
         });
+        break;
+      }
+      case "charge.refunded": {
+        householdId =
+          (await syncTrainingCourseRefund({
+            admin,
+            stripe,
+            charge: event.data.object as Stripe.Charge,
+            providerUpdatedAt: providerCreatedAt,
+          })) ?? undefined;
         break;
       }
       case "refund.updated": {

@@ -41,6 +41,31 @@ export async function requireTrainingAccess(locale: AppLocale): Promise<Training
   return access;
 }
 
+export type TrainingCourseStatus = {
+  accessExpiresAt: string | null;
+  legacySubscriptionActive: boolean;
+  legacyPeriodEnd: string | null;
+  legacyCancelAtPeriodEnd: boolean;
+  canPurchase: boolean;
+  renewable: boolean;
+};
+
+/** The household's RBT Boot Camp course access (one-time purchase, a year at a time). */
+export async function getTrainingCourseStatus(): Promise<TrainingCourseStatus | null> {
+  const supabase = await createServerComponentSupabaseClient();
+  const { data, error } = await supabase.rpc("get_training_course_status");
+  const row = data?.[0];
+  if (error || !row) return null;
+  return {
+    accessExpiresAt: row.access_expires_at,
+    legacySubscriptionActive: row.legacy_subscription_active,
+    legacyPeriodEnd: row.legacy_period_end,
+    legacyCancelAtPeriodEnd: row.legacy_cancel_at_period_end,
+    canPurchase: row.can_purchase,
+    renewable: row.renewable,
+  };
+}
+
 export type Learner = { type: "member" } | { type: "dependent"; dependentId: string };
 
 export function parseLearner(value: string | string[] | undefined): Learner {

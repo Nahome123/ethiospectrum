@@ -26,6 +26,7 @@ export const stripeBillingEventValues = [
   "invoice.payment_failed",
   "payment_intent.payment_failed",
   "refund.updated",
+  "charge.refunded",
 ] as const;
 
 export type BillingInterval = (typeof billingIntervalValues)[number];

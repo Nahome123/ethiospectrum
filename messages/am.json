@@ -566,7 +566,7 @@
   "pricing": {
     "eyebrow": "ዋጋ",
     "title": "ቀላል እና ግልጽ ዋጋዎች",
-    "description": "ለRBT ቡት ካምፕ በየወሩ ይመዝገቡ፣ ወይም ምክክር ወይም የIEP የቋንቋ ድጋፍ ለብቻው ይግዙ።",
+    "description": "RBT Boot Campን አንድ ጊዜ ገዝተው የአንድ ዓመት መዳረሻ ያግኙ፣ ወይም ምክክር ወይም የIEP የቋንቋ እርዳታ ብቻውን ይያዙ።",
     "planTitle": "የወደፊት የድጋፍ ዕቅዶች",
     "planDescription": "ዛሬ ምንም ክፍያ ወይም ግዢ የለም።"
   },
@@ -1512,9 +1512,9 @@
     "household": "ቤተሰብ"
   },
   "billing": {
-    "eyebrow": "የቤተሰብ ምዝገባ",
+    "eyebrow": "ክፍያዎች",
     "title": "ክፍያ",
-    "description": "የRBT ቡት ካምፕ ምዝገባዎን ያስተዳድሩ እና የአገልግሎት ክፍያዎችን ይመልከቱ።",
+    "description": "RBT Boot Campን ይግዙ ወይም ያድሱ እና ክፍያዎችዎን ይመልከቱ።",
     "currentPlan": "የአሁኑ እቅድ",
     "plan": "እቅድ",
     "entitlement": "የRBT ቡት ካምፕ መዳረሻ",
@@ -1529,7 +1529,7 @@
     "secureDescription": "የክፍያ ካርድ መረጃ በStripe ገጾች ላይ ብቻ ይገባል። Ethiospectrum የካርድ ቁጥር ወይም CVC አይቀበልም እና አያከማችም።",
     "opensStripe": "ደህንነቱ የተጠበቀ የStripe ገጽ በአዲስ ትር ይከፈታል።",
     "plans": {
-      "free": "ምዝገባ የለም",
+      "free": "አልተገዛም",
       "familyPlus": "የRBT ቡት ካምፕ",
       "rbtBootcamp": "የRBT ቡት ካምፕ"
     },
@@ -1538,8 +1538,8 @@
       "annual": "ዓመታዊ"
     },
     "statuses": {
-      "active": "ምዝገባው ንቁ ነው",
-      "inactive": "ምዝገባው ንቁ አይደለም",
+      "active": "ንቁ",
+      "inactive": "ንቁ አይደለም",
       "cancellationScheduled": "ስረዛ ታቅዷል",
       "paid": "ተከፍሏል",
       "paymentFailed": "ክፍያው አልተሳካም",
@@ -1548,8 +1548,8 @@
     "checkout": {
       "starting": "ደህንነቱ የተጠበቀ Checkout በመክፈት ላይ…",
       "redirecting": "የStripe Checkout በመክፈት ላይ…",
-      "confirmingTitle": "ምዝገባን በማረጋገጥ ላይ",
-      "confirmingDescription": "ክፍያው በተሳካ ሁኔታ ተመልሷል። Stripe ምዝገባውን በተረጋገጠ webhook ሲያረጋግጥ የRBT ቡት ካምፕ ይነቃል።",
+      "confirmingTitle": "ክፍያዎን በማረጋገጥ ላይ",
+      "confirmingDescription": "እናመሰግናለን! Stripe ክፍያውን እንዳረጋገጠ መዳረሻዎ ይጀምራል፤ ብዙውን ጊዜ በደቂቃ ውስጥ። ካልታየ ይህን ገጽ ያድሱ።",
       "cancelledTitle": "Checkout ተሰርዟል",
       "cancelledDescription": "የእቅድ ለውጥ አልተደረገም። ዝግጁ ሲሆኑ እንደገና ይሞክሩ።"
     },
@@ -1569,7 +1569,7 @@
     },
     "admin": {
       "eyebrow": "የአስተዳዳሪ ክፍያ",
-      "title": "የምዝገባ ስራዎች",
+      "title": "የክፍያ አስተዳደር",
       "description": "ደህንነቱ የተጠበቀ የቤተሰብ ክፍያ ሁኔታን ይመልከቱ፣ ያልተሳኩ webhook ሂደቶችን ይመርምሩ እና ከStripe ጋር ያስታርቁ።",
       "subscriptionState": "የአቅራቢ ምዝገባ ሁኔታ",
       "reconcile": "ከStripe ጋር አስታርቅ",
@@ -1590,11 +1590,18 @@
       "endConfirm": "አባልነትን አቁም",
       "endsOn": "አባልነቱ በ{date} ያበቃል።",
       "endsAtPeriodEnd": "አባልነቱ በተከፈለበት ጊዜ መጨረሻ ያበቃል።",
-      "endedNow": "አባልነቱ አብቅቷል።"
+      "endedNow": "አባልነቱ አብቅቷል።",
+      "courseTitle": "የRBT Boot Camp ኮርስ ግዢዎች",
+      "courseDescription": "የአንድ ጊዜ ግዢዎች (እያንዳንዱ የአንድ ዓመት መዳረሻ)። ክፍያውን በStripe መመለስ የዚያን ግዢ መዳረሻ በራስ-ሰር ያበቃል።",
+      "courseEmpty": "እስካሁን የኮርስ ግዢ የለም።",
+      "coursePurchased": "{date} ተገዝቷል · {amount}",
+      "courseRefunded": "ተመልሷል",
+      "courseRefundedEarly": "ግዢው ከመመዝገቡ በፊት ተመልሷል",
+      "courseExpired": "ጊዜው አልፏል"
     },
     "errors": {
       "validation": "የክፍያ ምርጫውን ያረጋግጡ እና እንደገና ይሞክሩ።",
-      "ownerRequired": "ምዝገባውን ማስተዳደር የሚችለው የቤተሰብ መለያው ባለቤት ብቻ ነው።",
+      "ownerRequired": "RBT Boot Campን መግዛት ወይም ማስተዳደር የሚችለው የቤተሰብ መለያው ባለቤት ብቻ ነው።",
       "adminRequired": "የአስተዳዳሪ መዳረሻ ያስፈልጋል።",
       "checkout": "Checkout መጀመር አልተቻለም። እንደገና ይሞክሩ።",
       "portal": "የክፍያ ፖርታል መክፈት አልተቻለም።",
@@ -1603,7 +1610,8 @@
       "updatedElsewhere": "ክፍያ በሌላ ቦታ ተዘምኗል። እንደገና ከመሞከርዎ በፊት ገጹን ያድሱ።",
       "load": "ክፍያን መጫን አልተቻለም",
       "tryAgain": "ገጹን ያድሱ እና እንደገና ይሞክሩ።",
-      "cancel": "ምዝገባው ሊቀየር አልቻለም። እባክዎ እንደገና ይሞክሩ።"
+      "cancel": "ምዝገባው ሊቀየር አልቻለም። እባክዎ እንደገና ይሞክሩ።",
+      "courseActive": "መዳረሻዎ አሁንም ንቁ ነው። በመጨረሻዎቹ 30 ቀናት ማደስ ይችላሉ።"
     },
     "monthlyPrice": "{price} በወር",
     "certificationDisclaimer": "ኮርሱን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም።",
@@ -1638,6 +1646,20 @@
       "resumeConfirm": "ምዝገባን ቀጥል",
       "resumed": "ምዝገባዎ ይቀጥላል።",
       "noSubscription": "የሚቀየር ንቁ ምዝገባ የለም።"
+    },
+    "course": {
+      "price": "የአንድ ጊዜ ክፍያ · የ1 ዓመት መዳረሻ",
+      "priceWithAmount": "{price} የአንድ ጊዜ · የ1 ዓመት መዳረሻ",
+      "description": "አንድ ክፍያ ለቤተሰብዎ የሙሉ ዓመት RBT Boot Camp ይሰጣል፦ ሁሉም የሥልጠና ቪዲዮዎች፣ የሁለት ቋንቋ የጥናት መመሪያዎች እና የእድገት ክትትል።",
+      "notPurchased": "አልተገዛም",
+      "accessUntil": "እስከ {date} ድረስ መዳረሻ",
+      "buy": "RBT Boot Camp ይግዙ",
+      "renew": "ለሌላ ዓመት ያድሱ",
+      "renewHint": "አዲሱ ዓመት የአሁኑ መዳረሻዎ ሲያበቃ ይጀምራል፤ ምንም ቀን አያጡም።",
+      "renewLater": "በመዳረሻዎ የመጨረሻ 30 ቀናት ውስጥ ማደስ ይችላሉ።",
+      "askOwner": "የቤተሰብ መለያው ባለቤት RBT Boot Camp እንዲገዙ ይጠይቁ።",
+      "legacyTitle": "ወርሃዊ ምዝገባዎ",
+      "legacyDescription": "በወርሃዊ እቅድ ተመዝግበዋል፤ ንቁ እስከሆነ ድረስ መዳረሻዎን ይጠብቃል (የአሁኑ ጊዜ {date} ያበቃል)። ወርሃዊ እቅዶች ከእንግዲህ አይሸጡም፦ ከሰረዙ ሲያበቃ የአንድ ዓመት መዳረሻ መግዛት ይችላሉ።"
     }
   },
   "admin": {
@@ -1816,7 +1838,7 @@
       "eyebrow": "አገልግሎቶች",
       "title": "አገልግሎት ይምረጡ",
       "intro": "Ethiospectrum ልዩ ፍላጎት ያላቸው ልጆች ወላጆችን እና ቤተሰቦችን በራስ ፍጥነት በሚሰጥ የRBT ስልጠና፣ በምክክር እና በIEP የቋንቋ ድጋፍ በእንግሊዝኛ፣ በአማርኛ እና በስፓኒሽ ይደግፋል።",
-      "independentNotice": "ምክክር እና የIEP የቋንቋ ድጋፍ የRBT ቡት ካምፕ ምዝገባ አያስፈልጋቸውም። ማንኛውንም አገልግሎት ለብቻው መጠየቅ ይችላሉ።",
+      "independentNotice": "ምክክር፣ የIEP የቋንቋ እርዳታ እና የወላጅ ድጋፍ RBT Boot Camp አያስፈልጋቸውም። ማንኛቸውንም ብቻቸውን መያዝ ይችላሉ።",
       "householdRequired": "አገልግሎት ከመጠየቅዎ በፊት በዳሽቦርዱ ላይ የቤተሰብዎን ዝግጅት ያጠናቅቁ።",
       "monthlySubscription": "ወርሃዊ ምዝገባ",
       "monthlyPrice": "{price} / በወር",
@@ -1839,7 +1861,7 @@
           "ከተመደበ ባለሙያ ጋር የ60 ደቂቃ ክፍለ ጊዜ",
           "አንድ ክትትል ተካቷል",
           "ከ48 ሰዓት በፊት በነጻ መሰረዝ",
-          "ምዝገባ አያስፈልግም"
+          "RBT Boot Camp አያስፈልግም"
         ],
         "iep_language_assistance": [
           "እንግሊዝኛ ↔ አማርኛ እና እንግሊዝኛ ↔ ስፓኒሽ",
@@ -1849,7 +1871,7 @@
         ],
         "parent_support": ["ነፃ፣ 30 ደቂቃ፣ በመስመር ላይ", "ማንኛውንም ክፍት ሰዓት ራስዎ ይያዙ", "እንግሊዝኛ ወይም አማርኛ"]
       },
-      "subscribe": "ይመዝገቡ",
+      "subscribe": "RBT Boot Camp ያግኙ",
       "openTraining": "የRBT ቡት ካምፕን ይክፈቱ",
       "request": {
         "consultation": "ምክክር ይያዙ",
@@ -1858,7 +1880,9 @@
       },
       "noRequestPermission": "አገልግሎት ለመጠየቅ የቤተሰቡን ባለቤት ፈቃድ ይጠይቁ።",
       "taxNotice": "የሚመለከታቸው ግብሮች በሚያስፈልግበት ቦታ በክፍያ ወቅት ይሰላሉ። ማንኛውም ተጨማሪ ክፍያ ከመክፈልዎ በፊት ለፈቃድዎ ይታያል። የጉዞ ክፍያ አይጠየቅም።",
-      "free": "ነፃ"
+      "free": "ነፃ",
+      "course": "የአንድ ጊዜ ኮርስ",
+      "oneYear": "የአንድ ጊዜ ክፍያ · የ1 ዓመት መዳረሻ"
     },
     "form": {
       "backToServices": "ወደ አገልግሎቶች ይመለሱ",
@@ -1866,7 +1890,7 @@
       "consultationSummary": "የ{price} የአንድ ጊዜ ክፍያ · {minutes} ደቂቃ · አንድ ክትትል ተካቷል",
       "iepTitle": "የIEP የቋንቋ ድጋፍ ይጠይቁ",
       "iepSummary": "የ{price} የአንድ ጊዜ ክፍያ · የ{minutes} ደቂቃ ክፍለ ጊዜ · አንድ ክትትል ተካቷል",
-      "noSubscriptionNeeded": "የRBT ቡት ካምፕ ምዝገባ አያስፈልግም።",
+      "noSubscriptionNeeded": "RBT Boot Camp አያስፈልግም።",
       "preparationNotice": "የተለየ የዝግጅት ጊዜ በመሠረታዊ ዋጋው ውስጥ አልተካተተም።",
       "dependent": "ልጅ",
       "dependentError": "ከቤተሰብዎ ልጅ ይምረጡ።",
@@ -2256,7 +2280,7 @@
       "overview": "አጠቃላይ እይታ",
       "serviceRequests": "የአገልግሎት ሥራ ወረፋ",
       "payments": "ክፍያዎች እና ተመላሾች",
-      "billing": "ምዝገባዎች",
+      "billing": "ክፍያዎች",
       "serviceConfiguration": "የአገልግሎት ቅንብር",
       "specialists": "ባለሙያዎች",
       "users": "ተጠቃሚዎች እና ሚናዎች",
@@ -2341,8 +2365,8 @@
       },
       "tax": "{amount} ግብር",
       "refunded": "{amount} ተመላሽ ተደርጓል",
-      "subscriptionsNote": "የRBT ቡት ካምፕ ምዝገባ ደረሰኞች ለብቻቸው ተዘርዝረዋል።",
-      "subscriptionsLink": "ምዝገባዎችን ይመልከቱ"
+      "subscriptionsNote": "የRBT Boot Camp ኮርስ ግዢዎች እና የቀድሞ ምዝገባ ደረሰኞች ለብቻቸው ተዘርዝረዋል።",
+      "subscriptionsLink": "የRBT Boot Camp ክፍያዎችን ይመልከቱ"
     },
     "config": {
       "title": "የአገልግሎት ቅንብር",
@@ -2356,7 +2380,7 @@
       "saving": "በማስቀመጥ ላይ…",
       "name": "ስም",
       "price": "ዋጋ (USD)",
-      "displayPrice": "የሚታየው ወርሃዊ ዋጋ (USD፣ አማራጭ)",
+      "displayPrice": "የሚታይ ዋጋ (USD፣ አማራጭ — Checkout የStripe ዋጋን ይጠቀማል)",
       "displayPriceHelp": "የሚከፈለው መጠን የተዋቀረው የStripe ዋጋ ነው። ተመሳሳይ ያድርጉት ወይም ባዶ ይተዉት።",
       "englishDescription": "መግለጫ (እንግሊዝኛ)",
       "descriptionIn": {
@@ -2535,7 +2559,7 @@
   },
   "adminTraining": {
     "title": "የስልጠና ይዘት",
-    "description": "የRBT ቡት ካምፕ ቤተ-መጽሐፍትን ያስተዳድሩ። የታተሙ ኮርሶች፣ ሞጁሎች እና ትምህርቶች ብቻ ለተመዝጋቢዎች ይታያሉ።",
+    "description": "የRBT Boot Camp ቤተ-መጻሕፍትን ያስተዳድሩ። የታተሙ ኮርሶች፣ ሞጁሎች እና ትምህርቶች ብቻ መዳረሻ ላላቸው አባላት ይታያሉ።",
     "progressNotice": "ማህደር ማስቀመጥ ወይም ከህትመት ማውጣት የተማሪዎችን እድገት በፍጹም አይሰርዝም።",
     "status": {
       "draft": "ረቂቅ",
@@ -2600,14 +2624,14 @@
     "moduleSaved": "ሞጁሉ ተቀምጧል።",
     "lessonSaved": "ትምህርቱ ተቀምጧል።",
     "restore": "መልስ",
-    "statusHelp": "ለደንበኞች የሚታዩት የታተሙት ብቻ ናቸው። በማህደር የተቀመጡ ይደበቃሉ እንጂ አይሰረዙም።",
+    "statusHelp": "የታተሙ ብቻ መዳረሻ ላላቸው አባላት ይታያሉ። በማህደር የተቀመጡት ይደበቃሉ እንጂ አይሰረዙም።",
     "slugHelp": "ትንሽ ፊደላት፣ ቁጥሮች እና ሰረዞች፤ በኮርሱ አገናኝ ውስጥ ይጠቀማል።",
     "sectionBasics": "መሰረታዊ",
     "sectionVideo": "ቪዲዮ",
     "sectionResource": "ሊወርድ የሚችል ግብዓት",
     "sectionNotes": "የትምህርት ማስታወሻዎች",
     "sectionPublishing": "ህትመት እና ትርጉሞች",
-    "privateMediaHelp": "ከአገናኝ ይልቅ የግል ቪዲዮ ወይም ፋይል ይስቀሉ። ደንበኞች በደህንነቱ የተጠበቀ አገናኝ ያገኙታል።",
+    "privateMediaHelp": "አገናኝ ከመጠቀም ይልቅ የግል ቪዲዮ ወይም ፋይል ይጫኑ። መዳረሻ ያላቸው አባላት በደህንነቱ የተጠበቀ አገናኝ ያገኙታል።",
     "uploadAfterSave": "የግል ቪዲዮ ወይም ፋይል ለመስቀል መጀመሪያ ትምህርቱን ያስቀምጡ።",
     "coursesLabel": "ኮርሶች",
     "editCourseDetails": "የኮርሱን ዝርዝር ያርትዑ",
@@ -2631,14 +2655,14 @@
     "allRequests": "ሁሉም ጥያቄዎች",
     "rbtBootcamp": "የRBT ቡት ካምፕ",
     "openTraining": "ስልጠናውን ይክፈቱ",
-    "viewSubscription": "ይመዝገቡ",
-    "subscriptionActive": "ምዝገባው ንቁ ነው",
-    "subscriptionInactive": "ንቁ ምዝገባ የለም",
+    "viewSubscription": "RBT Boot Camp ያግኙ",
+    "subscriptionActive": "ንቁ",
+    "subscriptionInactive": "አልተገዛም",
     "endsOn": "መዳረሻው {date} ያበቃል",
     "you": "እርስዎ",
     "lessonsDone": "ከ{total} ትምህርቶች {done}",
     "startTraining": "የመጀመሪያ ትምህርትዎን ይጀምሩ።",
-    "trainingLocked": "ሁሉንም የስልጠና ቪዲዮዎች እና ግብዓቶች ለመክፈት ይመዝገቡ።",
+    "trainingLocked": "ሁሉንም የሥልጠና ቪዲዮዎች እና ግብዓቶች ለአንድ ዓመት ለመክፈት RBT Boot Camp ያግኙ።",
     "activeRequests": "የአገልግሎት ጥያቄዎች",
     "noActiveRequests": "ንቁ የአገልግሎት ጥያቄዎች የሉም።",
     "dependents": "ልጆች",
@@ -2646,27 +2670,28 @@
     "noDependents": "አገልግሎቶችን ለመጠየቅ እና የስልጠና እድገታቸውን ለመከታተል ልጅዎን ያክሉ።",
     "addDependent": "ልጅ ያክሉ",
     "availableServices": "የሚገኙ አገልግሎቶች",
-    "monthly": "ወርሃዊ ምዝገባ",
+    "monthly": "ወርሃዊ ምዝገባ (የቀድሞ)",
     "oneTime": "የአንድ ጊዜ",
-    "independentNotice": "ምክክር እና የIEP የቋንቋ ድጋፍ የRBT ቡት ካምፕ ምዝገባ አያስፈልጋቸውም።",
+    "independentNotice": "ምክክር፣ የIEP የቋንቋ እርዳታ እና የወላጅ ድጋፍ RBT Boot Camp አያስፈልጋቸውም።",
     "history": "የቅርብ ጊዜ የአገልግሎት ታሪክ",
     "noHistory": "የተጠናቀቁ እና የተሰረዙ አገልግሎቶች እዚህ ይታያሉ።",
     "parentSupportTitle": "ነፃ የወላጅ ድጋፍ",
     "parentSupportBody": "ከወላጅ ድጋፍ አማካሪያችን ጋር በአንድ ለአንድ ይነጋገሩ — ነፃ፣ 30 ደቂቃ፣ በመረጡት ሰዓት።",
-    "parentSupportAction": "ነፃ ክፍለ ጊዜ ይያዙ"
+    "parentSupportAction": "ነፃ ክፍለ ጊዜ ይያዙ",
+    "accessUntil": "እስከ {date} ድረስ መዳረሻ"
   },
   "bootcamp": {
     "eyebrow": "የRBT ቡት ካምፕ",
     "title": "የRBT ቡት ካምፕ ቤተ-መጽሐፍት",
     "intro": "ኒውሮዳይቨርጀንሲን እንዲረዱ፣ የEthiospectrumን ሥርዓተ ትምህርት እንዲያጠናቅቁ እና ለውጭ RBT-ነክ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ የሚረዱ በራስ ፍጥነት የሚታዩ ቪዲዮዎች እና ግብዓቶች።",
-    "lockedTitle": "የRBT ቡት ካምፕ ምዝገባ ይፈልጋል",
-    "lockedDescription": "ሁሉም የRBT ስልጠና ቪዲዮዎች እና ግብዓቶች በንቁ ወርሃዊ ምዝገባ ይገኛሉ። ያለ ምዝገባ ምንም የስልጠና ይዘት አይገኝም።",
+    "lockedTitle": "RBT Boot Camp የአንድ ጊዜ ኮርስ ነው",
+    "lockedDescription": "RBT Boot Camp ለቤተሰብዎ ለሁሉም የሥልጠና ቪዲዮዎች እና ግብዓቶች የአንድ ዓመት መዳረሻ የሚሰጥ የአንድ ጊዜ ግዢ ነው።",
     "benefitVideos": "ሁሉም የስልጠና ቪዲዮዎች",
     "benefitResources": "ባለሁለት ቋንቋ የጥናት መመሪያውን ጨምሮ ሁሉም ደጋፊ ግብዓቶች",
     "benefitProgress": "ለእርስዎ እና ለእያንዳንዱ ልጅ የእድገት ክትትል",
-    "subscribe": "ለRBT ቡት ካምፕ ይመዝገቡ",
-    "askOwnerToSubscribe": "የቤተሰቡን ባለቤት እንዲመዘገብ ወይም ምዝገባውን እንዲያስተዳድሩ ፈቃድ እንዲሰጥዎ ይጠይቁ።",
-    "askOwnerForAccess": "ቤተሰብዎ ተመዝግቧል። የቤተሰቡን ባለቤት የስልጠና መዳረሻ እንዲሰጥዎ ይጠይቁ።",
+    "subscribe": "RBT Boot Camp ያግኙ",
+    "askOwnerToSubscribe": "የቤተሰብ መለያው ባለቤት RBT Boot Camp እንዲገዙ ይጠይቁ።",
+    "askOwnerForAccess": "ቤተሰብዎ RBT Boot Camp አለው። የሥልጠና መዳረሻ እንዲሰጥዎ የመለያውን ባለቤት ይጠይቁ።",
     "certificationDisclaimer": "የEthiospectrum ኮርስን ማጠናቀቅ የRBT ሰርተፊኬት አይደለም። Ethiospectrum እውቅና ያለው የRBT ምስክር ወረቀት ሰጪ አይደለም፤ ኮርሱ ለውጭ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ ይረዳዎታል።",
     "trackingFor": "እድገትን ይከታተሉ ለ",
     "me": "እኔ",
@@ -2933,15 +2958,15 @@
     "title": "ለቤተሰብዎ ድጋፍ፣ በቋንቋዎ",
     "seePricing": "አገልግሎቶችን እና ዋጋዎችን ይመልከቱ",
     "heroCardEyebrow": "የEthiospectrum አገልግሎቶች",
-    "independentNotice": "ምክክር እና የIEP የቋንቋ ድጋፍ ለብቻቸው ሊገዙ ይችላሉ — የRBT ቡት ካምፕ ምዝገባ አያስፈልግም።",
+    "independentNotice": "ምክክር፣ የIEP የቋንቋ እርዳታ እና የወላጅ ድጋፍ ብቻቸውን መያዝ ይችላሉ — RBT Boot Camp አያስፈልግም።",
     "rbt": {
       "name": "የRBT ቡት ካምፕ",
-      "price": "ወርሃዊ",
-      "billing": "በየወሩ የሚታደስ ምዝገባ",
+      "price": "የአንድ ጊዜ ኮርስ",
+      "billing": "የአንድ ጊዜ ክፍያ · የ1 ዓመት መዳረሻ",
       "description": "ወላጆች ኒውሮዳይቨርጀንሲን እንዲረዱ፣ ሥርዓተ ትምህርታችንን እንዲያጠናቅቁ እና ለውጭ RBT-ነክ ምስክር ወረቀት ወይም ፈተና እንዲዘጋጁ የሚረዳ በራስ ፍጥነት የሚታይ የቪዲዮ ቤተ-መጽሐፍት።",
       "features": ["ሁሉም የስልጠና ቪዲዮዎች", "ሁሉም ደጋፊ ግብዓቶች", "ለእርስዎ እና ለልጅዎ የእድገት ክትትል"],
-      "action": "የRBT ቡት ካምፕን ይጀምሩ",
-      "pricePerMonth": "{price}/በወር"
+      "action": "RBT Boot Camp ያግኙ",
+      "priceOneTime": "{price} የአንድ ጊዜ · የ1 ዓመት መዳረሻ"
     },
     "consultation": {
       "name": "ምክክር",

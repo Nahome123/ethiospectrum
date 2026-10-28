@@ -566,7 +566,7 @@
   "pricing": {
     "eyebrow": "Precios",
     "title": "Precios simples y transparentes",
-    "description": "Suscríbase mensualmente al Campamento RBT, o compre una consulta o asistencia lingüística con el IEP por separado.",
+    "description": "Compre RBT Boot Camp una vez para un año de acceso, o reserve una consulta o asistencia lingüística para el IEP por separado.",
     "planTitle": "Planes futuros de apoyo",
     "planDescription": "Hoy no hay ningún cargo ni compra disponible."
   },
@@ -1512,9 +1512,9 @@
     "household": "Hogar"
   },
   "billing": {
-    "eyebrow": "Suscripción del hogar",
+    "eyebrow": "Pagos",
     "title": "Facturación",
-    "description": "Administre su suscripción al Campamento RBT y revise los pagos de servicios.",
+    "description": "Compre o renueve RBT Boot Camp y vea sus pagos.",
     "currentPlan": "Plan actual",
     "plan": "Plan",
     "entitlement": "Acceso al Campamento RBT",
@@ -1529,7 +1529,7 @@
     "secureDescription": "Los datos de la tarjeta se ingresan únicamente en páginas alojadas por Stripe. Ethiospectrum no recibe ni almacena números de tarjeta ni CVC.",
     "opensStripe": "Abre una página segura de Stripe en una pestaña nueva.",
     "plans": {
-      "free": "Sin suscripción",
+      "free": "No comprado",
       "familyPlus": "Campamento RBT",
       "rbtBootcamp": "Campamento RBT"
     },
@@ -1538,8 +1538,8 @@
       "annual": "Anual"
     },
     "statuses": {
-      "active": "Suscripción activa",
-      "inactive": "Suscripción inactiva",
+      "active": "Activo",
+      "inactive": "Inactivo",
       "cancellationScheduled": "Cancelación programada",
       "paid": "Pagada",
       "paymentFailed": "Pago fallido",
@@ -1548,8 +1548,8 @@
     "checkout": {
       "starting": "Abriendo el pago seguro…",
       "redirecting": "Abriendo Stripe Checkout…",
-      "confirmingTitle": "Confirmando la suscripción",
-      "confirmingDescription": "El pago regresó correctamente. El Campamento RBT se activa cuando Stripe confirma la suscripción mediante un webhook verificado.",
+      "confirmingTitle": "Confirmando su pago",
+      "confirmingDescription": "¡Gracias! Su acceso comienza en cuanto Stripe confirma el pago, normalmente en un minuto. Actualice esta página si no aparece.",
       "cancelledTitle": "Checkout cancelado",
       "cancelledDescription": "No se cambió el plan. Puedes volver a intentarlo cuando quieras."
     },
@@ -1569,7 +1569,7 @@
     },
     "admin": {
       "eyebrow": "Facturación administrativa",
-      "title": "Operaciones de suscripción",
+      "title": "Operaciones de facturación",
       "description": "Consulta el estado seguro de facturación, revisa fallos de webhooks y reconcilia con Stripe. Los administradores no pueden conceder acceso ni cambiar métodos de pago.",
       "subscriptionState": "Estado de suscripción del proveedor",
       "reconcile": "Reconciliar con Stripe",
@@ -1590,11 +1590,18 @@
       "endConfirm": "Terminar membresía",
       "endsOn": "La membresía termina el {date}.",
       "endsAtPeriodEnd": "La membresía terminará al final del período pagado.",
-      "endedNow": "La membresía ha terminado."
+      "endedNow": "La membresía ha terminado.",
+      "courseTitle": "Compras del curso RBT Boot Camp",
+      "courseDescription": "Compras únicas (un año de acceso cada una). Reembolsar el pago en Stripe termina automáticamente el acceso de esa compra.",
+      "courseEmpty": "Todavía no hay compras del curso.",
+      "coursePurchased": "Comprado el {date} · {amount}",
+      "courseRefunded": "Reembolsado",
+      "courseRefundedEarly": "Reembolsado antes de registrarse la compra",
+      "courseExpired": "Vencido"
     },
     "errors": {
       "validation": "Revisa la selección de facturación e inténtalo de nuevo.",
-      "ownerRequired": "Solo el titular de la cuenta del hogar puede administrar la suscripción.",
+      "ownerRequired": "Solo el titular de la cuenta del hogar puede comprar o administrar RBT Boot Camp.",
       "adminRequired": "Se requiere acceso de administrador.",
       "checkout": "No se pudo iniciar Checkout. Inténtalo de nuevo.",
       "portal": "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
@@ -1603,7 +1610,8 @@
       "updatedElsewhere": "La facturación se actualizó en otro lugar. Actualiza antes de intentarlo de nuevo.",
       "load": "No se pudo cargar la facturación",
       "tryAgain": "Actualiza la página e inténtalo de nuevo.",
-      "cancel": "No se pudo cambiar la suscripción. Inténtelo de nuevo."
+      "cancel": "No se pudo cambiar la suscripción. Inténtelo de nuevo.",
+      "courseActive": "Su acceso sigue activo. Puede renovar en sus últimos 30 días."
     },
     "monthlyPrice": "{price} al mes",
     "certificationDisclaimer": "Completar el curso no es una certificación RBT.",
@@ -1638,6 +1646,20 @@
       "resumeConfirm": "Reanudar suscripción",
       "resumed": "Su suscripción continuará.",
       "noSubscription": "No hay una suscripción activa para cambiar."
+    },
+    "course": {
+      "price": "Pago único · 1 año de acceso",
+      "priceWithAmount": "{price} pago único · 1 año de acceso",
+      "description": "Un solo pago da a su hogar un año completo de RBT Boot Camp: todos los videos de capacitación, las guías de estudio bilingües y el seguimiento del progreso.",
+      "notPurchased": "No comprado",
+      "accessUntil": "Acceso hasta el {date}",
+      "buy": "Comprar RBT Boot Camp",
+      "renew": "Renovar por otro año",
+      "renewHint": "El nuevo año empieza cuando termina su acceso actual, así no pierde ningún día.",
+      "renewLater": "Puede renovar en los últimos 30 días de su acceso.",
+      "askOwner": "Pida al titular de la cuenta del hogar que compre RBT Boot Camp.",
+      "legacyTitle": "Su suscripción mensual",
+      "legacyDescription": "Se unió con el plan mensual, que mantiene su acceso mientras esté activo (el periodo actual termina el {date}). Los planes mensuales ya no se venden: si cancela, podrá comprar un año de acceso cuando termine."
     }
   },
   "admin": {
@@ -1816,7 +1838,7 @@
       "eyebrow": "Servicios",
       "title": "Elija un servicio",
       "intro": "Ethiospectrum apoya a padres y familias de niños con necesidades especiales mediante capacitación RBT a su ritmo, consultas y asistencia lingüística con el IEP en inglés, amárico y español.",
-      "independentNotice": "La Consulta y la Asistencia lingüística con el IEP no requieren una suscripción al Campamento RBT. Puede solicitar cualquiera de los dos servicios por separado.",
+      "independentNotice": "La consulta, la asistencia lingüística para el IEP y el apoyo para padres no requieren RBT Boot Camp. Puede reservar cualquiera por separado.",
       "householdRequired": "Termine de configurar su hogar en el panel antes de solicitar un servicio.",
       "monthlySubscription": "Suscripción mensual",
       "monthlyPrice": "{price} / mes",
@@ -1839,7 +1861,7 @@
           "Sesión de 60 minutos con un especialista asignado",
           "Un seguimiento incluido",
           "Cancelación gratuita con más de 48 horas de anticipación",
-          "No requiere suscripción"
+          "No requiere RBT Boot Camp"
         ],
         "iep_language_assistance": [
           "Inglés ↔ Amárico e Inglés ↔ Español",
@@ -1853,7 +1875,7 @@
           "Inglés o amárico"
         ]
       },
-      "subscribe": "Suscribirse",
+      "subscribe": "Obtener RBT Boot Camp",
       "openTraining": "Abrir el Campamento RBT",
       "request": {
         "consultation": "Reservar una consulta",
@@ -1862,7 +1884,9 @@
       },
       "noRequestPermission": "Pida al propietario del hogar permiso para solicitar servicios.",
       "taxNotice": "Los impuestos aplicables se calculan al pagar cuando corresponda. Cualquier cargo adicional se muestra para su aprobación antes de pagar. No se cobra cargo por traslado.",
-      "free": "Gratis"
+      "free": "Gratis",
+      "course": "Curso de pago único",
+      "oneYear": "Pago único · 1 año de acceso"
     },
     "form": {
       "backToServices": "Volver a los servicios",
@@ -1870,7 +1894,7 @@
       "consultationSummary": "Pago único de {price} · {minutes} minutos · un seguimiento incluido",
       "iepTitle": "Solicitar asistencia lingüística con el IEP",
       "iepSummary": "Pago único de {price} · sesión de {minutes} minutos · un seguimiento incluido",
-      "noSubscriptionNeeded": "No se requiere suscripción al Campamento RBT.",
+      "noSubscriptionNeeded": "No se requiere RBT Boot Camp.",
       "preparationNotice": "El precio base no incluye un período de preparación por separado.",
       "dependent": "Niño o niña",
       "dependentError": "Elija un niño de su hogar.",
@@ -2260,7 +2284,7 @@
       "overview": "Resumen",
       "serviceRequests": "Cola de trabajo de servicios",
       "payments": "Pagos y reembolsos",
-      "billing": "Suscripciones",
+      "billing": "Facturación",
       "serviceConfiguration": "Configuración de servicios",
       "specialists": "Especialistas",
       "users": "Usuarios y roles",
@@ -2345,8 +2369,8 @@
       },
       "tax": "{amount} de impuestos",
       "refunded": "{amount} reembolsado",
-      "subscriptionsNote": "Las facturas de la suscripción al Campamento RBT se muestran por separado.",
-      "subscriptionsLink": "Ver suscripciones"
+      "subscriptionsNote": "Las compras del curso RBT Boot Camp y las facturas de suscripciones anteriores se muestran por separado.",
+      "subscriptionsLink": "Ver facturación de RBT Boot Camp"
     },
     "config": {
       "title": "Configuración de servicios",
@@ -2360,7 +2384,7 @@
       "saving": "Guardando…",
       "name": "Nombre",
       "price": "Precio (USD)",
-      "displayPrice": "Precio mensual mostrado (USD, opcional)",
+      "displayPrice": "Precio mostrado (USD, opcional; Checkout usa el precio de Stripe)",
       "displayPriceHelp": "El monto cobrado es el precio configurado en Stripe. Manténgalo sincronizado o déjelo vacío.",
       "englishDescription": "Descripción (inglés)",
       "descriptionIn": {
@@ -2539,7 +2563,7 @@
   },
   "adminTraining": {
     "title": "Contenido de capacitación",
-    "description": "Mantenga la biblioteca del Campamento RBT. Solo los cursos, módulos y lecciones publicados son visibles para los suscriptores.",
+    "description": "Mantenga la biblioteca de RBT Boot Camp. Solo los cursos, módulos y lecciones publicados son visibles para los miembros con acceso.",
     "progressNotice": "Archivar o despublicar nunca elimina el progreso de los estudiantes.",
     "status": {
       "draft": "Borrador",
@@ -2604,14 +2628,14 @@
     "moduleSaved": "Módulo guardado.",
     "lessonSaved": "Lección guardada.",
     "restore": "Restaurar",
-    "statusHelp": "Solo los elementos publicados son visibles para los suscriptores. Los archivados se ocultan, nunca se eliminan.",
+    "statusHelp": "Solo los elementos publicados son visibles para los miembros con acceso. Los archivados se ocultan, pero nunca se eliminan.",
     "slugHelp": "Letras minúsculas, números y guiones; se usa en el enlace del curso.",
     "sectionBasics": "Datos básicos",
     "sectionVideo": "Video",
     "sectionResource": "Recurso descargable",
     "sectionNotes": "Notas de la lección",
     "sectionPublishing": "Publicación y traducciones",
-    "privateMediaHelp": "Suba un video o archivo privado en lugar de usar un enlace. Los suscriptores lo reciben mediante un enlace seguro.",
+    "privateMediaHelp": "Suba un video o archivo privado en lugar de usar un enlace. Los miembros con acceso lo reciben mediante un enlace seguro.",
     "uploadAfterSave": "Guarde la lección primero para subir un video o archivo privado.",
     "coursesLabel": "Cursos",
     "editCourseDetails": "Editar detalles del curso",
@@ -2635,14 +2659,14 @@
     "allRequests": "Todas las solicitudes",
     "rbtBootcamp": "Campamento RBT",
     "openTraining": "Abrir la capacitación",
-    "viewSubscription": "Suscribirse",
-    "subscriptionActive": "Suscripción activa",
-    "subscriptionInactive": "Sin suscripción activa",
+    "viewSubscription": "Obtener RBT Boot Camp",
+    "subscriptionActive": "Activo",
+    "subscriptionInactive": "No comprado",
     "endsOn": "El acceso termina el {date}",
     "you": "Usted",
     "lessonsDone": "{done} de {total} lecciones",
     "startTraining": "Comience su primera lección.",
-    "trainingLocked": "Suscríbase para desbloquear todos los videos y recursos de capacitación.",
+    "trainingLocked": "Obtenga RBT Boot Camp para desbloquear todos los videos y recursos de capacitación durante un año.",
     "activeRequests": "Solicitudes de servicio",
     "noActiveRequests": "No hay solicitudes de servicio activas.",
     "dependents": "Niños",
@@ -2650,27 +2674,28 @@
     "noDependents": "Agregue a su hijo o hija para solicitar servicios y seguir su progreso en la capacitación.",
     "addDependent": "Agregar un niño",
     "availableServices": "Servicios disponibles",
-    "monthly": "Suscripción mensual",
+    "monthly": "Suscripción mensual (anterior)",
     "oneTime": "pago único",
-    "independentNotice": "La Consulta y la Asistencia lingüística con el IEP no requieren una suscripción al Campamento RBT.",
+    "independentNotice": "La consulta, la asistencia lingüística para el IEP y el apoyo para padres no requieren RBT Boot Camp.",
     "history": "Historial reciente de servicios",
     "noHistory": "Los servicios completados y cancelados aparecerán aquí.",
     "parentSupportTitle": "Apoyo para padres gratuito",
     "parentSupportBody": "Hable a solas con nuestro consultor de apoyo para padres: gratis, 30 minutos, a la hora que elija.",
-    "parentSupportAction": "Reservar sesión gratuita"
+    "parentSupportAction": "Reservar sesión gratuita",
+    "accessUntil": "Acceso hasta el {date}"
   },
   "bootcamp": {
     "eyebrow": "Campamento RBT",
     "title": "Biblioteca del Campamento RBT",
     "intro": "Videos y recursos a su propio ritmo para ayudarle a comprender la neurodivergencia, completar el plan de estudios de Ethiospectrum y prepararse para una credencial o examen externo relacionado con RBT.",
-    "lockedTitle": "El Campamento RBT requiere una suscripción",
-    "lockedDescription": "Todos los videos y recursos de capacitación RBT están disponibles con una suscripción mensual activa. No hay contenido de capacitación disponible sin ella.",
+    "lockedTitle": "RBT Boot Camp es un curso de pago único",
+    "lockedDescription": "RBT Boot Camp es una compra única que da a su hogar un año de acceso a todos los videos y recursos de capacitación.",
     "benefitVideos": "Todos los videos de capacitación",
     "benefitResources": "Todos los recursos de apoyo, incluida la guía de estudio bilingüe",
     "benefitProgress": "Seguimiento del progreso para usted y cada niño",
-    "subscribe": "Suscribirse al Campamento RBT",
-    "askOwnerToSubscribe": "Pida al propietario del hogar que se suscriba o que le dé permiso para administrar la suscripción.",
-    "askOwnerForAccess": "Su hogar está suscrito. Pida al propietario del hogar que le dé acceso a la capacitación.",
+    "subscribe": "Obtener RBT Boot Camp",
+    "askOwnerToSubscribe": "Pida al titular de la cuenta del hogar que compre RBT Boot Camp.",
+    "askOwnerForAccess": "Su hogar tiene RBT Boot Camp. Pida al titular de la cuenta acceso a la capacitación.",
     "certificationDisclaimer": "Completar el curso de Ethiospectrum no es una certificación RBT. Ethiospectrum no es un proveedor acreditado de credenciales RBT; el curso le ayuda a prepararse para una credencial o examen externo.",
     "trackingFor": "Seguir el progreso de",
     "me": "Yo",
@@ -2937,19 +2962,19 @@
     "title": "Apoyo para su familia, en su idioma",
     "seePricing": "Ver servicios y precios",
     "heroCardEyebrow": "Servicios de Ethiospectrum",
-    "independentNotice": "La Consulta y la Asistencia lingüística con el IEP se pueden comprar por separado; no se requiere suscripción al Campamento RBT.",
+    "independentNotice": "La consulta, la asistencia lingüística para el IEP y el apoyo para padres se pueden reservar por separado; no se requiere RBT Boot Camp.",
     "rbt": {
       "name": "Campamento RBT",
-      "price": "Mensual",
-      "billing": "Suscripción mensual recurrente",
+      "price": "Curso de pago único",
+      "billing": "Pago único · 1 año de acceso",
       "description": "Una videoteca a su propio ritmo que ayuda a los padres a comprender la neurodivergencia, completar nuestro plan de estudios y prepararse para una credencial o examen externo relacionado con RBT.",
       "features": [
         "Todos los videos de capacitación",
         "Todos los recursos de apoyo",
         "Seguimiento del progreso para usted y su hijo"
       ],
-      "action": "Comenzar el Campamento RBT",
-      "pricePerMonth": "{price}/mes"
+      "action": "Obtener RBT Boot Camp",
+      "priceOneTime": "{price} pago único · 1 año de acceso"
     },
     "consultation": {
       "name": "Consulta",

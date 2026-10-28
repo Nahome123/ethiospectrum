@@ -5,6 +5,7 @@ import type { AppLocale } from "@/i18n/routing";
 import { getHouseholdAccess } from "@/lib/households/server";
 import { formatCents } from "@/lib/services/constants";
 import { localizedText } from "@/lib/services/display";
+import { getRbtCoursePriceCents } from "@/lib/billing/public-price";
 import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { listServices } from "@/lib/services/server";
 import { getTrainingAccess } from "@/lib/training/server";
@@ -27,11 +28,12 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const locale = localeParam as AppLocale;
   const t = await getTranslations({ locale, namespace: "services.catalog" });
   const types = await getTranslations({ locale, namespace: "services.types" });
-  const [services, access, training, offered] = await Promise.all([
+  const [services, access, training, offered, coursePrice] = await Promise.all([
     listServices(),
     getHouseholdAccess(),
     getTrainingAccess(),
     getOfferedSelfScheduledServices(),
+    getRbtCoursePriceCents(),
   ]);
   const canRequest = Boolean(access?.permissions.includes("submit_requests"));
 
@@ -70,17 +72,15 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
                 <h2 className="mt-4 text-xl font-bold">{types(type)}</h2>
                 <p className="mt-2 text-2xl font-bold">
                   {isSubscription
-                    ? service.price_cents !== null
-                      ? t("monthlyPrice", { price: formatCents(service.price_cents, locale) })
-                      : t("monthlySubscription")
+                    ? coursePrice !== null
+                      ? formatCents(coursePrice, locale)
+                      : t("course")
                     : service.price_cents === 0
                       ? t("free")
                       : formatCents(service.price_cents, locale)}
                 </p>
                 <p className="text-sm font-semibold text-muted-foreground">
-                  {isSubscription
-                    ? t("recurring")
-                    : t("oneTime", { minutes: service.duration_minutes ?? 60 })}
+                  {isSubscription ? t("oneYear") : t("oneTime", { minutes: service.duration_minutes ?? 60 })}
                 </p>
                 <p className="mt-4 text-sm leading-6 text-muted-foreground">
                   {localizedText(

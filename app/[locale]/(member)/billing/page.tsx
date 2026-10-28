@@ -7,16 +7,14 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireHouseholdBillingAccess } from "@/lib/billing/access";
-import {
-  createBillingCheckoutSessionAction,
-  createBillingPortalSessionAction,
-  setSubscriptionCancellationAction,
-} from "@/lib/billing/actions";
+import { setSubscriptionCancellationAction, startTrainingCourseCheckoutAction } from "@/lib/billing/actions";
+import { getRbtCoursePriceCents } from "@/lib/billing/public-price";
 import { getHouseholdBillingSummary, listHouseholdBillingInvoices } from "@/lib/billing/server";
 import { PaymentStatusBadge } from "@/components/services/status-badge";
 import { Link } from "@/i18n/navigation";
 import { formatCents } from "@/lib/services/constants";
-import { getService, listHouseholdPaymentHistory } from "@/lib/services/server";
+import { listHouseholdPaymentHistory } from "@/lib/services/server";
+import { getTrainingCourseStatus } from "@/lib/training/server";
 
 const dateLocales: Record<AppLocale, string> = { en: "en-US", am: "am-ET", es: "es-ES" };
 
@@ -48,15 +46,16 @@ export default async function BillingPage({
     getTranslations({ locale, namespace: "billing" }),
     getHouseholdBillingSummary(),
   ]);
-  const [invoices, servicePayments, rbtService, serviceTypes] = await Promise.all([
+  const [invoices, servicePayments, course, coursePrice, serviceTypes] = await Promise.all([
     summary?.can_view_invoices ? listHouseholdBillingInvoices() : Promise.resolve([]),
     listHouseholdPaymentHistory(),
-    getService("rbt_bootcamp"),
+    getTrainingCourseStatus(),
+    getRbtCoursePriceCents(),
     getTranslations({ locale, namespace: "services.types" }),
   ]);
   const isBillingManager = summary?.can_manage_billing ?? false;
-  const showsBillingDetails = summary?.can_view_invoices ?? false;
-  const active = summary?.entitlement_status === "active";
+  const legacyActive = Boolean(course?.legacySubscriptionActive);
+  const courseActive = Boolean(course?.accessExpiresAt);
 
   return (
     <section className="mx-auto max-w-5xl space-y-6">
@@ -80,7 +79,7 @@ export default async function BillingPage({
         </Alert>
       ) : null}
 
-      {!summary ? (
+      {!summary || !course ? (
         <Alert variant="destructive">
           <AlertTitle>{t("errors.load")}</AlertTitle>
           <AlertDescription>{t("errors.tryAgain")}</AlertDescription>
@@ -88,100 +87,67 @@ export default async function BillingPage({
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>{t("currentPlan")}</CardTitle>
-            <CardDescription>{summary.household_name}</CardDescription>
+            <CardTitle>{t("plans.rbtBootcamp")}</CardTitle>
+            <CardDescription>
+              {coursePrice !== null
+                ? t("course.priceWithAmount", { price: formatCents(coursePrice, locale) })
+                : t("course.price")}
+            </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <div>
-              <p className="text-sm text-muted-foreground">{t("plan")}</p>
-              <p className="mt-1 text-xl font-bold">
-                {summary.plan_key === "rbt_bootcamp" ? t("plans.rbtBootcamp") : t("plans.free")}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">{t("entitlement")}</p>
-              <Badge className="mt-1" variant={active ? "default" : "outline"}>
-                {active ? t("statuses.active") : t("statuses.inactive")}
+          <CardContent className="space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <Badge variant={courseActive || legacyActive ? "default" : "outline"}>
+                {courseActive || legacyActive ? t("statuses.active") : t("course.notPurchased")}
               </Badge>
+              {courseActive ? (
+                <span className="font-semibold">
+                  {t("course.accessUntil", { date: formatDate(course.accessExpiresAt, locale) ?? "" })}
+                </span>
+              ) : null}
             </div>
-            {showsBillingDetails && summary.billing_interval ? (
-              <div>
-                <p className="text-sm text-muted-foreground">{t("billingInterval")}</p>
-                <p className="mt-1 font-semibold">
-                  {summary.billing_interval === "year" ? t("intervals.annual") : t("intervals.monthly")}
-                </p>
-              </div>
-            ) : null}
-            {showsBillingDetails && summary.current_period_end ? (
-              <div>
-                <p className="text-sm text-muted-foreground">
-                  {summary.cancel_at_period_end ? t("accessThrough") : t("currentPeriod")}
-                </p>
-                <p className="mt-1 font-semibold">{formatDate(summary.current_period_end, locale)}</p>
-              </div>
-            ) : null}
-            {showsBillingDetails && summary.cancel_at_period_end ? (
-              <div className="sm:col-span-2">
-                <Badge variant="outline">{t("statuses.cancellationScheduled")}</Badge>
-              </div>
-            ) : null}
-          </CardContent>
-        </Card>
-      )}
-
-      {summary && isBillingManager && summary.plan_key === "free" ? (
-        <section aria-labelledby="plans-title" className="space-y-4">
-          <div>
-            <h2 id="plans-title" className="text-2xl font-bold">
-              {t("choosePlan")}
-            </h2>
-            <p className="mt-1 text-muted-foreground">{t("amountManagedByStripe")}</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("plans.rbtBootcamp")}</CardTitle>
-                <CardDescription>
-                  {rbtService?.price_cents !== null && rbtService?.price_cents !== undefined
-                    ? t("monthlyPrice", { price: formatCents(rbtService.price_cents, locale) })
-                    : t("intervals.monthly")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            {!courseActive && !legacyActive ? (
+              <>
+                <p className="text-sm text-muted-foreground">{t("course.description")}</p>
                 <ul className="list-disc space-y-1 pl-5 text-sm">
                   <li>{t("benefits.videos")}</li>
                   <li>{t("benefits.resources")}</li>
                   <li>{t("benefits.progress")}</li>
                 </ul>
+              </>
+            ) : null}
+            {course.canPurchase && course.renewable && !legacyActive ? (
+              <div className="space-y-2">
                 <BillingActionForm
-                  action={createBillingCheckoutSessionAction.bind(null, locale)}
-                  label={t("subscribe")}
+                  action={startTrainingCourseCheckoutAction.bind(null, locale)}
+                  label={courseActive || course.accessExpiresAt ? t("course.renew") : t("course.buy")}
                   pendingLabel={t("checkout.starting")}
-                  billingInterval="month"
                 />
-                <p className="text-xs text-muted-foreground">{t("certificationDisclaimer")}</p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-      ) : null}
+                {courseActive ? (
+                  <p className="text-xs text-muted-foreground">{t("course.renewHint")}</p>
+                ) : null}
+              </div>
+            ) : courseActive ? (
+              <p className="text-sm text-muted-foreground">{t("course.renewLater")}</p>
+            ) : !course.canPurchase && !legacyActive ? (
+              <p className="text-sm font-medium">{t("course.askOwner")}</p>
+            ) : null}
+            <p className="text-xs text-muted-foreground">{t("certificationDisclaimer")}</p>
+          </CardContent>
+        </Card>
+      )}
 
-      {summary && isBillingManager && summary.plan_key === "rbt_bootcamp" && active ? (
+      {course && legacyActive && isBillingManager ? (
         <Card>
           <CardHeader>
-            <CardTitle>
-              {summary.cancel_at_period_end ? t("cancel.scheduledTitle") : t("cancel.title")}
-            </CardTitle>
+            <CardTitle>{t("course.legacyTitle")}</CardTitle>
             <CardDescription>
-              {summary.cancel_at_period_end
-                ? t("cancel.scheduledDescription", {
-                    date: formatDate(summary.current_period_end, locale) ?? "",
-                  })
-                : t("cancel.description")}
+              {course.legacyCancelAtPeriodEnd
+                ? t("cancel.scheduledDescription", { date: formatDate(course.legacyPeriodEnd, locale) ?? "" })
+                : t("course.legacyDescription", { date: formatDate(course.legacyPeriodEnd, locale) ?? "" })}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {summary.cancel_at_period_end ? (
+            {course.legacyCancelAtPeriodEnd ? (
               <ConfirmBillingAction
                 action={setSubscriptionCancellationAction.bind(null, locale, false)}
                 confirmLabel={t("cancel.resumeConfirm")}
@@ -197,7 +163,7 @@ export default async function BillingPage({
                 action={setSubscriptionCancellationAction.bind(null, locale, true)}
                 confirmLabel={t("cancel.confirm")}
                 description={t("cancel.confirmDescription", {
-                  date: formatDate(summary.current_period_end, locale) ?? t("cancel.periodEnd"),
+                  date: formatDate(course.legacyPeriodEnd, locale) ?? t("cancel.periodEnd"),
                 })}
                 keepLabel={t("cancel.keep")}
                 pendingLabel={t("cancel.saving")}
@@ -205,23 +171,6 @@ export default async function BillingPage({
                 triggerLabel={t("cancel.trigger")}
               />
             )}
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {summary && isBillingManager && summary.has_stripe_customer ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("manageBilling")}</CardTitle>
-            <CardDescription>{t("portal.description")}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <BillingActionForm
-              action={createBillingPortalSessionAction.bind(null, locale)}
-              label={t("portal.open")}
-              pendingLabel={t("portal.opening")}
-              variant="outline"
-            />
           </CardContent>
         </Card>
       ) : null}

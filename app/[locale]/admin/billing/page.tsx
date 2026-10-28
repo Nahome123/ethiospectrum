@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { adminEndMembershipAction, reconcileBillingHouseholdAction } from "@/lib/billing/actions";
 import { listAdminBillingSummaries, listFailedStripeWebhookEvents } from "@/lib/billing/server";
+import { formatCents } from "@/lib/services/constants";
+import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
 
 /** Subscriptions that still bill or grant access, and so can be ended. */
 const liveStatuses = ["trialing", "active", "past_due", "unpaid", "paused", "incomplete"];
@@ -17,11 +19,14 @@ function formatDay(value: string | null, locale: AppLocale): string {
 export default async function AdminBillingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
   const locale = localeParam as AppLocale;
-  const [t, households, failures] = await Promise.all([
+  const supabase = await createServerComponentSupabaseClient();
+  const [t, households, failures, courseResult] = await Promise.all([
     getTranslations({ locale, namespace: "billing" }),
     listAdminBillingSummaries(),
     listFailedStripeWebhookEvents(),
+    supabase.rpc("admin_list_training_access"),
   ]);
+  const purchases = courseResult.data ?? [];
   return (
     <section className="max-w-6xl space-y-6">
       <header>
@@ -29,6 +34,51 @@ export default async function AdminBillingPage({ params }: { params: Promise<{ l
         <h1 className="mt-2 text-3xl font-bold">{t("admin.title")}</h1>
         <p className="mt-2 max-w-3xl text-muted-foreground">{t("admin.description")}</p>
       </header>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("admin.courseTitle")}</CardTitle>
+          <CardDescription>{t("admin.courseDescription")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {purchases.length === 0 ? (
+            <p>{t("admin.courseEmpty")}</p>
+          ) : (
+            <ul className="divide-y">
+              {purchases.map((purchase) => {
+                const live = purchase.is_current;
+                return (
+                  <li
+                    className="flex flex-wrap items-center justify-between gap-2 py-3"
+                    key={`${purchase.household_id}-${purchase.purchased_at ?? purchase.refunded_at}`}
+                  >
+                    <div>
+                      <p className="font-semibold">{purchase.household_name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {purchase.purchased_at
+                          ? t("admin.coursePurchased", {
+                              date: formatDay(purchase.purchased_at, locale),
+                              amount: formatCents(purchase.amount_cents ?? 0, locale),
+                            })
+                          : t("admin.courseRefundedEarly")}
+                        {purchase.expires_at && purchase.status === "active"
+                          ? ` · ${t("course.accessUntil", { date: formatDay(purchase.expires_at, locale) })}`
+                          : ""}
+                      </p>
+                    </div>
+                    <Badge variant={live ? "default" : "outline"}>
+                      {purchase.status === "refunded"
+                        ? t("admin.courseRefunded")
+                        : live
+                          ? t("statuses.active")
+                          : t("admin.courseExpired")}
+                    </Badge>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
       <div className="space-y-4">
         {households.map((household) => (
           <Card key={household.household_id}>

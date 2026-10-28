@@ -12,7 +12,6 @@ import { OnboardingForm } from "@/components/onboarding/onboarding-form";
 import { PaymentStatusBadge, ServiceStatusBadge, StatusPill } from "@/components/services/status-badge";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { getHouseholdBillingSummary } from "@/lib/billing/server";
 import { getHouseholdAccess } from "@/lib/households/server";
 import { getOfferedSelfScheduledServices } from "@/lib/services/booking";
 import { formatCents } from "@/lib/services/constants";
@@ -23,7 +22,11 @@ import {
   listServices,
   listUpcomingAppointments,
 } from "@/lib/services/server";
-import { getTrainingAccess, getTrainingProgressSummary } from "@/lib/training/server";
+import {
+  getTrainingCourseStatus,
+  getTrainingAccess,
+  getTrainingProgressSummary,
+} from "@/lib/training/server";
 
 function Panel({
   title,
@@ -82,13 +85,12 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
     );
   }
 
-  const [active, history, upcoming, training, progress, billing, services, dependents] = await Promise.all([
+  const [active, history, upcoming, training, progress, services, dependents] = await Promise.all([
     listHouseholdServiceRequests("active", 1),
     listHouseholdServiceRequests("closed", 1),
     listUpcomingAppointments(5),
     getTrainingAccess(),
     getTrainingProgressSummary(),
-    getHouseholdBillingSummary(),
     listServices(),
     listDependentOptions(access.household.id),
   ]);
@@ -96,7 +98,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const pendingPayments = activeRequests.filter((request) =>
     ["awaiting_payment", "payment_failed"].includes(request.status),
   );
-  const subscriptionActive = billing?.entitlement_status === "active";
+  const course = await getTrainingCourseStatus();
+  const subscriptionActive = Boolean(course?.accessExpiresAt || course?.legacySubscriptionActive);
 
   return (
     <section className="mx-auto max-w-7xl space-y-6">
@@ -203,9 +206,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               label={subscriptionActive ? t("subscriptionActive") : t("subscriptionInactive")}
               tone={subscriptionActive ? "success" : "neutral"}
             />
-            {billing?.cancel_at_period_end && billing.current_period_end ? (
+            {course?.accessExpiresAt ? (
               <span className="text-xs text-muted-foreground">
-                {t("endsOn", { date: formatShortDateTime(billing.current_period_end, locale) })}
+                {t("accessUntil", { date: formatShortDateTime(course.accessExpiresAt, locale) })}
+              </span>
+            ) : course?.legacyCancelAtPeriodEnd && course.legacyPeriodEnd ? (
+              <span className="text-xs text-muted-foreground">
+                {t("endsOn", { date: formatShortDateTime(course.legacyPeriodEnd, locale) })}
               </span>
             ) : null}
           </div>
