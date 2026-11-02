@@ -10,6 +10,7 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { updateSpecialistAction, updateSpecialistScheduleAction } from "@/lib/services/config-actions";
 import { deliveryMethodValues } from "@/lib/services/constants";
+import { allTimeZones } from "@/lib/specialists/schedule";
 import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
 
 type Capability = { service_type: string; language: string; delivery_method: string };
@@ -33,6 +34,7 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
   const iepLanguages = await getTranslations({ locale, namespace: "services.iepLanguages" });
   const delivery = await getTranslations({ locale, namespace: "services.deliveryMethods" });
   const availability = await getTranslations({ locale, namespace: "specialistConsole.availability" });
+  const zones = allTimeZones();
   const supabase = await createServerComponentSupabaseClient();
   const [{ data, error }, schedulesResult] = await Promise.all([
     supabase.rpc("admin_list_specialists"),
@@ -183,6 +185,7 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
                               commonLabel={availability("commonZones")}
                               defaultValue={schedule?.schedule_timezone ?? "America/Chicago"}
                               id={`tz-${id}`}
+                              zones={zones}
                             />
                           </div>
                           <div className="space-y-1.5">

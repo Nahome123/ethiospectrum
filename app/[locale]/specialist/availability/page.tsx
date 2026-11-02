@@ -7,7 +7,7 @@ import type { AppLocale } from "@/i18n/routing";
 import { updateMyAvailabilityAction } from "@/lib/specialists/availability-actions";
 import { TimezoneSelect } from "@/components/specialists/timezone-select";
 import { WeeklyHoursFields } from "@/components/specialists/weekly-hours-fields";
-import type { WeeklyHour } from "@/lib/specialists/schedule";
+import { allTimeZones, type WeeklyHour } from "@/lib/specialists/schedule";
 import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -93,6 +93,7 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
                 commonLabel={t("commonZones")}
                 defaultValue={schedule.schedule_timezone}
                 id="my-timezone"
+                zones={allTimeZones()}
               />
             </div>
             <div className="space-y-1.5">

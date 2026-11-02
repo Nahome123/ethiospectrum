@@ -14,6 +14,11 @@ export const commonScheduleZones = [
   "UTC",
 ];
 
+/** Every time zone the server knows, read on the server so the list matches what it validates. */
+export function allTimeZones(): string[] {
+  return [...Intl.supportedValuesOf("timeZone"), "UTC"];
+}
+
 export type WeeklyHour = { weekday: number; start: string; end: string };
 
 /** Sessions start on the hour or half hour, so hours do too. */
