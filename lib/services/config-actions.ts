@@ -6,6 +6,7 @@ import { z } from "zod";
 import type { AppLocale } from "@/i18n/routing";
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import { expectedVersionSchema, moneyInputSchema, uuidSchema } from "@/lib/validation/services";
+import { meetingLinkSchema, parseWeeklyHours, scheduleTimezoneSchema } from "@/lib/specialists/schedule";
 import { serviceErrorKey, type ServiceActionState } from "./action-state";
 import { deliveryMethodValues, requestableServiceTypes, sessionLanguageValues } from "./constants";
 
@@ -214,8 +215,6 @@ export async function updateSpecialistAction(
   return result(locale, error, "specialistUpdated", ["/admin/specialists", "/services"]);
 }
 
-const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
-
 /** Weekly hours (one window per weekday), the schedule time zone and the default meeting link. */
 export async function updateSpecialistScheduleAction(
   locale: AppLocale,
@@ -223,26 +222,10 @@ export async function updateSpecialistScheduleAction(
   _state: ServiceActionState,
   formData: FormData,
 ): Promise<ServiceActionState> {
-  const timezone = z
-    .string()
-    .trim()
-    .min(1)
-    .max(64)
-    .regex(/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)*$/)
-    .safeParse(field(formData, "timezone"));
-  const meetingUrl = z
-    .union([z.url({ protocol: /^https$/ }).max(2048), z.literal("")])
-    .safeParse(field(formData, "meetingUrl").trim());
-  const hours: { weekday: number; start: string; end: string }[] = [];
-  for (let weekday = 0; weekday < 7; weekday += 1) {
-    const start = field(formData, `start.${weekday}`);
-    const end = field(formData, `end.${weekday}`);
-    if (!start && !end) continue;
-    if (!timeSchema.safeParse(start).success || !timeSchema.safeParse(end).success || end <= start) {
-      return invalid(locale);
-    }
-    hours.push({ weekday, start, end });
-  }
+  const timezone = scheduleTimezoneSchema.safeParse(field(formData, "timezone"));
+  const meetingUrl = meetingLinkSchema.safeParse(field(formData, "meetingUrl").trim());
+  const hours = parseWeeklyHours((name) => field(formData, name));
+  if (!hours) return invalid(locale);
   if (!uuidSchema.safeParse(specialistId).success || !timezone.success || !meetingUrl.success) {
     return invalid(locale);
   }
@@ -281,7 +264,9 @@ export async function setUserRoleAction(
   _state: ServiceActionState,
   formData: FormData,
 ): Promise<ServiceActionState> {
-  const role = z.enum(["member", "specialist", "administrator"]).safeParse(field(formData, "role"));
+  const role = z
+    .enum(["member", "specialist", "parent_support", "administrator"])
+    .safeParse(field(formData, "role"));
   if (!uuidSchema.safeParse(userId).success || !role.success) return invalid(locale);
   const supabase = await createServerActionSupabaseClient();
   const { error } = await supabase.rpc("admin_set_user_role", {

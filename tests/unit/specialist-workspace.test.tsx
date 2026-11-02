@@ -46,7 +46,7 @@ import { SpecialistShell } from "@/components/layout/specialist-shell";
 describe("specialist workspace", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("has exactly four navigation items, all inside the specialist workspace", async () => {
+  it("has exactly five navigation items, all inside the specialist workspace", async () => {
     render(await SpecialistShell({ children: <div /> }));
     const nav = screen.getByRole("navigation", { name: "specialistConsole.workspace" });
     const links = Array.from(nav.querySelectorAll("a")).map((link) => [
@@ -56,6 +56,7 @@ describe("specialist workspace", () => {
     expect(links).toEqual([
       ["specialistConsole.nav.dashboard", "/specialist"],
       ["specialistConsole.nav.closed", "/specialist?scope=closed"],
+      ["specialistConsole.nav.availability", "/specialist/availability"],
       ["specialistConsole.nav.settings", "/specialist/settings"],
       ["specialistConsole.nav.notifications", "/specialist/notifications"],
     ]);

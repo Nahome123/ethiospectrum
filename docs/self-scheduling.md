@@ -48,3 +48,17 @@ specialist match, then proposed times.
 
 A specialist with no weekly hours has no online times; turning a specialist
 _Unavailable_ hides them from booking immediately.
+
+## Parent Support role and self-managed availability
+
+- **Admin -> Users -> role "Parent support"** makes someone Parent Support staff. They are set
+  up automatically: a staff profile, taking bookings, and Parent Support in English and
+  Amharic. They can only offer Parent Support, and they use the staff workspace
+  (/specialist) to see their sessions.
+- **My availability** (staff workspace sidebar) lets any staff member set their own time
+  zone, weekly hours, meeting link, and pause or resume new bookings. Parent Support staff
+  also choose their session languages there. Administrators can still edit anyone's hours
+  in Admin -> Specialists.
+- Run `pnpm db:push` for migrations `20261101000000_parent_support_role_enum` and
+  `20261101000100_parent_support_role`. A role change signs the person out; they sign
+  back in and land in the staff workspace.

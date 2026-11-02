@@ -1802,7 +1802,8 @@
       "refund": "The refund could not be processed by the payment provider. It is marked failed and can be retried.",
       "slotTaken": "Sorry, that time was just taken. Please choose another time.",
       "bookingLimit": "You already have an upcoming session for this service. You can book another after it, or cancel it first.",
-      "chooseTime": "Choose a time before booking."
+      "chooseTime": "Choose a time before booking.",
+      "chooseLanguage": "Choose at least one language."
     },
     "success": {
       "appointmentConfirmed": "Your appointment is confirmed.",
@@ -2455,7 +2456,8 @@
         "all": "All",
         "member": "Household member",
         "specialist": "Specialist",
-        "administrator": "Administrator"
+        "administrator": "Administrator",
+        "parent_support": "Parent support"
       },
       "householdRoles": {
         "owner": "Household owner",
@@ -2543,7 +2545,8 @@
       "dashboard": "Assigned Services",
       "closed": "Completed Services",
       "notifications": "Notifications",
-      "settings": "Settings"
+      "settings": "Settings",
+      "availability": "My availability"
     },
     "title": "Assigned services",
     "closedTitle": "Completed services",
@@ -2556,7 +2559,27 @@
     "empty": "Nothing is assigned to you right now.",
     "availabilityNeeded": "Availability requested",
     "followUpNeeded": "Follow-up requested",
-    "nextAppointment": "Next appointment: {date}"
+    "nextAppointment": "Next appointment: {date}",
+    "availability": {
+      "title": "My availability",
+      "description": "Choose when families can book online sessions with you. Changes apply right away.",
+      "descriptionParentSupport": "Choose when families can book free Parent Support sessions with you, and the languages you hold them in. Changes apply right away.",
+      "unavailable": "Availability is for staff accounts.",
+      "accepting": "Taking new bookings",
+      "acceptingHelp": "Turn this off to pause new bookings (for example while traveling). Sessions already booked stay as they are.",
+      "languages": "Session languages",
+      "languagesHelp": "Families choose a session in one of these languages.",
+      "timezone": "Your time zone",
+      "meetingLink": "Your meeting link",
+      "meetingLinkHelp": "A Zoom, Google Meet or Teams link added to every session booked with you.",
+      "hours": "Weekly hours",
+      "hoursHelp": "Set a start and end time for each day you work. Leave a day blank to keep it closed. Sessions start every 30 minutes within these hours.",
+      "startsAt": "{day} start",
+      "endsAt": "{day} end",
+      "save": "Save availability",
+      "saving": "Saving…",
+      "bookedNote": "Families see your open times in their own time zone. Times already booked, and times less than two hours away, are never offered."
+    }
   },
   "adminTraining": {
     "title": "Training content",

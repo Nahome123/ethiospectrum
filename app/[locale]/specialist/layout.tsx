@@ -12,7 +12,8 @@ export default async function SpecialistLayout({
   const locale = localeParam as AppLocale;
   // The global specialist role only opens this shell; each service request is
   // authorized by its live assignment in the database on every query.
-  // Administrators hold the specialist role as well.
-  await requireRole(locale, `/${locale}/specialist`, ["specialist", "administrator"]);
+  // Administrators hold the specialist role as well; Parent Support staff use
+  // the same workspace for their sessions and availability.
+  await requireRole(locale, `/${locale}/specialist`, ["specialist", "parent_support", "administrator"]);
   return <SpecialistShell>{children}</SpecialistShell>;
 }

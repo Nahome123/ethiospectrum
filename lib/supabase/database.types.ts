@@ -5455,6 +5455,28 @@ export type Database = {
         Args: never;
         Returns: { end_at: string; specialist_id: string; start_at: string }[];
       };
+      get_my_staff_schedule: {
+        Args: never;
+        Returns: {
+          accepting_bookings: boolean;
+          default_meeting_url: string | null;
+          hours: Json;
+          is_parent_support: boolean;
+          parent_support_languages: string[];
+          schedule_timezone: string;
+          specialist_id: string;
+        }[];
+      };
+      update_my_staff_schedule: {
+        Args: {
+          input_accepting_bookings?: boolean;
+          input_hours: Json;
+          input_meeting_url?: string;
+          input_parent_support_languages?: string[];
+          input_timezone: string;
+        };
+        Returns: undefined;
+      };
       list_assignable_specialists: {
         Args: never;
         Returns: {
@@ -6288,7 +6310,7 @@ export type Database = {
       };
     };
     Enums: {
-      app_role: "member" | "specialist" | "administrator";
+      app_role: "member" | "specialist" | "administrator" | "parent_support";
       document_upload_status: "pending" | "uploaded" | "failed" | "archived";
       household_permission: "owner" | "administrator" | "member" | "viewer";
       member_status: "active" | "invited" | "removed";
@@ -6419,7 +6441,7 @@ export const Constants = {
   },
   public: {
     Enums: {
-      app_role: ["member", "specialist", "administrator"],
+      app_role: ["member", "specialist", "administrator", "parent_support"],
       document_upload_status: ["pending", "uploaded", "failed", "archived"],
       household_permission: ["owner", "administrator", "member", "viewer"],
       member_status: ["active", "invited", "removed"],

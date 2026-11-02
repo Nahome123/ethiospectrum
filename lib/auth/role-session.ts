@@ -43,11 +43,11 @@ export function roleChangedSignOutPath(locale: AppLocale): string {
 /** Each role's own workspace; administrators start in the admin console. */
 export function getRoleHomePath(locale: AppLocale, role: SupabaseRole | null): string {
   if (role === "administrator") return `/${locale}/admin`;
-  if (role === "specialist") return `/${locale}/specialist`;
+  if (role === "specialist" || role === "parent_support") return `/${locale}/specialist`;
   return `/${locale}/dashboard`;
 }
 
-/** Administrators hold the specialist role as well. */
+/** Staff who use the specialist workspace: specialists, Parent Support staff, and administrators. */
 export function hasSpecialistRole(role: SupabaseRole | null | undefined): boolean {
-  return role === "specialist" || role === "administrator";
+  return role === "specialist" || role === "parent_support" || role === "administrator";
 }

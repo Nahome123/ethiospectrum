@@ -8,8 +8,8 @@ import { setUserRoleAction } from "@/lib/services/config-actions";
 import { formatDate } from "@/lib/services/display";
 import { createServerComponentSupabaseClient, getCurrentSupabaseClaims } from "@/lib/supabase/server";
 
-const roleFilters = ["all", "member", "specialist", "administrator"] as const;
-const assignableRoles = ["member", "specialist", "administrator"] as const;
+const roleFilters = ["all", "member", "specialist", "parent_support", "administrator"] as const;
+const assignableRoles = ["member", "specialist", "parent_support", "administrator"] as const;
 
 export default async function AdminUsersPage({
   params,

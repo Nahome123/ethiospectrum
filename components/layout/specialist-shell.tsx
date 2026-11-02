@@ -9,10 +9,11 @@ import { getCurrentMemberProfile, getCurrentSupabaseUser, getCurrentUserRole } f
 import { AdminViewSwitcher } from "./admin-view-switcher";
 import type { AppLocale } from "@/i18n/routing";
 
-/** The specialist workspace has exactly these four destinations, none shared with the family workspace. */
+/** The staff workspace destinations, none shared with the family workspace. */
 const links = [
   ["dashboard", "/specialist"],
   ["closed", "/specialist?scope=closed"],
+  ["availability", "/specialist/availability"],
   ["settings", "/specialist/settings"],
   ["notifications", "/specialist/notifications"],
 ] as const;

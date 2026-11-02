@@ -15,6 +15,6 @@ export default async function MemberLayout({
   const user = await requireUser(locale, returnTo);
   // The family workspace is not shared with specialists; administrators keep
   // their read-only member preview.
-  if (user.role === "specialist") redirect(`/${locale}/specialist`);
+  if (user.role === "specialist" || user.role === "parent_support") redirect(`/${locale}/specialist`);
   return <MemberShell>{children}</MemberShell>;
 }

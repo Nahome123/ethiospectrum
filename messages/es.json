@@ -1802,7 +1802,8 @@
       "refund": "El proveedor de pagos no pudo procesar el reembolso. Se marcó como fallido y puede reintentarse.",
       "slotTaken": "Lo sentimos, esa hora acaba de reservarse. Elija otra hora.",
       "bookingLimit": "Ya tiene una sesión próxima de este servicio. Puede reservar otra después, o cancelarla primero.",
-      "chooseTime": "Elija una hora antes de reservar."
+      "chooseTime": "Elija una hora antes de reservar.",
+      "chooseLanguage": "Elija al menos un idioma."
     },
     "success": {
       "appointmentConfirmed": "Su cita está confirmada.",
@@ -2459,7 +2460,8 @@
         "all": "Todos",
         "member": "Miembro del hogar",
         "specialist": "Especialista",
-        "administrator": "Administrador"
+        "administrator": "Administrador",
+        "parent_support": "Apoyo para padres"
       },
       "householdRoles": {
         "owner": "Propietario del hogar",
@@ -2547,7 +2549,8 @@
       "dashboard": "Servicios asignados",
       "closed": "Servicios completados",
       "notifications": "Notificaciones",
-      "settings": "Configuración"
+      "settings": "Configuración",
+      "availability": "Mi disponibilidad"
     },
     "title": "Servicios asignados",
     "closedTitle": "Servicios completados",
@@ -2560,7 +2563,27 @@
     "empty": "No tiene nada asignado en este momento.",
     "availabilityNeeded": "Disponibilidad solicitada",
     "followUpNeeded": "Seguimiento solicitado",
-    "nextAppointment": "Próxima cita: {date}"
+    "nextAppointment": "Próxima cita: {date}",
+    "availability": {
+      "title": "Mi disponibilidad",
+      "description": "Elija cuándo las familias pueden reservar sesiones en línea con usted. Los cambios se aplican al instante.",
+      "descriptionParentSupport": "Elija cuándo las familias pueden reservar sesiones gratuitas de apoyo para padres con usted y en qué idiomas. Los cambios se aplican al instante.",
+      "unavailable": "La disponibilidad es para cuentas del personal.",
+      "accepting": "Acepto nuevas reservas",
+      "acceptingHelp": "Desactívelo para pausar nuevas reservas (por ejemplo, de viaje). Las sesiones ya reservadas se mantienen.",
+      "languages": "Idiomas de las sesiones",
+      "languagesHelp": "Las familias eligen una sesión en uno de estos idiomas.",
+      "timezone": "Su zona horaria",
+      "meetingLink": "Su enlace de reunión",
+      "meetingLinkHelp": "Un enlace de Zoom, Google Meet o Teams que se añade a cada sesión reservada con usted.",
+      "hours": "Horario semanal",
+      "hoursHelp": "Indique la hora de inicio y fin de cada día que trabaja. Deje un día en blanco para cerrarlo. Las sesiones empiezan cada 30 minutos dentro de este horario.",
+      "startsAt": "{day} inicio",
+      "endsAt": "{day} fin",
+      "save": "Guardar disponibilidad",
+      "saving": "Guardando…",
+      "bookedNote": "Las familias ven sus horas libres en su propia zona horaria. Nunca se ofrecen horas ya reservadas ni las que faltan menos de dos horas."
+    }
   },
   "adminTraining": {
     "title": "Contenido de capacitación",

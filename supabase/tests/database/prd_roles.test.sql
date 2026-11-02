@@ -21,7 +21,7 @@ where user_id in ('c1000000-0000-4000-8000-000000000003', 'c1000000-0000-4000-80
 
 -- Content editor removal ----------------------------------------------------
 
-select is(enum_range(null::public.app_role)::text, '{member,specialist,administrator}', 'content_editor is no longer a role');
+select is(enum_range(null::public.app_role)::text, '{member,specialist,administrator,parent_support}', 'content_editor is no longer a role');
 
 -- Role changes require a fresh sign-in -------------------------------------
 
