@@ -1803,7 +1803,8 @@
       "slotTaken": "ይቅርታ፣ ያ ሰዓት አሁን ተይዟል። እባክዎ ሌላ ሰዓት ይምረጡ።",
       "bookingLimit": "ለዚህ አገልግሎት ቀድሞውኑ መጪ ክፍለ ጊዜ አለዎት። ከዚያ በኋላ ሌላ መያዝ ወይም መጀመሪያ መሰረዝ ይችላሉ።",
       "chooseTime": "ከመያዝዎ በፊት ሰዓት ይምረጡ።",
-      "chooseLanguage": "ቢያንስ አንድ ቋንቋ ይምረጡ።"
+      "chooseLanguage": "ቢያንስ አንድ ቋንቋ ይምረጡ።",
+      "calendlyLink": "በhttps://calendly.com/ የሚጀምር የCalendly አገናኝ ያስገቡ።"
     },
     "success": {
       "appointmentConfirmed": "ቀጠሮዎ ተረጋግጧል።",
@@ -2273,7 +2274,9 @@
       "bookFree": "ነፃ ክፍለ ጊዜ ይያዙ",
       "booking": "በመያዝ ላይ…",
       "noSpecialists": "ምክክር አሁን በመስመር ላይ መያዝ አይቻልም። እባክዎ ቆይተው ይመልከቱ።",
-      "noParentSupport": "የወላጅ ድጋፍ ክፍለ ጊዜዎች አሁን በመስመር ላይ መያዝ አይቻልም። እባክዎ ቆይተው ይመልከቱ።"
+      "noParentSupport": "የወላጅ ድጋፍ ክፍለ ጊዜዎች አሁን በመስመር ላይ መያዝ አይቻልም። እባክዎ ቆይተው ይመልከቱ።",
+      "calendlyFallback": "የቀን መቁጠሪያው አይታይም? የቀጠሮ ገጹን በአዲስ ትር ይክፈቱ።",
+      "calendlyTitle": "ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ ይያዙ"
     }
   },
   "adminConsole": {
@@ -2583,7 +2586,9 @@
       "dayClosed": "አይገኝም",
       "to": "እስከ",
       "commonZones": "የተለመዱ የሰዓት ዞኖች",
-      "allZones": "ሁሉም የሰዓት ዞኖች"
+      "allZones": "ሁሉም የሰዓት ዞኖች",
+      "calendly": "የCalendly አገናኝዎ (አማራጭ)",
+      "calendlyHelp": "የCalendly ቀጠሮ አገናኝዎን ይለጥፉ፤ ለምሳሌ https://calendly.com/your-name/parent-support። አገናኙ እስካለ ድረስ ቤተሰቦች ነፃ ክፍለ ጊዜዎችዎን ከታች ካሉት ሳምንታዊ ሰዓቶች ይልቅ በCalendly ይይዛሉ፤ Calendly የቀን መቁጠሪያዎን፣ ማሳሰቢያዎችን እና የስብሰባ አገናኙን ያስተዳድራል። በመተግበሪያው ውስጥ ወደ መያዝ ለመመለስ ያጥፉት።"
     }
   },
   "adminTraining": {
@@ -3104,6 +3109,7 @@
     "book": "ነፃ ክፍለ ጊዜ ይያዙ",
     "accountNote": "ለማረጋገጥ ይገባሉ (ወይም ነፃ መለያ ይፈጥራሉ)። ክፍለ ጊዜዎ ወዲያውኑ ይረጋገጣል።",
     "photoAlt": "የ{name} ፎቶ",
-    "photoAltUnnamed": "የወላጅ ድጋፍ አማካሪያችን ፎቶ"
+    "photoAltUnnamed": "የወላጅ ድጋፍ አማካሪያችን ፎቶ",
+    "pickTime": "የሚመችዎትን ሰዓት ይምረጡ"
   }
 }

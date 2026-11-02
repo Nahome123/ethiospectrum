@@ -1803,7 +1803,8 @@
       "slotTaken": "Sorry, that time was just taken. Please choose another time.",
       "bookingLimit": "You already have an upcoming session for this service. You can book another after it, or cancel it first.",
       "chooseTime": "Choose a time before booking.",
-      "chooseLanguage": "Choose at least one language."
+      "chooseLanguage": "Choose at least one language.",
+      "calendlyLink": "Enter a Calendly link that starts with https://calendly.com/."
     },
     "success": {
       "appointmentConfirmed": "Your appointment is confirmed.",
@@ -2273,7 +2274,9 @@
       "bookFree": "Book free session",
       "booking": "Booking…",
       "noSpecialists": "Consultations can't be booked online right now. Please check back soon.",
-      "noParentSupport": "Parent Support sessions can't be booked online right now. Please check back soon."
+      "noParentSupport": "Parent Support sessions can't be booked online right now. Please check back soon.",
+      "calendlyFallback": "Calendar not showing? Open the booking page in a new tab.",
+      "calendlyTitle": "Book a free Parent Support session"
     }
   },
   "adminConsole": {
@@ -2583,7 +2586,9 @@
       "dayClosed": "Unavailable",
       "to": "to",
       "commonZones": "Common time zones",
-      "allZones": "All time zones"
+      "allZones": "All time zones",
+      "calendly": "Your Calendly link (optional)",
+      "calendlyHelp": "Paste your Calendly event link, for example https://calendly.com/your-name/parent-support. While it is set, families book your free sessions on Calendly instead of from the weekly hours below, and Calendly handles your calendar, reminders and meeting link. Clear it to go back to booking in the app."
     }
   },
   "adminTraining": {
@@ -3108,6 +3113,7 @@
     "book": "Book a free session",
     "accountNote": "You'll sign in (or create a free account) to confirm. Your session is confirmed right away.",
     "photoAlt": "Portrait of {name}",
-    "photoAltUnnamed": "Portrait of our parent support consultant"
+    "photoAltUnnamed": "Portrait of our parent support consultant",
+    "pickTime": "Pick a time that works for you"
   }
 }

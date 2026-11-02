@@ -82,6 +82,37 @@ describe("My availability", () => {
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
+  it("saves or clears a Parent Support Calendly link", async () => {
+    await updateMyAvailabilityAction(
+      "en",
+      idle,
+      form({
+        timezone: "UTC",
+        choosesBookingPage: "1",
+        bookingPageUrl: " https://calendly.com/yoftahe/parent-support ",
+      }),
+    );
+    expect(mocks.rpc).toHaveBeenCalledWith("update_my_booking_page", {
+      input_url: "https://calendly.com/yoftahe/parent-support",
+    });
+    await updateMyAvailabilityAction(
+      "en",
+      idle,
+      form({ timezone: "UTC", choosesBookingPage: "1", bookingPageUrl: "" }),
+    );
+    expect(mocks.rpc).toHaveBeenLastCalledWith("update_my_booking_page", { input_url: "" });
+  });
+
+  it("refuses a booking page that is not on Calendly", async () => {
+    const result = await updateMyAvailabilityAction(
+      "en",
+      idle,
+      form({ timezone: "UTC", choosesBookingPage: "1", bookingPageUrl: "https://example.test/book" }),
+    );
+    expect(result).toEqual({ status: "error", message: "calendlyLink" });
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
   it("parses one window per weekday", () => {
     const fields: Record<string, string> = { "start.0": "10:00", "end.0": "11:30" };
     expect(parseWeeklyHours((name) => fields[name] ?? "")).toEqual([

@@ -19,7 +19,10 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
   const t = await getTranslations({ locale, namespace: "specialistConsole.availability" });
   const languageNames = await getTranslations({ locale, namespace: "services.languages" });
   const supabase = await createServerComponentSupabaseClient();
-  const { data } = await supabase.rpc("get_my_staff_schedule");
+  const [{ data }, bookingPage] = await Promise.all([
+    supabase.rpc("get_my_staff_schedule"),
+    supabase.rpc("get_my_booking_page"),
+  ]);
   const schedule = data?.[0];
   if (!schedule) {
     return (
@@ -63,6 +66,23 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
               <span className="block text-sm text-muted-foreground">{t("acceptingHelp")}</span>
             </span>
           </label>
+
+          {schedule.is_parent_support ? (
+            <div className="space-y-1.5 rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
+              <input name="choosesBookingPage" type="hidden" value="1" />
+              <Label htmlFor="my-calendly">{t("calendly")}</Label>
+              <Input
+                className="bg-white"
+                defaultValue={bookingPage.data ?? ""}
+                id="my-calendly"
+                name="bookingPageUrl"
+                pattern="https://calendly\.com/.*"
+                placeholder="https://calendly.com/your-name/parent-support"
+                type="url"
+              />
+              <p className="text-xs text-muted-foreground">{t("calendlyHelp")}</p>
+            </div>
+          ) : null}
 
           {schedule.is_parent_support ? (
             <fieldset className="space-y-2">

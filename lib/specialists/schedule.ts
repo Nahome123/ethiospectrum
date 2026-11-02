@@ -30,6 +30,14 @@ export const scheduleTimezoneSchema = z
   .max(64)
   .regex(/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)*$/);
 export const meetingLinkSchema = z.union([z.url({ protocol: /^https$/ }).max(2048), z.literal("")]);
+/** A Calendly scheduling page; the same rule as the database check. */
+export const calendlyLinkSchema = z.union([
+  z
+    .string()
+    .max(500)
+    .regex(/^https:\/\/calendly\.com\/[A-Za-z0-9_./?=&%-]+$/),
+  z.literal(""),
+]);
 
 /**
  * Reads one window per weekday from `start.{weekday}` / `end.{weekday}`

@@ -31,3 +31,20 @@ export const getPublicServicePrices = unstable_cache(
   ["public-service-prices"],
   { revalidate: 3600, tags: ["service-catalog"] },
 );
+
+/**
+ * The Calendly page families book Parent Support on, when the provider has
+ * set one; null means booking happens in the app from their weekly hours.
+ */
+export const getParentSupportBookingPage = unstable_cache(
+  async (): Promise<string | null> => {
+    try {
+      const { data, error } = await createSupabaseAdminClient().rpc("get_parent_support_booking_page");
+      return error ? null : (data ?? null);
+    } catch {
+      return null;
+    }
+  },
+  ["parent-support-booking-page"],
+  { revalidate: 3600, tags: ["service-catalog"] },
+);

@@ -3492,6 +3492,7 @@ export type Database = {
         Row: {
           availability_status: string;
           bio: string | null;
+          booking_page_url: string | null;
           created_at: string;
           default_meeting_url: string | null;
           id: string;
@@ -3504,6 +3505,7 @@ export type Database = {
         Insert: {
           availability_status?: string;
           bio?: string | null;
+          booking_page_url?: string | null;
           created_at?: string;
           default_meeting_url?: string | null;
           id?: string;
@@ -3516,6 +3518,7 @@ export type Database = {
         Update: {
           availability_status?: string;
           bio?: string | null;
+          booking_page_url?: string | null;
           created_at?: string;
           default_meeting_url?: string | null;
           id?: string;
@@ -5455,6 +5458,8 @@ export type Database = {
         Args: never;
         Returns: { end_at: string; specialist_id: string; start_at: string }[];
       };
+      get_my_booking_page: { Args: never; Returns: string };
+      get_parent_support_booking_page: { Args: never; Returns: string };
       get_my_staff_schedule: {
         Args: never;
         Returns: {
@@ -5467,6 +5472,7 @@ export type Database = {
           specialist_id: string;
         }[];
       };
+      update_my_booking_page: { Args: { input_url: string }; Returns: undefined };
       update_my_staff_schedule: {
         Args: {
           input_accepting_bookings?: boolean;

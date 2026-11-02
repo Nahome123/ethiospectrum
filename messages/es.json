@@ -1803,7 +1803,8 @@
       "slotTaken": "Lo sentimos, esa hora acaba de reservarse. Elija otra hora.",
       "bookingLimit": "Ya tiene una sesión próxima de este servicio. Puede reservar otra después, o cancelarla primero.",
       "chooseTime": "Elija una hora antes de reservar.",
-      "chooseLanguage": "Elija al menos un idioma."
+      "chooseLanguage": "Elija al menos un idioma.",
+      "calendlyLink": "Introduzca un enlace de Calendly que empiece por https://calendly.com/."
     },
     "success": {
       "appointmentConfirmed": "Su cita está confirmada.",
@@ -2277,7 +2278,9 @@
       "bookFree": "Reservar sesión gratuita",
       "booking": "Reservando…",
       "noSpecialists": "Ahora no se pueden reservar consultas en línea. Vuelva pronto.",
-      "noParentSupport": "Ahora no se pueden reservar sesiones de apoyo para padres en línea. Vuelva pronto."
+      "noParentSupport": "Ahora no se pueden reservar sesiones de apoyo para padres en línea. Vuelva pronto.",
+      "calendlyFallback": "¿No ve el calendario? Abra la página de reservas en una pestaña nueva.",
+      "calendlyTitle": "Reserve una sesión gratuita de apoyo para padres"
     }
   },
   "adminConsole": {
@@ -2587,7 +2590,9 @@
       "dayClosed": "No disponible",
       "to": "a",
       "commonZones": "Zonas horarias comunes",
-      "allZones": "Todas las zonas horarias"
+      "allZones": "Todas las zonas horarias",
+      "calendly": "Su enlace de Calendly (opcional)",
+      "calendlyHelp": "Pegue el enlace de su evento de Calendly, por ejemplo https://calendly.com/su-nombre/apoyo-padres. Mientras esté puesto, las familias reservan sus sesiones gratuitas en Calendly en lugar del horario semanal de abajo, y Calendly gestiona su calendario, recordatorios y enlace de reunión. Bórrelo para volver a reservar en la aplicación."
     }
   },
   "adminTraining": {
@@ -3112,6 +3117,7 @@
     "book": "Reservar sesión gratuita",
     "accountNote": "Iniciará sesión (o creará una cuenta gratuita) para confirmar. Su sesión se confirma al instante.",
     "photoAlt": "Retrato de {name}",
-    "photoAltUnnamed": "Retrato de nuestro consultor de apoyo para padres"
+    "photoAltUnnamed": "Retrato de nuestro consultor de apoyo para padres",
+    "pickTime": "Elija un horario que le convenga"
   }
 }
