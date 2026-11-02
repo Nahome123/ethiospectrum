@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   applicationName: brandConfig.name,
   title: { default: brandConfig.defaultTitle, template: brandConfig.titleTemplate },
   description: brandConfig.description,
-  icons: { icon: brandConfig.faviconPath },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
