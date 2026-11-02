@@ -2577,12 +2577,17 @@
       "meetingLink": "Su enlace de reunión",
       "meetingLinkHelp": "Un enlace de Zoom, Google Meet o Teams que se añade a cada sesión reservada con usted.",
       "hours": "Horario semanal",
-      "hoursHelp": "Indique la hora de inicio y fin de cada día que trabaja. Deje un día en blanco para cerrarlo. Las sesiones empiezan cada 30 minutos dentro de este horario.",
+      "hoursHelp": "Active cada día que trabaja y elija las horas en que está disponible. Los días desactivados no están disponibles. Las sesiones empiezan cada 30 minutos dentro de este horario.",
       "startsAt": "{day} inicio",
       "endsAt": "{day} fin",
       "save": "Guardar disponibilidad",
       "saving": "Guardando…",
-      "bookedNote": "Las familias ven sus horas libres en su propia zona horaria. Nunca se ofrecen horas ya reservadas ni las que faltan menos de dos horas."
+      "bookedNote": "Las familias ven sus horas libres en su propia zona horaria. Nunca se ofrecen horas ya reservadas ni las que faltan menos de dos horas.",
+      "dayOpen": "Disponible",
+      "dayClosed": "No disponible",
+      "to": "a",
+      "commonZones": "Zonas horarias comunes",
+      "allZones": "Todas las zonas horarias"
     }
   },
   "adminTraining": {

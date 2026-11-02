@@ -72,6 +72,7 @@ describe("My availability", () => {
   it("refuses invalid hours, links and an empty language choice before saving", async () => {
     const cases: Record<string, string>[] = [
       { timezone: "UTC", "start.1": "17:00", "end.1": "09:00" },
+      { timezone: "UTC", "start.1": "09:15", "end.1": "10:00" },
       { timezone: "UTC", meetingUrl: "http://insecure.example.test" },
       { timezone: "UTC", choosesLanguages: "1" },
     ];

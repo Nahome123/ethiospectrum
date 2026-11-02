@@ -3,6 +3,8 @@ import { ActionForm } from "@/components/services/action-form";
 import { StatusPill } from "@/components/services/status-badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TimezoneSelect } from "@/components/specialists/timezone-select";
+import { WeeklyHoursFields } from "@/components/specialists/weekly-hours-fields";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -21,17 +23,6 @@ const capabilityGrid = [
 ] as const;
 
 type Schedule = { schedule_timezone: string; default_meeting_url: string | null; hours: unknown };
-const weekdays = [1, 2, 3, 4, 5, 6, 0] as const;
-const commonZones = [
-  "America/Chicago",
-  "America/New_York",
-  "America/Denver",
-  "America/Phoenix",
-  "America/Los_Angeles",
-  "Africa/Addis_Ababa",
-  "Europe/London",
-  "UTC",
-];
 
 export default async function AdminSpecialistsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: localeParam } = await params;
@@ -41,6 +32,7 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
   const languages = await getTranslations({ locale, namespace: "services.languages" });
   const iepLanguages = await getTranslations({ locale, namespace: "services.iepLanguages" });
   const delivery = await getTranslations({ locale, namespace: "services.deliveryMethods" });
+  const availability = await getTranslations({ locale, namespace: "specialistConsole.availability" });
   const supabase = await createServerComponentSupabaseClient();
   const [{ data, error }, schedulesResult] = await Promise.all([
     supabase.rpc("admin_list_specialists"),
@@ -50,11 +42,6 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
   const schedules = new Map<string, Schedule>(
     (schedulesResult.data ?? []).map((row) => [row.specialist_id, row]),
   );
-  const dayName = (weekday: number) =>
-    new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "UTC" }).format(
-      new Date(Date.UTC(2024, 0, 7 + weekday)),
-    );
-
   return (
     <section className="space-y-6">
       <div>
@@ -67,11 +54,6 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
           </Link>
         </p>
       </div>
-      <datalist id="schedule-zones">
-        {commonZones.map((zone) => (
-          <option key={zone} value={zone} />
-        ))}
-      </datalist>
       {error ? (
         <p role="alert">{t("loadError")}</p>
       ) : specialists.length === 0 ? (
@@ -196,12 +178,11 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
                         <div className="grid gap-4 sm:grid-cols-2">
                           <div className="space-y-1.5">
                             <Label htmlFor={`tz-${id}`}>{t("scheduleTimezone")}</Label>
-                            <Input
+                            <TimezoneSelect
+                              allLabel={availability("allZones")}
+                              commonLabel={availability("commonZones")}
                               defaultValue={schedule?.schedule_timezone ?? "America/Chicago"}
                               id={`tz-${id}`}
-                              list="schedule-zones"
-                              name="timezone"
-                              required
                             />
                           </div>
                           <div className="space-y-1.5">
@@ -216,33 +197,7 @@ export default async function AdminSpecialistsPage({ params }: { params: Promise
                             />
                           </div>
                         </div>
-                        <div className="grid gap-2">
-                          {weekdays.map((weekday) => {
-                            const window = hours.find((item) => item.weekday === weekday);
-                            return (
-                              <div
-                                className="grid grid-cols-[8rem_1fr_1fr] items-center gap-2 text-sm"
-                                key={weekday}
-                              >
-                                <span className="font-medium">{dayName(weekday)}</span>
-                                <Input
-                                  aria-label={t("startsAt", { day: dayName(weekday) })}
-                                  defaultValue={window?.start ?? ""}
-                                  name={`start.${weekday}`}
-                                  step={1800}
-                                  type="time"
-                                />
-                                <Input
-                                  aria-label={t("endsAt", { day: dayName(weekday) })}
-                                  defaultValue={window?.end ?? ""}
-                                  name={`end.${weekday}`}
-                                  step={1800}
-                                  type="time"
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
+                        <WeeklyHoursFields hours={hours} />
                       </ActionForm>
                     </details>
                   );

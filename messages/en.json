@@ -2573,12 +2573,17 @@
       "meetingLink": "Your meeting link",
       "meetingLinkHelp": "A Zoom, Google Meet or Teams link added to every session booked with you.",
       "hours": "Weekly hours",
-      "hoursHelp": "Set a start and end time for each day you work. Leave a day blank to keep it closed. Sessions start every 30 minutes within these hours.",
+      "hoursHelp": "Switch on each day you work and choose the hours you are available. Days left off are unavailable. Sessions start every 30 minutes within these hours.",
       "startsAt": "{day} start",
       "endsAt": "{day} end",
       "save": "Save availability",
       "saving": "Saving…",
-      "bookedNote": "Families see your open times in their own time zone. Times already booked, and times less than two hours away, are never offered."
+      "bookedNote": "Families see your open times in their own time zone. Times already booked, and times less than two hours away, are never offered.",
+      "dayOpen": "Available",
+      "dayClosed": "Unavailable",
+      "to": "to",
+      "commonZones": "Common time zones",
+      "allZones": "All time zones"
     }
   },
   "adminTraining": {

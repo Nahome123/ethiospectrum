@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { AppLocale } from "@/i18n/routing";
 import { updateMyAvailabilityAction } from "@/lib/specialists/availability-actions";
-import { commonScheduleZones, scheduleWeekdays, type WeeklyHour } from "@/lib/specialists/schedule";
+import { TimezoneSelect } from "@/components/specialists/timezone-select";
+import { WeeklyHoursFields } from "@/components/specialists/weekly-hours-fields";
+import type { WeeklyHour } from "@/lib/specialists/schedule";
 import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -19,11 +21,6 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
   const supabase = await createServerComponentSupabaseClient();
   const { data } = await supabase.rpc("get_my_staff_schedule");
   const schedule = data?.[0];
-  const dayName = (weekday: number) =>
-    new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "UTC" }).format(
-      new Date(Date.UTC(2024, 0, 7 + weekday)),
-    );
-
   if (!schedule) {
     return (
       <section className="mx-auto max-w-3xl">
@@ -91,18 +88,12 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="my-timezone">{t("timezone")}</Label>
-              <Input
+              <TimezoneSelect
+                allLabel={t("allZones")}
+                commonLabel={t("commonZones")}
                 defaultValue={schedule.schedule_timezone}
                 id="my-timezone"
-                list="my-schedule-zones"
-                name="timezone"
-                required
               />
-              <datalist id="my-schedule-zones">
-                {commonScheduleZones.map((zone) => (
-                  <option key={zone} value={zone} />
-                ))}
-              </datalist>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="my-meeting-link">{t("meetingLink")}</Label>
@@ -121,30 +112,7 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
           <fieldset className="space-y-2">
             <legend className="text-sm font-semibold">{t("hours")}</legend>
             <p className="text-sm text-muted-foreground">{t("hoursHelp")}</p>
-            <div className="grid gap-2">
-              {scheduleWeekdays.map((weekday) => {
-                const window = hours.find((item) => item.weekday === weekday);
-                return (
-                  <div className="grid grid-cols-[8rem_1fr_1fr] items-center gap-2 text-sm" key={weekday}>
-                    <span className="font-medium">{dayName(weekday)}</span>
-                    <Input
-                      aria-label={t("startsAt", { day: dayName(weekday) })}
-                      defaultValue={window?.start ?? ""}
-                      name={`start.${weekday}`}
-                      step={1800}
-                      type="time"
-                    />
-                    <Input
-                      aria-label={t("endsAt", { day: dayName(weekday) })}
-                      defaultValue={window?.end ?? ""}
-                      name={`end.${weekday}`}
-                      step={1800}
-                      type="time"
-                    />
-                  </div>
-                );
-              })}
-            </div>
+            <WeeklyHoursFields hours={hours} />
           </fieldset>
         </ActionForm>
       </div>

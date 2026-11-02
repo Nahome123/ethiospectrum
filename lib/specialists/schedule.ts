@@ -16,7 +16,8 @@ export const commonScheduleZones = [
 
 export type WeeklyHour = { weekday: number; start: string; end: string };
 
-const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
+/** Sessions start on the hour or half hour, so hours do too. */
+const timeSchema = z.string().regex(/^([01]\d|2[0-3]):(00|30)$/);
 export const scheduleTimezoneSchema = z
   .string()
   .trim()
