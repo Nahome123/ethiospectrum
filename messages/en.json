@@ -1804,7 +1804,8 @@
       "bookingLimit": "You already have an upcoming session for this service. You can book another after it, or cancel it first.",
       "chooseTime": "Choose a time before booking.",
       "chooseLanguage": "Choose at least one language.",
-      "calendlyLink": "Enter a Calendly link that starts with https://calendly.com/."
+      "calendlyLink": "Enter a Calendly link that starts with https://calendly.com/.",
+      "noParentSupportProvider": "No Parent Support provider is taking bookings with a Calendly link. Ask them to add one on My availability, then approve again."
     },
     "success": {
       "appointmentConfirmed": "Your appointment is confirmed.",
@@ -1834,7 +1835,8 @@
       "topicSaved": "The topic was saved.",
       "specialistUpdated": "The specialist was saved.",
       "roleUpdated": "The role was updated.",
-      "scheduleSaved": "Weekly hours saved."
+      "scheduleSaved": "Weekly hours saved.",
+      "parentSupportApproved": "Request approved. The family has been notified."
     },
     "catalog": {
       "eyebrow": "Services",
@@ -2100,7 +2102,9 @@
       "reasonOptional": "Reason (optional)",
       "scheduleNotSaved": "Your request was sent, but the time you chose could not be saved (for example, it falls in a daylight-saving change). Your specialist will propose times instead.",
       "bookedConfirmed": "You're booked! The session details are below, and you'll get a reminder before it starts.",
-      "bookedHeld": "Your time is held for 30 minutes. Complete the payment below to confirm the booking."
+      "bookedHeld": "Your time is held for 30 minutes. Complete the payment below to confirm the booking.",
+      "parentSupportPending": "Your request is waiting for our team to approve it. We'll let you know as soon as it's approved, and you can then pick a time here.",
+      "parentSupportApproved": "Your request was approved. Pick a time for your free session below."
     },
     "slots": {
       "option": "Option {number}",
@@ -2250,12 +2254,19 @@
       "confirmThisTime": "Confirm this time",
       "meetingLinkOptional": "Meeting link (optional)",
       "needDifferentTime": "Need a different time?",
-      "needDifferentTimeHelp": "Propose other times for the family to choose from, or schedule a different time directly."
+      "needDifferentTimeHelp": "Propose other times for the family to choose from, or schedule a different time directly.",
+      "parentSupportApproveTitle": "Approve this Parent Support request",
+      "parentSupportApproveHelp": "Approving assigns the Parent Support provider and gives the family their Calendly page to pick a time. They are notified right away.",
+      "approve": "Approve",
+      "parentSupportApprovedTitle": "Approved",
+      "parentSupportApprovedHelp": "The family picks a time on the provider's Calendly page. Mark the request completed after the session.",
+      "parentSupportCalendly": "Calendly page",
+      "parentSupportCompleteConfirm": "Mark this Parent Support session as completed?"
     },
     "booking": {
       "consultationSummary": "{minutes}-minute session · {price}. Choose who you'd like to meet and pick a time that suits you; it is confirmed as soon as you pay.",
       "parentSupportTitle": "Parent Support",
-      "parentSupportSummary": "A free {minutes}-minute one-on-one session for parents and caregivers. Pick a time that suits you and it is confirmed right away.",
+      "parentSupportSummary": "A free {minutes}-minute one-on-one online session for parents and caregivers. Send a short request; once our team approves it, you pick a time that suits you.",
       "parentSupportTopic": "What would you like to talk about?",
       "free": "Free",
       "whoAndWhen": "Who and when",
@@ -2276,7 +2287,9 @@
       "noSpecialists": "Consultations can't be booked online right now. Please check back soon.",
       "noParentSupport": "Parent Support sessions can't be booked online right now. Please check back soon.",
       "calendlyFallback": "Calendar not showing? Open the booking page in a new tab.",
-      "calendlyTitle": "Book a free Parent Support session"
+      "calendlyTitle": "Book a free Parent Support session",
+      "requestSubmit": "Send request",
+      "requestNextSteps": "Our team reviews each request. Once it's approved, you'll be notified and can pick a time from your request page."
     }
   },
   "adminConsole": {
@@ -2588,7 +2601,7 @@
       "commonZones": "Common time zones",
       "allZones": "All time zones",
       "calendly": "Your Calendly link (optional)",
-      "calendlyHelp": "Paste your Calendly event link, for example https://calendly.com/your-name/parent-support. While it is set, families book your free sessions on Calendly instead of from the weekly hours below, and Calendly handles your calendar, reminders and meeting link. Clear it to go back to booking in the app."
+      "calendlyHelp": "Paste your Calendly event link, for example https://calendly.com/your-name/parent-support. When an administrator approves a family's Parent Support request, the family picks a time on this page, and Calendly handles your calendar, reminders and meeting link."
     }
   },
   "adminTraining": {
@@ -2984,6 +2997,10 @@
       "admin_no_show": {
         "title": "No-show recorded",
         "body": "A {service} appointment was recorded as a no-show."
+      },
+      "parent_support_approved": {
+        "title": "{service} request approved",
+        "body": "Your request was approved. Open it to pick a time for your free session."
       }
     }
   },
@@ -3104,16 +3121,13 @@
     "badge": "Free Parent Support",
     "title": "Talk with {name} — free",
     "titleUnnamed": "Free Parent Support",
-    "whatItIs": "A free 30-minute, one-on-one online session for parents and caregivers. No payment, no subscription — just pick a time.",
-    "nextTimes": "Next open times",
-    "loading": "Loading open times…",
-    "noTimes": "New times are added regularly — open the booking page to see the latest.",
-    "moreTimes": "See all times",
-    "timesIn": "Times shown in {zone}",
-    "book": "Book a free session",
-    "accountNote": "You'll sign in (or create a free account) to confirm. Your session is confirmed right away.",
+    "whatItIs": "A free 30-minute, one-on-one online session for parents and caregivers. No payment, no subscription.",
+    "book": "Request a free session",
+    "accountNote": "You'll sign in (or create a free account) to send your request.",
     "photoAlt": "Portrait of {name}",
     "photoAltUnnamed": "Portrait of our parent support consultant",
-    "pickTime": "Pick a time that works for you"
+    "stepRequest": "Send a short request telling us what you'd like to talk about.",
+    "stepApproval": "Our team reviews it and lets you know once it's approved.",
+    "stepPick": "Pick a time that suits you on the booking calendar."
   }
 }

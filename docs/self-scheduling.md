@@ -63,21 +63,32 @@ _Unavailable_ hides them from booking immediately.
   `20261101000100_parent_support_role`. A role change signs the person out; they sign
   back in and land in the staff workspace.
 
-## Parent Support through Calendly
+## Parent Support: admin approval, then Calendly
 
-A Parent Support provider can take bookings on their own Calendly page instead
-of the in-app weekly hours (migration `20261103000000_parent_support_calendly`).
+Parent Support is no longer booked straight into a time (migrations
+`20261103000000_parent_support_calendly` and
+`20261107000000_parent_support_admin_approval`).
 
-1. In Calendly, create a free event type (for example "Parent Support", 30
-   minutes) with Zoom or Google Meet as the location, and copy its link
-   (`https://calendly.com/<name>/<event>`).
-2. Signed in as the Parent Support provider, open **My availability**, paste
-   the link into **Your Calendly link** and save.
+1. **Family:** on Services -> Parent Support (or the home-page spotlight) they
+   choose the child and language and write a short note (10+ characters). The
+   request appears in **Admin -> Service requests** as *Pending review* and
+   administrators are notified. One request may wait for approval at a time.
+2. **Administrator:** opens the request and clicks **Approve** (or declines it
+   with a reason). Approving assigns the Parent Support provider who has a
+   Calendly link and is taking bookings (preferring one who speaks the requested
+   language) and notifies the family and the provider.
+3. **Family:** their request page now shows the provider's Calendly page
+   (email prefilled) to pick a time. Calendly sends the confirmation and
+   reminders.
+4. **Administrator:** after the session, **Mark completed** closes the request
+   (or **Cancel request**).
 
-While the link is set and **Taking new bookings** is on, the home-page
-spotlight and the Parent Support booking page show the Calendly page instead
-of the in-app times; signed-in families have their email filled in. Calendly
-sends confirmations and reminders. These bookings live in Calendly, so they do
-not appear in the staff workspace or family dashboards, and the
-one-upcoming-session limit does not apply. Clearing the link (or pausing
-bookings) returns to in-app booking.
+**Provider setup:** in Calendly, create a free event type (for example
+"Parent Support", 30 minutes, Zoom or Google Meet) and copy its link. Signed in
+as the Parent Support provider, open **My availability**, paste it into
+**Your Calendly link** and save. Without a link (or with bookings paused),
+approval fails with a message telling the administrator to add one.
+
+The Calendly link is never shown publicly; only a family whose request was
+approved (and administrators) can see it. The time itself lives in Calendly,
+not in the app.

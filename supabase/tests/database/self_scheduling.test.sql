@@ -150,27 +150,13 @@ set local request.jwt.claim.sub = 'a7000000-0000-4000-8000-000000000001';
 select ok(exists (select 1 from public.list_open_service_slots('consultation', 'en', (select id from ids where name = 'yoftahe'), 7)
   where start_at = (select start_at from slots where name = 'yoftahe1')), 'the released time is offered again');
 
--- 5. Parent Support: free, confirmed at once, one upcoming session -----------------------
+-- 5. Parent Support is requested and approved, not booked instantly ----------------------
+-- (see parent_support_approval.test.sql for the request flow)
 
-insert into slots select 'ps1', specialist_id, start_at
-from public.list_open_service_slots('parent_support', 'am', null, 7) offset 4 limit 1;
-insert into ids select 'support', public.book_service_slot('parent_support', (select id from ids where name = 'dependent'),
-  'I would like to talk about coping at home.', 'am', (select specialist_id from slots where name = 'ps1'),
-  (select start_at from slots where name = 'ps1'), 'UTC', gen_random_uuid());
-select is((select status || '/' || payment_status || '/' || appointment_status from public.service_requests where id = (select id from ids where name = 'support')),
-  'appointment_confirmed/not_required/confirmed', 'Parent Support is confirmed immediately with no payment');
-select throws_ok($$select * from public.prepare_service_payment((select id from ids where name = 'support'), null, false)$$, '55000', null,
-  'there is nothing to pay');
 select throws_ok($$select public.book_service_slot('parent_support', (select id from ids where name = 'dependent'),
-  'Booking a second session right away.', 'am', (select id from ids where name = 'yoftahe'),
-  (select start_at from public.list_open_service_slots('parent_support', 'am', null, 7) offset 6 limit 1), 'UTC', gen_random_uuid())$$, 'ES429', null,
-  'one upcoming Parent Support session at a time');
-select lives_ok($$select * from public.cancel_service_request((select id from ids where name = 'support'), 'Plans changed')$$,
-  'a free session can be cancelled');
-select lives_ok($$select public.book_service_slot('parent_support', (select id from ids where name = 'dependent'),
-  'Booking again after cancelling.', 'am', (select id from ids where name = 'yoftahe'),
-  (select start_at from public.list_open_service_slots('parent_support', 'am', null, 7) offset 6 limit 1), 'UTC', gen_random_uuid())$$,
-  'after cancelling, a new session can be booked');
+  'I would like to talk about coping at home.', 'am', (select id from ids where name = 'yoftahe'),
+  (select start_at from public.list_open_service_slots('parent_support', 'am', null, 7) offset 4 limit 1), 'UTC', gen_random_uuid())$$,
+  '22023', null, 'Parent Support cannot be booked straight into a time');
 
 -- 6. Limits are configurable; only administrators change schedules ----------------------
 

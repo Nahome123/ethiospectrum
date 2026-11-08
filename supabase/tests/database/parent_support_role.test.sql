@@ -66,12 +66,17 @@ set local request.jwt.claim.sub = 'b9000000-0000-4000-8000-000000000004';
 select throws_ok($$select public.update_my_staff_schedule('UTC', '[]'::jsonb)$$, '42501', null, 'families cannot set availability');
 select is((select count(*) from public.get_my_staff_schedule()), 0::bigint, 'families have no staff schedule');
 
--- 4. A booking reaches the Parent Support staff member -------------------------------------
+-- 4. An approved request reaches the Parent Support staff member ---------------------------
+set local request.jwt.claim.sub = 'b9000000-0000-4000-8000-000000000002';
+select public.update_my_booking_page('https://calendly.com/selam/parent-support');
+set local request.jwt.claim.sub = 'b9000000-0000-4000-8000-000000000004';
 insert into public.dependents (household_id, first_name)
 select id, 'Liya' from public.households where primary_owner_id = 'b9000000-0000-4000-8000-000000000004';
-insert into ids select 'booking', public.book_service_slot('parent_support', (select id from public.dependents where first_name = 'Liya'),
-  'Talking through bedtime struggles.', 'en', (select id from ids where name = 'staff'),
-  (select start_at from public.list_open_service_slots('parent_support', 'en', null, 7) limit 1), 'UTC', gen_random_uuid());
+insert into ids select 'booking', public.request_parent_support((select id from public.dependents where first_name = 'Liya'),
+  'Talking through bedtime struggles.', 'en', gen_random_uuid());
+set local request.jwt.claim.sub = 'b9000000-0000-4000-8000-000000000001';
+select public.admin_approve_parent_support((select id from ids where name = 'booking'),
+  (select version from public.service_requests where id = (select id from ids where name = 'booking')));
 set local request.jwt.claim.sub = 'b9000000-0000-4000-8000-000000000002';
 select is((select count(*) from public.get_service_request_detail((select id from ids where name = 'booking'))), 1::bigint,
   'the Parent Support staff member can open the session booked with them');

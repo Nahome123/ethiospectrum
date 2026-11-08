@@ -14,9 +14,12 @@ import {
   rejectRefundAction,
 } from "@/lib/services/payment-actions";
 import type { MatchingSpecialist, ServiceRequestBundle } from "@/lib/services/server";
+import { createServerComponentSupabaseClient } from "@/lib/supabase/server";
 import {
   adminCancelRequestAction,
+  approveParentSupportAction,
   assignSpecialistAction,
+  completeParentSupportAction,
   completeServiceAction,
   confirmRequestedTimeAction,
   declineRequestAction,
@@ -247,6 +250,103 @@ async function CompleteCard({ bundle, locale }: { bundle: ServiceRequestBundle; 
   );
 }
 
+/**
+ * Parent Support requests wait for an administrator: approving assigns the
+ * provider and gives the family their Calendly page; afterwards the request is
+ * marked completed. Declining (or cancelling) uses the shared actions.
+ */
+async function ParentSupportAdminPanel({
+  bundle,
+  locale,
+}: {
+  bundle: ServiceRequestBundle;
+  locale: AppLocale;
+}) {
+  const t = await getTranslations({ locale, namespace: "services.staff" });
+  const { request } = bundle;
+  const pending = request.status === "pending_review";
+  const approved = request.status === "assigned";
+  const supabase = await createServerComponentSupabaseClient();
+  const { data: calendlyUrl } = approved
+    ? await supabase.rpc("get_parent_support_calendly_link", { target_request_id: request.id })
+    : { data: null };
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      {pending ? (
+        <Card description={t("parentSupportApproveHelp")} title={t("parentSupportApproveTitle")}>
+          <ActionForm
+            action={approveParentSupportAction.bind(null, locale, request.id)}
+            pendingLabel={t("saving")}
+            submitLabel={t("approve")}
+          >
+            <input name="expectedVersion" type="hidden" value={request.version} />
+          </ActionForm>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-sm font-semibold text-destructive underline">
+              {t("declineRequest")}
+            </summary>
+            <ActionForm
+              action={declineRequestAction.bind(null, locale, request.id)}
+              className="mt-3"
+              confirmMessage={t("declineConfirm")}
+              pendingLabel={t("saving")}
+              submitLabel={t("declineRequest")}
+              variant="destructive"
+            >
+              <input name="expectedVersion" type="hidden" value={request.version} />
+              <Label htmlFor="decline-reason">{t("reasonShared")}</Label>
+              <Textarea id="decline-reason" maxLength={1000} name="reason" required rows={2} />
+            </ActionForm>
+          </details>
+        </Card>
+      ) : null}
+      {approved ? (
+        <Card description={t("parentSupportApprovedHelp")} title={t("parentSupportApprovedTitle")}>
+          {calendlyUrl ? (
+            <p className="text-sm">
+              {t("parentSupportCalendly")}:{" "}
+              <a
+                className="font-semibold text-link underline"
+                href={calendlyUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {calendlyUrl}
+              </a>
+            </p>
+          ) : null}
+          <ActionForm
+            action={completeParentSupportAction.bind(null, locale, request.id)}
+            className="mt-3"
+            confirmMessage={t("parentSupportCompleteConfirm")}
+            pendingLabel={t("saving")}
+            submitLabel={t("markComplete")}
+          >
+            <input name="expectedVersion" type="hidden" value={request.version} />
+          </ActionForm>
+          <details className="mt-4">
+            <summary className="cursor-pointer text-sm font-semibold text-destructive underline">
+              {t("cancelRequest")}
+            </summary>
+            <ActionForm
+              action={adminCancelRequestAction.bind(null, locale, request.id)}
+              className="mt-3"
+              confirmMessage={t("cancelConfirm")}
+              pendingLabel={t("saving")}
+              submitLabel={t("cancelRequest")}
+              variant="destructive"
+            >
+              <Label htmlFor="admin-cancel-reason">{t("reasonShared")}</Label>
+              <Textarea id="admin-cancel-reason" maxLength={1000} name="reason" required rows={2} />
+            </ActionForm>
+          </details>
+        </Card>
+      ) : null}
+    </div>
+  );
+}
+
 export async function AdminRequestPanel({
   bundle,
   locale,
@@ -256,6 +356,9 @@ export async function AdminRequestPanel({
   locale: AppLocale;
   specialists: MatchingSpecialist[];
 }) {
+  if (bundle.request.service_type === "parent_support") {
+    return <ParentSupportAdminPanel bundle={bundle} locale={locale} />;
+  }
   const t = await getTranslations({ locale, namespace: "services.staff" });
   const statuses = await getTranslations({ locale, namespace: "services.status" });
   const tiers = await getTranslations({ locale, namespace: "services.refundTiers" });

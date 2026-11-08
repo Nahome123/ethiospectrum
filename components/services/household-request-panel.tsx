@@ -1,6 +1,7 @@
 import { CreditCard } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { ActionForm } from "@/components/services/action-form";
+import { CalendlyEmbed } from "@/components/services/calendly-embed";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { AppLocale } from "@/i18n/routing";
@@ -13,6 +14,7 @@ import {
 } from "@/lib/services/constants";
 import { startServicePaymentAction } from "@/lib/services/payment-actions";
 import type { ServiceFee, ServiceRequestBundle } from "@/lib/services/server";
+import { createServerComponentSupabaseClient, getCurrentSupabaseClaims } from "@/lib/supabase/server";
 
 type Props = {
   bundle: ServiceRequestBundle;
@@ -52,6 +54,20 @@ export async function HouseholdRequestPanel({
     confirmedStartAt: confirmedPrimary?.start_at ?? null,
   });
   const paid = request.payment_status === "paid" || request.payment_status === "partially_refunded";
+  // Parent Support: once an administrator approves, the family picks a time on Calendly.
+  const parentSupport = request.service_type === "parent_support";
+  let calendlyUrl: string | null = null;
+  let email: string | undefined;
+  if (parentSupport && request.status === "assigned") {
+    const supabase = await createServerComponentSupabaseClient();
+    const [{ data }, claims] = await Promise.all([
+      supabase.rpc("get_parent_support_calendly_link", { target_request_id: request.id }),
+      getCurrentSupabaseClaims(),
+    ]);
+    calendlyUrl = data ?? null;
+    email = typeof claims?.email === "string" ? claims.email : undefined;
+  }
+  const booking = await getTranslations({ locale, namespace: "services.booking" });
 
   return (
     <div className="space-y-4">
@@ -62,6 +78,25 @@ export async function HouseholdRequestPanel({
         >
           {request.service_type === "iep_language_assistance" ? t("createdIep") : t("created")}
         </p>
+      ) : null}
+      {parentSupport && request.status === "pending_review" ? (
+        <p
+          className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900"
+          role="status"
+        >
+          {t("parentSupportPending")}
+        </p>
+      ) : null}
+      {calendlyUrl ? (
+        <section className="space-y-3 rounded-2xl border border-emerald-200 bg-white p-4">
+          <p className="font-semibold text-emerald-900">{t("parentSupportApproved")}</p>
+          <CalendlyEmbed
+            email={email}
+            fallbackLabel={booking("calendlyFallback")}
+            title={booking("calendlyTitle")}
+            url={calendlyUrl}
+          />
+        </section>
       ) : null}
       {justBooked ? (
         <p

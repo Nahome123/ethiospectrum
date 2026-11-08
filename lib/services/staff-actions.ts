@@ -246,6 +246,38 @@ export async function declineRequestAction(
   );
 }
 
+export async function approveParentSupportAction(
+  locale: AppLocale,
+  requestId: string,
+  _state: ServiceActionState,
+  formData: FormData,
+): Promise<ServiceActionState> {
+  const version = expectedVersionSchema.safeParse(field(formData, "expectedVersion"));
+  if (!uuidSchema.safeParse(requestId).success || !version.success) return invalid(locale);
+  return respond(locale, requestId, "parentSupportApproved", (supabase) =>
+    supabase.rpc("admin_approve_parent_support", {
+      target_request_id: requestId,
+      expected_version: version.data,
+    }),
+  );
+}
+
+export async function completeParentSupportAction(
+  locale: AppLocale,
+  requestId: string,
+  _state: ServiceActionState,
+  formData: FormData,
+): Promise<ServiceActionState> {
+  const version = expectedVersionSchema.safeParse(field(formData, "expectedVersion"));
+  if (!uuidSchema.safeParse(requestId).success || !version.success) return invalid(locale);
+  return respond(locale, requestId, "serviceCompleted", (supabase) =>
+    supabase.rpc("admin_complete_parent_support", {
+      target_request_id: requestId,
+      expected_version: version.data,
+    }),
+  );
+}
+
 export async function overrideStatusAction(
   locale: AppLocale,
   requestId: string,

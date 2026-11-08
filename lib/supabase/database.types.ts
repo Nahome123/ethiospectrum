@@ -5458,7 +5458,25 @@ export type Database = {
         Args: never;
         Returns: { end_at: string; specialist_id: string; start_at: string }[];
       };
+      admin_approve_parent_support: {
+        Args: { expected_version: number; target_request_id: string };
+        Returns: string;
+      };
+      admin_complete_parent_support: {
+        Args: { expected_version: number; target_request_id: string };
+        Returns: undefined;
+      };
       get_my_booking_page: { Args: never; Returns: string };
+      get_parent_support_calendly_link: { Args: { target_request_id: string }; Returns: string };
+      request_parent_support: {
+        Args: {
+          input_dependent_id: string;
+          input_description: string;
+          input_idempotency_key: string;
+          input_language: string;
+        };
+        Returns: string;
+      };
       get_parent_support_booking_page: { Args: never; Returns: string };
       get_my_staff_schedule: {
         Args: never;

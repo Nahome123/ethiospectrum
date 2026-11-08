@@ -1804,7 +1804,8 @@
       "bookingLimit": "Ya tiene una sesión próxima de este servicio. Puede reservar otra después, o cancelarla primero.",
       "chooseTime": "Elija una hora antes de reservar.",
       "chooseLanguage": "Elija al menos un idioma.",
-      "calendlyLink": "Introduzca un enlace de Calendly que empiece por https://calendly.com/."
+      "calendlyLink": "Introduzca un enlace de Calendly que empiece por https://calendly.com/.",
+      "noParentSupportProvider": "Ningún proveedor de apoyo para padres acepta reservas con un enlace de Calendly. Pídale que lo añada en Mi disponibilidad y vuelva a aprobar."
     },
     "success": {
       "appointmentConfirmed": "Su cita está confirmada.",
@@ -1834,7 +1835,8 @@
       "topicSaved": "El tema fue guardado.",
       "specialistUpdated": "El especialista fue guardado.",
       "roleUpdated": "El rol fue actualizado.",
-      "scheduleSaved": "Horario semanal guardado."
+      "scheduleSaved": "Horario semanal guardado.",
+      "parentSupportApproved": "Solicitud aprobada. Se avisó a la familia."
     },
     "catalog": {
       "eyebrow": "Servicios",
@@ -2104,7 +2106,9 @@
       "reasonOptional": "Motivo (opcional)",
       "scheduleNotSaved": "Su solicitud se envió, pero la hora elegida no se pudo guardar (por ejemplo, por un cambio de horario). Su especialista propondrá horarios.",
       "bookedConfirmed": "¡Reserva hecha! Los detalles de la sesión están abajo y recibirá un recordatorio antes de que empiece.",
-      "bookedHeld": "Su hora está reservada durante 30 minutos. Complete el pago abajo para confirmar la cita."
+      "bookedHeld": "Su hora está reservada durante 30 minutos. Complete el pago abajo para confirmar la cita.",
+      "parentSupportPending": "Su solicitud está esperando la aprobación de nuestro equipo. Le avisaremos en cuanto se apruebe y entonces podrá elegir un horario aquí.",
+      "parentSupportApproved": "Su solicitud fue aprobada. Elija abajo un horario para su sesión gratuita."
     },
     "slots": {
       "option": "Opción {number}",
@@ -2254,12 +2258,19 @@
       "confirmThisTime": "Confirmar esta hora",
       "meetingLinkOptional": "Enlace de la reunión (opcional)",
       "needDifferentTime": "¿Necesita otra hora?",
-      "needDifferentTimeHelp": "Proponga otras horas para que la familia elija, o programe otra hora directamente."
+      "needDifferentTimeHelp": "Proponga otras horas para que la familia elija, o programe otra hora directamente.",
+      "parentSupportApproveTitle": "Aprobar esta solicitud de apoyo para padres",
+      "parentSupportApproveHelp": "Al aprobarla se asigna al proveedor de apoyo para padres y la familia recibe su página de Calendly para elegir un horario. Se le avisa de inmediato.",
+      "approve": "Aprobar",
+      "parentSupportApprovedTitle": "Aprobada",
+      "parentSupportApprovedHelp": "La familia elige un horario en la página de Calendly del proveedor. Marque la solicitud como completada después de la sesión.",
+      "parentSupportCalendly": "Página de Calendly",
+      "parentSupportCompleteConfirm": "¿Marcar esta sesión de apoyo para padres como completada?"
     },
     "booking": {
       "consultationSummary": "Sesión de {minutes} minutos · {price}. Elija con quién quiere reunirse y una hora que le convenga; se confirma en cuanto paga.",
       "parentSupportTitle": "Apoyo para padres",
-      "parentSupportSummary": "Una sesión individual gratuita de {minutes} minutos para padres y cuidadores. Elija una hora que le convenga y se confirma al instante.",
+      "parentSupportSummary": "Una sesión en línea gratuita e individual de {minutes} minutos para padres y cuidadores. Envíe una breve solicitud; cuando nuestro equipo la apruebe, elegirá el horario que le convenga.",
       "parentSupportTopic": "¿De qué le gustaría hablar?",
       "free": "Gratis",
       "whoAndWhen": "Con quién y cuándo",
@@ -2280,7 +2291,9 @@
       "noSpecialists": "Ahora no se pueden reservar consultas en línea. Vuelva pronto.",
       "noParentSupport": "Ahora no se pueden reservar sesiones de apoyo para padres en línea. Vuelva pronto.",
       "calendlyFallback": "¿No ve el calendario? Abra la página de reservas en una pestaña nueva.",
-      "calendlyTitle": "Reserve una sesión gratuita de apoyo para padres"
+      "calendlyTitle": "Reserve una sesión gratuita de apoyo para padres",
+      "requestSubmit": "Enviar solicitud",
+      "requestNextSteps": "Nuestro equipo revisa cada solicitud. Cuando se apruebe, recibirá un aviso y podrá elegir un horario desde la página de su solicitud."
     }
   },
   "adminConsole": {
@@ -2592,7 +2605,7 @@
       "commonZones": "Zonas horarias comunes",
       "allZones": "Todas las zonas horarias",
       "calendly": "Su enlace de Calendly (opcional)",
-      "calendlyHelp": "Pegue el enlace de su evento de Calendly, por ejemplo https://calendly.com/su-nombre/apoyo-padres. Mientras esté puesto, las familias reservan sus sesiones gratuitas en Calendly en lugar del horario semanal de abajo, y Calendly gestiona su calendario, recordatorios y enlace de reunión. Bórrelo para volver a reservar en la aplicación."
+      "calendlyHelp": "Pegue el enlace de su evento de Calendly, por ejemplo https://calendly.com/su-nombre/apoyo-padres. Cuando un administrador aprueba la solicitud de apoyo para padres de una familia, la familia elige un horario en esta página, y Calendly gestiona su calendario, recordatorios y enlace de reunión."
     }
   },
   "adminTraining": {
@@ -2988,6 +3001,10 @@
       "admin_no_show": {
         "title": "Inasistencia registrada",
         "body": "Una cita de {service} se registró como inasistencia."
+      },
+      "parent_support_approved": {
+        "title": "Solicitud de {service} aprobada",
+        "body": "Su solicitud fue aprobada. Ábrala para elegir un horario para su sesión gratuita."
       }
     }
   },
@@ -3108,16 +3125,13 @@
     "badge": "Apoyo para padres gratuito",
     "title": "Hable con {name}, gratis",
     "titleUnnamed": "Apoyo para padres gratuito",
-    "whatItIs": "Una sesión individual en línea de 30 minutos, gratuita, para padres y cuidadores. Sin pago ni suscripción: solo elija una hora.",
-    "nextTimes": "Próximas horas libres",
-    "loading": "Cargando horas libres…",
-    "noTimes": "Se añaden horas nuevas con frecuencia; abra la página de reservas para ver las más recientes.",
-    "moreTimes": "Ver todas las horas",
-    "timesIn": "Horas mostradas en {zone}",
-    "book": "Reservar sesión gratuita",
-    "accountNote": "Iniciará sesión (o creará una cuenta gratuita) para confirmar. Su sesión se confirma al instante.",
+    "whatItIs": "Una sesión en línea gratuita e individual de 30 minutos para padres y cuidadores. Sin pago y sin suscripción.",
+    "book": "Solicitar una sesión gratuita",
+    "accountNote": "Iniciará sesión (o creará una cuenta gratuita) para enviar su solicitud.",
     "photoAlt": "Retrato de {name}",
     "photoAltUnnamed": "Retrato de nuestro consultor de apoyo para padres",
-    "pickTime": "Elija un horario que le convenga"
+    "stepRequest": "Envíe una breve solicitud contándonos de qué quiere hablar.",
+    "stepApproval": "Nuestro equipo la revisa y le avisa cuando esté aprobada.",
+    "stepPick": "Elija un horario que le convenga en el calendario de reservas."
   }
 }

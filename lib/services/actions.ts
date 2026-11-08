@@ -93,6 +93,40 @@ export async function createConsultationRequestAction(
   redirect(`/${locale}/requests/${data}?created=1${scheduled.error ? "&scheduleError=1" : ""}`);
 }
 
+/**
+ * Parent Support: a short request an administrator approves; the family then
+ * picks a time on the provider's Calendly page.
+ */
+export async function requestParentSupportAction(
+  locale: AppLocale,
+  _state: ServiceActionState,
+  formData: FormData,
+): Promise<ServiceActionState> {
+  const dependentId = uuidSchema.safeParse(field(formData, "dependentId"));
+  const idempotencyKey = uuidSchema.safeParse(field(formData, "idempotencyKey"));
+  const description = field(formData, "description").trim();
+  const language = field(formData, "language");
+  if (
+    !dependentId.success ||
+    !idempotencyKey.success ||
+    description.length < 10 ||
+    description.length > 2000 ||
+    !["en", "am", "es"].includes(language)
+  ) {
+    return failure(locale, "22023");
+  }
+  const supabase = await createServerActionSupabaseClient();
+  const { data, error } = await supabase.rpc("request_parent_support", {
+    input_dependent_id: dependentId.data,
+    input_description: description,
+    input_language: language,
+    input_idempotency_key: idempotencyKey.data,
+  });
+  if (error || !data) return failure(locale, error?.code);
+  revalidateServiceRequest(locale, data);
+  redirect(`/${locale}/requests/${data}?created=1`);
+}
+
 export async function createIepRequestAction(
   locale: AppLocale,
   _state: ServiceActionState,

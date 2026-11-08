@@ -31,6 +31,8 @@ export function serviceErrorKey(code: string | undefined): string {
       return "conflict";
     case "ES429":
       return "bookingLimit";
+    case "ES428":
+      return "noParentSupportProvider";
     case "ES410":
       return "rescheduleLimit";
     case "ES422":

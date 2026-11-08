@@ -1804,7 +1804,8 @@
       "bookingLimit": "ለዚህ አገልግሎት ቀድሞውኑ መጪ ክፍለ ጊዜ አለዎት። ከዚያ በኋላ ሌላ መያዝ ወይም መጀመሪያ መሰረዝ ይችላሉ።",
       "chooseTime": "ከመያዝዎ በፊት ሰዓት ይምረጡ።",
       "chooseLanguage": "ቢያንስ አንድ ቋንቋ ይምረጡ።",
-      "calendlyLink": "በhttps://calendly.com/ የሚጀምር የCalendly አገናኝ ያስገቡ።"
+      "calendlyLink": "በhttps://calendly.com/ የሚጀምር የCalendly አገናኝ ያስገቡ።",
+      "noParentSupportProvider": "የCalendly አገናኝ ያለው እና ቀጠሮ የሚቀበል የወላጅ ድጋፍ አቅራቢ የለም። በ«የእኔ ተገኝነት» ላይ እንዲያክሉ ይጠይቁ፤ ከዚያ እንደገና ያጽድቁ።"
     },
     "success": {
       "appointmentConfirmed": "ቀጠሮዎ ተረጋግጧል።",
@@ -1834,7 +1835,8 @@
       "topicSaved": "ርዕሱ ተቀምጧል።",
       "specialistUpdated": "የባለሙያው መረጃ ተቀምጧል።",
       "roleUpdated": "ሚናው ተሻሽሏል።",
-      "scheduleSaved": "ሳምንታዊ ሰዓቶች ተቀምጠዋል።"
+      "scheduleSaved": "ሳምንታዊ ሰዓቶች ተቀምጠዋል።",
+      "parentSupportApproved": "ጥያቄው ጸድቋል። ቤተሰቡ ተነግሯቸዋል።"
     },
     "catalog": {
       "eyebrow": "አገልግሎቶች",
@@ -2100,7 +2102,9 @@
       "reasonOptional": "ምክንያት (አማራጭ)",
       "scheduleNotSaved": "ጥያቄዎ ተልኳል፣ ነገር ግን የመረጡት ሰዓት ሊቀመጥ አልቻለም (ለምሳሌ በሰዓት ለውጥ ምክንያት)። ባለሙያዎ ሌሎች ሰዓቶችን ይጠቁማል።",
       "bookedConfirmed": "ተይዟል! የክፍለ ጊዜው ዝርዝሮች ከታች ናቸው፤ ከመጀመሩ በፊት ማስታወሻ ይደርስዎታል።",
-      "bookedHeld": "ሰዓትዎ ለ30 ደቂቃ ተይዟል። ቀጠሮውን ለማረጋገጥ ከታች ያለውን ክፍያ ያጠናቅቁ።"
+      "bookedHeld": "ሰዓትዎ ለ30 ደቂቃ ተይዟል። ቀጠሮውን ለማረጋገጥ ከታች ያለውን ክፍያ ያጠናቅቁ።",
+      "parentSupportPending": "ጥያቄዎ ቡድናችን እስኪያጸድቀው እየጠበቀ ነው። እንደጸደቀ እናሳውቅዎታለን፤ ከዚያም እዚህ ሰዓት መምረጥ ይችላሉ።",
+      "parentSupportApproved": "ጥያቄዎ ጸድቋል። ከታች ለነፃ ክፍለ ጊዜዎ ሰዓት ይምረጡ።"
     },
     "slots": {
       "option": "አማራጭ {number}",
@@ -2250,12 +2254,19 @@
       "confirmThisTime": "ይህን ሰዓት አረጋግጥ",
       "meetingLinkOptional": "የስብሰባ አገናኝ (አማራጭ)",
       "needDifferentTime": "ሌላ ሰዓት ያስፈልጋል?",
-      "needDifferentTimeHelp": "ቤተሰቡ እንዲመርጥ ሌሎች ሰዓቶችን ይጠቁሙ፣ ወይም ሌላ ሰዓት በቀጥታ ይያዙ።"
+      "needDifferentTimeHelp": "ቤተሰቡ እንዲመርጥ ሌሎች ሰዓቶችን ይጠቁሙ፣ ወይም ሌላ ሰዓት በቀጥታ ይያዙ።",
+      "parentSupportApproveTitle": "ይህን የወላጅ ድጋፍ ጥያቄ ያጽድቁ",
+      "parentSupportApproveHelp": "ማጽደቅ የወላጅ ድጋፍ አቅራቢውን ይመድባል፤ ቤተሰቡም ሰዓት የሚመርጡበትን የCalendly ገጽ ያገኛሉ። ወዲያውኑ ይነገራቸዋል።",
+      "approve": "አጽድቅ",
+      "parentSupportApprovedTitle": "ጸድቋል",
+      "parentSupportApprovedHelp": "ቤተሰቡ በአቅራቢው የCalendly ገጽ ላይ ሰዓት ይመርጣሉ። ከክፍለ ጊዜው በኋላ ጥያቄውን እንደተጠናቀቀ ምልክት ያድርጉ።",
+      "parentSupportCalendly": "የCalendly ገጽ",
+      "parentSupportCompleteConfirm": "ይህ የወላጅ ድጋፍ ክፍለ ጊዜ እንደተጠናቀቀ ምልክት ይደረግ?"
     },
     "booking": {
       "consultationSummary": "{minutes} ደቂቃ ክፍለ ጊዜ · {price}። ማንን ማግኘት እንደሚፈልጉ ይምረጡ እና የሚመችዎትን ሰዓት ይያዙ፤ ክፍያ እንደፈጸሙ ይረጋገጣል።",
       "parentSupportTitle": "የወላጅ ድጋፍ",
-      "parentSupportSummary": "ለወላጆች እና ለአሳዳጊዎች ነፃ የ{minutes} ደቂቃ የአንድ ለአንድ ክፍለ ጊዜ። የሚመችዎትን ሰዓት ይምረጡ፤ ወዲያውኑ ይረጋገጣል።",
+      "parentSupportSummary": "ለወላጆችና ለአሳዳጊዎች ነፃ የ{minutes} ደቂቃ አንድ ለአንድ የመስመር ላይ ክፍለ ጊዜ። አጭር ጥያቄ ይላኩ፤ ቡድናችን ካጸደቀው በኋላ የሚመችዎትን ሰዓት ይመርጣሉ።",
       "parentSupportTopic": "ስለምን መነጋገር ይፈልጋሉ?",
       "free": "ነፃ",
       "whoAndWhen": "ከማን ጋር እና መቼ",
@@ -2276,7 +2287,9 @@
       "noSpecialists": "ምክክር አሁን በመስመር ላይ መያዝ አይቻልም። እባክዎ ቆይተው ይመልከቱ።",
       "noParentSupport": "የወላጅ ድጋፍ ክፍለ ጊዜዎች አሁን በመስመር ላይ መያዝ አይቻልም። እባክዎ ቆይተው ይመልከቱ።",
       "calendlyFallback": "የቀን መቁጠሪያው አይታይም? የቀጠሮ ገጹን በአዲስ ትር ይክፈቱ።",
-      "calendlyTitle": "ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ ይያዙ"
+      "calendlyTitle": "ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ ይያዙ",
+      "requestSubmit": "ጥያቄ ላክ",
+      "requestNextSteps": "ቡድናችን እያንዳንዱን ጥያቄ ይገመግማል። ሲጸድቅ ይነገርዎታል፤ ከጥያቄዎ ገጽ ሰዓት መምረጥ ይችላሉ።"
     }
   },
   "adminConsole": {
@@ -2588,7 +2601,7 @@
       "commonZones": "የተለመዱ የሰዓት ዞኖች",
       "allZones": "ሁሉም የሰዓት ዞኖች",
       "calendly": "የCalendly አገናኝዎ (አማራጭ)",
-      "calendlyHelp": "የCalendly ቀጠሮ አገናኝዎን ይለጥፉ፤ ለምሳሌ https://calendly.com/your-name/parent-support። አገናኙ እስካለ ድረስ ቤተሰቦች ነፃ ክፍለ ጊዜዎችዎን ከታች ካሉት ሳምንታዊ ሰዓቶች ይልቅ በCalendly ይይዛሉ፤ Calendly የቀን መቁጠሪያዎን፣ ማሳሰቢያዎችን እና የስብሰባ አገናኙን ያስተዳድራል። በመተግበሪያው ውስጥ ወደ መያዝ ለመመለስ ያጥፉት።"
+      "calendlyHelp": "የCalendly ቀጠሮ አገናኝዎን ይለጥፉ፤ ለምሳሌ https://calendly.com/your-name/parent-support። አስተዳዳሪ የቤተሰብን የወላጅ ድጋፍ ጥያቄ ሲያጸድቅ ቤተሰቡ በዚህ ገጽ ላይ ሰዓት ይመርጣሉ፤ Calendly የቀን መቁጠሪያዎን፣ ማሳሰቢያዎችን እና የስብሰባ አገናኙን ያስተዳድራል።"
     }
   },
   "adminTraining": {
@@ -2984,6 +2997,10 @@
       "admin_no_show": {
         "title": "አለመገኘት ተመዝግቧል",
         "body": "የ{service} ቀጠሮ እንዳልተገኘ ተመዝግቧል።"
+      },
+      "parent_support_approved": {
+        "title": "የ{service} ጥያቄ ጸድቋል",
+        "body": "ጥያቄዎ ጸድቋል። ለነፃ ክፍለ ጊዜዎ ሰዓት ለመምረጥ ይክፈቱት።"
       }
     }
   },
@@ -3100,16 +3117,13 @@
     "badge": "ነፃ የወላጅ ድጋፍ",
     "title": "ከ{name} ጋር ይነጋገሩ — ነፃ",
     "titleUnnamed": "ነፃ የወላጅ ድጋፍ",
-    "whatItIs": "ለወላጆች እና ለአሳዳጊዎች ነፃ የ30 ደቂቃ የአንድ ለአንድ የመስመር ላይ ክፍለ ጊዜ። ክፍያ የለም፣ ምዝገባ የለም — ሰዓት ብቻ ይምረጡ።",
-    "nextTimes": "ቀጣይ ክፍት ሰዓቶች",
-    "loading": "ክፍት ሰዓቶች እየተጫኑ ነው…",
-    "noTimes": "አዳዲስ ሰዓቶች በየጊዜው ይጨመራሉ — የቅርብ ጊዜዎቹን ለማየት የቀጠሮ ገጹን ይክፈቱ።",
-    "moreTimes": "ሁሉንም ሰዓቶች ይመልከቱ",
-    "timesIn": "ሰዓቶቹ በ{zone} ይታያሉ",
-    "book": "ነፃ ክፍለ ጊዜ ይያዙ",
-    "accountNote": "ለማረጋገጥ ይገባሉ (ወይም ነፃ መለያ ይፈጥራሉ)። ክፍለ ጊዜዎ ወዲያውኑ ይረጋገጣል።",
+    "whatItIs": "ለወላጆችና ለአሳዳጊዎች ነፃ የ30 ደቂቃ አንድ ለአንድ የመስመር ላይ ክፍለ ጊዜ። ክፍያም ምዝገባም የለም።",
+    "book": "ነፃ ክፍለ ጊዜ ይጠይቁ",
+    "accountNote": "ጥያቄዎን ለመላክ ይገባሉ (ወይም ነፃ መለያ ይፈጥራሉ)።",
     "photoAlt": "የ{name} ፎቶ",
     "photoAltUnnamed": "የወላጅ ድጋፍ አማካሪያችን ፎቶ",
-    "pickTime": "የሚመችዎትን ሰዓት ይምረጡ"
+    "stepRequest": "ስለምን መነጋገር እንደሚፈልጉ የሚገልጽ አጭር ጥያቄ ይላኩ።",
+    "stepApproval": "ቡድናችን ይገመግመዋል፤ ሲጸድቅ ያሳውቅዎታል።",
+    "stepPick": "በቀጠሮ መቁጠሪያው ላይ የሚመችዎትን ሰዓት ይምረጡ።"
   }
 }

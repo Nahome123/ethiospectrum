@@ -28,25 +28,22 @@ select lives_ok($$select public.update_my_booking_page('  https://calendly.com/s
   'they save their Calendly link');
 select is(public.get_my_booking_page(), 'https://calendly.com/selam/parent-support', 'the link is stored, trimmed');
 
--- Families and visitors see it while bookings are open -------------------------------
+-- The page is no longer handed out publicly; families get it once approved ------------
 set local request.jwt.claim.sub = 'c1000000-0000-4000-8000-000000000003';
-select is(public.get_parent_support_booking_page(), 'https://calendly.com/selam/parent-support',
-  'families are sent to the Calendly page');
 select throws_ok($$select public.update_my_booking_page('https://calendly.com/hana')$$, '42501', null,
   'families cannot set a booking page');
+select throws_ok($$select public.get_parent_support_booking_page()$$, '42501', null,
+  'families cannot look up the Calendly page directly');
 reset role;
 set local role anon;
-select is(public.get_parent_support_booking_page(), 'https://calendly.com/selam/parent-support',
-  'visitors on the home page see it too');
+select throws_ok($$select public.get_parent_support_booking_page()$$, '42501', null,
+  'nor can visitors');
 reset role;
 
 set local role authenticated;
 set local request.jwt.claim.sub = 'c1000000-0000-4000-8000-000000000002';
-select public.update_my_staff_schedule('UTC', '[]'::jsonb, null, false);
-select is(public.get_parent_support_booking_page(), null, 'pausing bookings hides the Calendly page');
-select public.update_my_staff_schedule('UTC', '[]'::jsonb, null, true);
-select lives_ok($$select public.update_my_booking_page('')$$, 'clearing the link goes back to in-app booking');
-select is(public.get_parent_support_booking_page(), null, 'no Calendly page once cleared');
+select lives_ok($$select public.update_my_booking_page('')$$, 'clearing the link');
+select is(public.get_my_booking_page(), null, 'the link is cleared');
 
 select * from finish();
 rollback;

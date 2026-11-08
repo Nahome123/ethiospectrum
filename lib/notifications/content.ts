@@ -24,6 +24,7 @@ export const notificationTypeValues = [
   "service_completed",
   "follow_up_available",
   "request_declined",
+  "parent_support_approved",
   "document_available",
   "new_message",
   "specialist_new_assignment",
