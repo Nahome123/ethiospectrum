@@ -5,9 +5,10 @@ Stripe Checkout (mode `payment`) and gets **365 days of access from the payment 
 
 ## How it works
 
-- **Price:** read from `STRIPE_RBT_COURSE_PRICE_ID` (a one-time USD Price). The amount
-  is never hard-coded; the landing page, pricing and billing pages show the Stripe amount
-  ("$99 one-time · 1 year of access").
+- **Price:** fixed in code at **$99.00 USD** (`RBT_COURSE_PRICE_CENTS` in
+  `lib/billing/constants.ts`). Checkout sends the amount directly, so no Stripe Price needs
+  creating; the landing page, pricing and billing pages show the same amount. To change it,
+  edit that constant and redeploy.
 - **Access record:** each purchase is a row in `training_access` (household, purchase
   date, start, `expires_at`, Checkout session, payment intent, amount, status).
   Training access (`has_training_access`, `has_household_entitlement`) requires an
@@ -41,11 +42,7 @@ Stripe Checkout (mode `payment`) and gets **365 days of access from the payment 
 ## Setup after deploying
 
 1. `pnpm db:push` (migration `20261027020000_rbt_course_access`).
-2. **Stripe Dashboard → Product catalog:** on the RBT Boot Camp product (or a new one),
-   add a **one-time** Price of **$99.00 USD**. Copy its ID (`price_...`).
-3. **Vercel → Environment Variables (Production):** set `STRIPE_RBT_COURSE_PRICE_ID` to that
-   ID and redeploy. Keep `STRIPE_RBT_MONTHLY_PRICE_ID` as it is.
-4. **Stripe → Developers → Webhooks →** your endpoint → add the event **`charge.refunded`**
+2. **Stripe → Developers → Webhooks →** your endpoint → add the event **`charge.refunded`**
    (keep the existing `checkout.session.*` events).
-5. Test in Stripe test mode: buy the course → Billing shows "Access until …" and training
+3. Test in Stripe test mode: buy the course → Billing shows "Access until …" and training
    opens; refund the payment in Stripe → access ends.

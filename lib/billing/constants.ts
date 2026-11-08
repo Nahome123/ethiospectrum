@@ -1,3 +1,7 @@
+/** RBT Boot Camp: a one-time $99.00 course with a year of access. Set here, not in Stripe. */
+export const RBT_COURSE_PRICE_CENTS = 9900;
+export const RBT_COURSE_PRODUCT_NAME = "RBT Boot Camp (1 year of access)";
+
 export const billingIntervalValues = ["month", "year"] as const;
 export const billingPlanValues = ["free", "rbt_bootcamp"] as const;
 /** RBT Boot Camp is sold monthly only (PRD section 8). */

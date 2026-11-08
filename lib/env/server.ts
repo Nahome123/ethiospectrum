@@ -143,8 +143,6 @@ export interface StripeBillingEnv {
   webhookSecret: string;
   /** Legacy monthly RBT Price: only to recognise existing (grandfathered) subscriptions. */
   rbtMonthlyPriceId: string | undefined;
-  /** One-time RBT Boot Camp course Price (a year of access); needed to sell the course. */
-  rbtCoursePriceId: string | undefined;
   /** Delegates tax calculation to Stripe Tax where it is enabled on the account. */
   automaticTax: boolean;
 }
@@ -376,13 +374,10 @@ export function getStripeBillingEnv(input?: EnvInput): StripeBillingEnv | undefi
   const rbtMonthlyPriceId = optionalStripePriceId.parse(
     input?.STRIPE_RBT_MONTHLY_PRICE_ID ?? process.env.STRIPE_RBT_MONTHLY_PRICE_ID,
   );
-  const rbtCoursePriceId = optionalStripePriceId.parse(
-    input?.STRIPE_RBT_COURSE_PRICE_ID ?? process.env.STRIPE_RBT_COURSE_PRICE_ID,
-  );
   const automaticTax =
     (input?.STRIPE_AUTOMATIC_TAX ?? process.env.STRIPE_AUTOMATIC_TAX ?? "").trim() === "true";
 
-  if (!secretKey && !webhookSecret && !rbtMonthlyPriceId && !rbtCoursePriceId) {
+  if (!secretKey && !webhookSecret && !rbtMonthlyPriceId) {
     return undefined;
   }
   if (!secretKey || !webhookSecret) {
@@ -390,7 +385,7 @@ export function getStripeBillingEnv(input?: EnvInput): StripeBillingEnv | undefi
       "STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET must be configured together.",
     );
   }
-  return { secretKey, webhookSecret, rbtMonthlyPriceId, rbtCoursePriceId, automaticTax };
+  return { secretKey, webhookSecret, rbtMonthlyPriceId, automaticTax };
 }
 
 const optionalNotificationWorkerSecret = z.preprocess(
@@ -435,7 +430,6 @@ const stripeEnvFormats = [
   ["STRIPE_SECRET_KEY", /^sk_(?:test|live)_/, "sk_test_ or sk_live_"],
   ["STRIPE_WEBHOOK_SECRET", /^whsec_/, "whsec_"],
   ["STRIPE_RBT_MONTHLY_PRICE_ID", /^price_/, "price_"],
-  ["STRIPE_RBT_COURSE_PRICE_ID", /^price_/, "price_"],
 ] as const;
 
 /**

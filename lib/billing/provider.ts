@@ -14,13 +14,6 @@ export function getStripeClient(): Stripe {
   return stripeClient;
 }
 
-/** The one-time RBT Boot Camp course Price (a year of access). */
-export function getRbtCoursePriceId(): string {
-  const priceId = requireStripeBillingEnv().rbtCoursePriceId;
-  if (!priceId) throw new Error("rbt_course_price_not_configured");
-  return priceId;
-}
-
 /** The legacy monthly RBT Price, kept only to recognise grandfathered subscriptions. */
 export function getRbtMonthlyPriceId(): string {
   const priceId = requireStripeBillingEnv().rbtMonthlyPriceId;

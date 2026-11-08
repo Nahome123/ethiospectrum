@@ -9,7 +9,6 @@ const mocks = vi.hoisted(() => ({
   getCurrentUserRole: vi.fn(),
   createSupabaseAdminClient: vi.fn(),
   getStripeClient: vi.fn(),
-  getRbtCoursePriceId: vi.fn(),
   courseStatus: vi.fn(),
   isStripeAutomaticTaxEnabled: vi.fn(),
   getConfiguredBillingInterval: vi.fn(),
@@ -31,7 +30,6 @@ vi.mock("@/lib/supabase/admin", () => ({
 }));
 vi.mock("@/lib/billing/provider", () => ({
   getStripeClient: mocks.getStripeClient,
-  getRbtCoursePriceId: mocks.getRbtCoursePriceId,
   isStripeAutomaticTaxEnabled: mocks.isStripeAutomaticTaxEnabled,
   getConfiguredBillingInterval: mocks.getConfiguredBillingInterval,
 }));
@@ -84,7 +82,6 @@ describe("billing Server Actions", () => {
       permissions: ["submit_requests", "make_payments", "manage_subscription"],
     });
     mocks.getCurrentSupabaseClaims.mockResolvedValue({ sub: userId });
-    mocks.getRbtCoursePriceId.mockReturnValue("price_course_server");
     mocks.courseStatus.mockReturnValue({ can_purchase: true, renewable: true, access_expires_at: null });
     mocks.isStripeAutomaticTaxEnabled.mockReturnValue(false);
     mocks.getConfiguredBillingInterval.mockImplementation((price: string) =>
@@ -92,7 +89,7 @@ describe("billing Server Actions", () => {
     );
   });
 
-  it("buys the course with a one-time Checkout for the server-configured Price", async () => {
+  it("buys the course with a one-time $99 Checkout", async () => {
     const admin = adminClient();
     const checkoutCreate = vi.fn().mockResolvedValue({ url: "https://checkout.stripe.test/session" });
     mocks.createSupabaseAdminClient.mockReturnValue(admin);
@@ -107,7 +104,16 @@ describe("billing Server Actions", () => {
       expect.objectContaining({
         mode: "payment",
         customer: "cus_synthetic123",
-        line_items: [{ price: "price_course_server", quantity: 1 }],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              unit_amount: 9900,
+              product_data: { name: "RBT Boot Camp (1 year of access)" },
+            },
+            quantity: 1,
+          },
+        ],
         metadata: expect.objectContaining({
           ethiospectrum_training_course: "rbt_bootcamp",
           ethiospectrum_household_id: householdId,

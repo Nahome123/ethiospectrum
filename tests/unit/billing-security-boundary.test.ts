@@ -30,10 +30,10 @@ describe("ETH-028 security architecture", () => {
     }
   });
 
-  it("resolves the course Price server-side and reads nothing sensitive from the browser", () => {
+  it("charges the fixed course price server-side and reads nothing sensitive from the browser", () => {
     const checkoutAction = actionSource.split("export async function createBillingPortalSessionAction")[0];
-    // RBT Boot Camp is one server-configured one-time course Price.
-    expect(checkoutAction).toContain("line_items: [{ price: getRbtCoursePriceId(), quantity: 1 }]");
+    // RBT Boot Camp is a one-time course whose amount is fixed in code.
+    expect(checkoutAction).toContain("unit_amount: RBT_COURSE_PRICE_CENTS");
     expect(checkoutAction).toContain('mode: "payment"');
     expect(checkoutAction).not.toMatch(/formData.*price|value\(formData, ["']price/iu);
     expect(checkoutAction).not.toMatch(/value\(formData, ["']household/iu);

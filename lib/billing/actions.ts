@@ -10,9 +10,10 @@ import { getCurrentSupabaseClaims, getCurrentUserRole } from "@/lib/supabase/ser
 import { createServerActionSupabaseClient } from "@/lib/supabase/server-action";
 import { billingReconciliationSchema } from "@/lib/validation/billing";
 import type { BillingActionState } from "./action-state";
+import { RBT_COURSE_PRICE_CENTS, RBT_COURSE_PRODUCT_NAME } from "./constants";
 import { ensureStripeCustomer } from "./customer";
 import { TRAINING_COURSE_METADATA_KEY } from "./course";
-import { getRbtCoursePriceId, getStripeClient } from "./provider";
+import { getStripeClient } from "./provider";
 import { reconcileBillingHousehold } from "./sync";
 import {
   cancelSubscriptionNow,
@@ -86,7 +87,17 @@ export async function startTrainingCourseCheckoutAction(
       mode: "payment",
       customer: customerId,
       client_reference_id: context.household.id,
-      line_items: [{ price: getRbtCoursePriceId(), quantity: 1 }],
+      // The course price is fixed in code, so no Stripe Price needs configuring.
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            unit_amount: RBT_COURSE_PRICE_CENTS,
+            product_data: { name: RBT_COURSE_PRODUCT_NAME },
+          },
+          quantity: 1,
+        },
+      ],
       metadata,
       payment_intent_data: { metadata },
       billing_address_collection: "auto",
