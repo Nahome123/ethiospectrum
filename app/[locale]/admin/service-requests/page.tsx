@@ -156,7 +156,7 @@ export default async function AdminServiceRequestsPage({
                     {request.specialist_name ?? <StatusPill label={t("unassigned")} tone="warning" />}
                   </td>
                   <td className="space-y-1 px-4 py-3">
-                    <ServiceStatusBadge status={request.status} />
+                    <ServiceStatusBadge serviceType={request.service_type} status={request.status} />
                     <div>
                       <PaymentStatusBadge status={request.payment_status} />
                     </div>

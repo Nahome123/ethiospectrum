@@ -24,6 +24,7 @@ import {
   canRescheduleConfirmed,
   formatCents,
   isClosedStatus,
+  parentSupportLifecycle,
   serviceLifecycle,
   type ServiceStatus,
 } from "@/lib/services/constants";
@@ -74,6 +75,8 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
   const types = await getTranslations({ locale, namespace: "services.types" });
   const statusHelp = await getTranslations({ locale, namespace: "services.statusHelp" });
   const statuses = await getTranslations({ locale, namespace: "services.status" });
+  const parentSupportStatuses = await getTranslations({ locale, namespace: "services.parentSupportStatus" });
+  const parentSupportHelp = await getTranslations({ locale, namespace: "services.parentSupportStatusHelp" });
   const languages = await getTranslations({ locale, namespace: "services.languages" });
   const iepLanguages = await getTranslations({ locale, namespace: "services.iepLanguages" });
   const delivery = await getTranslations({ locale, namespace: "services.deliveryMethods" });
@@ -90,7 +93,10 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
   const closed = isClosedStatus(status);
   const isStaff = audience !== "household";
   const standardInstruction = localizedInstruction(request.standard_instructions, locale);
-  const lifecycleIndex = serviceLifecycle.indexOf(status);
+  const parentSupport = request.service_type === "parent_support";
+  const lifecycle = parentSupport ? parentSupportLifecycle : serviceLifecycle;
+  const lifecycleIndex = lifecycle.indexOf(status);
+  const parentSupportStep = parentSupport && parentSupportLifecycle.includes(status);
   const visibleAppointments = appointments.filter(
     (appointment) => appointment.status !== "superseded" && appointment.status !== "declined",
   );
@@ -312,18 +318,20 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
         </p>
         <h1 className="text-3xl font-bold">{t("title", { service: types(request.service_type) })}</h1>
         <div className="flex flex-wrap gap-2">
-          <ServiceStatusBadge status={request.status} />
+          <ServiceStatusBadge serviceType={request.service_type} status={request.status} />
           <PaymentStatusBadge status={request.payment_status} />
-          <AppointmentStatusBadge status={request.appointment_status} />
+          {parentSupport ? null : <AppointmentStatusBadge status={request.appointment_status} />}
         </div>
         <p className="max-w-3xl text-muted-foreground" role="status">
-          {statusHelp(request.status)}
+          {parentSupportStep
+            ? parentSupportHelp(isStaff ? `staff_${request.status}` : request.status)
+            : statusHelp(request.status)}
         </p>
       </header>
 
       {lifecycleIndex >= 0 ? (
         <ol aria-label={t("progress")} className="flex flex-wrap gap-x-2 gap-y-2 text-xs">
-          {serviceLifecycle.map((step, index) => (
+          {lifecycle.map((step, index) => (
             <li
               aria-current={index === lifecycleIndex ? "step" : undefined}
               className={
@@ -335,7 +343,7 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
               }
               key={step}
             >
-              {statuses(step)}
+              {parentSupport ? parentSupportStatuses(step) : statuses(step)}
             </li>
           ))}
         </ol>
@@ -359,40 +367,42 @@ export async function RequestDetailView({ bundle, locale, audience, panel }: Pro
         </Section>
       ) : null}
 
-      <Section id="appointments-heading" title={t("appointments")}>
-        {visibleAppointments.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t("noAppointments")}</p>
-        ) : (
-          <ul className="space-y-3">{visibleAppointments.map(renderAppointment)}</ul>
-        )}
-        {audience === "household" && proposed.length > 0 && request.can_confirm ? (
-          <details className="mt-4">
-            <summary className="cursor-pointer text-sm font-semibold underline">
-              {t("noneOfTheseWork")}
-            </summary>
-            <ActionForm
-              action={requestOtherTimesAction.bind(null, locale, request.id)}
-              className="mt-3"
-              pendingLabel={t("sending")}
-              submitLabel={t("requestOtherTimes")}
-              variant="outline"
-            >
-              <Label htmlFor="other-times-note">{t("availabilityNote")}</Label>
-              <Textarea id="other-times-note" maxLength={1000} name="note" rows={2} />
-            </ActionForm>
-          </details>
-        ) : null}
-        <div className="mt-4 rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
-          <p className="font-semibold text-foreground">{policy("title")}</p>
-          <ul className="mt-1 list-disc space-y-1 pl-5">
-            <li>{policy("moreThan48")}</li>
-            <li>{policy("between24And48")}</li>
-            <li>{policy("lessThan24")}</li>
-            <li>{policy("noShow")}</li>
-            <li>{policy("administrative")}</li>
-          </ul>
-        </div>
-      </Section>
+      {parentSupport && visibleAppointments.length === 0 ? null : (
+        <Section id="appointments-heading" title={t("appointments")}>
+          {visibleAppointments.length === 0 ? (
+            <p className="text-sm text-muted-foreground">{t("noAppointments")}</p>
+          ) : (
+            <ul className="space-y-3">{visibleAppointments.map(renderAppointment)}</ul>
+          )}
+          {audience === "household" && proposed.length > 0 && request.can_confirm ? (
+            <details className="mt-4">
+              <summary className="cursor-pointer text-sm font-semibold underline">
+                {t("noneOfTheseWork")}
+              </summary>
+              <ActionForm
+                action={requestOtherTimesAction.bind(null, locale, request.id)}
+                className="mt-3"
+                pendingLabel={t("sending")}
+                submitLabel={t("requestOtherTimes")}
+                variant="outline"
+              >
+                <Label htmlFor="other-times-note">{t("availabilityNote")}</Label>
+                <Textarea id="other-times-note" maxLength={1000} name="note" rows={2} />
+              </ActionForm>
+            </details>
+          ) : null}
+          <div className="mt-4 rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+            <p className="font-semibold text-foreground">{policy("title")}</p>
+            <ul className="mt-1 list-disc space-y-1 pl-5">
+              <li>{policy("moreThan48")}</li>
+              <li>{policy("between24And48")}</li>
+              <li>{policy("lessThan24")}</li>
+              <li>{policy("noShow")}</li>
+              <li>{policy("administrative")}</li>
+            </ul>
+          </div>
+        </Section>
+      )}
 
       <Section id="request-details-heading" title={t("requestDetails")}>
         <dl className="grid gap-4 sm:grid-cols-2">

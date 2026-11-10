@@ -268,7 +268,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                     {types(request.service_type)} · {request.dependent_name}
                   </Link>
                   <span className="flex gap-2">
-                    <ServiceStatusBadge status={request.status} />
+                    <ServiceStatusBadge serviceType={request.service_type} status={request.status} />
                     <PaymentStatusBadge status={request.payment_status} />
                   </span>
                 </li>
@@ -343,7 +343,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 </Link>
                 <span className="flex items-center gap-2 text-muted-foreground">
                   {formatShortDateTime(request.updated_at, locale)}
-                  <ServiceStatusBadge status={request.status} />
+                  <ServiceStatusBadge serviceType={request.service_type} status={request.status} />
                 </span>
               </li>
             ))}

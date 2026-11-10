@@ -1730,7 +1730,8 @@
       "refunded": "ተመላሽ ተደርጓል",
       "requested": "ተጠይቋል",
       "succeeded": "ተመላሽ ተደርጓል",
-      "rejected": "ውድቅ ተደርጓል"
+      "rejected": "ውድቅ ተደርጓል",
+      "not_required": "ነፃ"
     },
     "appointmentStatus": {
       "none": "አልተያዘም",
@@ -2290,6 +2291,19 @@
       "calendlyTitle": "ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ ይያዙ",
       "requestSubmit": "ጥያቄ ላክ",
       "requestNextSteps": "ቡድናችን እያንዳንዱን ጥያቄ ይገመግማል። ሲጸድቅ ይነገርዎታል፤ ከጥያቄዎ ገጽ ሰዓት መምረጥ ይችላሉ።"
+    },
+    "parentSupportStatus": {
+      "pending_review": "ተጠይቋል",
+      "assigned": "ጸድቋል",
+      "completed": "ተጠናቋል"
+    },
+    "parentSupportStatusHelp": {
+      "pending_review": "ቡድናችን ጥያቄዎን እየገመገመ ነው። እንደጸደቀ እናሳውቅዎታለን።",
+      "assigned": "ጥያቄዎ ጸድቋል። ከታች ሰዓት ይምረጡ፤ የቀጠሮ ማረጋገጫ ኢሜይሉ የመስመር ላይ ክፍለ ጊዜውን የሚቀላቀሉበትን አገናኝ ይዟል።",
+      "completed": "ይህ ክፍለ ጊዜ ተጠናቋል።",
+      "staff_pending_review": "አስተዳዳሪ እስኪያጸድቀው ወይም እስኪከለክለው እየጠበቀ ነው።",
+      "staff_assigned": "ጸድቋል። ቤተሰቡ በአቅራቢው የCalendly ገጽ ላይ ሰዓት ይይዛሉ፤ Calendly የስብሰባውን አገናኝ ለሁለቱም ወገኖች በኢሜይል ይልካል።",
+      "staff_completed": "ይህ ክፍለ ጊዜ ተጠናቋል።"
     }
   },
   "adminConsole": {

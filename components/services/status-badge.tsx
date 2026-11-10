@@ -38,6 +38,7 @@ const paymentTones: Record<string, Tone> = {
   requested: "warning",
   succeeded: "success",
   rejected: "neutral",
+  not_required: "success",
 };
 
 const appointmentTones: Record<string, Tone> = {
@@ -64,7 +65,15 @@ export function StatusPill({ label, tone = "neutral" }: { label: string; tone?: 
   );
 }
 
-export async function ServiceStatusBadge({ status }: { status: string }) {
+/** Parent Support is free and booked on Calendly, so it only has three steps: requested, approved, completed. */
+const parentSupportSteps = new Set(["pending_review", "assigned", "completed"]);
+
+export async function ServiceStatusBadge({ status, serviceType }: { status: string; serviceType?: string }) {
+  if (serviceType === "parent_support" && parentSupportSteps.has(status)) {
+    const t = await getTranslations("services.parentSupportStatus");
+    const tone = status === "assigned" ? "success" : (serviceTones[status] ?? "neutral");
+    return <StatusPill label={t(status)} tone={tone} />;
+  }
   const t = await getTranslations("services.status");
   return <StatusPill label={t(status)} tone={serviceTones[status] ?? "neutral"} />;
 }

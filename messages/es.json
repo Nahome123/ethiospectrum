@@ -1730,7 +1730,8 @@
       "refunded": "Reembolsado",
       "requested": "Solicitado",
       "succeeded": "Reembolsado",
-      "rejected": "Rechazado"
+      "rejected": "Rechazado",
+      "not_required": "Gratis"
     },
     "appointmentStatus": {
       "none": "Sin programar",
@@ -2294,6 +2295,19 @@
       "calendlyTitle": "Reserve una sesión gratuita de apoyo para padres",
       "requestSubmit": "Enviar solicitud",
       "requestNextSteps": "Nuestro equipo revisa cada solicitud. Cuando se apruebe, recibirá un aviso y podrá elegir un horario desde la página de su solicitud."
+    },
+    "parentSupportStatus": {
+      "pending_review": "Solicitada",
+      "assigned": "Aprobada",
+      "completed": "Completada"
+    },
+    "parentSupportStatusHelp": {
+      "pending_review": "Nuestro equipo está revisando su solicitud. Le avisaremos en cuanto se apruebe.",
+      "assigned": "Su solicitud está aprobada. Elija un horario abajo; el correo de confirmación de la reserva incluye el enlace para unirse a la sesión en línea.",
+      "completed": "Esta sesión está completada.",
+      "staff_pending_review": "Esperando que un administrador la apruebe o la rechace.",
+      "staff_assigned": "Aprobada. La familia reserva un horario en la página de Calendly del proveedor; Calendly envía el enlace de la reunión a ambas partes.",
+      "staff_completed": "Esta sesión está completada."
     }
   },
   "adminConsole": {

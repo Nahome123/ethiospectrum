@@ -1730,7 +1730,8 @@
       "refunded": "Refunded",
       "requested": "Requested",
       "succeeded": "Refunded",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "not_required": "Free"
     },
     "appointmentStatus": {
       "none": "Not scheduled",
@@ -2290,6 +2291,19 @@
       "calendlyTitle": "Book a free Parent Support session",
       "requestSubmit": "Send request",
       "requestNextSteps": "Our team reviews each request. Once it's approved, you'll be notified and can pick a time from your request page."
+    },
+    "parentSupportStatus": {
+      "pending_review": "Requested",
+      "assigned": "Approved",
+      "completed": "Completed"
+    },
+    "parentSupportStatusHelp": {
+      "pending_review": "Our team is reviewing your request. We'll let you know as soon as it's approved.",
+      "assigned": "Your request is approved. Pick a time below; the booking confirmation email has the link to join the online session.",
+      "completed": "This session is complete.",
+      "staff_pending_review": "Waiting for an administrator to approve or decline.",
+      "staff_assigned": "Approved. The family books a time on the provider's Calendly page; Calendly emails both sides the meeting link.",
+      "staff_completed": "This session is complete."
     }
   },
   "adminConsole": {

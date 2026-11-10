@@ -34,6 +34,9 @@ export const serviceLifecycle: readonly ServiceStatus[] = [
   "completed",
 ];
 
+/** Parent Support is free and the family books on Calendly: request, approval, done. */
+export const parentSupportLifecycle: readonly ServiceStatus[] = ["pending_review", "assigned", "completed"];
+
 export const closedServiceStatuses: readonly ServiceStatus[] = ["completed", "cancelled", "declined"];
 
 export const paymentStatusValues = [

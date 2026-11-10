@@ -76,7 +76,7 @@ export default async function RequestsPage({
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <ServiceStatusBadge status={request.status} />
+                    <ServiceStatusBadge serviceType={request.service_type} status={request.status} />
                     <PaymentStatusBadge status={request.payment_status} />
                   </div>
                 </div>

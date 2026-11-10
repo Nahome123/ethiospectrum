@@ -89,7 +89,7 @@ export default async function SpecialistDashboardPage({
                       </p>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      <ServiceStatusBadge status={request.status} />
+                      <ServiceStatusBadge serviceType={request.service_type} status={request.status} />
                       {request.availability_requested ? (
                         <StatusPill label={t("availabilityNeeded")} tone="warning" />
                       ) : null}
