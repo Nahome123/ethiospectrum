@@ -1,22 +1,18 @@
 import { HeartHandshake } from "lucide-react";
-import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import parentSupportPhoto from "@/public/images/team/team-member-3.jpg";
+import { teamCalendlyUrl } from "@/lib/marketing/team-calendly";
 
 /**
- * Home-page spotlight for the Parent Support consultant (Yoftahe, the third
- * team member in About Us): who he is, that the session is free, and how to
- * request one. An administrator approves each request before a time is picked.
+ * Home-page spotlight for free Parent Support. "Talk to our team" opens the
+ * administrators' Calendly page (TEAM_CALENDLY_URL); to book with a specific
+ * provider, families use "Book now" on the team cards in About Us.
  */
 export async function ParentSupportSpotlight() {
   const t = await getTranslations("parentSupportSpotlight");
-  const team = await getTranslations("aboutUs.team.third");
-  const name = team("name").trim();
-  const title = team("title").trim();
-  const firstParagraph = team("bio")
-    .trim()
-    .split(/\n\s*\n/)[0];
+  const calendly = teamCalendlyUrl();
+  const buttonClass =
+    "inline-flex min-h-11 items-center rounded-xl bg-emerald-700 px-5 font-semibold text-white hover:bg-emerald-800";
 
   return (
     <section
@@ -24,48 +20,33 @@ export async function ParentSupportSpotlight() {
       className="scroll-mt-24 border-y border-emerald-200 bg-emerald-50/70"
       id="parent-support"
     >
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[20rem_1fr] lg:gap-14 lg:px-8">
-        <div className="mx-auto w-full max-w-xs overflow-hidden rounded-3xl border-4 border-white shadow-lg lg:max-w-none">
-          <Image
-            alt={name ? t("photoAlt", { name }) : t("photoAltUnnamed")}
-            className="aspect-[4/5] h-auto w-full object-cover object-top"
-            placeholder="blur"
-            sizes="(min-width: 1024px) 20rem, 18rem"
-            src={parentSupportPhoto}
-          />
-        </div>
-        <div>
-          <p className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
-            <HeartHandshake aria-hidden="true" className="size-4" />
-            {t("badge")}
-          </p>
-          <h2
-            className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
-            id="parent-support-heading"
-          >
-            {name ? t("title", { name }) : t("titleUnnamed")}
-          </h2>
-          {title ? <p className="mt-2 font-semibold text-emerald-800">{title}</p> : null}
-          <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">{firstParagraph}</p>
-          <p className="mt-4 max-w-2xl font-medium">{t("whatItIs")}</p>
-
-          <ol className="mt-6 grid gap-3 sm:grid-cols-3">
-            {(["stepRequest", "stepApproval", "stepPick"] as const).map((step, index) => (
-              <li className="rounded-2xl border border-emerald-200 bg-white p-4 text-sm" key={step}>
-                <span className="mb-2 flex size-7 items-center justify-center rounded-full bg-emerald-700 font-bold text-white">
-                  {index + 1}
-                </span>
-                {t(step)}
-              </li>
-            ))}
-          </ol>
-          <Link
-            className="mt-6 inline-flex min-h-11 items-center rounded-xl bg-emerald-700 px-5 font-semibold text-white hover:bg-emerald-800"
-            href="/services/parent-support"
-          >
-            {t("book")}
-          </Link>
-          <p className="mt-3 text-sm text-muted-foreground">{t("accountNote")}</p>
+      <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 lg:px-8">
+        <p className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+          <HeartHandshake aria-hidden="true" className="size-4" />
+          {t("badge")}
+        </p>
+        <h2
+          className="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+          id="parent-support-heading"
+        >
+          {t("heading")}
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl font-medium">{t("whatItIs")}</p>
+        <p className="mx-auto mt-3 max-w-2xl leading-7 text-muted-foreground">{t("teamIntro")}</p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+          {calendly ? (
+            <a className={buttonClass} href={calendly} rel="noopener noreferrer" target="_blank">
+              {t("talkToTeam")}
+              <span className="sr-only"> {t("opensNewTab")}</span>
+            </a>
+          ) : (
+            <Link className={buttonClass} href="/services/parent-support">
+              {t("talkToTeam")}
+            </Link>
+          )}
+          <a className="font-semibold text-emerald-800 underline underline-offset-4" href="#about">
+            {t("meetProviders")}
+          </a>
         </div>
       </div>
     </section>

@@ -35,6 +35,8 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
     );
   }
   const hours = (Array.isArray(schedule.hours) ? schedule.hours : []) as WeeklyHour[];
+  // Parent Support staff, and specialists who also offer Parent Support, book it on Calendly.
+  const offersParentSupport = schedule.is_parent_support || schedule.parent_support_languages.length > 0;
 
   return (
     <section className="mx-auto max-w-3xl space-y-6">
@@ -67,7 +69,7 @@ export default async function MyAvailabilityPage({ params }: { params: Promise<{
             </span>
           </label>
 
-          {schedule.is_parent_support ? (
+          {offersParentSupport ? (
             <div className="space-y-1.5 rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
               <input name="choosesBookingPage" type="hidden" value="1" />
               <Label htmlFor="my-calendly">{t("calendly")}</Label>

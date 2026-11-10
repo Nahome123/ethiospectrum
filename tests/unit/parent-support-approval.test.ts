@@ -52,6 +52,40 @@ describe("Parent Support requests", () => {
     });
   });
 
+  it("passes the provider the family chose", async () => {
+    const specialistId = "60000000-0000-4000-8000-000000000001";
+    await expect(
+      requestParentSupportAction(
+        "en",
+        idle,
+        form({
+          dependentId,
+          idempotencyKey: key,
+          language: "en",
+          description: "Bedtime has been hard.",
+          specialistId,
+        }),
+      ),
+    ).rejects.toThrow("redirect:");
+    expect(mocks.rpc).toHaveBeenCalledWith(
+      "request_parent_support",
+      expect.objectContaining({ input_specialist_id: specialistId }),
+    );
+  });
+
+  it("refuses a provider that is not an id", async () => {
+    const values = {
+      dependentId,
+      idempotencyKey: key,
+      language: "en",
+      description: "Bedtime has been hard.",
+    };
+    expect(
+      (await requestParentSupportAction("en", idle, form({ ...values, specialistId: "milka" }))).status,
+    ).toBe("error");
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
   it("refuses a short note or an unknown language before calling the database", async () => {
     for (const values of [
       { dependentId, idempotencyKey: key, language: "en", description: "Hi" },

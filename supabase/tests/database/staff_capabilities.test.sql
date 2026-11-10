@@ -21,8 +21,8 @@ create function pg_temp.capabilities(target_user uuid) returns text language sql
   where specialist.user_id = target_user;
 $$;
 
-select is(pg_temp.capabilities('a9000000-0000-4000-8000-000000000002'), 'consultation:am,consultation:en',
-  'Yamrot (administrator) offers Consultation in English and Amharic');
+select is(pg_temp.capabilities('a9000000-0000-4000-8000-000000000002'), 'consultation:am,consultation:en,parent_support:am,parent_support:en',
+  'Yamrot (administrator) offers Consultation and Parent Support in English and Amharic');
 
 set local role authenticated;
 set local request.jwt.claim.role = 'authenticated';
@@ -31,8 +31,8 @@ select public.admin_set_user_role('a9000000-0000-4000-8000-000000000003', 'speci
 select public.admin_set_user_role('a9000000-0000-4000-8000-000000000004', 'specialist');
 reset role;
 
-select is(pg_temp.capabilities('a9000000-0000-4000-8000-000000000003'), 'consultation:am,consultation:en,iep_language_assistance:am',
-  'Milka offers Consultation and Amharic IEP assistance once promoted');
+select is(pg_temp.capabilities('a9000000-0000-4000-8000-000000000003'), 'consultation:am,consultation:en,iep_language_assistance:am,parent_support:am,parent_support:en',
+  'Milka offers Consultation, Amharic IEP assistance and Parent Support once promoted');
 select is(pg_temp.capabilities('a9000000-0000-4000-8000-000000000004'), 'parent_support:am,parent_support:en',
   'Yoftahe offers Parent Support once promoted');
 select is(pg_temp.capabilities('a9000000-0000-4000-8000-000000000005'), '', 'a family member with the same first name gets nothing');

@@ -2294,7 +2294,10 @@
       "calendlyFallback": "¿No ve el calendario? Abra la página de reservas en una pestaña nueva.",
       "calendlyTitle": "Reserve una sesión gratuita de apoyo para padres",
       "requestSubmit": "Enviar solicitud",
-      "requestNextSteps": "Nuestro equipo revisa cada solicitud. Cuando se apruebe, recibirá un aviso y podrá elegir un horario desde la página de su solicitud."
+      "requestNextSteps": "Nuestro equipo revisa cada solicitud. Cuando se apruebe, recibirá un aviso y podrá elegir un horario desde la página de su solicitud.",
+      "parentSupportTitleWith": "Apoyo gratuito para padres con {name}",
+      "parentSupportWith": "¿Con quién le gustaría hablar?",
+      "parentSupportAnyone": "Con quien esté disponible"
     },
     "parentSupportStatus": {
       "pending_review": "Solicitada",
@@ -3133,19 +3136,18 @@
       }
     },
     "readMore": "Leer más",
-    "showLess": "Mostrar menos"
+    "showLess": "Mostrar menos",
+    "bookNow": "Reservar ahora",
+    "bookNowWith": "Reservar una sesión gratuita de apoyo para padres con {name}",
+    "bookNowNote": "Sesión gratuita de apoyo para padres"
   },
   "parentSupportSpotlight": {
     "badge": "Apoyo para padres gratuito",
-    "title": "Hable con {name}, gratis",
-    "titleUnnamed": "Apoyo para padres gratuito",
     "whatItIs": "Una sesión en línea gratuita e individual de 30 minutos para padres y cuidadores. Sin pago y sin suscripción.",
-    "book": "Solicitar una sesión gratuita",
-    "accountNote": "Iniciará sesión (o creará una cuenta gratuita) para enviar su solicitud.",
-    "photoAlt": "Retrato de {name}",
-    "photoAltUnnamed": "Retrato de nuestro consultor de apoyo para padres",
-    "stepRequest": "Envíe una breve solicitud contándonos de qué quiere hablar.",
-    "stepApproval": "Nuestro equipo la revisa y le avisa cuando esté aprobada.",
-    "stepPick": "Elija un horario que le convenga en el calendario de reservas."
+    "heading": "Apoyo gratuito para padres y cuidadores",
+    "teamIntro": "¿No sabe por dónde empezar? Hable con nuestro equipo y le orientaremos hacia la ayuda adecuada. O reserve una sesión gratuita con uno de nuestros proveedores más abajo.",
+    "talkToTeam": "Hable con nuestro equipo",
+    "opensNewTab": "(abre Calendly en una pestaña nueva)",
+    "meetProviders": "Reservar con un proveedor"
   }
 }

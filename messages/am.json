@@ -2290,7 +2290,10 @@
       "calendlyFallback": "የቀን መቁጠሪያው አይታይም? የቀጠሮ ገጹን በአዲስ ትር ይክፈቱ።",
       "calendlyTitle": "ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ ይያዙ",
       "requestSubmit": "ጥያቄ ላክ",
-      "requestNextSteps": "ቡድናችን እያንዳንዱን ጥያቄ ይገመግማል። ሲጸድቅ ይነገርዎታል፤ ከጥያቄዎ ገጽ ሰዓት መምረጥ ይችላሉ።"
+      "requestNextSteps": "ቡድናችን እያንዳንዱን ጥያቄ ይገመግማል። ሲጸድቅ ይነገርዎታል፤ ከጥያቄዎ ገጽ ሰዓት መምረጥ ይችላሉ።",
+      "parentSupportTitleWith": "ከ{name} ጋር ነፃ የወላጅ ድጋፍ",
+      "parentSupportWith": "ከማን ጋር መነጋገር ይፈልጋሉ?",
+      "parentSupportAnyone": "የሚገኝ ማንኛውም ሰው"
     },
     "parentSupportStatus": {
       "pending_review": "ተጠይቋል",
@@ -3125,19 +3128,18 @@
       }
     },
     "readMore": "ተጨማሪ ያንብቡ",
-    "showLess": "ያሳንሱ"
+    "showLess": "ያሳንሱ",
+    "bookNow": "አሁን ይያዙ",
+    "bookNowWith": "ከ{name} ጋር ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ ይያዙ",
+    "bookNowNote": "ነፃ የወላጅ ድጋፍ ክፍለ ጊዜ"
   },
   "parentSupportSpotlight": {
     "badge": "ነፃ የወላጅ ድጋፍ",
-    "title": "ከ{name} ጋር ይነጋገሩ — ነፃ",
-    "titleUnnamed": "ነፃ የወላጅ ድጋፍ",
     "whatItIs": "ለወላጆችና ለአሳዳጊዎች ነፃ የ30 ደቂቃ አንድ ለአንድ የመስመር ላይ ክፍለ ጊዜ። ክፍያም ምዝገባም የለም።",
-    "book": "ነፃ ክፍለ ጊዜ ይጠይቁ",
-    "accountNote": "ጥያቄዎን ለመላክ ይገባሉ (ወይም ነፃ መለያ ይፈጥራሉ)።",
-    "photoAlt": "የ{name} ፎቶ",
-    "photoAltUnnamed": "የወላጅ ድጋፍ አማካሪያችን ፎቶ",
-    "stepRequest": "ስለምን መነጋገር እንደሚፈልጉ የሚገልጽ አጭር ጥያቄ ይላኩ።",
-    "stepApproval": "ቡድናችን ይገመግመዋል፤ ሲጸድቅ ያሳውቅዎታል።",
-    "stepPick": "በቀጠሮ መቁጠሪያው ላይ የሚመችዎትን ሰዓት ይምረጡ።"
+    "heading": "ለወላጆችና ለአሳዳጊዎች ነፃ ድጋፍ",
+    "teamIntro": "ከየት እንደሚጀምሩ እርግጠኛ አይደሉም? ቡድናችንን ያነጋግሩ፤ ወደ ትክክለኛው እርዳታ እንመራዎታለን። ወይም ከታች ካሉት አቅራቢዎቻችን ከአንዱ ጋር ነፃ ክፍለ ጊዜ ይያዙ።",
+    "talkToTeam": "ቡድናችንን ያነጋግሩ",
+    "opensNewTab": "(Calendlyን በአዲስ ትር ይከፍታል)",
+    "meetProviders": "ከአቅራቢ ጋር ይያዙ"
   }
 }

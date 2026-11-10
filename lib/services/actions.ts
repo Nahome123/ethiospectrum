@@ -106,9 +106,12 @@ export async function requestParentSupportAction(
   const idempotencyKey = uuidSchema.safeParse(field(formData, "idempotencyKey"));
   const description = field(formData, "description").trim();
   const language = field(formData, "language");
+  const specialistField = field(formData, "specialistId");
+  const specialistId = specialistField ? uuidSchema.safeParse(specialistField) : null;
   if (
     !dependentId.success ||
     !idempotencyKey.success ||
+    (specialistId && !specialistId.success) ||
     description.length < 10 ||
     description.length > 2000 ||
     !["en", "am", "es"].includes(language)
@@ -121,6 +124,7 @@ export async function requestParentSupportAction(
     input_description: description,
     input_language: language,
     input_idempotency_key: idempotencyKey.data,
+    ...(specialistId?.success ? { input_specialist_id: specialistId.data } : {}),
   });
   if (error || !data) return failure(locale, error?.code);
   revalidateServiceRequest(locale, data);

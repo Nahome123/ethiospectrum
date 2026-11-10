@@ -1,11 +1,21 @@
 import { ChevronDown } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import founderPhoto from "@/public/images/team/founder-yamrot.jpg";
 import secondMemberPhoto from "@/public/images/team/team-member-2.jpg";
 import thirdMemberPhoto from "@/public/images/team/team-member-3.jpg";
 
-type Member = { id: string; name: string; title: string; bio: string; photo: StaticImageData; alt: string };
+type Member = {
+  id: string;
+  name: string;
+  title: string;
+  bio: string;
+  photo: StaticImageData;
+  alt: string;
+  /** First name passed to the Parent Support form so it preselects this provider. */
+  bookWith?: string;
+};
 
 /**
  * About Us: three equal cards. Each shows a photo, name, role and the first
@@ -23,6 +33,7 @@ export async function AboutUsSection() {
       bio: t("founderBio").trim(),
       photo: founderPhoto,
       alt: t("photoAlt"),
+      bookWith: "yamrot",
     },
     ...(
       [
@@ -38,6 +49,8 @@ export async function AboutUsSection() {
         bio: t(`team.${key}.bio`).trim(),
         photo,
         alt: memberAlt(name),
+        // Free Parent Support is booked with Yamrot and Milka (the second card).
+        bookWith: key === "second" ? "milka" : undefined,
       };
     }),
   ];
@@ -62,7 +75,7 @@ export async function AboutUsSection() {
             const [first, ...rest] = (member.bio || t("bioPlaceholder")).split(/\n\s*\n/);
             return (
               <li
-                className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
+                className="flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
                 key={member.id}
               >
                 <Image
@@ -102,6 +115,18 @@ export async function AboutUsSection() {
                         ))}
                       </div>
                     </details>
+                  ) : null}
+                  {member.bookWith ? (
+                    <div className="mt-auto pt-6">
+                      <Link
+                        aria-label={member.name ? t("bookNowWith", { name: member.name }) : undefined}
+                        className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-emerald-700 px-5 font-semibold text-white hover:bg-emerald-800"
+                        href={`/services/parent-support?with=${member.bookWith}`}
+                      >
+                        {t("bookNow")}
+                      </Link>
+                      <p className="mt-2 text-center text-sm text-muted-foreground">{t("bookNowNote")}</p>
+                    </div>
                   ) : null}
                 </div>
               </li>

@@ -3239,6 +3239,7 @@ export type Database = {
           refund_cap_percent: number;
           relevant_information: string | null;
           requested_by: string | null;
+          requested_specialist_id: string | null;
           requested_meeting_date: string | null;
           service_id: string;
           service_type: string;
@@ -3279,6 +3280,7 @@ export type Database = {
           refund_cap_percent?: number;
           relevant_information?: string | null;
           requested_by?: string | null;
+          requested_specialist_id?: string | null;
           requested_meeting_date?: string | null;
           service_id: string;
           service_type: string;
@@ -3319,6 +3321,7 @@ export type Database = {
           refund_cap_percent?: number;
           relevant_information?: string | null;
           requested_by?: string | null;
+          requested_specialist_id?: string | null;
           requested_meeting_date?: string | null;
           service_id?: string;
           service_type?: string;
@@ -5389,6 +5392,15 @@ export type Database = {
         };
         Returns: string;
       };
+      list_parent_support_providers: {
+        Args: never;
+        Returns: {
+          display_name: string;
+          first_name: string;
+          languages: string[];
+          specialist_id: string;
+        }[];
+      };
       list_bookable_specialists: {
         Args: { input_service_type: string };
         Returns: {
@@ -5474,6 +5486,7 @@ export type Database = {
           input_description: string;
           input_idempotency_key: string;
           input_language: string;
+          input_specialist_id?: string;
         };
         Returns: string;
       };

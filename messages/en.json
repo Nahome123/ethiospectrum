@@ -2290,7 +2290,10 @@
       "calendlyFallback": "Calendar not showing? Open the booking page in a new tab.",
       "calendlyTitle": "Book a free Parent Support session",
       "requestSubmit": "Send request",
-      "requestNextSteps": "Our team reviews each request. Once it's approved, you'll be notified and can pick a time from your request page."
+      "requestNextSteps": "Our team reviews each request. Once it's approved, you'll be notified and can pick a time from your request page.",
+      "parentSupportTitleWith": "Free Parent Support with {name}",
+      "parentSupportWith": "Who would you like to talk with?",
+      "parentSupportAnyone": "Whoever is available"
     },
     "parentSupportStatus": {
       "pending_review": "Requested",
@@ -3129,19 +3132,18 @@
       }
     },
     "readMore": "Read more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "bookNow": "Book now",
+    "bookNowWith": "Book a free Parent Support session with {name}",
+    "bookNowNote": "Free Parent Support session"
   },
   "parentSupportSpotlight": {
     "badge": "Free Parent Support",
-    "title": "Talk with {name} — free",
-    "titleUnnamed": "Free Parent Support",
     "whatItIs": "A free 30-minute, one-on-one online session for parents and caregivers. No payment, no subscription.",
-    "book": "Request a free session",
-    "accountNote": "You'll sign in (or create a free account) to send your request.",
-    "photoAlt": "Portrait of {name}",
-    "photoAltUnnamed": "Portrait of our parent support consultant",
-    "stepRequest": "Send a short request telling us what you'd like to talk about.",
-    "stepApproval": "Our team reviews it and lets you know once it's approved.",
-    "stepPick": "Pick a time that suits you on the booking calendar."
+    "heading": "Free support for parents and caregivers",
+    "teamIntro": "Not sure where to start? Talk to our team and we'll point you to the right help. Or book a free session with one of our providers below.",
+    "talkToTeam": "Talk to our team",
+    "opensNewTab": "(opens Calendly in a new tab)",
+    "meetProviders": "Book with a provider"
   }
 }

@@ -5,6 +5,13 @@ import messages from "@/messages/en.json";
 vi.mock("next/image", () => ({
   default: ({ alt }: { alt: string }) => <span role="img" aria-label={alt} />,
 }));
+vi.mock("@/i18n/navigation", () => ({
+  Link: ({ href, children, ...props }: { href: string; children: React.ReactNode }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}));
 vi.mock("next-intl/server", () => ({
   getTranslations: vi.fn(async () => (key: string, values?: Record<string, string>) => {
     const text = key
@@ -42,5 +49,15 @@ describe("About us", () => {
     // The first paragraph is shown; later ones sit inside the collapsed section.
     expect(screen.getByText(/^Yoftahe Mulatu Gebru is the founder/).closest("details")).toBeNull();
     expect(screen.getByText(/Road 2 Healing \(TR2H\) Tour/).closest("details")).not.toHaveAttribute("open");
+  });
+
+  it("offers Book now for free Parent Support under Yamrot and Milka only", async () => {
+    render(await AboutUsSection());
+    const links = screen.getAllByRole("link", { name: /Book a free Parent Support session with/ });
+    expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "/services/parent-support?with=yamrot",
+      "/services/parent-support?with=milka",
+    ]);
+    expect(screen.queryByRole("link", { name: /Yoftahe/ })).toBeNull();
   });
 });

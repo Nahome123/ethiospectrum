@@ -69,23 +69,37 @@ Parent Support is no longer booked straight into a time (migrations
 `20261103000000_parent_support_calendly` and
 `20261107000000_parent_support_admin_approval`).
 
-1. **Family:** on Services -> Parent Support (or the home-page spotlight) they
-   choose the child and language and write a short note (10+ characters). The
+1. **Family:** on Services -> Parent Support (or **Book now** under Yamrot or
+   Milka in About Us, which preselects them) they may choose who to talk with,
+   then the child and language, and write a short note (10+ characters). The
    request appears in **Admin -> Service requests** as *Pending review* and
    administrators are notified. One request may wait for approval at a time.
 2. **Administrator:** opens the request and clicks **Approve** (or declines it
-   with a reason). Approving assigns the Parent Support provider who has a
-   Calendly link and is taking bookings (preferring one who speaks the requested
-   language) and notifies the family and the provider.
+   with a reason). Approving assigns the provider the family chose, if they
+   still have a Calendly link and are taking bookings; otherwise a Parent
+   Support provider who does (preferring one who speaks the requested
+   language). The family and the provider are notified.
 3. **Family:** their request page now shows the provider's Calendly page
    (email prefilled) to pick a time. Calendly sends the confirmation and
    reminders.
 4. **Administrator:** after the session, **Mark completed** closes the request
    (or **Cancel request**).
 
+**Who offers Parent Support:** anyone with the Parent Support capability
+(Admin -> Specialists). Migration `20261110000000_parent_support_choose_provider`
+gives it to Yamrot and Milka (English, Amharic) by first name on staff
+accounts. To stop someone being offered or assigned, remove their Parent
+Support capability or clear their Calendly link.
+
+**"Talk to our team" on the home page** opens the administrators' Calendly
+page from the `TEAM_CALENDLY_URL` environment variable (a `https://calendly.com/...`
+link). Bookings made there go straight to Calendly with no approval step. If it
+is not set, the button opens the Parent Support request form instead.
+
 **Provider setup:** in Calendly, create a free event type (for example
 "Parent Support", 30 minutes, Zoom or Google Meet) and copy its link. Signed in
-as the Parent Support provider, open **My availability**, paste it into
+as the provider (a Parent Support account, or a specialist with the Parent
+Support capability), open **My availability**, paste it into
 **Your Calendly link** and save. Without a link (or with bookings paused),
 approval fails with a message telling the administrator to add one.
 
