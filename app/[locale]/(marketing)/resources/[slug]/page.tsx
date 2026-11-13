@@ -1,8 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import { requireFeature } from "@/lib/features";
+import { isFeatureEnabled } from "@/config/features";
 import { notFound } from "next/navigation";
 import { ResourceCoverPlaceholder } from "@/components/resources/resource-cover-placeholder";
-import { Link } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { SafeMarkdown } from "@/components/resources/safe-markdown";
 import type { ResourceCategory } from "@/lib/resources/constants";
@@ -14,8 +14,9 @@ export default async function ResourceDetailPage({
 }: {
   params: Promise<{ locale: AppLocale; slug: string }>;
 }) {
-  requireFeature("resourceHub");
   const { locale, slug } = await params;
+  // The resource hub is retired; old links land on the education guide (the public Resources page).
+  if (!isFeatureEnabled("resourceHub")) redirect({ href: "/resources/education", locale });
   const [t, resource] = await Promise.all([
     getTranslations({ locale, namespace: "resourceWorkflow" }),
     getPublishedResource(slug, locale),

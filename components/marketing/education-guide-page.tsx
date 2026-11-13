@@ -11,10 +11,10 @@ export async function EducationGuidePage() {
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
       <Link
         className="inline-flex min-h-11 items-center gap-2 font-semibold text-link underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2"
-        href="/resources"
+        href="/"
       >
         <ArrowLeft aria-hidden="true" className="size-4" />
-        {t("educationGuide.backToResources")}
+        {t("common.backToHome")}
       </Link>
       <div className="mt-8">
         <SectionHeading
